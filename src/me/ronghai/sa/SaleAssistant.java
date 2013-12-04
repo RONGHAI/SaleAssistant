@@ -9,6 +9,7 @@ package me.ronghai.sa;
 import java.awt.Container;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import me.ronghai.sa.dialog.AboutDialog;
 import me.ronghai.sa.panel.AbstractPanel;
 import me.ronghai.sa.panel.PanelFactory;
 
@@ -38,6 +39,8 @@ private static Logger logger =   Logger.getLogger(SaleAssistant.class.getName())
 
         mainMenu = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
+        aboutMenuItem = new javax.swing.JMenuItem();
+        _s = new javax.swing.JPopupMenu.Separator();
         exitMenuItem = new javax.swing.JMenuItem();
         orderMenu = new javax.swing.JMenu();
         addOrderMenuItem = new javax.swing.JMenuItem();
@@ -63,6 +66,15 @@ private static Logger logger =   Logger.getLogger(SaleAssistant.class.getName())
         setMinimumSize(new java.awt.Dimension(400, 300));
 
         fileMenu.setText("文件");
+
+        aboutMenuItem.setText("关于");
+        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(aboutMenuItem);
+        fileMenu.add(_s);
 
         exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         exitMenuItem.setText("退出");
@@ -276,6 +288,10 @@ private static Logger logger =   Logger.getLogger(SaleAssistant.class.getName())
         // TODO add your handling code here:
           System.out.println(evt.getActionCommand());
     }//GEN-LAST:event_updateExRateMenuItemActionPerformed
+
+    private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
+        new AboutDialog(this, false).setVisible(true);
+    }//GEN-LAST:event_aboutMenuItemActionPerformed
     
      private javax.swing.GroupLayout _getContentPaneLayout() {
         Container container =  getContentPane();
@@ -320,6 +336,8 @@ private static Logger logger =   Logger.getLogger(SaleAssistant.class.getName())
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPopupMenu.Separator _s;
+    private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem accountMenuItem;
     private javax.swing.JMenuItem addOrderMenuItem;
     private javax.swing.JMenu basicInfoMenu;
