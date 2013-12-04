@@ -17,8 +17,8 @@ import java.util.logging.Logger;
  * @author L5M
  */
 public class PanelFactory {
-    private static Logger logger =   Logger.getLogger(PanelFactory.class.getName()) ;
-    private final static Map<String, AbstractPanel> _panelCache = new HashMap<String,  AbstractPanel>(16);
+    private static final Logger logger =   Logger.getLogger(PanelFactory.class.getName()) ;
+    private final static Map<String, AbstractPanel> _panelCache = new HashMap<>(16);
   
     public static AbstractPanel getPanel(ActionEvent evt, String actionCommand, String text) {
         String key = actionCommand+"_"+text;
