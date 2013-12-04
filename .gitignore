@@ -1,0 +1,15 @@
+build/
+dist/
+nbproject/private/
+
+
+._.DS_Store
+.DS_Store
+
+# Class Files #
+*.class 
+
+# Package Files #
+*.jar
+*.war
+*.ear
