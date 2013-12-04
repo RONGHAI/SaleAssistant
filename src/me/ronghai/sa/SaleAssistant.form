@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <NonVisualComponents>
+    <Menu class="javax.swing.JMenuBar" name="mainMenu">
+      <SubComponents>
+        <Menu class="javax.swing.JMenu" name="fileMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="&#x6587;&#x4ef6;"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="exitMenuItem">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+Q"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="&#x9000;&#x51fa;"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exitMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="orderMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="&#x8ba2;&#x5355;"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="addOrderMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x65b0;&#x589e;&#x8ba2;&#x5355;"/>
+                <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.AddOrderPanel"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="purchaseOrderMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x91c7;&#x8d2d;&#x5546;&#x54c1;"/>
+                <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.PurchasePanel"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="shippingMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x53d1;&#x8d27;&#x7ba1;&#x7406;"/>
+                <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.ShippingManagementPanel"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="basicInfoMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="&#x57fa;&#x7840;&#x4fe1;&#x606f;"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="clientMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x5ba2;&#x6237;&#x7ba1;&#x7406;"/>
+                <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.ClientManagementPanel"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="categoryMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x5546;&#x54c1;&#x5206;&#x7c7b;&#x7ba1;&#x7406;"/>
+                <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.CategoryManagementPanel"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="productMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x5546;&#x54c1;&#x7ba1;&#x7406;"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+                <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.ProductManagementPanel"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="carrierMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x627f;&#x8fd0;&#x4eba;&#x7ba1;&#x7406;"/>
+                <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.CarrierManagementPanel"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="merchantMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x4f9b;&#x5e94;&#x5546;&#x7ba1;&#x7406;"/>
+                <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.MerchantManagementPanel"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="accountMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x8d26;&#x6237;&#x7ba1;&#x7406;"/>
+                <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.AccountManagementPanel"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="statisticsMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="&#x7edf;&#x8ba1;"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="saleStatisticsMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x9500;&#x552e;&#x7edf;&#x8ba1;"/>
+                <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.SaleStatisticsPanel"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="clientRankingMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x5ba2;&#x6237;&#x6392;&#x884c;"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+                <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.ClientRankingPanel"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="settingMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="&#x8bbe;&#x7f6e;"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="currencyMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x8d27;&#x5e01;&#x7ba1;&#x7406;"/>
+                <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.CurrencyManagementPanel"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="updateExRateMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x66f4;&#x65b0;&#x6c47;&#x7387;"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+                <Property name="actionCommand" type="java.lang.String" value="UpdateExRate"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateExRateMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="propertiesMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x7cfb;&#x7edf;&#x914d;&#x7f6e;"/>
+                <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.PropertiesManagementPanel"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+      </SubComponents>
+    </Menu>
+  </NonVisualComponents>
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="locationByPlatform" type="boolean" value="true"/>
+    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[400, 300]"/>
+    </Property>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="menuBar" type="java.lang.String" value="mainMenu"/>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <EmptySpace min="0" pref="400" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <EmptySpace min="0" pref="279" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+</Form>
