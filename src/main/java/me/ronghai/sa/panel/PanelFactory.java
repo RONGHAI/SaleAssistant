@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author L5M
+ * @author RONGHAI
  */
 public class PanelFactory {
     private static final Logger logger =   Logger.getLogger(PanelFactory.class.getName()) ;

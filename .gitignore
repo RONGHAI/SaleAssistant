@@ -13,3 +13,5 @@ nbproject/private/
 *.jar
 *.war
 *.ear
+/nbproject/
+/target/
