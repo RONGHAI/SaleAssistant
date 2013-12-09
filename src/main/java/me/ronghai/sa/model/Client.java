@@ -7,89 +7,68 @@ package me.ronghai.sa.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author L5M
  */
-@Entity
-@Table(name = "clients")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Client.findAll", query = "SELECT c FROM Client c"),
-    @NamedQuery(name = "Client.findById", query = "SELECT c FROM Client c WHERE c.id = :id"),
-    @NamedQuery(name = "Client.findByName", query = "SELECT c FROM Client c WHERE c.name = :name"),
-    @NamedQuery(name = "Client.findByWangwang", query = "SELECT c FROM Client c WHERE c.wangwang = :wangwang"),
-    @NamedQuery(name = "Client.findByQq", query = "SELECT c FROM Client c WHERE c.qq = :qq"),
-    @NamedQuery(name = "Client.findByBirthday", query = "SELECT c FROM Client c WHERE c.birthday = :birthday"),
-    @NamedQuery(name = "Client.findByGender", query = "SELECT c FROM Client c WHERE c.gender = :gender"),
-    @NamedQuery(name = "Client.findByPhone", query = "SELECT c FROM Client c WHERE c.phone = :phone"),
-    @NamedQuery(name = "Client.findByDisabled", query = "SELECT c FROM Client c WHERE c.disabled = :disabled"),
-    @NamedQuery(name = "Client.findByAddTime", query = "SELECT c FROM Client c WHERE c.addTime = :addTime"),
-    @NamedQuery(name = "Client.findByUpdateTime", query = "SELECT c FROM Client c WHERE c.updateTime = :updateTime")})
+@Entity(name="clients")
 public class Client implements Serializable, AbstractModel {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Integer id;
-    @Basic(optional = false)
+    private Long id;
+
     @Column(name = "name")
     private String name;
-    @Basic(optional = false)
+
     @Column(name = "wangwang")
     private String wangwang;
-    @Basic(optional = false)
+
     @Column(name = "qq")
     private int qq;
-    @Basic(optional = false)
-    @Column(name = "birthday")
-    @Temporal(TemporalType.DATE)
+
+    @Column(name = "birthday", nullable=true)
+    @Temporal(TemporalType.TIME)
     private Date birthday;
-    @Basic(optional = false)
+
     @Column(name = "gender")
     private String gender;
-    @Basic(optional = false)
+
     @Column(name = "phone")
     private String phone;
-    @Basic(optional = false)
+
     @Column(name = "disabled")
     private boolean disabled;
-    @Basic(optional = false)
-    @Column(name = "add_time")
-    @Temporal(TemporalType.TIMESTAMP)
+
+    @Column(name = "add_time", nullable=true)
+    @Temporal(TemporalType.TIME)
     private Date addTime;
-    @Basic(optional = false)
-    @Column(name = "update_time")
-    @Temporal(TemporalType.TIMESTAMP)
+
+    @Column(name = "update_time", nullable=true)
+    @Temporal(TemporalType.TIME)
     private Date updateTime;
-    @Lob
+
     @Column(name = "note")
     private String note;
 
     public Client() {
     }
 
-    public Client(Integer id) {
+    public Client(Long id) {
         this.id = id;
     }
 
-    public Client(Integer id, String name, String wangwang, int qq, Date birthday, String gender, String phone, boolean disabled, Date addTime, Date updateTime) {
+    public Client(Long id, String name, String wangwang, int qq, Date birthday, String gender, String phone, boolean disabled, Date addTime, Date updateTime) {
         this.id = id;
         this.name = name;
         this.wangwang = wangwang;
@@ -102,11 +81,11 @@ public class Client implements Serializable, AbstractModel {
         this.updateTime = updateTime;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
