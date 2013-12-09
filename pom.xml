@@ -12,20 +12,52 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <hibernate-core.version>3.6.4.Final</hibernate-core.version>
+    <hibernate-jpa.version>1.0.0.Final</hibernate-jpa.version>
+    <mysql-connector-java.version>5.1.16</mysql-connector-java.version>
+    <slf4j.version>1.6.1</slf4j.version>
+    <log4j.version>1.6.1</log4j.version>
+    <junit.version>4.7</junit.version>
   </properties>
+  
 
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.7</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.hibernate.javax.persistence</groupId>
       <artifactId>hibernate-jpa-2.0-api</artifactId>
-      <version>1.0.0.Final</version>
+      <version>${hibernate-jpa.version}</version>
       <type>jar</type>
+    </dependency> 
+    <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>${hibernate-core.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>${hibernate-core.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>${mysql-connector-java.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>${log4j.version}</version>
     </dependency>
     <!-- SQLite JDBC library -->
     <!--
@@ -50,5 +82,12 @@
             </configuration>
     </plugin>
     </plugins>
+    <!--
+    <resources>
+        <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+        </resource>
+    </resources> -->
   </build>
 </project>
