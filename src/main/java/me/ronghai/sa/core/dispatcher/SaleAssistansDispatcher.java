@@ -14,7 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import me.ronghai.sa.JSONObject;
 import me.ronghai.sa.controller.AbstractController;
-import me.ronghai.sa.core.callback.DispatcherCallBack;
+import me.ronghai.sa.view.action.callback.DispatcherCallBack;
 
 /**
  *

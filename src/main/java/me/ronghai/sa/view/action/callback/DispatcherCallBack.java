@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package me.ronghai.sa.core.callback;
+package me.ronghai.sa.view.action.callback;
 
 import java.io.Serializable;
 import me.ronghai.sa.JSONObject;

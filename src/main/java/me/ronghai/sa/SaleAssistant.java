@@ -10,7 +10,7 @@ import me.ronghai.sa.controller.SaleAssistantController;
 import static me.ronghai.sa.core.dispatcher.SaleAssistansDispatcher.doDispatch;
 import me.ronghai.sa.view.frame.SaleAssistantFrame;
 import static me.ronghai.sa.core.context.SaleAssistanceApplicationContext.*;
-import me.ronghai.sa.core.callback.DispatcherCallBack;
+import me.ronghai.sa.view.action.callback.DispatcherCallBack;
 /**
  *
  * @author L5M
