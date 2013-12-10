@@ -9,6 +9,7 @@ package me.ronghai.sa.view.frame;
 import java.awt.Container;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import me.ronghai.sa.util.SaleAssistantConstants;
 import me.ronghai.sa.util.SaleAssistantResource;
 import me.ronghai.sa.view.panel.AbstractPanel;
 import me.ronghai.sa.view.panel.PanelFactory;
@@ -64,7 +65,9 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
-        setMinimumSize(new java.awt.Dimension(400, 300));
+        setMaximumSize(SaleAssistantConstants.MAX_DIMENSION);
+        setMinimumSize(SaleAssistantConstants.MIN_DIMENSION);
+        setPreferredSize(SaleAssistantConstants.MIN_DIMENSION);
 
         fileMenu.setText(SaleAssistantResource.getString("File"));
         fileMenu.setActionCommand("File");
@@ -245,11 +248,11 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 543, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+            .addGap(0, 351, Short.MAX_VALUE)
         );
 
         pack();
@@ -263,29 +266,29 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
     private void menuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemActionPerformed
         // TODO add your handling code here:
         
-        if(evt.getSource() instanceof javax.swing.JMenuItem){
-            javax.swing.JMenuItem menuItem =  (javax.swing.JMenuItem)evt.getSource();
+        if (evt.getSource() instanceof javax.swing.JMenuItem) {
+            javax.swing.JMenuItem menuItem = (javax.swing.JMenuItem) evt.getSource();
             logger.log(Level.INFO, evt.getActionCommand());
             logger.log(Level.INFO, menuItem.getText());
             AbstractPanel panel = PanelFactory.getPanel(evt, evt.getActionCommand(), menuItem.getText());
-            
-            if(panel != null){
+
+            if (panel != null) {
                 javax.swing.GroupLayout layout = _getContentPaneLayout();
                 layout.setHorizontalGroup(
-                     layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                         .addContainerGap(0,0)
-                         .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                         .addGap(0, 0,  Short.MAX_VALUE))
-                 );
-                 layout.setVerticalGroup(
-                     layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                     .addGroup(layout.createSequentialGroup()
-                         .addGap(0, 0,  Short.MAX_VALUE)
-                         .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                         .addContainerGap(0,0))
-                 );
-            } 
+                        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(10, 10, 10))
+                );
+                layout.setVerticalGroup(
+                        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(10, 10, 10))
+                );
+            }
         }
        
                  

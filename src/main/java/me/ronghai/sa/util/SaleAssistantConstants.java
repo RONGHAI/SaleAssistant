@@ -1,0 +1,18 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package me.ronghai.sa.util;
+
+import java.awt.Dimension;
+
+/**
+ *
+ * @author L5M
+ */
+public class SaleAssistantConstants {
+    public static final java.awt.Dimension MIN_DIMENSION = new java.awt.Dimension(400, 300), 
+            MAX_DIMENSION = new java.awt.Dimension(2147483647, 2147483647);
+}
