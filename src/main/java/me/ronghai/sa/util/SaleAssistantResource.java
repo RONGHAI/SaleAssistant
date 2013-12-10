@@ -11,7 +11,7 @@ package me.ronghai.sa.util;
  */
 public class SaleAssistantResource {
 
-    private static java.util.ResourceBundle resources = java.util.ResourceBundle.getBundle("i18n/sa"); // NOI18N
+    private static java.util.ResourceBundle resources = null; // NOI18N
 
     public final static String getString(String key) {
         return resources.getString(key);
@@ -19,5 +19,12 @@ public class SaleAssistantResource {
 
     public final static String[] getStringArray(String key) {
         return resources.getStringArray(key);
+    }
+
+    public synchronized static java.util.ResourceBundle getResourceBundle() {
+        if (resources == null) {
+            resources = java.util.ResourceBundle.getBundle("i18n/sa");
+        }
+        return resources;
     }
 }

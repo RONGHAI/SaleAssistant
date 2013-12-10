@@ -7,6 +7,7 @@
 package me.ronghai.sa.view.frame;
 
 import java.awt.Container;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.ronghai.sa.util.SaleAssistantConstants;
@@ -14,13 +15,13 @@ import me.ronghai.sa.util.SaleAssistantResource;
 import me.ronghai.sa.view.panel.AbstractPanel;
 import me.ronghai.sa.view.panel.PanelFactory;
 import me.ronghai.sa.view.dialog.AboutDialog;
-import static me.ronghai.sa.util.SaleAssistantResource.*;
 /**
  *
  * @author L5M
  */
 public class SaleAssistantFrame extends javax.swing.JFrame {
 private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getName()) ;
+    private static final ResourceBundle resourceBundle = SaleAssistantResource.getResourceBundle();
     /**
      * Creates new form SaleAssistant
      */
@@ -69,10 +70,10 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         setMinimumSize(SaleAssistantConstants.MIN_DIMENSION);
         setPreferredSize(SaleAssistantConstants.MIN_DIMENSION);
 
-        fileMenu.setText(SaleAssistantResource.getString("File"));
+        fileMenu.setText(resourceBundle.getString("File")); // NOI18N
         fileMenu.setActionCommand("File");
 
-        aboutMenuItem.setText(getString("About"));
+        aboutMenuItem.setText(resourceBundle.getString("About")); // NOI18N
         aboutMenuItem.setActionCommand("About");
         aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -83,7 +84,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         fileMenu.add(_s);
 
         exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
-        exitMenuItem.setText(getString("Exit"));
+        exitMenuItem.setText(resourceBundle.getString("Exit")); // NOI18N
         exitMenuItem.setActionCommand("Exit");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -94,10 +95,10 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
 
         mainMenu.add(fileMenu);
 
-        orderMenu.setText(getString("Order"));
+        orderMenu.setText(resourceBundle.getString("Order")); // NOI18N
         orderMenu.setActionCommand("Order");
 
-        addOrderMenuItem.setText(getString("Add Order"));
+        addOrderMenuItem.setText(resourceBundle.getString("Add New Order")); // NOI18N
         addOrderMenuItem.setActionCommand("addOrder");
         addOrderMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -106,7 +107,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         });
         orderMenu.add(addOrderMenuItem);
 
-        purchaseOrderMenuItem.setText(getString("Purchase Order"));
+        purchaseOrderMenuItem.setText(resourceBundle.getString("Purchase Order")); // NOI18N
         purchaseOrderMenuItem.setActionCommand("purchaseOrder");
         purchaseOrderMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -115,7 +116,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         });
         orderMenu.add(purchaseOrderMenuItem);
 
-        shippingMenuItem.setText(getString("Shipping"));
+        shippingMenuItem.setText(resourceBundle.getString("Shipping")); // NOI18N
         shippingMenuItem.setToolTipText("");
         shippingMenuItem.setActionCommand("me.ronghai.sa.panel.ShippingManagementPanel");
         shippingMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -127,10 +128,10 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
 
         mainMenu.add(orderMenu);
 
-        basicInfoMenu.setText(getString("Basic Info"));
+        basicInfoMenu.setText(resourceBundle.getString("Basic Info")); // NOI18N
         basicInfoMenu.setActionCommand("BasicInfo");
 
-        clientMenuItem.setText(getString("Client Management"));
+        clientMenuItem.setText(resourceBundle.getString("Client Management")); // NOI18N
         clientMenuItem.setActionCommand("me.ronghai.sa.panel.ClientManagementPanel");
         clientMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -139,7 +140,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         });
         basicInfoMenu.add(clientMenuItem);
 
-        categoryMenuItem.setText(getString("Category Management"));
+        categoryMenuItem.setText(resourceBundle.getString("Category Management")); // NOI18N
         categoryMenuItem.setActionCommand("me.ronghai.sa.panel.CategoryManagementPanel");
         categoryMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -148,7 +149,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         });
         basicInfoMenu.add(categoryMenuItem);
 
-        productMenuItem.setText(getString("Product Management"));
+        productMenuItem.setText(resourceBundle.getString("Product Management")); // NOI18N
         productMenuItem.setToolTipText("");
         productMenuItem.setActionCommand("me.ronghai.sa.panel.ProductManagementPanel");
         productMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -158,7 +159,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         });
         basicInfoMenu.add(productMenuItem);
 
-        carrierMenuItem.setText(getString("Carrier Management"));
+        carrierMenuItem.setText(resourceBundle.getString("Carrier Management")); // NOI18N
         carrierMenuItem.setActionCommand("me.ronghai.sa.panel.CarrierManagementPanel");
         carrierMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -167,7 +168,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         });
         basicInfoMenu.add(carrierMenuItem);
 
-        merchantMenuItem.setText(getString("Merchant Management"));
+        merchantMenuItem.setText(resourceBundle.getString("Merchant Management")); // NOI18N
         merchantMenuItem.setActionCommand("me.ronghai.sa.panel.MerchantManagementPanel");
         merchantMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -176,7 +177,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         });
         basicInfoMenu.add(merchantMenuItem);
 
-        accountMenuItem.setText(getString("Account Management"));
+        accountMenuItem.setText(resourceBundle.getString("Account Management")); // NOI18N
         accountMenuItem.setActionCommand("me.ronghai.sa.panel.AccountManagementPanel");
         accountMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -187,9 +188,9 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
 
         mainMenu.add(basicInfoMenu);
 
-        statisticsMenu.setText(getString("Statistic"));
+        statisticsMenu.setText(resourceBundle.getString("Statistic")); // NOI18N
 
-        saleStatisticsMenuItem.setText(getString("Sale Statistics"));
+        saleStatisticsMenuItem.setText(resourceBundle.getString("Sale Statistic")); // NOI18N
         saleStatisticsMenuItem.setActionCommand("me.ronghai.sa.panel.SaleStatisticsPanel");
         saleStatisticsMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -198,7 +199,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         });
         statisticsMenu.add(saleStatisticsMenuItem);
 
-        clientRankingMenuItem.setText(getString("Client Ranking"));
+        clientRankingMenuItem.setText(resourceBundle.getString("Client Rank")); // NOI18N
         clientRankingMenuItem.setToolTipText("");
         clientRankingMenuItem.setActionCommand("me.ronghai.sa.panel.ClientRankingPanel");
         clientRankingMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -210,9 +211,9 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
 
         mainMenu.add(statisticsMenu);
 
-        settingMenu.setText(getString("Setting"));
+        settingMenu.setText(resourceBundle.getString("Setting")); // NOI18N
 
-        currencyMenuItem.setText(getString("Currecy Management"));
+        currencyMenuItem.setText(resourceBundle.getString("Currecy Management")); // NOI18N
         currencyMenuItem.setActionCommand("me.ronghai.sa.panel.CurrencyManagementPanel");
         currencyMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -221,7 +222,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         });
         settingMenu.add(currencyMenuItem);
 
-        updateExRateMenuItem.setText(getString("Update ExRate"));
+        updateExRateMenuItem.setText(resourceBundle.getString("Update Exchange Rate")); // NOI18N
         updateExRateMenuItem.setToolTipText("");
         updateExRateMenuItem.setActionCommand("UpdateExRate");
         updateExRateMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -231,7 +232,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         });
         settingMenu.add(updateExRateMenuItem);
 
-        propertiesMenuItem.setText(getString("Properties"));
+        propertiesMenuItem.setText(resourceBundle.getString("Properties")); // NOI18N
         propertiesMenuItem.setActionCommand("me.ronghai.sa.panel.PropertiesManagementPanel");
         propertiesMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
