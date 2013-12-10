@@ -6,12 +6,18 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="fileMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&#x6587;&#x4ef6;"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="SaleAssistantResource.getString(&quot;File&quot;)" type="code"/>
+            </Property>
+            <Property name="actionCommand" type="java.lang.String" value="File"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="aboutMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x5173;&#x4e8e;"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="getString(&quot;About&quot;)" type="code"/>
+                </Property>
+                <Property name="actionCommand" type="java.lang.String" value="About"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="aboutMenuItemActionPerformed"/>
@@ -24,7 +30,10 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+Q"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&#x9000;&#x51fa;"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="getString(&quot;Exit&quot;)" type="code"/>
+                </Property>
+                <Property name="actionCommand" type="java.lang.String" value="Exit"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exitMenuItemActionPerformed"/>
@@ -34,13 +43,18 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="orderMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&#x8ba2;&#x5355;"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="getString(&quot;Order&quot;)" type="code"/>
+            </Property>
+            <Property name="actionCommand" type="java.lang.String" value="Order"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="addOrderMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x65b0;&#x589e;&#x8ba2;&#x5355;"/>
-                <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.AddOrderPanel"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="getString(&quot;Add Order&quot;)" type="code"/>
+                </Property>
+                <Property name="actionCommand" type="java.lang.String" value="addOrder"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
@@ -48,8 +62,10 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="purchaseOrderMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x91c7;&#x8d2d;&#x5546;&#x54c1;"/>
-                <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.PurchasePanel"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="getString(&quot;Purchase Order&quot;)" type="code"/>
+                </Property>
+                <Property name="actionCommand" type="java.lang.String" value="purchaseOrder"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
@@ -57,7 +73,10 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="shippingMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x53d1;&#x8d27;&#x7ba1;&#x7406;"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="getString(&quot;Shipping&quot;)" type="code"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.ShippingManagementPanel"/>
               </Properties>
               <Events>
@@ -68,12 +87,17 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="basicInfoMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&#x57fa;&#x7840;&#x4fe1;&#x606f;"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="getString(&quot;Basic Info&quot;)" type="code"/>
+            </Property>
+            <Property name="actionCommand" type="java.lang.String" value="BasicInfo"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="clientMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x5ba2;&#x6237;&#x7ba1;&#x7406;"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="getString(&quot;Client Management&quot;)" type="code"/>
+                </Property>
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.ClientManagementPanel"/>
               </Properties>
               <Events>
@@ -82,7 +106,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="categoryMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x5546;&#x54c1;&#x5206;&#x7c7b;&#x7ba1;&#x7406;"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="getString(&quot;Category Management&quot;)" type="code"/>
+                </Property>
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.CategoryManagementPanel"/>
               </Properties>
               <Events>
@@ -91,7 +117,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="productMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x5546;&#x54c1;&#x7ba1;&#x7406;"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="getString(&quot;Product Management&quot;)" type="code"/>
+                </Property>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.ProductManagementPanel"/>
               </Properties>
@@ -101,7 +129,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="carrierMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x627f;&#x8fd0;&#x4eba;&#x7ba1;&#x7406;"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="getString(&quot;Carrier Management&quot;)" type="code"/>
+                </Property>
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.CarrierManagementPanel"/>
               </Properties>
               <Events>
@@ -110,7 +140,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="merchantMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x4f9b;&#x5e94;&#x5546;&#x7ba1;&#x7406;"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="getString(&quot;Merchant Management&quot;)" type="code"/>
+                </Property>
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.MerchantManagementPanel"/>
               </Properties>
               <Events>
@@ -119,7 +151,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="accountMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x8d26;&#x6237;&#x7ba1;&#x7406;"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="getString(&quot;Account Management&quot;)" type="code"/>
+                </Property>
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.AccountManagementPanel"/>
               </Properties>
               <Events>
@@ -130,12 +164,16 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="statisticsMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&#x7edf;&#x8ba1;"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="getString(&quot;Statistic&quot;)" type="code"/>
+            </Property>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="saleStatisticsMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x9500;&#x552e;&#x7edf;&#x8ba1;"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="getString(&quot;Sale Statistics&quot;)" type="code"/>
+                </Property>
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.SaleStatisticsPanel"/>
               </Properties>
               <Events>
@@ -144,7 +182,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="clientRankingMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x5ba2;&#x6237;&#x6392;&#x884c;"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="getString(&quot;Client Ranking&quot;)" type="code"/>
+                </Property>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.ClientRankingPanel"/>
               </Properties>
@@ -156,12 +196,16 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="settingMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&#x8bbe;&#x7f6e;"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="getString(&quot;Setting&quot;)" type="code"/>
+            </Property>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="currencyMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x8d27;&#x5e01;&#x7ba1;&#x7406;"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="getString(&quot;Currecy Management&quot;)" type="code"/>
+                </Property>
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.CurrencyManagementPanel"/>
               </Properties>
               <Events>
@@ -170,7 +214,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="updateExRateMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x66f4;&#x65b0;&#x6c47;&#x7387;"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="getString(&quot;Update ExRate&quot;)" type="code"/>
+                </Property>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="actionCommand" type="java.lang.String" value="UpdateExRate"/>
               </Properties>
@@ -180,7 +226,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="propertiesMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&#x7cfb;&#x7edf;&#x914d;&#x7f6e;"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="getString(&quot;Properties&quot;)" type="code"/>
+                </Property>
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.PropertiesManagementPanel"/>
               </Properties>
               <Events>
