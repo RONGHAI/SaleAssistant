@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package me.ronghai.sa.dialog;
+package me.ronghai.sa.view.dialog;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -45,9 +45,7 @@ public class AboutDialog extends javax.swing.JDialog {
         closeButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(200, 150));
         setMinimumSize(new java.awt.Dimension(200, 150));
-        setPreferredSize(new java.awt.Dimension(200, 150));
         setResizable(false);
 
         closeButton.setText("关闭");

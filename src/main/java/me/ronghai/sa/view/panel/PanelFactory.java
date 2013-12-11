@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package me.ronghai.sa.panel;
+package me.ronghai.sa.view.panel;
 
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
