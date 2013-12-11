@@ -47,21 +47,50 @@ public class ClientController implements AbstractController, JTableBindingDelega
         wrapper.put("panel", this.basicCURDPanel);
         return wrapper;
     }
+    
+    public DataWrapperBean add(DataWrapperBean param) {
+         DataWrapperBean wrapper = new DataWrapperBean();
+         JTable table = (JTable)param.get("table");
+         
+         return wrapper;
+    }
+    
+    public DataWrapperBean edit(DataWrapperBean param) {
+         DataWrapperBean wrapper = new DataWrapperBean();
+         JTable table = (JTable)param.get("table");
+         //table.add
+         return wrapper;
+    }
+    
+    public DataWrapperBean remove(DataWrapperBean param) {
+         DataWrapperBean wrapper = new DataWrapperBean();
+         JTable table = (JTable)param.get("table");
+         return wrapper;
+    }
 
     @Override
     public void refresh() {
     }
 
+    private JTableBinding tableBinding;
+
     @Override
     public JTableBinding getJTableBinding(AutoBinding.UpdateStrategy strategy, JTable dataTable, String name) {
-        org.jdesktop.swingbinding.JTableBinding tableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, clientService.find(), dataTable);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = tableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${name}"));
-        columnBinding.setColumnName("Name");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = tableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${phone}"));
-        columnBinding.setColumnName("Phone");
-        columnBinding.setColumnClass(String.class);
+        if (tableBinding == null) {
+            tableBinding = org.jdesktop.swingbinding.SwingBindings.
+                    createJTableBinding(strategy, null, null, name);
+            org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = tableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${name}"));
+            columnBinding.setColumnName("Name");
+            columnBinding.setColumnClass(String.class);
+            columnBinding = tableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${phone}"));
+            columnBinding.setColumnName("Phone");
+            columnBinding.setColumnClass(Long.class);
+            //columnBinding.setConverter(null);
+        }
+        tableBinding.setTargetObject(dataTable);
+        tableBinding.setSourceObject(clientService.find());
         return tableBinding;
     }
 
+    
 }

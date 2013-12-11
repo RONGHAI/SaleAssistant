@@ -126,24 +126,31 @@ public class BasicCURDPanel extends javax.swing.JPanel {
     public JTableBindingDelegate<?> getTableBindingDelegate() {
         return tableBindingDelegate;
     }
-
+    
+    private org.jdesktop.swingbinding.JTableBinding getJTableBinding(JTableBindingDelegate<?> tableBindingDelegate){
+        return tableBindingDelegate == null ? null : tableBindingDelegate.getJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, dataTable, "dataTableBinding");
+    }
+    
+    private org.jdesktop.swingbinding.JTableBinding binding = null;
     public void setTableBindingDelegate(JTableBindingDelegate<?> tableBindingDelegate) {
-        if(tableBindingDelegate == this.tableBindingDelegate ) return;
-        org.jdesktop.swingbinding.JTableBinding binding = null;
-        if (this.tableBindingDelegate != null) {
-            binding = this.tableBindingDelegate.getJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, dataTable, "dataTableBinding");
-            if (binding != null) {
-                this.bindingGroup.removeBinding(binding);
+        org.jdesktop.swingbinding.JTableBinding _binding = this.getJTableBinding(tableBindingDelegate);
+        if (tableBindingDelegate == this.tableBindingDelegate) {
+            if (this.binding == _binding) {
+                this.binding.refresh();
+                return;
+            }
+        }
+        if (this.binding != null) {
+            this.bindingGroup.removeBinding(binding);
+            if (binding.isBound()) {
                 binding.unbind();
             }
         }
+        this.binding = _binding;
         this.tableBindingDelegate = tableBindingDelegate;
-        if (this.tableBindingDelegate != null) {
-            binding = this.tableBindingDelegate.getJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, dataTable, "dataTableBinding");
-            if (binding != null) {
-                this.bindingGroup.addBinding(binding);
-                binding.bind();
-            }
+        if (binding != null) {
+            this.bindingGroup.addBinding(binding);
+            binding.bind();
         }
         this.bindingGroup.bind();
     }
