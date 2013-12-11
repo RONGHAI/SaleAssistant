@@ -242,7 +242,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistant.class.getName())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+            .addGap(0, 280, Short.MAX_VALUE)
         );
 
         pack();
