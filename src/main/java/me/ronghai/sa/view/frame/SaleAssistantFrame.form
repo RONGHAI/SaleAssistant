@@ -232,7 +232,7 @@
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.PropertiesManagementPanel"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="_menuItemActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

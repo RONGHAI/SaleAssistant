@@ -239,7 +239,7 @@ public class SaleAssistantFrame extends javax.swing.JFrame implements Dispatcher
         propertiesMenuItem.setActionCommand("me.ronghai.sa.panel.PropertiesManagementPanel");
         propertiesMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemActionPerformed(evt);
+                _menuItemActionPerformed(evt);
             }
         });
         settingMenu.add(propertiesMenuItem);
@@ -265,37 +265,6 @@ public class SaleAssistantFrame extends javax.swing.JFrame implements Dispatcher
     private void _menuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__menuItemActionPerformed
         doDispatch( evt.getActionCommand(), this, null, null, this);
     }//GEN-LAST:event__menuItemActionPerformed
-
-    private void menuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemActionPerformed
-        // TODO add your handling code here:
-        
-        if (evt.getSource() instanceof javax.swing.JMenuItem) {
-            javax.swing.JMenuItem menuItem = (javax.swing.JMenuItem) evt.getSource();
-            logger.log(Level.INFO, evt.getActionCommand());
-            logger.log(Level.INFO, menuItem.getText());
-            AbstractPanel panel = PanelFactory.getPanel(evt, evt.getActionCommand(), menuItem.getText());
-
-            if (panel != null) {
-                javax.swing.GroupLayout layout = _getContentPaneLayout();
-                layout.setHorizontalGroup(
-                        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(10, 10, 10))
-                );
-                layout.setVerticalGroup(
-                        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(10, 10, 10))
-                );
-            }
-        }
-       
-                 
-    }//GEN-LAST:event_menuItemActionPerformed
     
      private javax.swing.GroupLayout _getContentPaneLayout() {
         Container container =  getContentPane();
