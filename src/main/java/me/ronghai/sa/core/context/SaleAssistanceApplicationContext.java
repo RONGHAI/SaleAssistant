@@ -5,7 +5,6 @@
  */
 package me.ronghai.sa.core.context;
 
-import me.ronghai.sa.controller.SaleAssistantController;
 import me.ronghai.sa.util.SaleAssistantConstants;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

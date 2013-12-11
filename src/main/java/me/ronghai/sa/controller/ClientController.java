@@ -13,7 +13,6 @@ import me.ronghai.sa.view.delegate.JTableBindingDelegate;
 import me.ronghai.sa.view.panel.BasicCURDPanel;
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.swingbinding.JTableBinding;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
