@@ -18,7 +18,14 @@ public class SaleAssistantController implements AbstractController {
     
     public DataWrapperBean initView(DataWrapperBean param){
         DataWrapperBean wrapper = new DataWrapperBean(); 
-        wrapper.put("view",  (SaleAssistantFrame)getBean("saleAssistantFrame"));
+        final SaleAssistantFrame frame =  (SaleAssistantFrame)getBean("saleAssistantFrame");
+        wrapper.put("view",  frame);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                (frame).setVisible(true);
+            }
+        });
         return wrapper;
     }
     

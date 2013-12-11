@@ -10,12 +10,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import me.ronghai.sa.bean.DataWrapperBean;
 import static me.ronghai.sa.core.dispatcher.SaleAssistansDispatcher.doDispatch;
 import static me.ronghai.sa.util.SaleAssistantConstants.MAC_OS_X;
 import static me.ronghai.sa.util.SaleAssistantResource.getString;
-import me.ronghai.sa.view.frame.SaleAssistantFrame;
-import me.ronghai.sa.view.action.callback.DispatcherCallBack;
 /**
  *
  * @author L5M
@@ -43,23 +40,6 @@ public class SaleAssistant {
                 java.util.logging.Logger.getLogger(SaleAssistant.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
         }
-        
-        
-
-
-        doDispatch("saleAssistantController.initView", null, null, null, new DispatcherCallBack(){
-            @Override
-            public void callback(String action, final DataWrapperBean wrapper) {
-                if("initView".equals(action)){
-                    java.awt.EventQueue.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            ( (SaleAssistantFrame)wrapper.get("view")).setVisible(true);
-                        }
-                    }); 
-                }
-             }
-            
-        });
+        doDispatch("saleAssistantController.initView", null, null, null, null);
     }
 }
