@@ -242,6 +242,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="title" type="java.lang.String" value="AAA"/>
     <Property name="locationByPlatform" type="boolean" value="true"/>
     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
       <Connection code="SaleAssistantConstants.MAX_DIMENSION" type="code"/>

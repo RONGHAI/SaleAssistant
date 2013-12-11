@@ -68,6 +68,7 @@ public class SaleAssistantFrame extends javax.swing.JFrame implements Dispatcher
         propertiesMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("AAA");
         setLocationByPlatform(true);
         setMaximumSize(SaleAssistantConstants.MAX_DIMENSION);
         setMinimumSize(SaleAssistantConstants.MIN_DIMENSION);
