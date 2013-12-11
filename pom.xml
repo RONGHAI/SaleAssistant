@@ -20,7 +20,7 @@
     <junit.version>4.7</junit.version>
     <spring.framewrok.version>3.0.5.RELEASE</spring.framewrok.version>
     <javac-target.version>1.7</javac-target.version>
-    <javac-source.verison>1.7</javac-source.verison>
+    <javac-source.version>1.7</javac-source.version>
     <flywaydb.version>2.2.1</flywaydb.version>
     <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
     <beansbinding.version>1.2.1</beansbinding.version>
@@ -129,8 +129,8 @@
             <version>${maven-compiler-plugin.version}</version>
             <artifactId>maven-compiler-plugin</artifactId>
             <configuration>
-                    <source>${javac-source.verison}</source>
-                    <target>${javac-target.verison}</target>
+                    <source>${javac-source.version}</source>
+                    <target>${javac-target.version}</target>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
                     <fork>true</fork>
