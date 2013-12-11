@@ -12,6 +12,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import me.ronghai.sa.bean.DataWrapperBean;
 import static me.ronghai.sa.core.dispatcher.SaleAssistansDispatcher.doDispatch;
+import static me.ronghai.sa.util.SaleAssistantConstants.MAC_OS_X;
+import static me.ronghai.sa.util.SaleAssistantResource.getString;
 import me.ronghai.sa.view.frame.SaleAssistantFrame;
 import me.ronghai.sa.view.action.callback.DispatcherCallBack;
 /**
@@ -20,11 +22,10 @@ import me.ronghai.sa.view.action.callback.DispatcherCallBack;
  */
 
 public class SaleAssistant {
-    private static String OS = System.getProperty("os.name").toLowerCase();
     public static void main(String args[]){        
-        if ((OS.indexOf("mac") >= 0)) {
+        if ( MAC_OS_X) {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
-            System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Test");
+            System.setProperty("com.apple.mrj.application.apple.menu.about.name", getString("Sale Assistant"));
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {

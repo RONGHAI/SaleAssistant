@@ -8,15 +8,13 @@ package me.ronghai.sa.view.frame;
 
 import java.awt.Container;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
 import me.ronghai.sa.bean.DataWrapperBean;
 import me.ronghai.sa.util.SaleAssistantConstants;
 import me.ronghai.sa.util.SaleAssistantResource;
-import me.ronghai.sa.view.panel.AbstractPanel;
-import me.ronghai.sa.view.panel.PanelFactory;
 import static me.ronghai.sa.core.dispatcher.SaleAssistansDispatcher.doDispatch;
+import static me.ronghai.sa.util.SaleAssistantConstants.MAC_OS_X;
 import me.ronghai.sa.view.action.callback.DispatcherCallBack;
 
 /**
@@ -31,7 +29,20 @@ public class SaleAssistantFrame extends javax.swing.JFrame implements Dispatcher
      */
     public SaleAssistantFrame() {
         initComponents();
+        _initComponents();
         this.setLocationRelativeTo(null);
+    }
+    
+    private void _initComponents(){
+        if(!MAC_OS_X){
+            this.fileMenu.add(this.aboutMenuItem);
+        }
+        
+        if(!MAC_OS_X){
+            this.fileMenu.add(this._s);
+            this.fileMenu.add(this.exitMenuItem);
+        }
+        pack();
     }
 
     /**
@@ -43,11 +54,11 @@ public class SaleAssistantFrame extends javax.swing.JFrame implements Dispatcher
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        mainMenu = new javax.swing.JMenuBar();
-        fileMenu = new javax.swing.JMenu();
-        aboutMenuItem = new javax.swing.JMenuItem();
         _s = new javax.swing.JPopupMenu.Separator();
         exitMenuItem = new javax.swing.JMenuItem();
+        aboutMenuItem = new javax.swing.JMenuItem();
+        mainMenu = new javax.swing.JMenuBar();
+        fileMenu = new javax.swing.JMenu();
         orderMenu = new javax.swing.JMenu();
         addOrderMenuItem = new javax.swing.JMenuItem();
         purchaseOrderMenuItem = new javax.swing.JMenuItem();
@@ -67,26 +78,6 @@ public class SaleAssistantFrame extends javax.swing.JFrame implements Dispatcher
         updateExRateMenuItem = new javax.swing.JMenuItem();
         propertiesMenuItem = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("AAA");
-        setLocationByPlatform(true);
-        setMaximumSize(SaleAssistantConstants.MAX_DIMENSION);
-        setMinimumSize(SaleAssistantConstants.MIN_DIMENSION);
-        setPreferredSize(SaleAssistantConstants.MIN_DIMENSION);
-
-        fileMenu.setText(resourceBundle.getString("File")); // NOI18N
-        fileMenu.setActionCommand("File");
-
-        aboutMenuItem.setText(resourceBundle.getString("About")); // NOI18N
-        aboutMenuItem.setActionCommand("About");
-        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                _menuItemActionPerformed(evt);
-            }
-        });
-        fileMenu.add(aboutMenuItem);
-        fileMenu.add(_s);
-
         exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         exitMenuItem.setText(resourceBundle.getString("Exit")); // NOI18N
         exitMenuItem.setActionCommand("saleAssistantController.exit");
@@ -95,8 +86,23 @@ public class SaleAssistantFrame extends javax.swing.JFrame implements Dispatcher
                 _menuItemActionPerformed(evt);
             }
         });
-        fileMenu.add(exitMenuItem);
 
+        aboutMenuItem.setText(resourceBundle.getString("About")); // NOI18N
+        aboutMenuItem.setActionCommand("About");
+        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                _menuItemActionPerformed(evt);
+            }
+        });
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocationByPlatform(true);
+        setMaximumSize(SaleAssistantConstants.MAX_DIMENSION);
+        setMinimumSize(SaleAssistantConstants.MIN_DIMENSION);
+        setPreferredSize(SaleAssistantConstants.MIN_DIMENSION);
+
+        fileMenu.setText(resourceBundle.getString("File")); // NOI18N
+        fileMenu.setActionCommand("File");
         mainMenu.add(fileMenu);
 
         orderMenu.setText(resourceBundle.getString("Order")); // NOI18N

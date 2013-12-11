@@ -15,4 +15,6 @@ public class SaleAssistantConstants {
             MAX_DIMENSION = new java.awt.Dimension(2147483647, 2147483647);
     public static final String[] ContextFiles = new String[]{"spring-context.xml", "spring-bean.xml"};
     public static final String ResourceBundleFile = "i18n/sa";
+    
+    public static final boolean MAC_OS_X = System.getProperty("os.name").toLowerCase().indexOf("mac os x") >= 0;
 }
