@@ -5,6 +5,7 @@
  */
 package me.ronghai.sa.dao.impl;
 
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.logging.Level;
@@ -20,10 +21,15 @@ import me.ronghai.sa.model.AbstractModel;
  * @author L5M
  * @param <E>
  */
-public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractModelDAO<E> {
+public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractModelDAO<E>, Serializable {
+    private static final long serialVersionUID = 1L;
 
     @PersistenceContext
-    private EntityManager entityManager;
+    protected EntityManager entityManager;
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
     protected Class<E> entityClass;
     private static final Logger logger = Logger.getLogger(AbstractModelDAOImpl.class.getName());
 

@@ -15,14 +15,15 @@
 			http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd" >
 
     <!-- Doing so automatically registers all Spring standard post-processors for annotation-based configuration -->
-	<context:annotation-config/>
-    <tx:annotation-driven transaction-manager="transactionManager"/>
-    
-    
-	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
-	
+        <!--
+        <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+	-->
+        <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+
 	<!-- Product Environment -->
-	<bean id = "datasourceFactory" class="org.apache.tomcat.jdbc.pool.DataSourceFactory"/>
+	<!--
+        <bean id = "datasourceFactory" class="org.apache.tomcat.jdbc.pool.DataSourceFactory"/>
+        -->
 	<!--
 	<bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
             
@@ -42,10 +43,11 @@
 	    </property>
 	</bean>
 	-->
+       
         <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 	    <property name="persistenceUnitName" value="SaleAssistantPU" />
 	</bean>
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+         <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="emf" />
 	</bean>
 </beans>

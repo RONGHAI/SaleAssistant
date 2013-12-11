@@ -5,12 +5,16 @@
  */
 package me.ronghai.sa.view.delegate;
 
+import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.swingbinding.JTableBinding;
+
 /**
  *
  * @author L5M
+ * @param <E>
  */
 public interface JTableBindingDelegate  <E>{
-   // JTableBinding getJTableBinding(AutoBinding.UpdateStrategy strategy, java.util.List<E> sourceList, javax.swing.JTable targetJTable, java.lang.String name);
+    JTableBinding getJTableBinding(AutoBinding.UpdateStrategy strategy, javax.swing.JTable targetJTable, java.lang.String name);
 }
 /*
 

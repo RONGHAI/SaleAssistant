@@ -23,7 +23,7 @@ public class SaleAssistantResource {
 
     public synchronized static java.util.ResourceBundle getResourceBundle() {
         if (resources == null) {
-            resources = java.util.ResourceBundle.getBundle("i18n/sa");
+            resources = java.util.ResourceBundle.getBundle(SaleAssistantConstants.ResourceBundleFile);
         }
         return resources;
     }

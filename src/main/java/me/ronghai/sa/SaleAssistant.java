@@ -6,10 +6,9 @@
 
 package me.ronghai.sa;
 
-import me.ronghai.sa.controller.SaleAssistantController;
+import me.ronghai.sa.bean.DataWrapperBean;
 import static me.ronghai.sa.core.dispatcher.SaleAssistansDispatcher.doDispatch;
 import me.ronghai.sa.view.frame.SaleAssistantFrame;
-import static me.ronghai.sa.core.context.SaleAssistanceApplicationContext.*;
 import me.ronghai.sa.view.action.callback.DispatcherCallBack;
 /**
  *
@@ -29,13 +28,14 @@ public class SaleAssistant {
             java.util.logging.Logger.getLogger(SaleAssistant.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        doDispatch((SaleAssistantController)getBean("saleAssistantController") , "initView", null, null, null, new DispatcherCallBack(){
+        doDispatch("saleAssistantController.initView", null, null, null, new DispatcherCallBack(){
             @Override
-            public void callback(String action, final JSONObject json) {
+            public void callback(String action, final DataWrapperBean wrapper) {
                 if("initView".equals(action)){
                     java.awt.EventQueue.invokeLater(new Runnable() {
+                        @Override
                         public void run() {
-                            ( (SaleAssistantFrame)json.get("view")).setVisible(true);
+                            ( (SaleAssistantFrame)wrapper.get("view")).setVisible(true);
                         }
                     }); 
                 }

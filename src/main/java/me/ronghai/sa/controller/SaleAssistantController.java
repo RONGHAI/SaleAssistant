@@ -6,32 +6,29 @@
 
 package me.ronghai.sa.controller;
 
-import me.ronghai.sa.JSONObject;
-import me.ronghai.sa.core.context.SaleAssistanceApplicationContext;
-import me.ronghai.sa.model.Client;
-import me.ronghai.sa.view.delegate.JTableBindingDelegate;
+import me.ronghai.sa.bean.DataWrapperBean;
+import static me.ronghai.sa.core.context.SaleAssistanceApplicationContext.getBean;
+import me.ronghai.sa.view.frame.SaleAssistantFrame;
 
 /**
  *
- * @author L5M
+ * @author RONGHAI
  */
-public class SaleAssistantController implements AbstractController , JTableBindingDelegate<Client>{
+public class SaleAssistantController implements AbstractController {
     
-    public JSONObject initView(){
-        JSONObject json = new JSONObject(); 
-        json.put("view", SaleAssistanceApplicationContext.getBean("SaleAssistanceFrame")  );
-        return json;
-        
+    public DataWrapperBean initView(DataWrapperBean param){
+        DataWrapperBean wrapper = new DataWrapperBean(); 
+        wrapper.put("view",  (SaleAssistantFrame)getBean("saleAssistantFrame"));
+        return wrapper;
+    }
+    
+    public DataWrapperBean exit(DataWrapperBean param){
+        System.exit(0);
+        return null;
     }
     @Override
     public void refresh() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    /*
-    @Override
-    public JTableBinding getJTableBinding(AutoBinding.UpdateStrategy strategy, List sourceList, JTable targetJTable, String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    */
-    
+    } 
+
 }

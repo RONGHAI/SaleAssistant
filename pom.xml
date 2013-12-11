@@ -19,6 +19,11 @@
     <log4j.version>1.6.1</log4j.version>
     <junit.version>4.7</junit.version>
     <spring.framewrok.version>3.0.5.RELEASE</spring.framewrok.version>
+    <javac-target.version>1.7</javac-target.version>
+    <javac-source.verison>1.7</javac-source.verison>
+    <flywaydb.version>2.2.1</flywaydb.version>
+    <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+    <beansbinding.version>1.2.1</beansbinding.version>
   </properties>
   
 
@@ -115,22 +120,46 @@
     <dependency>
       <groupId>org.jdesktop</groupId>
       <artifactId>beansbinding</artifactId>
-      <version>1.2.1</version>
+      <version>${beansbinding.version}</version>
     </dependency>
   </dependencies>
   <build>
     <plugins>
         <plugin>
-            <version>3.1</version>
+            <version>${maven-compiler-plugin.version}</version>
             <artifactId>maven-compiler-plugin</artifactId>
             <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>${javac-source.verison}</source>
+                    <target>${javac-target.verison}</target>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
                     <fork>true</fork>
             </configuration>
-    </plugin>
+        </plugin>
+         <plugin>
+            <groupId>com.googlecode.flyway</groupId>
+            <artifactId>flyway-maven-plugin</artifactId>
+            <version>${flywaydb.version}</version>
+            <configuration>
+                <driver>com.mysql.jdbc.Driver</driver>
+                <url>jdbc:mysql://localhost:3306/sale_assistant</url>
+                <user>root</user>
+                <password>db_gzlh_kc11730</password>
+            </configuration>
+           <!--
+            <configuration>
+                    <url>jdbc:h2:file:target/foobar</url>
+                    <user>sa</user>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <version>1.3.170</version>
+                    </dependency>
+                </dependencies>
+              -->   
+        </plugin>
     </plugins>
     <!--
     <resources>

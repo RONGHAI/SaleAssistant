@@ -10,24 +10,27 @@ import java.awt.Container;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JPanel;
+import me.ronghai.sa.bean.DataWrapperBean;
 import me.ronghai.sa.util.SaleAssistantConstants;
 import me.ronghai.sa.util.SaleAssistantResource;
 import me.ronghai.sa.view.panel.AbstractPanel;
 import me.ronghai.sa.view.panel.PanelFactory;
-import me.ronghai.sa.view.dialog.AboutDialog;
+import static me.ronghai.sa.core.dispatcher.SaleAssistansDispatcher.doDispatch;
+import me.ronghai.sa.view.action.callback.DispatcherCallBack;
+
 /**
  *
  * @author L5M
  */
-public class SaleAssistantFrame extends javax.swing.JFrame {
-private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getName()) ;
+public class SaleAssistantFrame extends javax.swing.JFrame implements DispatcherCallBack {
+    private static final Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getName()) ;
     private static final ResourceBundle resourceBundle = SaleAssistantResource.getResourceBundle();
     /**
      * Creates new form SaleAssistant
      */
     public SaleAssistantFrame() {
         initComponents();
-       //
         this.setLocationRelativeTo(null);
     }
 
@@ -77,7 +80,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         aboutMenuItem.setActionCommand("About");
         aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aboutMenuItemActionPerformed(evt);
+                _menuItemActionPerformed(evt);
             }
         });
         fileMenu.add(aboutMenuItem);
@@ -85,10 +88,10 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
 
         exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         exitMenuItem.setText(resourceBundle.getString("Exit")); // NOI18N
-        exitMenuItem.setActionCommand("Exit");
+        exitMenuItem.setActionCommand("saleAssistantController.exit");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitMenuItemActionPerformed(evt);
+                _menuItemActionPerformed(evt);
             }
         });
         fileMenu.add(exitMenuItem);
@@ -102,7 +105,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         addOrderMenuItem.setActionCommand("addOrder");
         addOrderMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemActionPerformed(evt);
+                _menuItemActionPerformed(evt);
             }
         });
         orderMenu.add(addOrderMenuItem);
@@ -111,7 +114,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         purchaseOrderMenuItem.setActionCommand("purchaseOrder");
         purchaseOrderMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemActionPerformed(evt);
+                _menuItemActionPerformed(evt);
             }
         });
         orderMenu.add(purchaseOrderMenuItem);
@@ -121,7 +124,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         shippingMenuItem.setActionCommand("me.ronghai.sa.panel.ShippingManagementPanel");
         shippingMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemActionPerformed(evt);
+                _menuItemActionPerformed(evt);
             }
         });
         orderMenu.add(shippingMenuItem);
@@ -132,10 +135,10 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         basicInfoMenu.setActionCommand("BasicInfo");
 
         clientMenuItem.setText(resourceBundle.getString("Client Management")); // NOI18N
-        clientMenuItem.setActionCommand("me.ronghai.sa.panel.ClientManagementPanel");
+        clientMenuItem.setActionCommand("clientController.init");
         clientMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemActionPerformed(evt);
+                _menuItemActionPerformed(evt);
             }
         });
         basicInfoMenu.add(clientMenuItem);
@@ -144,7 +147,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         categoryMenuItem.setActionCommand("me.ronghai.sa.panel.CategoryManagementPanel");
         categoryMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemActionPerformed(evt);
+                _menuItemActionPerformed(evt);
             }
         });
         basicInfoMenu.add(categoryMenuItem);
@@ -154,7 +157,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         productMenuItem.setActionCommand("me.ronghai.sa.panel.ProductManagementPanel");
         productMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemActionPerformed(evt);
+                _menuItemActionPerformed(evt);
             }
         });
         basicInfoMenu.add(productMenuItem);
@@ -163,7 +166,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         carrierMenuItem.setActionCommand("me.ronghai.sa.panel.CarrierManagementPanel");
         carrierMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemActionPerformed(evt);
+                _menuItemActionPerformed(evt);
             }
         });
         basicInfoMenu.add(carrierMenuItem);
@@ -172,7 +175,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         merchantMenuItem.setActionCommand("me.ronghai.sa.panel.MerchantManagementPanel");
         merchantMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemActionPerformed(evt);
+                _menuItemActionPerformed(evt);
             }
         });
         basicInfoMenu.add(merchantMenuItem);
@@ -181,7 +184,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         accountMenuItem.setActionCommand("me.ronghai.sa.panel.AccountManagementPanel");
         accountMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemActionPerformed(evt);
+                _menuItemActionPerformed(evt);
             }
         });
         basicInfoMenu.add(accountMenuItem);
@@ -194,7 +197,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         saleStatisticsMenuItem.setActionCommand("me.ronghai.sa.panel.SaleStatisticsPanel");
         saleStatisticsMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemActionPerformed(evt);
+                _menuItemActionPerformed(evt);
             }
         });
         statisticsMenu.add(saleStatisticsMenuItem);
@@ -204,7 +207,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         clientRankingMenuItem.setActionCommand("me.ronghai.sa.panel.ClientRankingPanel");
         clientRankingMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemActionPerformed(evt);
+                _menuItemActionPerformed(evt);
             }
         });
         statisticsMenu.add(clientRankingMenuItem);
@@ -217,7 +220,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         currencyMenuItem.setActionCommand("me.ronghai.sa.panel.CurrencyManagementPanel");
         currencyMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemActionPerformed(evt);
+                _menuItemActionPerformed(evt);
             }
         });
         settingMenu.add(currencyMenuItem);
@@ -227,7 +230,7 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         updateExRateMenuItem.setActionCommand("UpdateExRate");
         updateExRateMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updateExRateMenuItemActionPerformed(evt);
+                _menuItemActionPerformed(evt);
             }
         });
         settingMenu.add(updateExRateMenuItem);
@@ -259,10 +262,9 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-        // TODO add your handling code here:
-        System.exit(0);
-    }//GEN-LAST:event_exitMenuItemActionPerformed
+    private void _menuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__menuItemActionPerformed
+        doDispatch( evt.getActionCommand(), this, null, null, this);
+    }//GEN-LAST:event__menuItemActionPerformed
 
     private void menuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemActionPerformed
         // TODO add your handling code here:
@@ -294,15 +296,6 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
        
                  
     }//GEN-LAST:event_menuItemActionPerformed
-
-    private void updateExRateMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateExRateMenuItemActionPerformed
-        // TODO add your handling code here:
-          System.out.println(evt.getActionCommand());
-    }//GEN-LAST:event_updateExRateMenuItemActionPerformed
-
-    private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
-        new AboutDialog(this, false).setVisible(true);
-    }//GEN-LAST:event_aboutMenuItemActionPerformed
     
      private javax.swing.GroupLayout _getContentPaneLayout() {
         Container container =  getContentPane();
@@ -338,4 +331,28 @@ private static Logger logger =   Logger.getLogger(SaleAssistantFrame.class.getNa
     private javax.swing.JMenu statisticsMenu;
     private javax.swing.JMenuItem updateExRateMenuItem;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void callback(String action, DataWrapperBean wrapper) {
+        if(wrapper == null ) return;
+        Object _panel = wrapper.get("panel");
+        if (_panel != null) {
+            JPanel panel = (JPanel) _panel;
+            javax.swing.GroupLayout layout = _getContentPaneLayout();
+            layout.setHorizontalGroup(
+                    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                            .addGap(10, 10, 10)
+                            .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGap(10, 10, 10))
+            );
+            layout.setVerticalGroup(
+                    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGap(10, 10, 10)
+                            .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGap(10, 10, 10))
+            );
+        }
+    }
 }

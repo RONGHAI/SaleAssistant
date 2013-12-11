@@ -7,12 +7,12 @@
 package me.ronghai.sa.view.action.callback;
 
 import java.io.Serializable;
-import me.ronghai.sa.JSONObject;
+import me.ronghai.sa.bean.DataWrapperBean;
 
 /**
  *
  * @author L5M
  */
 public interface DispatcherCallBack extends Serializable {
-       public void callback(String action, JSONObject json);
+       public void callback(String action, DataWrapperBean wrapper);
 }

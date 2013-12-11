@@ -6,7 +6,7 @@
 package me.ronghai.sa.view.panel;
 
 import me.ronghai.sa.view.delegate.JTableBindingDelegate;
-import static me.ronghai.sa.util.SaleAssistantResource.*;
+import org.jdesktop.beansbinding.AutoBinding;
 
 /**
  *
@@ -18,13 +18,11 @@ public class BasicCURDPanel extends javax.swing.JPanel {
      * Creates new form AbstractCURDPanel
      */
     public BasicCURDPanel() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
         initComponents();
     }
 
-    public void bindingJTable() {
-        org.jdesktop.swingbinding.JTableBinding binding = tableBindingDelegate.getJTableBinding(null, null, null, null);
-        bindingGroup.addBinding(binding);
-    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -34,16 +32,12 @@ public class BasicCURDPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         dataPanel = new javax.swing.JScrollPane();
         dataTable = new javax.swing.JTable();
         newButton = new javax.swing.JButton();
         editButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
 
         dataTable.setColumnSelectionAllowed(true);
         dataTable.addAncestorListener(new javax.swing.event.AncestorListener() {
@@ -58,28 +52,21 @@ public class BasicCURDPanel extends javax.swing.JPanel {
         dataPanel.setViewportView(dataTable);
         dataTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-        newButton.setText(getString("curd.AddNewButton"));
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, dataPanel, org.jdesktop.beansbinding.ELProperty.create("${background}"), newButton, org.jdesktop.beansbinding.BeanProperty.create("action"));
-        bindingGroup.addBinding(binding);
-
+        newButton.setText("添加");
         newButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newButtonActionPerformed(evt);
             }
         });
 
-        editButton.setText(getString("curd.EditButton"));
+        editButton.setText("修改");
+        editButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editButtonActionPerformed(evt);
+            }
+        });
 
-        deleteButton.setText(getString("curd.DeleteButton"));
-
-        jTabbedPane1.setToolTipText("");
-
-        jPanel1.setLayout(new java.awt.BorderLayout());
-        jTabbedPane1.addTab("tab1", jPanel1);
-
-        jPanel2.setLayout(new java.awt.CardLayout());
-        jTabbedPane1.addTab("tab2", jPanel2);
+        deleteButton.setText("删除");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -94,7 +81,6 @@ public class BasicCURDPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addComponent(jTabbedPane1)
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {deleteButton, editButton, newButton});
@@ -102,10 +88,8 @@ public class BasicCURDPanel extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(dataPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
-                .addGap(10, 10, 10)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
+                .addComponent(dataPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                .addGap(85, 85, 85)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(newButton)
                     .addComponent(editButton)
@@ -115,7 +99,6 @@ public class BasicCURDPanel extends javax.swing.JPanel {
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {deleteButton, editButton, newButton});
 
-        bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
@@ -126,25 +109,42 @@ public class BasicCURDPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_dataTableAncestorAdded
 
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane dataPanel;
     private javax.swing.JTable dataTable;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton editButton;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JButton newButton;
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     private JTableBindingDelegate<?> tableBindingDelegate;
-
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     public JTableBindingDelegate<?> getTableBindingDelegate() {
         return tableBindingDelegate;
     }
 
     public void setTableBindingDelegate(JTableBindingDelegate<?> tableBindingDelegate) {
+        if(tableBindingDelegate == this.tableBindingDelegate ) return;
+        org.jdesktop.swingbinding.JTableBinding binding = null;
+        if (this.tableBindingDelegate != null) {
+            binding = this.tableBindingDelegate.getJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, dataTable, "dataTableBinding");
+            if (binding != null) {
+                this.bindingGroup.removeBinding(binding);
+                binding.unbind();
+            }
+        }
         this.tableBindingDelegate = tableBindingDelegate;
+        if (this.tableBindingDelegate != null) {
+            binding = this.tableBindingDelegate.getJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, dataTable, "dataTableBinding");
+            if (binding != null) {
+                this.bindingGroup.addBinding(binding);
+                binding.bind();
+            }
+        }
+        this.bindingGroup.bind();
     }
 }

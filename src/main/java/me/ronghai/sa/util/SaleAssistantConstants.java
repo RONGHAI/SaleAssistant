@@ -6,8 +6,6 @@
 
 package me.ronghai.sa.util;
 
-import java.awt.Dimension;
-
 /**
  *
  * @author L5M
@@ -15,4 +13,6 @@ import java.awt.Dimension;
 public class SaleAssistantConstants {
     public static final java.awt.Dimension MIN_DIMENSION = new java.awt.Dimension(400, 300), 
             MAX_DIMENSION = new java.awt.Dimension(2147483647, 2147483647);
+    public static final String[] ContextFiles = new String[]{"spring-context.xml", "spring-bean.xml"};
+    public static final String ResourceBundleFile = "i18n/sa";
 }

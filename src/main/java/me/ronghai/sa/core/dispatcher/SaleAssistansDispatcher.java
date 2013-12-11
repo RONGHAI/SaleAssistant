@@ -12,26 +12,41 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import me.ronghai.sa.JSONObject;
+import me.ronghai.sa.bean.DataWrapperBean;
 import me.ronghai.sa.controller.AbstractController;
+import me.ronghai.sa.core.context.SaleAssistanceApplicationContext;
 import me.ronghai.sa.view.action.callback.DispatcherCallBack;
 
 /**
  *
  * @author L5M
  */
-public class SaleAssistansDispatcher implements Serializable { 
+public final class SaleAssistansDispatcher implements Serializable { 
     private static final long serialVersionUID = 1L;
+    
+    private static final Logger logger =   Logger.getLogger(SaleAssistansDispatcher.class.getName()) ;
+
+    
+    public final static void doDispatch(String controller, JFrame frame, JPanel panel, DataWrapperBean wrapper, DispatcherCallBack callback) {
+        int dotPosition = controller.lastIndexOf('.');
+        String action = null;
+        if(dotPosition > 0){
+            action = controller.substring(dotPosition + 1);
+            controller = controller.substring(0, dotPosition);
+        }
+        logger.log(Level.INFO, "{0}/{1}", new Object[]{controller, action});
+        doDispatch((AbstractController)SaleAssistanceApplicationContext.getBean(controller) , action, frame, panel, wrapper, callback);
+    }
     /**
      *
      * @param controller
      * @param action
      * @param frame
      * @param panel
-     * @param json
+     * @param wrapper
      * @param callback
      */
-    public static void doDispatch(AbstractController controller, String action, JFrame frame, JPanel panel, JSONObject json, DispatcherCallBack callback  ) {
+    public final static void doDispatch(AbstractController controller, String action, JFrame frame, JPanel panel, DataWrapperBean wrapper, DispatcherCallBack callback  ) {
         if(action == null ){ 
             if(callback != null){
                  callback.callback(action, null);          
@@ -39,17 +54,18 @@ public class SaleAssistansDispatcher implements Serializable {
             return ;
         }
         AbstractController instance = controller;
-         
+                 
+
         
         try {
-             Method method = controller.getClass().getMethod("action",  JSONObject.class);
-             json = (JSONObject) method.invoke(instance, json);
+             Method method = controller.getClass().getMethod(action,  DataWrapperBean.class);
+             wrapper = (DataWrapperBean) method.invoke(instance, wrapper);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException ex) {
             Logger.getLogger(SaleAssistansDispatcher.class.getName()).log(Level.SEVERE, null, ex);
         }
          
          if(callback != null){
-             callback.callback(action, json);
+             callback.callback(action, wrapper);
          }
          
     }

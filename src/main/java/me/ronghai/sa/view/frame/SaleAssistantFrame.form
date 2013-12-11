@@ -20,7 +20,7 @@
                 <Property name="actionCommand" type="java.lang.String" value="About"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="aboutMenuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="_menuItemActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="_s">
@@ -33,10 +33,10 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="i18n/sa.properties" key="Exit" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
-                <Property name="actionCommand" type="java.lang.String" value="Exit"/>
+                <Property name="actionCommand" type="java.lang.String" value="saleAssistantController.exit"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exitMenuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="_menuItemActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -57,7 +57,7 @@
                 <Property name="actionCommand" type="java.lang.String" value="addOrder"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="_menuItemActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="purchaseOrderMenuItem">
@@ -68,7 +68,7 @@
                 <Property name="actionCommand" type="java.lang.String" value="purchaseOrder"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="_menuItemActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="shippingMenuItem">
@@ -80,7 +80,7 @@
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.ShippingManagementPanel"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="_menuItemActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -98,10 +98,10 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="i18n/sa.properties" key="Client Management" replaceFormat="resourceBundle.getString(&quot;{key}&quot;)"/>
                 </Property>
-                <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.ClientManagementPanel"/>
+                <Property name="actionCommand" type="java.lang.String" value="clientController.init"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="_menuItemActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="categoryMenuItem">
@@ -112,7 +112,7 @@
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.CategoryManagementPanel"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="_menuItemActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="productMenuItem">
@@ -124,7 +124,7 @@
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.ProductManagementPanel"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="_menuItemActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="carrierMenuItem">
@@ -135,7 +135,7 @@
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.CarrierManagementPanel"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="_menuItemActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="merchantMenuItem">
@@ -146,7 +146,7 @@
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.MerchantManagementPanel"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="_menuItemActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="accountMenuItem">
@@ -157,7 +157,7 @@
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.AccountManagementPanel"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="_menuItemActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -177,7 +177,7 @@
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.SaleStatisticsPanel"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="_menuItemActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="clientRankingMenuItem">
@@ -189,7 +189,7 @@
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.ClientRankingPanel"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="_menuItemActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -209,7 +209,7 @@
                 <Property name="actionCommand" type="java.lang.String" value="me.ronghai.sa.panel.CurrencyManagementPanel"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="_menuItemActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="updateExRateMenuItem">
@@ -221,7 +221,7 @@
                 <Property name="actionCommand" type="java.lang.String" value="UpdateExRate"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateExRateMenuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="_menuItemActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="propertiesMenuItem">
