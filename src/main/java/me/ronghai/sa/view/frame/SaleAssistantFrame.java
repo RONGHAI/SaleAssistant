@@ -170,7 +170,7 @@ public class SaleAssistantFrame extends javax.swing.JFrame implements Dispatcher
         basicInfoMenu.add(productMenuItem);
 
         carrierMenuItem.setText(resourceBundle.getString("Carrier Management")); // NOI18N
-        carrierMenuItem.setActionCommand("me.ronghai.sa.panel.CarrierManagementPanel");
+        carrierMenuItem.setActionCommand("carrierController.init");
         carrierMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 _menuItemActionPerformed(evt);

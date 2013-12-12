@@ -6,13 +6,13 @@
 
 package me.ronghai.sa.dao.impl;
 
-import me.ronghai.sa.dao.ClientDAO;
-import me.ronghai.sa.model.Client;
+import me.ronghai.sa.dao.CarrierDAO;
+import me.ronghai.sa.model.Carrier;
 
 /**
  *
  * @author ronghai
  */
-public class ClientDAOImpl extends AbstractModelDAOImpl<Client> implements ClientDAO{
+public class CarrierDAOImpl extends AbstractModelDAOImpl<Carrier> implements CarrierDAO{
     
 }

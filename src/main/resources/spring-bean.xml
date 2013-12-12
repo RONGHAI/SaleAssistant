@@ -29,4 +29,14 @@
     </bean>
     
     
+    <bean id="carrierDAO" class="me.ronghai.sa.dao.impl.CarrierDAOImpl"/>
+    <bean id="carrierService" class="me.ronghai.sa.engine.service.impl.CarrierServiceImpl">
+        <property name="carrierDAO" ref = "carrierDAO"/>        
+    </bean>
+    <bean id="carrierController" class="me.ronghai.sa.controller.CarrierController">
+        <property name="basicCURDPanel" ref = "basicCURDPanel"/>
+        <property name="carrierService" ref="carrierService"/>
+    </bean>
+    
+    
 </beans>

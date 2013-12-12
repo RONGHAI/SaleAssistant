@@ -7,40 +7,41 @@ package me.ronghai.sa.engine.service.impl;
 
 import java.io.Serializable;
 import java.util.List;
-import me.ronghai.sa.dao.ClientDAO;
-import me.ronghai.sa.engine.service.ClientService;
-import me.ronghai.sa.model.Client;
+import me.ronghai.sa.dao.CarrierDAO;
+import me.ronghai.sa.engine.service.CarrierService;
+import me.ronghai.sa.model.Carrier;
 
 /**
  *
  * @author ronghai
  */
-public class ClientServiceImpl implements ClientService, Serializable {
+public class CarrierServiceImpl implements CarrierService, Serializable {
 
     private static final long serialVersionUID = 1L;
-    private ClientDAO clientDAO;
+    private CarrierDAO carrierDAO;
 
-    public ClientDAO getClientDAO() {
-        return clientDAO;
+    public CarrierDAO getCarrierDAO() {
+        return carrierDAO;
     }
 
-    public void setClientDAO(ClientDAO clientDAO) {
-        this.clientDAO = clientDAO;
+    public void setCarrierDAO(CarrierDAO carrierDAO) {
+        this.carrierDAO = carrierDAO;
+    }
+     
+
+    @Override
+    public Carrier update(Carrier entity) {
+        return carrierDAO.update(entity);
     }
 
     @Override
-    public Client update(Client entity) {
-        return clientDAO.update(entity);
+    public Carrier find(Object id) {
+        return carrierDAO.find(id);
     }
 
     @Override
-    public Client find(Object id) {
-        return clientDAO.find(id);
-    }
-
-    @Override
-    public List<Client> find() {
-        return clientDAO.find();
+    public List<Carrier> find() {
+        return carrierDAO.find();
     }
 
 }
