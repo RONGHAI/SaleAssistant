@@ -103,14 +103,17 @@ public class BasicCURDPanel extends javax.swing.JPanel {
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         // TODO add your handling code here:
+        System.out.println("Performed");
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void dataTableAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_dataTableAncestorAdded
         // TODO add your handling code here:
+        System.out.println("Added");
     }//GEN-LAST:event_dataTableAncestorAdded
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         // TODO add your handling code here:
+        System.out.println("Edit...");
     }//GEN-LAST:event_editButtonActionPerformed
 
 
@@ -136,6 +139,7 @@ public class BasicCURDPanel extends javax.swing.JPanel {
         org.jdesktop.swingbinding.JTableBinding _binding = this.getJTableBinding(tableBindingDelegate);
         if (tableBindingDelegate == this.tableBindingDelegate) {
             if (this.binding == _binding) {
+                this.binding.bind();
                 this.binding.refresh();
                 return;
             }

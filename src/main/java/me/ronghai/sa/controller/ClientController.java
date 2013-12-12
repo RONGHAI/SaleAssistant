@@ -86,6 +86,10 @@ public class ClientController implements AbstractController, JTableBindingDelega
             columnBinding.setColumnName("Phone");
             columnBinding.setColumnClass(Long.class);
             //columnBinding.setConverter(null);
+            
+        }
+        if(tableBinding.isBound()){
+            tableBinding.unbind();
         }
         tableBinding.setTargetObject(dataTable);
         tableBinding.setSourceObject(clientService.find());
