@@ -14,11 +14,11 @@ public class SaleAssistantResource {
     private static java.util.ResourceBundle resources = null; // NOI18N
 
     public final static String getString(String key) {
-        return resources.getString(key);
+        return getResourceBundle().getString(key);
     }
 
     public final static String[] getStringArray(String key) {
-        return resources.getStringArray(key);
+        return getResourceBundle().getStringArray(key);
     }
 
     public synchronized static java.util.ResourceBundle getResourceBundle() {
