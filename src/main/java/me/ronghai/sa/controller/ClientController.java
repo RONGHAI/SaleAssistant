@@ -58,7 +58,7 @@ public class ClientController extends BasicCURDController<Client> implements Abs
         columnBinding.setColumnClass(String.class);
         columnBinding = tableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${phone}"));
         columnBinding.setColumnName("Phone");
-        columnBinding.setColumnClass(Long.class);
+        columnBinding.setColumnClass(String.class);
     }
 
     @Override
