@@ -5,16 +5,24 @@
  */
 package me.ronghai.sa.controller;
 
+import java.awt.Component;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.EventObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import me.ronghai.sa.bean.DataWrapperBean;
 import me.ronghai.sa.engine.service.ClientService;
+import me.ronghai.sa.format.GenderFormat;
 import me.ronghai.sa.model.Client;
 import me.ronghai.sa.view.table.BasicTableColumn;
 import me.ronghai.sa.view.table.BasicTableColumnModel;
@@ -37,6 +45,21 @@ public class ClientController extends BasicCURDController<Client> implements Abs
         this.clientService = clientService;
     }
 
+    public TableCellRenderer getTableCellRenderer(){
+        return new DefaultTableCellRenderer(){
+              @Override
+              public Component getTableCellRendererComponent(JTable table, Object value,
+                                            boolean isSelected, boolean hasFocus,
+                                            int row, int column){
+                  BasicTableColumn  col = (BasicTableColumn) table.getColumnModel().getColumn(column);
+                  if(col.getFormat() != null && value != null){
+                      value = col.getFormat().format(value);
+                  }
+                  return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+              }
+        };
+    }
+    
     @Override
     public BasicTableModel<Client> getBasicTableModel(boolean retrieve) {
         if (basicTableModel == null) {
@@ -47,9 +70,9 @@ public class ClientController extends BasicCURDController<Client> implements Abs
              
             
             List<BasicTableColumn> tableColumns = new ArrayList<>();
+            TableCellRenderer render = this.getTableCellRenderer();
             
             BasicTableColumn  column = new BasicTableColumn( "${name}" , "name");
-            //column.setCellEditor(new DefaultCellEditor());
             tableColumns.add(column);
 
             column = new BasicTableColumn( "${phone}" , "phone");
@@ -62,13 +85,20 @@ public class ClientController extends BasicCURDController<Client> implements Abs
             tableColumns.add(column);
             
             column = new BasicTableColumn( "${birthday}" , "birthday");
+            column.setFormat(new SimpleDateFormat("yyyy-MM-dd"));
             tableColumns.add(column);
             
             column = new BasicTableColumn( "${gender}" , "gender");
+            column.setFormat(new GenderFormat());
             tableColumns.add(column);
+            
             
             column = new BasicTableColumn( "${note}" , "note");
             tableColumns.add(column);
+            
+            for(BasicTableColumn c : tableColumns){
+                c.setCellRenderer(render);
+            }
             
             columnModel.setAllTableColumns(tableColumns);
 
@@ -76,7 +106,7 @@ public class ClientController extends BasicCURDController<Client> implements Abs
         
         if(retrieve){
             basicTableModel.setData(this.clientService.find());
-        }
+        } 
         return basicTableModel;
     }
 
@@ -88,6 +118,7 @@ public class ClientController extends BasicCURDController<Client> implements Abs
         c.setChanged(true);
         c.setAddTime(new Date());
         this.basicTableModel.add(c);  
+        table.editCellAt(1, 0 );
         return wrapper;
     }
 

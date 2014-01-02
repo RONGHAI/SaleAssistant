@@ -6,6 +6,7 @@
 
 package me.ronghai.sa.view.table;
 
+import java.text.Format;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -20,6 +21,15 @@ public class BasicTableColumn extends TableColumn {
     private ELProperty property;
     private boolean show = true;
     private String columnName;
+    private Format format;
+
+    public Format getFormat() {
+        return format;
+    }
+
+    public void setFormat(Format format) {
+        this.format = format;
+    }
     
     public String getColumnName() {
         return columnName;

@@ -85,8 +85,8 @@ public class BasicTableModel <T> extends AbstractTableModel{
     
     @Override
     public String getColumnName(int column) {
-        BasicTableColumn tableColumn =  (BasicTableColumn)  columnModel.getAllTableColumns().get(column);
-        //return super.getColumnName(column);
+        BasicTableColumn tableColumn =  (BasicTableColumn)  columnModel.getColumn(column);
         return tableColumn.getColumnName();
+        //  return super.getColumnName(column);
     }
 }
