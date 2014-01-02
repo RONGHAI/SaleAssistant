@@ -18,6 +18,7 @@
         <!--
         <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 	-->
+        <tx:annotation-driven transaction-manager="transactionManager"/>
         <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 
 	<!-- Product Environment -->
@@ -43,7 +44,7 @@
 	    </property>
 	</bean>
 	-->
-       
+        
         <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 	    <property name="persistenceUnitName" value="SaleAssistantPU" />
 	</bean>
