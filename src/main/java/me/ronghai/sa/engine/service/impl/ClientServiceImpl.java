@@ -6,11 +6,14 @@
 package me.ronghai.sa.engine.service.impl;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import me.ronghai.sa.dao.ClientDAO;
 import me.ronghai.sa.engine.service.ClientService;
 import me.ronghai.sa.model.Client;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -29,6 +32,7 @@ public class ClientServiceImpl implements ClientService, Serializable {
         this.clientDAO = clientDAO;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public Client update(Client entity) {
         return clientDAO.update(entity);
@@ -43,25 +47,25 @@ public class ClientServiceImpl implements ClientService, Serializable {
     public List<Client> find() {
         return clientDAO.find(" WHERE disabled = false ");
     }
+    
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void remove(Client c){
         this.clientDAO.remove(c, false);
     }
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void remove(Long ... ids){
-        for(Long id : ids){
-            this.clientDAO.remove(this.clientDAO.find(id), false);
-        }
+       this.clientDAO.remove( false,  Arrays.asList(ids));
     }
     
-    
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void remove(Collection<Long> ids){
-        for(Long id : ids){
-            this.clientDAO.remove(this.clientDAO.find(id), false);
-        }
+        this.clientDAO.remove( false, ids);
     }
     
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public Client save(Client c){
         this.clientDAO.persistent(c);
