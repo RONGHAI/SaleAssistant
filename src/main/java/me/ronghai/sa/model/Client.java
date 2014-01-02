@@ -136,8 +136,8 @@ public class Client implements Serializable, AbstractModel {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
-    public boolean getDisabled() {
+    @Override
+    public boolean isDisabled() {
         return disabled;
     }
 

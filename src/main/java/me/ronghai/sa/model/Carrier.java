@@ -43,6 +43,10 @@ public class Carrier implements Serializable, AbstractModel {
     @Column(name = "disabled")
     private boolean disabled;
 
+    public boolean isDisabled() {
+        return disabled;
+    }
+
     @Column(name = "add_time", nullable=true)
     @Temporal(TemporalType.TIME)
     private Date addTime;
