@@ -94,4 +94,9 @@ public class BasicTableModel <T> extends AbstractTableModel{
         BasicTableColumn tableColumn =  (BasicTableColumn) columnModel.getAllTableColumns().get(columnIndex);
         return tableColumn.getColumnClass();
     }
+    
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return true;
+    }
 }
