@@ -5,23 +5,58 @@
  */
 package me.ronghai.sa.view.panel;
 
-import me.ronghai.sa.view.delegate.JTableBindingDelegate;
-import org.jdesktop.beansbinding.AutoBinding;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JMenu;
+import javax.swing.JPopupMenu;
+import javax.swing.JTable;
+import me.ronghai.sa.bean.DataWrapperBean;
+import me.ronghai.sa.controller.AbstractController;
+import static me.ronghai.sa.core.dispatcher.SaleAssistansDispatcher.doDispatch;
+import me.ronghai.sa.view.action.callback.DispatcherCallBack;
+import me.ronghai.sa.view.table.BasicTableColumn;
+import me.ronghai.sa.view.table.BasicTableColumnModel;
+import me.ronghai.sa.view.table.BasicTableModel;
 
 /**
  *
  * @author L5M
  */
-public class BasicCURDPanel extends javax.swing.JPanel {
+public class BasicCURDPanel extends javax.swing.JPanel implements DispatcherCallBack{
 
     /**
      * Creates new form AbstractCURDPanel
      */
     public BasicCURDPanel() {
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
         initComponents();
+        
+       
+        
+        this.dataTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                /*
+                int r =   dataTable.rowAtPoint(e.getPoint());
+                if (r >= 0 && r <   dataTable.getRowCount()) {
+                      dataTable.setRowSelectionInterval(r, r);
+                } else {
+                      dataTable.clearSelection();
+                }
+                int rowindex =   dataTable.getSelectedRow();
+                if (rowindex < 0) {
+                    return;
+                }
+                */
+                if (e.isPopupTrigger() && e.getComponent() instanceof JTable) {
+                    JPopupMenu popup = getPopupMenu();
+                    popup.show(e.getComponent(), e.getX(), e.getY());
+                }
+            }
+        });
     }
-
+    
+ 
     
 
     /**
@@ -38,6 +73,7 @@ public class BasicCURDPanel extends javax.swing.JPanel {
         newButton = new javax.swing.JButton();
         editButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
 
         dataTable.setColumnSelectionAllowed(true);
         dataTable.addAncestorListener(new javax.swing.event.AncestorListener() {
@@ -53,33 +89,51 @@ public class BasicCURDPanel extends javax.swing.JPanel {
         dataTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         newButton.setText("添加");
+        newButton.setActionCommand("add");
         newButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newButtonActionPerformed(evt);
+                _actionPerformed(evt);
             }
         });
 
         editButton.setText("修改");
+        editButton.setActionCommand("edit");
         editButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editButtonActionPerformed(evt);
+                _actionPerformed(evt);
             }
         });
 
         deleteButton.setText("删除");
+        deleteButton.setActionCommand("remove");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                _actionPerformed(evt);
+            }
+        });
+
+        saveButton.setText("Save");
+        saveButton.setActionCommand("save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                _actionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(dataPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(newButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(saveButton)
                 .addContainerGap())
         );
 
@@ -92,8 +146,9 @@ public class BasicCURDPanel extends javax.swing.JPanel {
                 .addGap(85, 85, 85)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(newButton)
+                    .addComponent(deleteButton)
                     .addComponent(editButton)
-                    .addComponent(deleteButton))
+                    .addComponent(saveButton))
                 .addContainerGap())
         );
 
@@ -101,20 +156,14 @@ public class BasicCURDPanel extends javax.swing.JPanel {
 
     }// </editor-fold>//GEN-END:initComponents
 
-    private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        // TODO add your handling code here:
-        System.out.println("Performed");
-    }//GEN-LAST:event_newButtonActionPerformed
+    private void _actionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__actionPerformed
+        doDispatch(this.controller ,evt.getActionCommand(), null, null, new DataWrapperBean("table", this.dataTable), this);       
+    }//GEN-LAST:event__actionPerformed
 
     private void dataTableAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_dataTableAncestorAdded
         // TODO add your handling code here:
         System.out.println("Added");
     }//GEN-LAST:event_dataTableAncestorAdded
-
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
-        System.out.println("Edit...");
-    }//GEN-LAST:event_editButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -123,15 +172,26 @@ public class BasicCURDPanel extends javax.swing.JPanel {
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton editButton;
     private javax.swing.JButton newButton;
+    private javax.swing.JButton saveButton;
     // End of variables declaration//GEN-END:variables
-    private JTableBindingDelegate<?> tableBindingDelegate;
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
+   
+    //private JTableBindingDelegate<?> tableBindingDelegate;
+    private AbstractController controller;
+    //private final org.jdesktop.beansbinding.BindingGroup bindingGroup;
+    
+    
+    
+    
+    public void setController(AbstractController controller) {
+        this.controller = controller;
+    }
+    /*
     public JTableBindingDelegate<?> getTableBindingDelegate() {
         return tableBindingDelegate;
     }
     
     private org.jdesktop.swingbinding.JTableBinding getJTableBinding(JTableBindingDelegate<?> tableBindingDelegate){
-        return tableBindingDelegate == null ? null : tableBindingDelegate.getJTableBinding(AutoBinding.UpdateStrategy.READ_WRITE, dataTable, "dataTableBinding");
+        return tableBindingDelegate == null ? null : tableBindingDelegate.getJTableBinding(AutoBinding.UpdateStrategy.READ, dataTable, "dataTableBinding");
     }
     
     private org.jdesktop.swingbinding.JTableBinding binding = null;
@@ -144,6 +204,7 @@ public class BasicCURDPanel extends javax.swing.JPanel {
                 return;
             }
         }
+        this.popupMenu = null;
         if (this.binding != null) {
             this.bindingGroup.removeBinding(binding);
             if (binding.isBound()) {
@@ -157,5 +218,67 @@ public class BasicCURDPanel extends javax.swing.JPanel {
             binding.bind();
         }
         this.bindingGroup.bind();
+    }
+    */
+    private JPopupMenu popupMenu;
+
+    protected JPopupMenu getPopupMenu() {
+        if (popupMenu == null) {
+            if (this.dataTable == null) {
+                return popupMenu;
+            }
+            BasicTableColumnModel<?> tableColumnModel = (BasicTableColumnModel<?>) this.dataTable.getColumnModel();
+            popupMenu = new javax.swing.JPopupMenu();
+            popupMenu.setLabel("");
+            JMenu menu = new javax.swing.JMenu();
+            menu.setText("SHOW");
+            popupMenu.add(menu);
+            for(BasicTableColumn cb : tableColumnModel.getAllTableColumns()){
+                javax.swing.JCheckBoxMenuItem cbMenuItem = new javax.swing.JCheckBoxMenuItem();
+                cbMenuItem.setSelected(false);
+                cbMenuItem.setText(cb.getColumnName());
+                cbMenuItem.setActionCommand(cb.getIdentifier()+"");
+                cbMenuItem.addActionListener(new java.awt.event.ActionListener() {
+                    @Override
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        _coloumnControllerMenuItemActionPerformed(evt);
+                    } 
+                });
+                menu.add(cbMenuItem);
+            } 
+        }
+
+        return popupMenu;
+    }
+   
+    private void _coloumnControllerMenuItemActionPerformed(ActionEvent evt) {
+        javax.swing.JCheckBoxMenuItem cbMenuItem  = ( javax.swing.JCheckBoxMenuItem) evt.getSource();
+        
+        BasicTableColumnModel<?> tableColumnModel = (BasicTableColumnModel<?>) this.dataTable.getColumnModel();
+        for(BasicTableColumn cb : tableColumnModel.getAllTableColumns()){
+            if(cb.getIdentifier().toString().equals(evt.getActionCommand())){
+                cb.setShow(cbMenuItem.isSelected());
+                break;
+            } 
+        }
+        this.refreshTable();
+    }
+    
+    
+    public void setModel2Table(BasicTableModel<?> tableModel){
+        this.dataTable.setModel(tableModel);
+        this.dataTable.setColumnModel(tableModel.getColumnModel());
+        this.dataTable.setVisible(true);
+        this.popupMenu = null;
+     }
+
+    @Override
+    public void callback(String action, DataWrapperBean wrapper) {
+        this.refreshTable();
+    }
+    
+    public void refreshTable(){
+        dataTable.setVisible(false);
+        dataTable.setVisible(true);
     }
 }

@@ -5,9 +5,13 @@
  */
 package me.ronghai.sa.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import me.ronghai.sa.engine.service.CarrierService;
 import me.ronghai.sa.model.Carrier;
-import org.jdesktop.swingbinding.JTableBinding;
+import me.ronghai.sa.view.table.BasicTableColumn;
+import me.ronghai.sa.view.table.BasicTableColumnModel;
+import me.ronghai.sa.view.table.BasicTableModel;
 
 /**
  *
@@ -16,7 +20,8 @@ import org.jdesktop.swingbinding.JTableBinding;
 public class CarrierController extends BasicCURDController<Carrier> implements AbstractController {
 
     CarrierService carrierService;
-
+    BasicTableModel<Carrier> basicTableModel;
+    
     public CarrierService getCarrierService() {
         return carrierService;
     }
@@ -29,18 +34,34 @@ public class CarrierController extends BasicCURDController<Carrier> implements A
     public void refresh() {
     }
 
+    
     @Override
-    public void updateColumnBinding(JTableBinding tableBinding) {
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = tableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${name}"));
-        columnBinding.setColumnName("Name");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = tableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${website}"));
-        columnBinding.setColumnName("Website");
-        columnBinding.setColumnClass(String.class);
-    }
+    public BasicTableModel<Carrier> getBasicTableModel(boolean retrieve) {
+        if (basicTableModel == null) {
+            basicTableModel = new BasicTableModel<>();
+            basicTableModel.setData(this.carrierService.find());
+            BasicTableColumnModel<Carrier> columnModel = new BasicTableColumnModel<>();
+            basicTableModel.setColumnModel(columnModel);
+            
+            
+            List<BasicTableColumn> tableColumns = new ArrayList<>();
+            
+            BasicTableColumn column = new BasicTableColumn();
+            column.setColumnName("NAME");
+            column.setProperty(org.jdesktop.beansbinding.ELProperty.create("${name}"));
+            tableColumns.add(column);
 
-    @Override
-    public Object getSourceObject() {
-        return this.carrierService.find();
+            column = new BasicTableColumn();
+            column.setColumnName("WEBSITE");
+            column.setProperty(org.jdesktop.beansbinding.ELProperty.create("${website}"));
+            tableColumns.add(column);
+            
+            columnModel.setAllTableColumns(tableColumns);
+
+        }
+        if(retrieve){
+            basicTableModel.setData(this.carrierService.find());
+        }
+        return basicTableModel;
     }
 }

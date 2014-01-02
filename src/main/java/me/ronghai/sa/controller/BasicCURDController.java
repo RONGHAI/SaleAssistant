@@ -5,18 +5,15 @@
  */
 package me.ronghai.sa.controller;
 
-import javax.swing.JTable;
 import me.ronghai.sa.bean.DataWrapperBean;
-import me.ronghai.sa.view.delegate.JTableBindingDelegate;
 import me.ronghai.sa.view.panel.BasicCURDPanel;
-import org.jdesktop.beansbinding.AutoBinding;
-import org.jdesktop.swingbinding.JTableBinding;
+import me.ronghai.sa.view.table.BasicTableModel;
 
 /**
  *
  * @author ronghai
  */
-public abstract class BasicCURDController<E> implements JTableBindingDelegate {
+public abstract class BasicCURDController<E> implements  AbstractController {
 
     BasicCURDPanel basicCURDPanel;
 
@@ -27,15 +24,18 @@ public abstract class BasicCURDController<E> implements JTableBindingDelegate {
     public void setBasicCURDPanel(BasicCURDPanel basicCURDPanel) {
         this.basicCURDPanel = basicCURDPanel;
     }
-
+    
     public DataWrapperBean init(DataWrapperBean param) {
-        this.basicCURDPanel.setTableBindingDelegate(this);
+        this.basicCURDPanel.setController(this);
+        this.basicCURDPanel.setModel2Table(this.getBasicTableModel(false));
         DataWrapperBean wrapper = new DataWrapperBean();
         wrapper.put("panel", this.basicCURDPanel);
         return wrapper;
     }
-
-    private JTableBinding tableBinding;
+    
+    
+    /*
+    protected JTableBinding tableBinding;
 
     public abstract void updateColumnBinding(JTableBinding tableBinding);
 
@@ -51,9 +51,17 @@ public abstract class BasicCURDController<E> implements JTableBindingDelegate {
         }
         tableBinding.setTargetObject(dataTable);
         tableBinding.setSourceObject(this.getSourceObject());
+        //tableBinding.addBindingListener(null);
+       
         return tableBinding;
     }
+    
+     
 
     public abstract Object getSourceObject();
-
+    */
+    
+    public BasicTableModel<E> getBasicTableModel(boolean retrieve){
+        throw new UnsupportedOperationException();
+    }
 }

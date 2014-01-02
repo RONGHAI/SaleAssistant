@@ -5,16 +5,20 @@
  */
 package me.ronghai.sa.view.delegate;
 
-import org.jdesktop.beansbinding.AutoBinding;
-import org.jdesktop.swingbinding.JTableBinding;
-
 /**
  *
  * @author L5M
  * @param <E>
  */
+@Deprecated
 public interface JTableBindingDelegate  <E>{
+    /*
     JTableBinding getJTableBinding(AutoBinding.UpdateStrategy strategy, javax.swing.JTable targetJTable, java.lang.String name);
+    public DataWrapperBean add(DataWrapperBean param);
+    public DataWrapperBean remove(DataWrapperBean param);
+    public DataWrapperBean edit(DataWrapperBean param);
+    
+    */
 }
 /*
 
