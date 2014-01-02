@@ -79,7 +79,7 @@ public class BasicTableModel <T> extends AbstractTableModel{
     
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        BasicTableColumn tableColumn =  (BasicTableColumn)  columnModel.getAllTableColumns().get(columnIndex);
+        BasicTableColumn tableColumn =  (BasicTableColumn) columnModel.getAllTableColumns().get(columnIndex);
         tableColumn.getProperty().setValue(data.get(rowIndex), aValue);
     }
     
@@ -88,5 +88,10 @@ public class BasicTableModel <T> extends AbstractTableModel{
         BasicTableColumn tableColumn =  (BasicTableColumn)  columnModel.getColumn(column);
         return tableColumn.getColumnName();
         //  return super.getColumnName(column);
+    }
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        BasicTableColumn tableColumn =  (BasicTableColumn) columnModel.getAllTableColumns().get(columnIndex);
+        return tableColumn.getColumnClass();
     }
 }

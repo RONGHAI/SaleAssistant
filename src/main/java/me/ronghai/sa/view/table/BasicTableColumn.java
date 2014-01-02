@@ -21,6 +21,15 @@ public class BasicTableColumn extends TableColumn {
     private ELProperty property;
     private boolean show = true;
     private String columnName;
+    private Class <?> columnClass = Object.class;
+
+    public Class getColumnClass() {
+        return columnClass;
+    }
+
+    public void setColumnClass(Class columnClass) {
+        this.columnClass = columnClass;
+    }
     private Format format;
 
     public Format getFormat() {
