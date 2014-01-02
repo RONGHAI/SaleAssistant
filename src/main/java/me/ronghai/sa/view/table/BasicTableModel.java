@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
+import me.ronghai.sa.model.AbstractModel;
 
 /**
  *
@@ -80,7 +81,9 @@ public class BasicTableModel <T> extends AbstractTableModel{
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         BasicTableColumn tableColumn =  (BasicTableColumn) columnModel.getAllTableColumns().get(columnIndex);
+        System.out.println(aValue);
         tableColumn.getProperty().setValue(data.get(rowIndex), aValue);
+        ((AbstractModel)data.get(rowIndex)).setChanged(true);
     }
     
     @Override
