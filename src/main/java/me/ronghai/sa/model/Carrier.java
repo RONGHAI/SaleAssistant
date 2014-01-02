@@ -43,6 +43,7 @@ public class Carrier implements Serializable, AbstractModel {
     @Column(name = "disabled")
     private boolean disabled;
 
+    @Override
     public boolean isDisabled() {
         return disabled;
     }
