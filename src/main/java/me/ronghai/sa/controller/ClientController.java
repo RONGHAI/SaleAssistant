@@ -18,7 +18,9 @@ import java.util.Map;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.CellEditorListener;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import me.ronghai.sa.bean.DataWrapperBean;
 import me.ronghai.sa.engine.service.ClientService;
@@ -60,6 +62,23 @@ public class ClientController extends BasicCURDController<Client> implements Abs
         };
     }
     
+     public TableCellEditor getTableCellEditor(){
+         return null;
+      /*  return new DefaultTableCellRenderer(){
+              @Override
+              public Component getTableCellRendererComponent(JTable table, Object value,
+                                            boolean isSelected, boolean hasFocus,
+                                            int row, int column){
+                  BasicTableColumn  col = (BasicTableColumn) table.getColumnModel().getColumn(column);
+                  if(col.getFormat() != null && value != null){
+                      value = col.getFormat().format(value);
+                  }
+                  return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+              }
+        };
+         */
+    }
+    
     @Override
     public BasicTableModel<Client> getBasicTableModel(boolean retrieve) {
         if (basicTableModel == null) {
@@ -70,7 +89,8 @@ public class ClientController extends BasicCURDController<Client> implements Abs
              
             
             List<BasicTableColumn> tableColumns = new ArrayList<>();
-            TableCellRenderer render = this.getTableCellRenderer();
+            TableCellRenderer render = this.getTableCellRenderer(); 
+            TableCellEditor editor =  this.getTableCellEditor();
             
             BasicTableColumn  column = new BasicTableColumn( "${name}" , "name");
             tableColumns.add(column);
@@ -79,12 +99,14 @@ public class ClientController extends BasicCURDController<Client> implements Abs
             tableColumns.add(column);
             
             column = new BasicTableColumn( "${qq}" , "qq");
+            column.setColumnClass(Long.class);
             tableColumns.add(column);
             
             column = new BasicTableColumn( "${wangwang}" , "wangwang");
             tableColumns.add(column);
             
             column = new BasicTableColumn( "${birthday}" , "birthday");
+            column.setColumnClass(Date.class);
             column.setFormat(new SimpleDateFormat("yyyy-MM-dd"));
             tableColumns.add(column);
             
@@ -98,8 +120,8 @@ public class ClientController extends BasicCURDController<Client> implements Abs
             
             for(BasicTableColumn c : tableColumns){
                 c.setCellRenderer(render);
+                c.setCellEditor(editor);
             }
-            
             columnModel.setAllTableColumns(tableColumns);
 
         }
