@@ -7,6 +7,7 @@ package me.ronghai.sa.dao.impl;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,6 +16,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import me.ronghai.sa.dao.AbstractModelDAO;
 import me.ronghai.sa.model.AbstractModel;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -25,7 +28,7 @@ public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractMo
     private static final long serialVersionUID = 1L;
 
     @PersistenceContext
-    protected EntityManager entityManager;
+    private EntityManager entityManager;
 
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -65,6 +68,23 @@ public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractMo
     }
 
     @Override
+    public int  remove(boolean force, Collection<Long> ids){ 
+        if(ids == null || ids.isEmpty() ) return 0; 
+        String sql = "";
+        if (force) {
+            sql = "DELETE FROM "+ entityClass.getName()+"  e  where id in (:ids) ";
+        } else {
+            sql = "UPDATE "+entityClass.getName()+"  SET disabled = 1  where id in (:ids) ";
+        }
+        System.out.println(sql);
+        Query query = entityManager.createQuery(sql);
+        query.setParameter("ids", ids);
+        int  s =  query.executeUpdate(); 
+        return s;
+    }
+    
+    
+    @Override
     public E update(E entity) {
         return merge(entity);
     }
@@ -75,6 +95,7 @@ public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractMo
             entityManager.merge(entity);
             return entity;
         } catch (Exception e) {
+            e.printStackTrace();;
             logger.log(Level.SEVERE, null, e);
         }
         return null;

@@ -5,6 +5,7 @@
  */
 package me.ronghai.sa.dao;
 
+import java.util.Collection;
 import java.util.List;
 import me.ronghai.sa.model.AbstractModel;
 
@@ -20,6 +21,8 @@ public interface AbstractModelDAO<E extends AbstractModel> {
     public void remove(E entity, boolean force);
 
     public void remove(E entity);
+    
+    public int remove(boolean force, Collection<Long>  ids);
 
     public E merge(E entity);
 
