@@ -6,6 +6,7 @@
 
 package me.ronghai.sa.view.table;
 
+import java.util.Collections;
 import java.util.List;
 import javax.swing.table.DefaultTableColumnModel;
 
@@ -20,17 +21,54 @@ public class BasicTableColumnModel<T> extends DefaultTableColumnModel {
         return allTableColumns;
     }
     private List<BasicTableColumn> allTableColumns;
- 
     public void setAllTableColumns(List<BasicTableColumn> allTableColumns) {
-        this.allTableColumns = allTableColumns;
+        this.allTableColumns = Collections.synchronizedList(allTableColumns);
         for(int i = 0 ; i < this.allTableColumns.size() ; i++){
             BasicTableColumn col =   this.allTableColumns.get(i);
             col.setModelIndex(i);
             col.setHeaderValue(col.getColumnName());
             col.setIdentifier(i+"_"+col.getColumnName());
-            this.addColumn( col );
-        }        
-        
+            if(col.isShow()){
+                this.addColumn( col );
+            }
+           
+        }
+    }
+    
+    public void updateTableColumns(){
+        for(int i = 0; i <  this.allTableColumns.size(); i++){
+            BasicTableColumn col  = this.allTableColumns.get(i);
+            if(!col.isShow()){
+                this.removeColumn(col);
+            }else{
+                try{
+                    this.getColumnIndex(col.getIdentifier());
+                }catch(IllegalArgumentException ex){
+                    this.addColumn(col); 
+                    if(i < this.getColumnCount()){
+                        this.moveColumn(this.getColumnCount() - 1, i);
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    public void updateTableColumns(BasicTableColumn col){
+        if(!col.isShow()){
+            this.removeColumn(col);
+        }else{
+            try{
+                this.getColumnIndex(col.getIdentifier());
+            }catch(IllegalArgumentException ex){
+                this.addColumn(col); 
+                int i = this.allTableColumns.indexOf(col);
+                if(i < this.getColumnCount()){
+                    this.moveColumn(this.getColumnCount() - 1, i);
+                }
+            }
+        }
+         
     }
     
     public BasicTableColumnModel(){

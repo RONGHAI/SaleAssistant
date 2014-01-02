@@ -7,9 +7,11 @@ package me.ronghai.sa.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JTable;
 import me.ronghai.sa.bean.DataWrapperBean;
 import me.ronghai.sa.engine.service.ClientService;
@@ -42,18 +44,30 @@ public class ClientController extends BasicCURDController<Client> implements Abs
             basicTableModel.setData(this.clientService.find());
             BasicTableColumnModel<Client> columnModel = new BasicTableColumnModel<>();
             basicTableModel.setColumnModel(columnModel);
-            
+             
             
             List<BasicTableColumn> tableColumns = new ArrayList<>();
             
-            BasicTableColumn  column = new BasicTableColumn();
-            column.setColumnName("NAME");
-            column.setProperty("${name}");
+            BasicTableColumn  column = new BasicTableColumn( "${name}" , "name");
+            //column.setCellEditor(new DefaultCellEditor());
             tableColumns.add(column);
 
-            column = new BasicTableColumn();
-            column.setColumnName("PHONE");
-            column.setProperty("${phone}");
+            column = new BasicTableColumn( "${phone}" , "phone");
+            tableColumns.add(column);
+            
+            column = new BasicTableColumn( "${qq}" , "qq");
+            tableColumns.add(column);
+            
+            column = new BasicTableColumn( "${wangwang}" , "wangwang");
+            tableColumns.add(column);
+            
+            column = new BasicTableColumn( "${birthday}" , "birthday");
+            tableColumns.add(column);
+            
+            column = new BasicTableColumn( "${gender}" , "gender");
+            tableColumns.add(column);
+            
+            column = new BasicTableColumn( "${note}" , "note");
             tableColumns.add(column);
             
             columnModel.setAllTableColumns(tableColumns);
@@ -69,7 +83,11 @@ public class ClientController extends BasicCURDController<Client> implements Abs
      
     public DataWrapperBean add(DataWrapperBean param) {
         DataWrapperBean wrapper = new DataWrapperBean();
-        this.basicTableModel.add(new Client());        
+        JTable table = (JTable) param.get("table");
+        Client c = new Client();
+        c.setChanged(true);
+        c.setAddTime(new Date());
+        this.basicTableModel.add(c);  
         return wrapper;
     }
 
@@ -85,23 +103,18 @@ public class ClientController extends BasicCURDController<Client> implements Abs
     
     
     public DataWrapperBean edit(DataWrapperBean param) {
-         
         DataWrapperBean wrapper = new DataWrapperBean();
         JTable table = (JTable) param.get("table");
         System.out.println(Arrays.toString(table.getSelectedRows()));
-
-         
         return wrapper;
         
     }
     
     public DataWrapperBean save(DataWrapperBean param) {
-         
         DataWrapperBean wrapper = new DataWrapperBean();
         JTable table = (JTable) param.get("table");
         BasicTableModel<Client> model = (BasicTableModel<Client>) table.getModel();
         List<Client> clients =  model.getData();
-
         List<Client> oldClients = this.clientService.find();
         Map<Long, Client> id2Client = new HashMap<>();
         for(Client c : oldClients ){
@@ -109,15 +122,14 @@ public class ClientController extends BasicCURDController<Client> implements Abs
         }
         for(Client c : clients){
             id2Client.remove(c.getId()); 
-           // c = c.getId() == null ? this.clientService.save(c) : this.clientService.update(c);
-        } 
-        System.out.println("removed"+id2Client.keySet()); 
-        this.clientService.remove(oldClients.get(0));
-        
-        
+            if(c.getId() == null || c.isChanged() ){
+                c.setUpdateTime(new Date());
+            }
+            c = c.getId() == null ? this.clientService.save(c) :   c.isChanged() ? this.clientService.update(c) : null;
+        }
+        this.clientService.remove(id2Client.keySet()); 
         model.setData(this.clientService.find());
         return wrapper;
-        
     }
 
     @Override

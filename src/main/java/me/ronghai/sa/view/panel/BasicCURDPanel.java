@@ -235,7 +235,7 @@ public class BasicCURDPanel extends javax.swing.JPanel implements DispatcherCall
             popupMenu.add(menu);
             for(BasicTableColumn cb : tableColumnModel.getAllTableColumns()){
                 javax.swing.JCheckBoxMenuItem cbMenuItem = new javax.swing.JCheckBoxMenuItem();
-                cbMenuItem.setSelected(false);
+                cbMenuItem.setSelected(true);
                 cbMenuItem.setText(cb.getColumnName());
                 cbMenuItem.setActionCommand(cb.getIdentifier()+"");
                 cbMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -258,9 +258,11 @@ public class BasicCURDPanel extends javax.swing.JPanel implements DispatcherCall
         for(BasicTableColumn cb : tableColumnModel.getAllTableColumns()){
             if(cb.getIdentifier().toString().equals(evt.getActionCommand())){
                 cb.setShow(cbMenuItem.isSelected());
+                tableColumnModel.updateTableColumns(cb);
                 break;
             } 
         }
+        
         this.refreshTable();
     }
     

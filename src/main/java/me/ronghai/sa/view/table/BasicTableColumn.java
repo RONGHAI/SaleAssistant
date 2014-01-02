@@ -18,7 +18,7 @@ import org.jdesktop.beansbinding.ELProperty;
 public class BasicTableColumn extends TableColumn {
 
     private ELProperty property;
-    private boolean show;
+    private boolean show = true;
     private String columnName;
     
     public String getColumnName() {
@@ -62,5 +62,21 @@ public class BasicTableColumn extends TableColumn {
     
     public BasicTableColumn(int modelIndex, int width, TableCellRenderer cellRenderer, TableCellEditor cellEditor) {
         super(modelIndex, width, cellRenderer, cellEditor);
+    }
+
+    public BasicTableColumn(ELProperty property, String columnName) {
+        this.property = property;
+        this.columnName = columnName;
+    }
+    
+    public BasicTableColumn(String property, String columnName) { 
+        this.columnName = columnName;
+        this.property = org.jdesktop.beansbinding.ELProperty.create(property);
+    }
+    
+    public BasicTableColumn(String property, String columnName, boolean show) { 
+        this.columnName = columnName;
+        this.property = org.jdesktop.beansbinding.ELProperty.create(property);
+        this.show = show;
     }
 }
