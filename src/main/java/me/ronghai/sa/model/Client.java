@@ -198,5 +198,17 @@ public class Client implements Serializable, AbstractModel {
     public String toString() {
         return "me.ronghai.sa.model.Client[ id=" + id + " ]";
     }
+    
+    
+    private transient  boolean changed;
+
+    @Override
+    public boolean isChanged() {
+        return changed;
+    }
+    @Override
+    public void setChanged(boolean changed) {
+        this.changed = changed;
+    }
 
 }

@@ -152,4 +152,14 @@ public class Carrier implements Serializable, AbstractModel {
     public void setNote(String note) {
         this.note = note;
     }
+    
+    private transient  boolean changed;
+    @Override
+    public boolean isChanged() {
+        return changed;
+    }
+    @Override
+    public void setChanged(boolean changed) {
+        this.changed = changed;
+    }
 }

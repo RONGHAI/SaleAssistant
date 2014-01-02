@@ -13,4 +13,7 @@ public interface AbstractModel {
 
     public void setDisabled(boolean disabled);
     public boolean isDisabled();
+    
+    public boolean isChanged();
+    public void setChanged(boolean changed);
 }
