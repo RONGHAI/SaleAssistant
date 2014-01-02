@@ -6,6 +6,7 @@
 package me.ronghai.sa.engine.service.impl;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import me.ronghai.sa.dao.ClientDAO;
 import me.ronghai.sa.engine.service.ClientService;
@@ -40,7 +41,31 @@ public class ClientServiceImpl implements ClientService, Serializable {
 
     @Override
     public List<Client> find() {
-        return clientDAO.find();
+        return clientDAO.find(" WHERE disabled = false ");
+    }
+    @Override
+    public void remove(Client c){
+        this.clientDAO.remove(c, false);
+    }
+    @Override
+    public void remove(Long ... ids){
+        for(Long id : ids){
+            this.clientDAO.remove(this.clientDAO.find(id), false);
+        }
+    }
+    
+    
+    @Override
+    public void remove(Collection<Long> ids){
+        for(Long id : ids){
+            this.clientDAO.remove(this.clientDAO.find(id), false);
+        }
+    }
+    
+    @Override
+    public Client save(Client c){
+        this.clientDAO.persistent(c);
+        return c;
     }
 
 }

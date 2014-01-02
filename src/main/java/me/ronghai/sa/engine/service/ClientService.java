@@ -6,6 +6,7 @@
 
 package me.ronghai.sa.engine.service;
 
+import java.util.Collection;
 import java.util.List;
 import me.ronghai.sa.model.Client;
 
@@ -16,5 +17,9 @@ import me.ronghai.sa.model.Client;
 public interface ClientService {
     public Client update(Client entity);
     public Client find(Object id);
+    public void remove(Client c);
     public List<Client> find();
+    public void remove(Long ... ids);
+    public void remove(Collection<Long> ids);
+    public Client save(Client c);
 }
