@@ -48,6 +48,8 @@ public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractMo
         try {
             entityManager.persist(entity);
         } catch (Exception e) {
+            e.printStackTrace();
+            logger.log(Level.SEVERE, null, e);
         }
     }
 

@@ -68,6 +68,7 @@ public class ClientServiceImpl implements ClientService, Serializable {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public Client save(Client c){
+        System.out.println("save...");
         this.clientDAO.persistent(c);
         return c;
     }
