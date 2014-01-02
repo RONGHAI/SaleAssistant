@@ -48,11 +48,11 @@ public class Carrier implements Serializable, AbstractModel {
     }
 
     @Column(name = "add_time", nullable=true)
-    @Temporal(TemporalType.TIME)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date addTime;
 
     @Column(name = "update_time", nullable=true)
-    @Temporal(TemporalType.TIME)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
 
     @Column(name = "note")
