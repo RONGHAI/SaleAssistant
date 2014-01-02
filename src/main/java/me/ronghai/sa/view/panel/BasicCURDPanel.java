@@ -8,9 +8,11 @@ package me.ronghai.sa.view.panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import me.ronghai.sa.bean.DataWrapperBean;
 import me.ronghai.sa.controller.AbstractController;
 import static me.ronghai.sa.core.dispatcher.SaleAssistansDispatcher.doDispatch;
@@ -76,6 +78,12 @@ public class BasicCURDPanel extends javax.swing.JPanel implements DispatcherCall
         saveButton = new javax.swing.JButton();
 
         dataTable.setColumnSelectionAllowed(true);
+        dataTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        dataTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dataTableMouseClicked(evt);
+            }
+        });
         dataTable.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
@@ -162,8 +170,11 @@ public class BasicCURDPanel extends javax.swing.JPanel implements DispatcherCall
 
     private void dataTableAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_dataTableAncestorAdded
         // TODO add your handling code here:
-        System.out.println("Added");
     }//GEN-LAST:event_dataTableAncestorAdded
+
+    private void dataTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataTableMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dataTableMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -270,7 +281,7 @@ public class BasicCURDPanel extends javax.swing.JPanel implements DispatcherCall
     public void setModel2Table(BasicTableModel<?> tableModel){
         this.dataTable.setModel(tableModel);
         this.dataTable.setColumnModel(tableModel.getColumnModel());
-        this.dataTable.setVisible(true);
+        this.refreshTable();
         this.popupMenu = null;
      }
 
