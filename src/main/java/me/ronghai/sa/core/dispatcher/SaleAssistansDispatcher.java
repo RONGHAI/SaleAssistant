@@ -35,7 +35,7 @@ public final class SaleAssistansDispatcher implements Serializable {
             controller = controller.substring(0, dotPosition);
         }
         logger.log(Level.INFO, "{0}/{1}", new Object[]{controller, action});
-        doDispatch((AbstractController)SaleAssistanceApplicationContext.getBean(controller) , action, frame, panel, wrapper, callback);
+        doDispatch(SaleAssistanceApplicationContext.getBean(controller) , action, frame, panel, wrapper, callback);
     }
     /**
      *
@@ -46,20 +46,16 @@ public final class SaleAssistansDispatcher implements Serializable {
      * @param wrapper
      * @param callback
      */
-    public final static void doDispatch(AbstractController controller, String action, JFrame frame, JPanel panel, DataWrapperBean wrapper, DispatcherCallBack callback  ) {
+    public final static void doDispatch(Object controller, String action, JFrame frame, JPanel panel, DataWrapperBean wrapper, DispatcherCallBack callback  ) {
         if(action == null ){ 
             if(callback != null){
                  callback.callback(action, null);          
             }
             return ;
-        }
-        AbstractController instance = controller;
-                 
-
-        
+        }        
         try {
              Method method = controller.getClass().getMethod(action,  DataWrapperBean.class);
-             wrapper = (DataWrapperBean) method.invoke(instance, wrapper);
+             wrapper = (DataWrapperBean) method.invoke(controller, wrapper);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException ex) {
             Logger.getLogger(SaleAssistansDispatcher.class.getName()).log(Level.SEVERE, null, ex);
         }
