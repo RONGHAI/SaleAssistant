@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
@@ -21,6 +22,7 @@ import me.ronghai.sa.bean.DataWrapperBean;
 import me.ronghai.sa.engine.service.ClientService;
 import me.ronghai.sa.format.GenderFormat;
 import me.ronghai.sa.model.Client;
+import me.ronghai.sa.util.SaleAssistantResource;
 import me.ronghai.sa.view.table.BasicTableColumn;
 import me.ronghai.sa.view.table.BasicTableColumnModel;
 import me.ronghai.sa.view.table.BasicTableModel;
@@ -30,6 +32,7 @@ import me.ronghai.sa.view.table.BasicTableModel;
  * @author ronghai
  */
 public class ClientController extends BasicCURDController<Client> implements AbstractController {
+    private static final ResourceBundle resourceBundle = SaleAssistantResource.getResourceBundle();
 
     ClientService clientService;
     BasicTableModel<Client> basicTableModel;
@@ -76,7 +79,7 @@ public class ClientController extends BasicCURDController<Client> implements Abs
     
     @Override
     public BasicTableModel<Client> getBasicTableModel(boolean retrieve) {
-        if (basicTableModel == null) {
+        if (true ||  basicTableModel == null) {
             basicTableModel = new BasicTableModel<>();
             basicTableModel.setData(this.clientService.find());
             BasicTableColumnModel<Client> columnModel = new BasicTableColumnModel<>();
@@ -87,30 +90,30 @@ public class ClientController extends BasicCURDController<Client> implements Abs
             TableCellRenderer render = this.getTableCellRenderer(); 
             TableCellEditor editor =  this.getTableCellEditor();
             
-            BasicTableColumn  column = new BasicTableColumn( "${name}" , "name");
+            BasicTableColumn  column = new BasicTableColumn( "${name}" , resourceBundle.getString("client.name"));
             tableColumns.add(column);
 
-            column = new BasicTableColumn( "${phone}" , "phone");
+            column = new BasicTableColumn( "${phone}" , resourceBundle.getString("client.phone"));
             tableColumns.add(column);
             
-            column = new BasicTableColumn( "${qq}" , "qq");
+            column = new BasicTableColumn( "${qq}" , resourceBundle.getString("client.qq"));
             column.setColumnClass(Long.class);
             tableColumns.add(column);
             
-            column = new BasicTableColumn( "${wangwang}" , "wangwang");
+            column = new BasicTableColumn( "${wangwang}" , resourceBundle.getString("client.wangwang"));
             tableColumns.add(column);
             
-            column = new BasicTableColumn( "${birthday}" , "birthday");
+            column = new BasicTableColumn( "${birthday}" , resourceBundle.getString("birthday"));
             column.setColumnClass(Date.class);
             column.setFormat(new SimpleDateFormat("yyyy-MM-dd"));
             tableColumns.add(column);
             
-            column = new BasicTableColumn( "${gender}" , "gender");
+            column = new BasicTableColumn( "${gender}" , resourceBundle.getString("gender"));
             column.setFormat(new GenderFormat());
             tableColumns.add(column);
             
             
-            column = new BasicTableColumn( "${note}" , "note");
+            column = new BasicTableColumn( "${note}" , resourceBundle.getString("note"));
             tableColumns.add(column);
             
             for(BasicTableColumn c : tableColumns){
@@ -138,22 +141,18 @@ public class ClientController extends BasicCURDController<Client> implements Abs
         table.editCellAt(1, 0 );
         return wrapper;
     }
-
-   
+ 
     public DataWrapperBean remove(DataWrapperBean param) {
         DataWrapperBean wrapper = new DataWrapperBean();
         JTable table = (JTable) param.get("table");
         System.out.println(Arrays.toString(table.getSelectedRows()));
-
         this.basicTableModel.remove(table.getSelectedRows());
         return wrapper;
     }
     
-    
     public DataWrapperBean edit(DataWrapperBean param) {
         DataWrapperBean wrapper = new DataWrapperBean();
         JTable table = (JTable) param.get("table");
-        System.out.println(Arrays.toString(table.getSelectedRows()));
         return wrapper;
         
     }
