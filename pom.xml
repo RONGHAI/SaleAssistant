@@ -142,7 +142,7 @@
             <version>${flywaydb.version}</version>
             <configuration>
                 <driver>com.mysql.jdbc.Driver</driver>
-                <url>jdbc:mysql://localhost:3306/sale_assistant</url>
+                <url>jdbc:mysql://localhost:3306/sale_assistant?useUnicode=true&amp;characterEncoding=UTF-8</url>
                 <user>root</user>
                 <password>db_gzlh_kc11730</password>
             </configuration>
