@@ -5,6 +5,8 @@
  */
 package me.ronghai.sa.controller;
 
+import java.util.Arrays;
+import javax.swing.JTable;
 import me.ronghai.sa.bean.DataWrapperBean;
 import me.ronghai.sa.view.panel.BasicCURDPanel;
 import me.ronghai.sa.view.table.BasicTableModel;
@@ -31,9 +33,7 @@ public abstract class BasicCURDController<E> implements  AbstractController {
         DataWrapperBean wrapper = new DataWrapperBean();
         wrapper.put("panel", this.basicCURDPanel);
         return wrapper;
-    }
-    
-    
+    }    
     /*
     protected JTableBinding tableBinding;
 

@@ -6,10 +6,14 @@
 package me.ronghai.sa.engine.service.impl;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import me.ronghai.sa.dao.CarrierDAO;
 import me.ronghai.sa.engine.service.CarrierService;
 import me.ronghai.sa.model.Carrier;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -28,7 +32,7 @@ public class CarrierServiceImpl implements CarrierService, Serializable {
         this.carrierDAO = carrierDAO;
     }
      
-
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public Carrier update(Carrier entity) {
         return carrierDAO.update(entity);
@@ -44,4 +48,28 @@ public class CarrierServiceImpl implements CarrierService, Serializable {
         return carrierDAO.find();
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Override
+    public void remove(Carrier c){
+        this.carrierDAO.remove(c, false);
+    }
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Override
+    public void remove(Long ... ids){
+       this.carrierDAO.remove( false,  Arrays.asList(ids));
+    }
+    
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Override
+    public void remove(Collection<Long> ids){
+        this.carrierDAO.remove( false, ids);
+    }
+    
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Override
+    public Carrier save(Carrier c){
+        System.out.println("save...");
+        this.carrierDAO.persistent(c);
+        return c;
+    }
 }
