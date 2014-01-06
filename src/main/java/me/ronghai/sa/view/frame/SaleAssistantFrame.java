@@ -73,6 +73,8 @@ public class SaleAssistantFrame extends javax.swing.JFrame implements Dispatcher
         statisticsMenu = new javax.swing.JMenu();
         saleStatisticsMenuItem = new javax.swing.JMenuItem();
         clientRankingMenuItem = new javax.swing.JMenuItem();
+        toolMenu = new javax.swing.JMenu();
+        priceCalcMenuItem = new javax.swing.JMenuItem();
         settingMenu = new javax.swing.JMenu();
         currencyMenuItem = new javax.swing.JMenuItem();
         updateExRateMenuItem = new javax.swing.JMenuItem();
@@ -221,6 +223,20 @@ public class SaleAssistantFrame extends javax.swing.JFrame implements Dispatcher
 
         mainMenu.add(statisticsMenu);
 
+        toolMenu.setText(resourceBundle.getString("Tool")); // NOI18N
+        toolMenu.setActionCommand("Tool");
+
+        priceCalcMenuItem.setText(resourceBundle.getString("Price Calculate")); // NOI18N
+        priceCalcMenuItem.setActionCommand("priceCalculatorController.init");
+        priceCalcMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                _menuItemActionPerformed(evt);
+            }
+        });
+        toolMenu.add(priceCalcMenuItem);
+
+        mainMenu.add(toolMenu);
+
         settingMenu.setText(resourceBundle.getString("Setting")); // NOI18N
 
         currencyMenuItem.setText(resourceBundle.getString("Currecy Management")); // NOI18N
@@ -243,7 +259,7 @@ public class SaleAssistantFrame extends javax.swing.JFrame implements Dispatcher
         settingMenu.add(updateExRateMenuItem);
 
         propertiesMenuItem.setText(resourceBundle.getString("Properties")); // NOI18N
-        propertiesMenuItem.setActionCommand("me.ronghai.sa.panel.PropertiesManagementPanel");
+        propertiesMenuItem.setActionCommand("propertyController.init");
         propertiesMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 _menuItemActionPerformed(evt);
@@ -298,6 +314,7 @@ public class SaleAssistantFrame extends javax.swing.JFrame implements Dispatcher
     private javax.swing.JMenuBar mainMenu;
     private javax.swing.JMenuItem merchantMenuItem;
     private javax.swing.JMenu orderMenu;
+    private javax.swing.JMenuItem priceCalcMenuItem;
     private javax.swing.JMenuItem productMenuItem;
     private javax.swing.JMenuItem propertiesMenuItem;
     private javax.swing.JMenuItem purchaseOrderMenuItem;
@@ -305,6 +322,7 @@ public class SaleAssistantFrame extends javax.swing.JFrame implements Dispatcher
     private javax.swing.JMenu settingMenu;
     private javax.swing.JMenuItem shippingMenuItem;
     private javax.swing.JMenu statisticsMenu;
+    private javax.swing.JMenu toolMenu;
     private javax.swing.JMenuItem updateExRateMenuItem;
     // End of variables declaration//GEN-END:variables
 

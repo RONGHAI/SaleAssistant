@@ -39,4 +39,18 @@
     </bean>
     
     
+    <bean id="propertyDAO" class="me.ronghai.sa.dao.impl.PropertyDAOImpl"/>
+    <bean id="propertyService" class="me.ronghai.sa.engine.service.impl.PropertyServiceImpl">
+        <property name="propertyDAO" ref = "propertyDAO"/>        
+    </bean>
+    <bean id="propertyController" class="me.ronghai.sa.controller.PropertyController">
+        <property name="basicCURDPanel" ref = "basicCURDPanel"/>
+        <property name="propertyService" ref="propertyService"/>
+    </bean>
+    
+    <bean id="priceCalculatorController" class="me.ronghai.sa.controller.PriceCalculatorController">
+        <property name="propertyService" ref="propertyService"/>
+    </bean>
+    
+    
 </beans>
