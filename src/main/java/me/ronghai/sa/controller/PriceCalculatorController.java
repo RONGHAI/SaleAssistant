@@ -21,6 +21,8 @@ public class PriceCalculatorController  implements AbstractController {
     
     PropertyService propertyService;
     
+    private double EX_RATE = 6.1, SERVER_FEE_RATE = 0.1;
+    
     public PropertyService getPropertyService() {
         return propertyService;
     }
@@ -30,6 +32,9 @@ public class PriceCalculatorController  implements AbstractController {
     }
     
     public DataWrapperBean init(DataWrapperBean param){
+        EX_RATE = Double.parseDouble(this.propertyService.findPropertyValue("EX_RATE"));
+        SERVER_FEE_RATE = Double.parseDouble(this.propertyService.findPropertyValue("SERVER_FEE_RATE"));
+        
         DataWrapperBean wrapper = new DataWrapperBean(); 
         JPanel panel = new PriceCalculatorPanel();
         wrapper.put("panel", panel);
