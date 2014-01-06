@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import me.ronghai.sa.bean.DataWrapperBean;
-import me.ronghai.sa.controller.AbstractController;
 import me.ronghai.sa.core.context.SaleAssistanceApplicationContext;
 import me.ronghai.sa.view.action.callback.DispatcherCallBack;
 
@@ -43,7 +42,7 @@ public final class SaleAssistansDispatcher implements Serializable {
      * @param action
      * @param frame
      * @param panel
-     * @param wrapper
+     * @param inputWrapper
      * @param callback
      */
     public final static void doDispatch(Object controller, String action, JFrame frame, JPanel panel, DataWrapperBean inputWrapper, DispatcherCallBack callback  ) {
