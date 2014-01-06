@@ -85,7 +85,7 @@ public class CarrierController extends BasicCURDController<Carrier> implements A
         c.setChanged(true);
         c.setAddTime(new Date());
         this.basicTableModel.add(c);  
-        table.editCellAt(1, 0 );
+        table.editCellAt(this.basicTableModel.getRowCount() - 1, 0 );
         return wrapper;
     }
  

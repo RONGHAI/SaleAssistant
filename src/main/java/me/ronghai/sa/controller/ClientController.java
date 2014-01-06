@@ -138,7 +138,7 @@ public class ClientController extends BasicCURDController<Client> implements Abs
         c.setChanged(true);
         c.setAddTime(new Date());
         this.basicTableModel.add(c);  
-        table.editCellAt(1, 0 );
+        table.editCellAt(this.basicTableModel.getRowCount() - 1, 0 );
         return wrapper;
     }
  
