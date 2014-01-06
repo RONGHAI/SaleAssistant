@@ -16,8 +16,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import me.ronghai.sa.dao.AbstractModelDAO;
 import me.ronghai.sa.model.AbstractModel;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -48,7 +46,6 @@ public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractMo
         try {
             entityManager.persist(entity);
         } catch (Exception e) {
-            e.printStackTrace();
             logger.log(Level.SEVERE, null, e);
         }
     }
@@ -97,7 +94,6 @@ public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractMo
             entityManager.merge(entity);
             return entity;
         } catch (Exception e) {
-            e.printStackTrace();;
             logger.log(Level.SEVERE, null, e);
         }
         return null;
