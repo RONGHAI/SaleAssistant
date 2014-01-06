@@ -32,6 +32,14 @@ public class PropertyServiceImpl implements PropertyService, Serializable {
         this.propertyDAO = propertyDAO;
     }
 
+    @Override
+    public String findPropertyValue(String code){
+        List<Property> p = this.propertyDAO.find(" WHERE code = " + code);
+        if(p != null && p.size() > 0 ){
+            return p.get(0).getValue();
+        }
+        return "";
+    }
  
      
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)

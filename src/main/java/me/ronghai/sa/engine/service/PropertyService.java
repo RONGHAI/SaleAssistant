@@ -21,5 +21,6 @@ public interface PropertyService {
     public List<Property> find();
     public void remove(Long ... ids);
     public void remove(Collection<Long> ids);
+    public String findPropertyValue(String code);
     public Property save(Property c);
 }
