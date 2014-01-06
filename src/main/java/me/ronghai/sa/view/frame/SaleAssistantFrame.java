@@ -9,6 +9,7 @@ package me.ronghai.sa.view.frame;
 import java.awt.Container;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import me.ronghai.sa.bean.DataWrapperBean;
 import me.ronghai.sa.util.SaleAssistantConstants;
@@ -286,7 +287,8 @@ public class SaleAssistantFrame extends javax.swing.JFrame implements Dispatcher
     }// </editor-fold>//GEN-END:initComponents
 
     private void _menuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__menuItemActionPerformed
-        doDispatch( evt.getActionCommand(), this, null, null, this);
+        JMenuItem mi  = (JMenuItem)evt.getSource();
+        doDispatch( evt.getActionCommand(), this, null, new DataWrapperBean("actionTitle", mi.getText()), this);
     }//GEN-LAST:event__menuItemActionPerformed
     
      private javax.swing.GroupLayout _getContentPaneLayout() {
@@ -347,8 +349,9 @@ public class SaleAssistantFrame extends javax.swing.JFrame implements Dispatcher
                             .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGap(10, 10, 10))
             );
-            
-            this.setTitle("");
+            if(inputWrapper != null){
+                this.setTitle(inputWrapper.get("actionTitle")+"");
+            }
         }
     }
 }
