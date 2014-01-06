@@ -286,7 +286,7 @@ public class BasicCURDPanel extends javax.swing.JPanel implements DispatcherCall
      }
 
     @Override
-    public void callback(String action, DataWrapperBean wrapper) {
+    public void callback(String action, DataWrapperBean inputWrapper, DataWrapperBean wrapper) {
         this.refreshTable();
     }
     

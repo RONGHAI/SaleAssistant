@@ -14,5 +14,5 @@ import me.ronghai.sa.bean.DataWrapperBean;
  * @author L5M
  */
 public interface DispatcherCallBack extends Serializable {
-       public void callback(String action, DataWrapperBean wrapper);
+       public void callback(String action, DataWrapperBean inputWrapper, DataWrapperBean outputWrapper);
 }

@@ -327,9 +327,9 @@ public class SaleAssistantFrame extends javax.swing.JFrame implements Dispatcher
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void callback(String action, DataWrapperBean wrapper) {
-        if(wrapper == null ) return;
-        Object _panel = wrapper.get("panel");
+    public void callback(String action, DataWrapperBean inputWrapper , DataWrapperBean outputWrapper) {
+        if(outputWrapper == null ) return;
+        Object _panel = outputWrapper.get("panel");
         if (_panel != null) {
             JPanel panel = (JPanel) _panel;
             javax.swing.GroupLayout layout = _getContentPaneLayout();
@@ -347,6 +347,8 @@ public class SaleAssistantFrame extends javax.swing.JFrame implements Dispatcher
                             .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGap(10, 10, 10))
             );
+            
+            this.setTitle("");
         }
     }
 }

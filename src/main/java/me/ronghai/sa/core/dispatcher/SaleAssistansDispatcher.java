@@ -46,22 +46,23 @@ public final class SaleAssistansDispatcher implements Serializable {
      * @param wrapper
      * @param callback
      */
-    public final static void doDispatch(Object controller, String action, JFrame frame, JPanel panel, DataWrapperBean wrapper, DispatcherCallBack callback  ) {
+    public final static void doDispatch(Object controller, String action, JFrame frame, JPanel panel, DataWrapperBean inputWrapper, DispatcherCallBack callback  ) {
         if(action == null ){ 
             if(callback != null){
-                 callback.callback(action, null);          
+                 callback.callback(action, inputWrapper, null);          
             }
             return ;
-        }        
+        }
+        DataWrapperBean outputWrapper = null;
         try {
              Method method = controller.getClass().getMethod(action,  DataWrapperBean.class);
-             wrapper = (DataWrapperBean) method.invoke(controller, wrapper);
+             outputWrapper = (DataWrapperBean) method.invoke(controller, inputWrapper);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException ex) {
             Logger.getLogger(SaleAssistansDispatcher.class.getName()).log(Level.SEVERE, null, ex);
         }
          
          if(callback != null){
-             callback.callback(action, wrapper);
+             callback.callback(action, inputWrapper, outputWrapper);
          }
          
     }
