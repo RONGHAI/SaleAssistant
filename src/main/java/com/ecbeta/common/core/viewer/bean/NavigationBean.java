@@ -1,5 +1,6 @@
 package com.ecbeta.common.core.viewer.bean;
 
+import com.ecbeta.common.constants.Constants;
 import java.io.Serializable;
 import java.util.List;
 
@@ -26,6 +27,39 @@ public class NavigationBean implements Serializable{
     public void setNavTier (int[] navTier) {
         this.navTier = navTier;
     }
+    private String worker;
+    private String label;
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getWorker() {
+        return worker;
+    }
+
+    public void setWorker(String worker) {
+        this.worker = worker;
+    }
     
+    
+    public String getUrl(){
+         return getUrl("");
+    }
+    
+    public String getUrl(String contextPath){
+        StringBuilder url = new StringBuilder();
+        if(StringUtils.isNotEmpty(contextPath)){
+            url.append(contextPath);
+        }
+        url.append("/").append(Constants.CORE_SERVLET).append("/?");
+        url.append(Constants.REQUEST_WORKER).append("=").append(this.worker).append("&"); 
+        url.append(Constants.NAV_TIERS).append("=").append(this.getNavTier("_"));
+        return url.toString();
+    }
     
 }

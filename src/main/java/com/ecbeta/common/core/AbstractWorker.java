@@ -365,9 +365,9 @@ public abstract class AbstractWorker {
    
     public String getUrl () {
         StringBuilder url = new StringBuilder();
-        url.append(Constants.REQUEST_WORKER).append("=").append(this.request.getParameter(Constants.REQUEST_WORKER )).append("&");
+        url.append(this.navigationBean.getUrl(this.request.getContextPath()));
+        url.append("&");
         url.append(Constants.SRC_JSP).append("=").append(this.getJSP_TOGO()).append("&");
-        url.append(Constants.NAV_TIERS).append("=").append(this.getNavTier()).append("&");
         url.append(Constants.BTN_OPTION).append("=");
         return url.toString();
     }
