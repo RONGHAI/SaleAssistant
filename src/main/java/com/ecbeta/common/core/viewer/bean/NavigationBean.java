@@ -51,6 +51,7 @@ public class NavigationBean implements Serializable{
          return getUrl("");
     }
     
+    @JsonIgnore
     public String getUrl(String contextPath){
         StringBuilder url = new StringBuilder();
         if(StringUtils.isNotEmpty(contextPath)){

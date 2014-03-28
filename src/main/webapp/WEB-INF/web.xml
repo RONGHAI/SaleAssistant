@@ -29,6 +29,19 @@
         <servlet-name>rest</servlet-name>
         <url-pattern>/service/*</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <display-name>CoreServlet</display-name>
+        <servlet-name>CoreServlet</servlet-name>
+        <servlet-class>
+            org.springframework.web.context.support.HttpRequestHandlerServlet
+        </servlet-class>
+        <init-param>
+            <param-name>jspPath</param-name>
+            <param-value>/WEB-INF/jsp/</param-value>
+        </init-param>
+    </servlet>
+    <!--
     <servlet>
         <servlet-name>CoreServlet</servlet-name>
         <servlet-class>com.ecbeta.common.core.servlet.CoreServlet</servlet-class>
@@ -37,6 +50,7 @@
             <param-value>/WEB-INF/jsp/</param-value>
         </init-param>
     </servlet>
+    -->
     <servlet-mapping>
         <servlet-name>CoreServlet</servlet-name>
         <url-pattern>/dispath/*</url-pattern>

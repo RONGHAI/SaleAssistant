@@ -22,7 +22,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import me.ronghai.sa.core.context.SaleAssistanceApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 /**
  *
@@ -50,11 +51,12 @@ public class ServicerFactory {
         return id;
     }
 
-    public static AbstractServicer getServicer(HttpSession session, Class<?> servicerClass, String instanceName) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        return getService(session, servicerClass.getName(), instanceName, null);
+    public static AbstractServicer getServicer(HttpSession session, Class<?> servicerClass, String instanceName , ApplicationContext appContext) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        return getService(session, servicerClass.getName(), instanceName, appContext, null);
     }
 
-    public static AbstractServicer getService(HttpSession session, String className, String instanceName, AbstractWorker worker) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public static AbstractServicer getService(HttpSession session, String className, 
+            String instanceName,  ApplicationContext appContext, AbstractWorker worker) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         String servicerId = getServicerID(session, className, instanceName, worker);
         Object servicer = session.getAttribute(servicerId);
         String date = buildDateString();
@@ -64,18 +66,19 @@ public class ServicerFactory {
         } else {
             Class<?> class1 = ReflectUtils.classForName(className);
             Object newInstance = class1.newInstance();
-            injectDAOs((AbstractServicer) newInstance);
-            injectSprings((AbstractServicer) newInstance);
+            injectDAOs((AbstractServicer) newInstance, appContext);
+            autowired((AbstractServicer) newInstance, appContext);
             session.setAttribute(servicerId, newInstance);
             newServiceInstanceIds.add(date + "_" + servicerId);
             return (AbstractServicer) newInstance;
         }
     }
 
-    protected static void injectDAOs(AbstractServicer ser) {
+    protected static void injectDAOs(AbstractServicer ser, ApplicationContext appContext) {
+        if(appContext == null ) return;
         Collection<Field> fields = ReflectUtils.getDeclaredFields((Map<String, Field>) null, ser.getClass(), false).values();
         for (Field field : fields) {
-            if (!field.isAnnotationPresent(Dao.class)) {
+            if (!field.isAnnotationPresent(Dao.class) ) {
                 continue;
             }
             String fieldName = field.getAnnotation(Dao.class).value();
@@ -84,7 +87,7 @@ public class ServicerFactory {
             }
             try {
                 Method setter = ReflectUtils.findSetter(ser, field, null, null);
-                ReflectUtils.updateFieldValue(ser, field, setter, SaleAssistanceApplicationContext.getBean(fieldName));
+                ReflectUtils.updateFieldValue(ser, field, setter, appContext.getBean(fieldName));
             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                 logger.log(Level.SEVERE, null, e);
             }
@@ -92,19 +95,25 @@ public class ServicerFactory {
 
     }
     
-    protected static void injectSprings(AbstractServicer ser) {
+    protected static void autowired(AbstractServicer ser, ApplicationContext appContext) {
+        if(appContext == null ) return;
         Collection<Field> fields = ReflectUtils.getDeclaredFields((Map<String, Field>) null, ser.getClass(), false).values();
         for (Field field : fields) {
-            if (!field.isAnnotationPresent(Spring.class)) {
+            if (!field.isAnnotationPresent(Spring.class) && !field.isAnnotationPresent(Autowired.class)) {
                 continue;
             }
-            String fieldName = field.getAnnotation(Spring.class).value();
-            if (StringUtils.isEmpty(fieldName)) {
-                fieldName = field.getName();
+            
+            String fieldName = field.getName();
+            if(field.isAnnotationPresent(Spring.class) ){
+                fieldName = field.getAnnotation(Spring.class).value();
+                if (StringUtils.isEmpty(fieldName)) {
+                    fieldName = field.getName();
+                }
             }
+             
             try {
                 Method setter = ReflectUtils.findSetter(ser, field, null, null);
-                ReflectUtils.updateFieldValue(ser, field, setter, SaleAssistanceApplicationContext.getBean(fieldName));
+                ReflectUtils.updateFieldValue(ser, field, setter, appContext.getBean(fieldName));
             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                 logger.log(Level.SEVERE, null, e);
             }
