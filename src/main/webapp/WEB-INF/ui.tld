@@ -36,4 +36,26 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
+    
+    <tag>
+        <name>Head</name>
+        <tag-class>com.ecbeta.view.tag.HeadIncludeTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>id</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    
+    <tag>
+        <name>Foot</name>
+        <tag-class>com.ecbeta.view.tag.FootTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>id</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 </taglib>

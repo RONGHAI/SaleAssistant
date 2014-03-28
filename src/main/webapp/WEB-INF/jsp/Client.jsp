@@ -10,19 +10,18 @@
 <html>
     <head>
         <title>${worker.appName}</title>
+        <sm:Head>
+        </sm:Head>
     </head>
     <body>
         
+        <sm:Navigation navigationBeans="${servicer.navigationBeans}" /> 
         
-        <sm:Navigation navigationBeans="${servicer.navigationBeans}" />
-          
-        
-        <sm:Form id='form' worker="${worker}">
-
-
+        <sm:Form id='form' worker="${worker}"> 
             
-        </sm:Form>
-       
+        </sm:Form> 
+        
+        <sm:Foot></sm:Foot>
     </body>
 </html>
 
