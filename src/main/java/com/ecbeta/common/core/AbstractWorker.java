@@ -27,6 +27,7 @@ import com.ecbeta.common.constants.Constants;
 import com.ecbeta.common.core.annotation.Action;
 import com.ecbeta.common.core.annotation.Actions;
 import com.ecbeta.common.core.db.NavigationUtil;
+import com.ecbeta.common.core.servlet.CoreServlet;
 import com.ecbeta.common.core.viewer.BaseViewer;
 import com.ecbeta.common.core.viewer.bean.ExportInformationBean;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
@@ -387,11 +388,15 @@ public abstract class AbstractWorker {
         return true;
     }
     
-    public void init (HttpServletRequest request, HttpServletResponse response, String jspPath, ServletContext servletContext) {
+    public void init (HttpServletRequest request, HttpServletResponse response, String jspPath, CoreServlet servlet, ServletContext servletContext) {
         this.request = request;
         this.response = response;
         this.servletContext = servletContext;
-        this.navigationBean = NavigationUtil.find(request.getParameter(Constants.NAV_TIERS).split("_"));
+        String navTier = request.getParameter(Constants.NAV_TIERS);
+        if(StringUtils.isEmpty(navTier)){
+            navTier = "0_0_0_0";
+        }
+        this.navigationBean = NavigationUtil.find(navTier.split("_"));
         this.btnClicked = request.getParameter(BTN_OPTION);
         this.jspPath = jspPath;
     }

@@ -36,11 +36,14 @@ public class RequestManager implements Serializable, Cloneable {
             final HttpServletResponse response,
             final CoreServlet serv) {
         String workerName = request.getParameter(Constants.REQUEST_WORKER);
+        if(StringUtils.isEmpty(workerName)){
+            workerName = Constants.DEFAULT_WORKER;
+        }
         try{
             Class<?> clazz = ReflectUtils.classForName(workerName);
             AbstractWorker w = (AbstractWorker) clazz.newInstance();
             request.setAttribute(Constants.REQUEST_WORKER_ATTRIBUTE_NAME, workerName);
-            w.init(request, response, serv.getJspPath(), serv.getServletContext());
+            w.init(request, response, serv.getJspPath(), serv, serv.getServletContext());
             return w;
         }catch(Exception e){
             e.printStackTrace();

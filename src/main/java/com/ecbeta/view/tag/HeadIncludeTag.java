@@ -31,7 +31,7 @@ public class HeadIncludeTag  extends AbstractTag{
         HttpServletRequest request = this.getRequest();
         
         StringBuilder sb = new StringBuilder();
-     
+        sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /> \n");
         this.println(sb); 
         return EVAL_BODY_INCLUDE;
     } 
