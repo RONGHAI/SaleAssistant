@@ -39,4 +39,8 @@ public interface AbstractModelDAO<E extends AbstractModel> {
     public long count(String configure);
 
     public E reference(Object id);
+    
+    public List<Object[]> execute(String sql);
+    
+    public int update(String sql);
 }

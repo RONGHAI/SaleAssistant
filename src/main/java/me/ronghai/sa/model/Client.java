@@ -210,5 +210,9 @@ public class Client implements Serializable, AbstractModel {
     public void setChanged(boolean changed) {
         this.changed = changed;
     }
+    
+    public void setDate(String birthday){
+        this.birthday = new Date();
+    }
 
 }

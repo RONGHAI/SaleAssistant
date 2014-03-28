@@ -162,4 +162,15 @@ public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractMo
         }
         return null;
     }
+     @Override
+     public List<Object[]> execute(String sql){
+         Query query = entityManager.createNativeQuery(sql); 
+         return query.getResultList(); 
+     }
+     
+     @Override
+     public int update(String sql){
+        Query query = entityManager.createNativeQuery(sql); 
+        return query.executeUpdate();
+     }  
 }

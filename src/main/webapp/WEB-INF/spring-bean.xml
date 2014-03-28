@@ -20,11 +20,13 @@
     
     <bean id="basicCURDPanel" class="me.ronghai.sa.view.panel.BasicCURDPanel"/>    
     
+    <bean id="plainDAO"  class="me.ronghai.sa.dao.impl.PlainDAOImpl"/>
+    
     <bean id="clientDAO" class="me.ronghai.sa.dao.impl.ClientDAOImpl"/>
     <bean id="clientService" class="me.ronghai.sa.engine.service.impl.ClientServiceImpl">
         <property name="clientDAO" ref = "clientDAO"/>        
     </bean>
-    <bean id="clientController" class="me.ronghai.sa.controller.ClientController">
+    <bean id="clientController" class="me.ronghai.sabasicCURDPanel.controller.ClientController">
         <property name="basicCURDPanel" ref = "basicCURDPanel"/>
         <property name="clientService" ref="clientService"/>
     </bean>
