@@ -43,4 +43,20 @@
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
+        <action>
+            <actionName>CUSTOM-清理构建并运行</actionName>
+            <displayName>清理构建并运行</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>package</goal>
+                <goal>jetty:run</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-更新数据库</actionName>
+            <displayName>更新数据库</displayName>
+            <goals>
+                <goal>flyway:migrate</goal>
+            </goals>
+        </action>
     </actions>

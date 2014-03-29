@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.ecbeta.common.util.StringUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 
 public class NavigationBean implements Serializable{

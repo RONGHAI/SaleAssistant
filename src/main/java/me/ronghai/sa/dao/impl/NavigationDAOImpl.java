@@ -6,14 +6,13 @@
 
 package me.ronghai.sa.dao.impl;
 
-import me.ronghai.sa.dao.PlainDAO;
-import me.ronghai.sa.model.AbstractModel;
-
+import me.ronghai.sa.dao.NavigationDAO;
+import me.ronghai.sa.model.Navigation;
 
 /**
  *
- * @author Ronghai Wei <ronghai.wei@outlook.com>
+ * @author ronghai
  */
-public class PlainDAOImpl  extends AbstractModelDAOImpl<AbstractModel> implements PlainDAO {
+public class NavigationDAOImpl extends AbstractModelDAOImpl<Navigation> implements NavigationDAO{
     
 }

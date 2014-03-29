@@ -6,9 +6,10 @@
 package com.ecbeta.view.tag;
 
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
-import java.io.Serializable;
 import java.util.List;
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.tagext.BodyContent;
 /**
  *
  * @author Ronghai Wei <ronghai.wei@outlook.com>
@@ -20,6 +21,7 @@ public class NavigationTag extends AbstractTag {
     }
 
     private List<NavigationBean> navigationBeans;
+    private String bodyString;
 
     public List<NavigationBean> getNavigationBeans() {
         return navigationBeans;
@@ -47,19 +49,10 @@ public class NavigationTag extends AbstractTag {
     @Override
     public int doStartTag() throws JspException {
         int returnValue = super.doStartTag();
-        HttpServletRequest request = this.getRequest();
 
         return returnValue;
     }
-
-    public String getContextPath() {
-        return ((HttpServletRequest) this.pageContext.getRequest()).getContextPath();
-    }
-
-    protected HttpServletRequest getRequest() {
-        HttpServletRequest request = (HttpServletRequest) this.pageContext.getRequest();
-        return request;
-    }
+ 
 
     private String render(List<NavigationBean> navigationBeans, int level) {
         if (navigationBeans == null || navigationBeans.isEmpty()) {

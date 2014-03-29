@@ -7,13 +7,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import org.postgresql.util.Base64;
 
-import sun.misc.BASE64Encoder;
 
 public class HtmlHelper {
 	public enum ResourceType {
 		JAVASCRIPT("js"), CSS("css");
-		private String jsType; 
+		private final String jsType; 
 		private ResourceType(String jsType) {
 			this.jsType = jsType;
 		}
@@ -41,14 +41,7 @@ public class HtmlHelper {
 		
 		
 	}
-	/**
-	 
-	 * @param reader
-	 * @return
-	 * @throws IOException
-	 * 
- 
-	 */
+	
 	public final static String encode(String file) throws IOException{ 
 	     return encode(new File(file));
 	}
@@ -59,42 +52,14 @@ public class HtmlHelper {
 
 	
 	
-	/**
-	 * 
-	 * @param reader
-	 * @return
-	 * @throws IOException
-	 * 
-	  
-	 */
-	private final static String encode( byte[] array ) throws IOException{ 
-	/*	BASE64Encoder encoder = new BASE64Encoder();
-		String line = null;
+	
+	public final static String encode( byte[] array ) throws IOException{ 
+	 
+		return Base64.encodeBytes(array);
+		//return  new BASE64Encoder().encode(array);
 		
-		StringBuffer sb  = new StringBuffer();
-		
-	 while( (line = reader.readLine()) != null){
-			sb.append(encoder.encode(line.getBytes()) ); 
-		} 
-		
-		return sb.toString(); */
-		
-		return  new BASE64Encoder().encode(array);
-		
-		 
-	/*	while( (line = reader.readLine()) != null){
-			sb.append(line ); 
-		} 
-		return encoder.encode(sb.toString().getBytes()); 
-*/	}
-	/**
-	 * 
-	 * @param reader
-	 * @return
-	 * @throws IOException
-	 * 
-	  
-	 */
+	}
+	 
 	public final static String encode(File file) throws IOException{ 
 		 BufferedImage image = ImageIO.read(file);   
 	     ByteArrayOutputStream baos = new ByteArrayOutputStream();   
@@ -107,8 +72,6 @@ public class HtmlHelper {
 		try {
 			System.out.println(encode("C:/1297912793593_line60003221.jpg"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		
 	}
@@ -209,7 +172,7 @@ public class HtmlHelper {
 		
 		if(tabs){
 			for(int i = 0 ; i< content.length ; i++){
-				sb.append(" <div data-type='header' id='header_"+i+"' onclick=\"javascript:changePanel('"+i+"');\" class='"+(panelIndex== i ?"focus":"base")+"'>");
+				sb.append(" <div data-type='header' id='header_").append(i).append("' onclick=\"javascript:changePanel('").append(i).append("');\" class='").append(panelIndex== i ?"focus":"base").append("'>");
 				sb.append(panels[i]);			
 				sb.append(" </div>");
 			}
@@ -218,7 +181,7 @@ public class HtmlHelper {
 		sb.append(" </div><!-- end  reportTopBox -->");
  
 		for(int i = 0 ; i< content.length ; i++){ 
-			sb.append(" <div data-type='content' style='width:100%;clear:both;display:"+(panelIndex== i ?"block":"none")+"'  id='content_"+i+"'  >");
+			sb.append(" <div data-type='content' style='width:100%;clear:both;display:").append(panelIndex== i ?"block":"none").append("'  id='content_").append(i).append("'  >");
 			sb.append(content[i]);			
 			sb.append(" </div>"); 
 		}  
@@ -227,7 +190,7 @@ public class HtmlHelper {
 		return sb.toString();
 	}
 	
-	private static String appHomeDir = System.getProperty("catalina.home") ;// + AppConfig.getProperty("appPath");
+	public static String appHomeDir = System.getProperty("catalina.home") ;// + AppConfig.getProperty("appPath");
 	 
 	public static String filePath(String compchartimage){ 
 			return appHomeDir + compchartimage;

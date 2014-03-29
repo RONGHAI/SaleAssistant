@@ -6,6 +6,9 @@
 
 package com.ecbeta.view.tag;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspException;
+
 /**
  *
  * @author Ronghai Wei <ronghai.wei@outlook.com>
@@ -38,7 +41,6 @@ public class FootTag  extends AbstractTag{
     
     @Override
     public void release() { 
-        this.worker = null;
         super.release();
     }
  

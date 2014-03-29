@@ -5,7 +5,7 @@
     <groupId>me.ronghai</groupId>
     <artifactId>SaleAssistant</artifactId>
     <version>0.0.1</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <name>SaleAssistant</name>
     <url>http://maven.apache.org</url>
@@ -28,12 +28,18 @@
         <flywaydb.version>2.2.1</flywaydb.version>
         <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
         <beansbinding.version>1.2.1</beansbinding.version>
-        <commons.lang.version>3.0</commons.lang.version>
+        <commons.lang.version>2.4</commons.lang.version>
         <javax.servlet.version>2.5</javax.servlet.version>
         <maven.surefire.plugin.version>2.12.4</maven.surefire.plugin.version>
         <maven.jetty.plugin.version>6.1.26</maven.jetty.plugin.version>
         <maven.compiler.plugin.version>1.6</maven.compiler.plugin.version>
         <tomcat-jdbc.version>7.0.40</tomcat-jdbc.version>
+        <commons.io.version>2.4</commons.io.version>
+        <javax.mail.version>1.4</javax.mail.version>
+        <json.version>1.8.4</json.version>
+        <jsp-api.version>2.0</jsp-api.version>
+        <checkstyle.version>5.7</checkstyle.version>
+        <commons.fileupload.version>1.3</commons.fileupload.version>
     </properties>
   
 
@@ -48,11 +54,13 @@
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>${commons.lang.version}</version>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>${javax.servlet.version}</version>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
@@ -86,7 +94,11 @@
             <version>${log4j.version}</version>
         </dependency>
     
-
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${commons.fileupload.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
@@ -143,9 +155,33 @@
             <version>${beansbinding.version}</version>
         </dependency>
         <dependency>
-                <groupId>org.apache.tomcat</groupId>
-                <artifactId>tomcat-jdbc</artifactId>
-                <version>${tomcat-jdbc.version}</version>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+            <version>${tomcat-jdbc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${javax.mail.version}</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+            <version>${json.version}</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>${jsp-api.version}</version>
+            <type>jar</type>
         </dependency>
     </dependencies>
     <build>
@@ -225,4 +261,16 @@
         </plugins>
       
     </build>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <configuration>
+                    <configLocation>config/sun_checks.xml</configLocation>
+                </configuration>
+                <version>${checkstyle.version}</version>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>

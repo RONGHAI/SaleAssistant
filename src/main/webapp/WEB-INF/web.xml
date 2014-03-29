@@ -29,7 +29,7 @@
         <servlet-name>rest</servlet-name>
         <url-pattern>/service/*</url-pattern>
     </servlet-mapping>
-    
+    <!--
     <servlet>
         <display-name>CoreServlet</display-name>
         <servlet-name>CoreServlet</servlet-name>
@@ -41,7 +41,7 @@
             <param-value>/WEB-INF/jsp/</param-value>
         </init-param>
     </servlet>
-    <!--
+    -->
     <servlet>
         <servlet-name>CoreServlet</servlet-name>
         <servlet-class>com.ecbeta.common.core.servlet.CoreServlet</servlet-class>
@@ -50,10 +50,11 @@
             <param-value>/WEB-INF/jsp/</param-value>
         </init-param>
     </servlet>
-    -->
     <servlet-mapping>
         <servlet-name>CoreServlet</servlet-name>
         <url-pattern>/dispath/*</url-pattern>
+        <url-pattern>/CoreServlet/*</url-pattern>
+        <url-pattern>/CoreServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>480</session-timeout>

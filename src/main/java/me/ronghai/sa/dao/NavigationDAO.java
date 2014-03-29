@@ -6,12 +6,13 @@
 
 package me.ronghai.sa.dao;
 
-import me.ronghai.sa.model.AbstractModel;
+import me.ronghai.sa.model.Navigation;
 
 /**
  *
- * @author Ronghai Wei <ronghai.wei@outlook.com>
+ * @author ronghai
  */
+public interface NavigationDAO extends AbstractModelDAO<Navigation>{
+   
 
-public interface PlainDAO extends AbstractModelDAO<AbstractModel>{ 
 }

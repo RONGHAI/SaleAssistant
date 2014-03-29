@@ -339,7 +339,6 @@ public abstract class AbstractWorker {
                 String s = viewer.toHTML();
                 return s;
             } catch (Exception e) {
-                e.printStackTrace();
             }
         }
         return "";
@@ -491,6 +490,9 @@ public abstract class AbstractWorker {
         try{
             try {
                 this.btnClicked = request.getParameter(BTN_OPTION);
+                if(StringUtils.isEmpty(this.btnClicked)){
+                    this.btnClicked = "";
+                }
                 String refresh = request.getParameter(REFRESH_TYPE);
                 this.needForwordToJsp = !(refresh != null && refresh.equals(JSON_REFRESH_TYPE) );
                 String action = this.createAction(btnClicked);
@@ -500,7 +502,7 @@ public abstract class AbstractWorker {
                 } else {
                     this.bindParams(request, btnClicked, action);
                 }
-                if (this.btnClicked != null && this.btnClicked != "" && (!this.btnClicked.equals("") && (!this.btnClicked.equals(PROGRESS_PAGE_POSTBACK) ) )) {
+                if (this.btnClicked != null && !"".equals(this.btnClicked) && (!this.btnClicked.equals("") && (!this.btnClicked.equals(PROGRESS_PAGE_POSTBACK) ) )) {
                     this.processButtonClickedAction(action);
                 }
             } catch (Exception e) {

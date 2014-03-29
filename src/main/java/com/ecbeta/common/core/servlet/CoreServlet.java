@@ -34,14 +34,16 @@ import org.springframework.stereotype.Component;
 public class CoreServlet extends HttpServlet  implements org.springframework.web.HttpRequestHandler{
     private static final long serialVersionUID = 8170475189258718371L;
     private static final Logger logger =   Logger.getLogger(CoreServlet.class.getName()) ;
-    private String jspPath="";
+    private String jspPath="/WEB-INF/jsp/";
     
     @Autowired
     protected ApplicationContext appContext;
     
+    /*
     @Autowired
     protected NavigationService navigationService;
-    
+    */
+    @Override
     public void init() throws ServletException{
         try{ 
             jspPath =  ( getServletConfig().getInitParameter("jspPath") );
@@ -57,6 +59,7 @@ public class CoreServlet extends HttpServlet  implements org.springframework.web
         this.service(request, response);
     }
     
+    @Override
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         AbstractWorker worker = RequestManager.getInstance().createWorker(request, response, this);
         this.injectServicers(request, response, worker);
@@ -73,7 +76,7 @@ public class CoreServlet extends HttpServlet  implements org.springframework.web
         return naviBeans;
     }
     
-    protected void injectServicers(HttpServletRequest request, HttpServletResponse response, AbstractWorker worker){
+    protected void injectServicers(HttpServletRequest request, HttpServletResponse response, AbstractWorker worker)  {
         Collection<Field> fields = ReflectUtils.getDeclaredFields((Map<String, Field>)null, worker.getClass(), false).values();
         List<NavigationBean> naviBeans  = this.getNavigationBean();
         for(Field field : fields){
@@ -86,11 +89,12 @@ public class CoreServlet extends HttpServlet  implements org.springframework.web
                 AbstractServicer servicer = ServicerFactory.getService(request.getSession(), fieldClassName , field.getName(), this.appContext, worker); 
                 if(ServicerFactory.isNewInstance(request.getSession(), fieldClassName , field.getName(), worker)){
                     servicer.setNavigationBeans(naviBeans);
+                    servicer.setAppContext(appContext);
                     servicer.init(worker.getNavigationBean());
                 } 
                 Method setter = ReflectUtils.findSetter(worker, field, null, null); 
                 ReflectUtils.updateFieldValue(worker, field, setter,  servicer);
-            } catch (    IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            } catch (    IllegalAccessException | IllegalArgumentException | InvocationTargetException |ClassNotFoundException | InstantiationException e) {
                 logger.log(Level.SEVERE, null, e);
             }
         }

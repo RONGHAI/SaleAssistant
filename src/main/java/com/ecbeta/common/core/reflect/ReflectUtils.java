@@ -17,8 +17,12 @@ import org.apache.commons.lang.StringUtils;
 
 import com.ecbeta.common.core.annotation.ParseMethodType;
 import com.ecbeta.common.core.annotation.RequestParse;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ReflectUtils {
+    private static final Logger logger =   Logger.getLogger(ReflectUtils.class.getName()) ;
 
     
     public static Class<?> classForName (String className) throws ClassNotFoundException {
@@ -38,7 +42,7 @@ public class ReflectUtils {
     
     public static Map<String, Field> getDeclaredFields(Map<String, Field> fields, Class<?> type, boolean allSuper) {
         if (fields == null) {
-            fields = new HashMap<String, Field>();
+            fields = new HashMap<>();
         }
         for (Field field : type.getDeclaredFields()) {
             if (!fields.containsKey(field.getName())) {
@@ -54,11 +58,9 @@ public class ReflectUtils {
     
     public static List<Field> getDeclaredFields (List<Field> fields, Class<?> type, boolean allSuper) {
         if (fields == null) {
-            fields = new ArrayList<Field>();
+            fields = new ArrayList<>();
         }
-        for (Field field : type.getDeclaredFields()) {
-            fields.add(field);
-        }
+        fields.addAll(Arrays.asList(type.getDeclaredFields()));
 
         if ( allSuper && type.getSuperclass() != null) {
             fields = getDeclaredFields(fields, type.getSuperclass() , allSuper);
@@ -105,16 +107,17 @@ public class ReflectUtils {
         return null;
     }
 
-    private static boolean _SHOW_EXCEPTION = true;
+    protected static boolean _SHOW_EXCEPTION = true;
 
     public static final Method findMethod (Object instance, String name, Class<?>[] clazz) {
         try {
             Method setter = instance.getClass().getMethod(name, clazz);
             return setter;
         } catch (SecurityException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, null, e);
         } catch (NoSuchMethodException e) {
             if (_SHOW_EXCEPTION) {
+                logger.log(Level.WARNING, null, e);
                 System.err.println("BaseServicerParaBean.__findMethod__");
                 System.err.println("BaseServicerParaBean.__findMethod__ (" + name +")" + e); 
             }
@@ -171,7 +174,7 @@ public class ReflectUtils {
                     return parser;
                 }
             } catch (SecurityException e) {
-                e.printStackTrace();
+                logger.log(Level.WARNING, null, e);
             }
         }
         return null;
@@ -185,8 +188,8 @@ public class ReflectUtils {
                 field.setAccessible(true);
                 field.set(instance, value);
             }
-        } catch (Exception e) {
-
+        } catch (IllegalAccessException | IllegalArgumentException | SecurityException | InvocationTargetException e) {
+            
         }
     }
     
@@ -226,20 +229,16 @@ public class ReflectUtils {
         try {
             field = ownerClass.getDeclaredField(fieldName);
             return field;
-        } catch (NoSuchFieldException e) {
-
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (NoSuchFieldException | SecurityException e) {
+            logger.log(Level.WARNING, null, e);
+        } 
         if (ownerClass.getSuperclass() != null) {
             return getField(ownerClass.getSuperclass(), fieldName);
         } else {
             try {
                 throw new NoSuchFieldException(fieldName);
             } catch (NoSuchFieldException e) {
-                e.printStackTrace();
+               logger.log(Level.WARNING, null, e);
             }
             return field;
         }

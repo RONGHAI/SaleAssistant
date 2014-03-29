@@ -8,21 +8,19 @@ import com.ecbeta.common.core.bean.BaseServicerParaBean;
 import com.ecbeta.common.core.viewer.bean.ExportInformationBean;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import com.ecbeta.common.core.viewer.bean.PanelTab;
-import me.ronghai.sa.dao.impl.PlainDAOImpl;
+import org.springframework.context.ApplicationContext;
 
 public abstract class AbstractServicer implements Serializable{
     
-    @Dao
-    private PlainDAOImpl plainDAO;
+    protected ApplicationContext appContext;
 
-    public PlainDAOImpl getPlainDAO() {
-        return plainDAO;
+    public ApplicationContext getAppContext() {
+        return appContext;
     }
 
-    public void setPlainDAO(PlainDAOImpl plainDAO) {
-        this.plainDAO = plainDAO;
+    public void setAppContext(ApplicationContext appContext) {
+        this.appContext = appContext;
     }
-  
     
     public List<NavigationBean> navigationBeans;
     /**

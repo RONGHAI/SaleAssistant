@@ -9,8 +9,12 @@ import com.ecbeta.common.constants.Constants;
 import com.ecbeta.common.core.AbstractWorker;
 import com.ecbeta.common.core.reflect.ReflectUtils;
 import com.ecbeta.common.core.servlet.CoreServlet;
+import com.ecbeta.common.util.StringUtils;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RequestManager implements Serializable, Cloneable {
+    private static final Logger logger =   Logger.getLogger(RequestManager.class.getName()) ;
 
     /**
      * 
@@ -28,7 +32,8 @@ public class RequestManager implements Serializable, Cloneable {
         return singleton;
     }
     
-    public RequestManager clone(){
+    @Override
+    public RequestManager clone() throws CloneNotSupportedException{
         return getInstance();
     }
     
@@ -42,11 +47,11 @@ public class RequestManager implements Serializable, Cloneable {
         try{
             Class<?> clazz = ReflectUtils.classForName(workerName);
             AbstractWorker w = (AbstractWorker) clazz.newInstance();
-            request.setAttribute(Constants.REQUEST_WORKER_ATTRIBUTE_NAME, workerName);
+            request.setAttribute(Constants.REQUEST_WORKER_ATTRIBUTE_NAME, w);
             w.init(request, response, serv.getJspPath(), serv, serv.getServletContext());
             return w;
-        }catch(Exception e){
-            e.printStackTrace();
+        }catch(ClassNotFoundException | IllegalAccessException | InstantiationException e){
+            logger.log(Level.SEVERE, null, e);
         }
         
         return null;

@@ -14,38 +14,50 @@
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
 			http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd" >
 			
+    
+    <!--
     <bean id="saleAssistantController" class="me.ronghai.sa.controller.SaleAssistantController">
     </bean>
     <bean id="saleAssistantFrame" class="me.ronghai.sa.view.frame.SaleAssistantFrame"/>
     
     <bean id="basicCURDPanel" class="me.ronghai.sa.view.panel.BasicCURDPanel"/>    
+    -->
+    <bean id="CoreServlet" class="com.ecbeta.common.core.servlet.CoreServlet"/>
     
-    <bean id="plainDAO"  class="me.ronghai.sa.dao.impl.PlainDAOImpl"/>
+    <bean id="navigationDAO" class="me.ronghai.sa.dao.impl.NavigationDAOImpl"/>
+    <bean id="navigationService" class="me.ronghai.sa.engine.service.impl.NavigationServiceImpl">
+        <property name="navigationDAO" ref = "navigationDAO"/>        
+    </bean>
+    
     
     <bean id="clientDAO" class="me.ronghai.sa.dao.impl.ClientDAOImpl"/>
     <bean id="clientService" class="me.ronghai.sa.engine.service.impl.ClientServiceImpl">
         <property name="clientDAO" ref = "clientDAO"/>        
     </bean>
+    
+    <!--
     <bean id="clientController" class="me.ronghai.sabasicCURDPanel.controller.ClientController">
         <property name="basicCURDPanel" ref = "basicCURDPanel"/>
         <property name="clientService" ref="clientService"/>
     </bean>
-    
+    -->
     
     <bean id="carrierDAO" class="me.ronghai.sa.dao.impl.CarrierDAOImpl"/>
     <bean id="carrierService" class="me.ronghai.sa.engine.service.impl.CarrierServiceImpl">
         <property name="carrierDAO" ref = "carrierDAO"/>        
     </bean>
+    <!--
     <bean id="carrierController" class="me.ronghai.sa.controller.CarrierController">
         <property name="basicCURDPanel" ref = "basicCURDPanel"/>
         <property name="carrierService" ref="carrierService"/>
     </bean>
-    
+    -->
     
     <bean id="propertyDAO" class="me.ronghai.sa.dao.impl.PropertyDAOImpl"/>
     <bean id="propertyService" class="me.ronghai.sa.engine.service.impl.PropertyServiceImpl">
         <property name="propertyDAO" ref = "propertyDAO"/>        
     </bean>
+    <!--
     <bean id="propertyController" class="me.ronghai.sa.controller.PropertyController">
         <property name="basicCURDPanel" ref = "basicCURDPanel"/>
         <property name="propertyService" ref="propertyService"/>
@@ -54,6 +66,6 @@
     <bean id="priceCalculatorController" class="me.ronghai.sa.controller.PriceCalculatorController">
         <property name="propertyService" ref="propertyService"/>
     </bean>
-    
+    -->
     
 </beans>
