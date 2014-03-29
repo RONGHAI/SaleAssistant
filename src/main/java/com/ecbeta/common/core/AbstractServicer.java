@@ -1,6 +1,5 @@
 package com.ecbeta.common.core;
 
-import com.ecbeta.common.core.annotation.Dao;
 import java.io.Serializable;
 import java.util.List;
 

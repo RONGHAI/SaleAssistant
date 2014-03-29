@@ -89,6 +89,7 @@ public class ServicerFactory {
                 Method setter = ReflectUtils.findSetter(ser, field, null, null);
                 ReflectUtils.updateFieldValue(ser, field, setter, appContext.getBean(fieldName));
             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                logger.log(Level.SEVERE, null, fieldName);
                 logger.log(Level.SEVERE, null, e);
             }
         }

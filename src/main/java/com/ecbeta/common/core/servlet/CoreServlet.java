@@ -26,9 +26,12 @@ import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import me.ronghai.sa.engine.service.NavigationService;
+import me.ronghai.sa.model.Navigation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 @Component("CoreServlet")
 public class CoreServlet extends HttpServlet  implements org.springframework.web.HttpRequestHandler{
@@ -39,10 +42,10 @@ public class CoreServlet extends HttpServlet  implements org.springframework.web
     @Autowired
     protected ApplicationContext appContext;
     
-    /*
+    
     @Autowired
     protected NavigationService navigationService;
-    */
+    
     @Override
     public void init() throws ServletException{
         try{ 
@@ -53,6 +56,7 @@ public class CoreServlet extends HttpServlet  implements org.springframework.web
         }catch(Exception e){
             logger.log(Level.SEVERE, null, e);
         }
+      
     }
     @Override
     public void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
@@ -61,24 +65,50 @@ public class CoreServlet extends HttpServlet  implements org.springframework.web
     
     @Override
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        
         AbstractWorker worker = RequestManager.getInstance().createWorker(request, response, this);
         this.injectServicers(request, response, worker);
         worker.processRequest();
     }
     
+    public ApplicationContext getAppContext(){
+        if(appContext == null){
+            this.appContext = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+        }
+        return this.appContext;
+    }
+    
+    public NavigationService getNavigationService(){
+        if(navigationService == null){
+            this.navigationService = (NavigationService) this.getAppContext().getBean("navigationService");
+        }
+        return this.navigationService;
+    }
+    
     @SuppressWarnings("unchecked")
-    protected  List<NavigationBean>  getNavigationBean(){
+    protected  List<NavigationBean>  getNavigationBeans(){
         List<NavigationBean> naviBeans = ( List<NavigationBean> ) this.getServletContext().getAttribute(Constants.ALL_NAVIGATIONBEANS);
         if(naviBeans == null){
-            naviBeans  = NavigationUtil.find();
+            naviBeans  = NavigationUtil.convert(this.getNavigationService().find());
             this.getServletContext().setAttribute(Constants.ALL_NAVIGATIONBEANS  , naviBeans);
         }
         return naviBeans;
     }
     
+    public NavigationBean find(String[] ar){
+        String li = StringUtils.join(ar,"_");
+        List<NavigationBean> navBeans = this.getNavigationBeans();
+        for(NavigationBean b : navBeans){
+            if(b.getNavTier("_").equals(li)){
+                return b;
+            }
+        }
+        return null;
+    }
+    
     protected void injectServicers(HttpServletRequest request, HttpServletResponse response, AbstractWorker worker)  {
         Collection<Field> fields = ReflectUtils.getDeclaredFields((Map<String, Field>)null, worker.getClass(), false).values();
-        List<NavigationBean> naviBeans  = this.getNavigationBean();
+        List<NavigationBean> naviBeans  = this.getNavigationBeans();
         for(Field field : fields){
             if(!field.isAnnotationPresent(ServicerType.class)) continue;
             String fieldClassName = field.getAnnotation(ServicerType.class).value();
@@ -86,10 +116,10 @@ public class CoreServlet extends HttpServlet  implements org.springframework.web
                 fieldClassName = field.getType().getName();
             }
             try {
-                AbstractServicer servicer = ServicerFactory.getService(request.getSession(), fieldClassName , field.getName(), this.appContext, worker); 
+                AbstractServicer servicer = ServicerFactory.getService(request.getSession(), fieldClassName , field.getName(), this.getAppContext(), worker); 
                 if(ServicerFactory.isNewInstance(request.getSession(), fieldClassName , field.getName(), worker)){
                     servicer.setNavigationBeans(naviBeans);
-                    servicer.setAppContext(appContext);
+                    servicer.setAppContext(this.getAppContext());
                     servicer.init(worker.getNavigationBean());
                 } 
                 Method setter = ReflectUtils.findSetter(worker, field, null, null); 

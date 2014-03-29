@@ -395,7 +395,7 @@ public abstract class AbstractWorker {
         if(StringUtils.isEmpty(navTier)){
             navTier = "0_0_0_0";
         }
-        this.navigationBean = NavigationUtil.find(navTier.split("_"));
+        this.navigationBean = servlet.find(navTier.split("_"));
         this.btnClicked = request.getParameter(BTN_OPTION);
         this.jspPath = jspPath;
     }
