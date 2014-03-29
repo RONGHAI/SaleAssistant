@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-import org.postgresql.util.Base64;
+import org.codehaus.plexus.util.Base64;
 
 
 public class HtmlHelper {
@@ -54,8 +54,8 @@ public class HtmlHelper {
 	
 	
 	public final static String encode( byte[] array ) throws IOException{ 
-	 
-		return Base64.encodeBytes(array);
+	   return  new String(Base64.encodeBase64(array));
+		//return Base64.encodeBytes(array);
 		//return  new BASE64Encoder().encode(array);
 		
 	}
