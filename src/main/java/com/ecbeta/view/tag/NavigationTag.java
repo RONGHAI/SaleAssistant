@@ -7,7 +7,6 @@ package com.ecbeta.view.tag;
 
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyContent;
 /**
@@ -64,8 +63,10 @@ public class NavigationTag extends AbstractTag {
             NavigationBean bean = navigationBeans.get(i);
             sb.append("<div ");
             sb.append(" data-level='").append(level).append("' ");
+            sb.append(" > ");
             String url = bean.getUrl(this.getContextPath());
             sb.append("<a href='").append(url).append("' ");
+            sb.append(" > ");
             sb.append(bean.getLabel()).append("</a>"); 
             if (bean.getChildren() != null) { 
                 sb.append(render(bean.getChildren(), level+1)); 
