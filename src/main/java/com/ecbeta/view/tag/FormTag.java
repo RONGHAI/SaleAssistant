@@ -47,7 +47,7 @@ public class FormTag  extends AbstractTag{
         StringBuilder sb = new StringBuilder();
         sb.append("<dvi id='form' > ").append("\n");
         sb.append("<form class='formnomargin' name='").append(worker.getFORM_NAME()).append("'  id='").append(worker.getFORM_NAME()).append("'  action='"+CORE_SERVLET+"' method='post'>").append("\n");
-        sb.append("     <input type='hidden' name='" + REQUEST_WORKER + "' id='" + REQUEST_WORKER + "' value='").append(worker.getWORKER_NAME()).append("' />").append("\n");
+        sb.append("     <input type='hidden' name='" + REQUEST_WORKER + "' id='" + REQUEST_WORKER + "' value='").append(worker.getClass().getName()).append("' />").append("\n");
         sb.append("     <input type='hidden' name='" + SRC_JSP + "' id='" + SRC_JSP + "' value='").append(worker.getJspGoto()).append("' />").append("\n");
         sb.append("     <input type='hidden' name='"+BTN_OPTION+"' id='"+BTN_OPTION+"'  value='' /> ").append("\n");
         sb.append("     <input type='hidden' name='" + NAV_TIERS + "' id='" + NAV_TIERS + "' value='").append(worker.getNavTier()).append("' />").append("\n");
