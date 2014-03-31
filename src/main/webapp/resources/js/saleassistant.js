@@ -18,9 +18,49 @@ if (jQuery) {
                 console.debug(d);
             }
         };
-        
+
+        sale_assistant.autoUpdate = function(data) {
+            if (!data)
+                return;
+            var zones = data.contentRefreshZone;
+            if (zones) {
+                for (var z in zones) {
+                    try {
+                        $j("#" + z).innerHTML = zones[z];
+                    } catch (ex) {
+                        sale_assistant.log(z);
+                    }
+                }
+            }
+            var scripts = data['scriptRefreshZone'];
+            if (scripts) {
+                for (var i = 0; i < scripts.length; i++) {
+                    try {
+                        eval(scripts[i]);
+                    } catch (ex) {
+                        sale_assistant.log(ex);
+                    }
+                    ;
+                }
+            }
+            var clearZones = responseJSON['clearRefreshZone'];
+            if (clearZones) {
+                for (var i = 0; i < clearZones.length; i++) {
+                    try {
+                        $(clearZones[i]).innerHTML = '';
+                    } catch (e) {
+                        sale_assistant.log(e);
+                    }
+                }
+            }
+            if (data.data) {
+                sale_assistant.autoUpdate(data.data);
+            }
+        };
+
+
         sale_assistant.callbackFunction = function(func, transport) {
-            if (func && typeof(func) === 'function') {
+            if (func && typeof (func) === 'function') {
                 var callBack = func;
                 callBack(transport);
                 return true;
@@ -28,52 +68,52 @@ if (jQuery) {
                 return false;
             }
         };
-        
-        sale_assistant.queryString2JSON = function(qry ){
+
+        sale_assistant.queryString2JSON = function(qry) {
             var pairs = qry.split('&');
             var result = {};
             pairs.forEach(function(pair) {
                 pair = pair.split('=');
-                if(pair[1]){
+                if (pair[1]) {
                     var va = decodeURIComponent(pair[1]);
                     var curr = result[pair[0]];
-                    if(curr){
-                        if(Array.isArray(curr)){
-                            curr.push(va); 
-                        }else{
+                    if (curr) {
+                        if (Array.isArray(curr)) {
+                            curr.push(va);
+                        } else {
                             result[pair[0]] = [curr, va];
                         }
-                    }else{
+                    } else {
                         result[pair[0]] = decodeURIComponent(va);
                     }
                 }
             });
             return JSON.parse(JSON.stringify(result));
         };
-         
+
 
         sale_assistant.init = function(uri, butName, formName) {
             sale_assistant.baseURLWithButton = uri;
             sale_assistant.actionButton = butName;
             sale_assistant.form = formName;
         };
-        
+
         sale_assistant.serialize = function(zone) {
             var zones = zone.split(/;|,/);
             var params = "";
             for (var index = 0; index < zones.length; index++) {
-                params += $j( "#"+zones[index] ).serialize();
-                if(index !== zones.length - 1){
+                params += $j("#" + zones[index]).serialize();
+                if (index !== zones.length - 1) {
                     params += "&";
                 }
             }
             return params;
         };
-        
-        sale_assistant.get = function(action, paraZone, sucessCallback, errorCallback) {
+
+        sale_assistant.get = function(action, paraZone, sucessCallback, errorCallback, autoUpdate) {
             var paras = sale_assistant.serialize(paraZone);
             $j.ajax({
-                url:sale_assistant.baseURLWithButton+action,
+                url: sale_assistant.baseURLWithButton + action,
                 header: {
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Methods": "GET"
@@ -85,17 +125,20 @@ if (jQuery) {
                 data: paras,
                 success: function(data, state) {
                     sale_assistant.callbackFunction(sucessCallback, data, state);
+                    if (autoUpdate) {
+                        sale_assistant.autoUpdate(data);
+                    }
                 },
                 error: function(data, state) {
                     sale_assistant.callbackFunction(errorCallback, data, state);
                 }
             });
         };
-        
-        sale_assistant.post = function(action, paraZone, sucessCallback, errorCallback) {
+
+        sale_assistant.post = function(action, paraZone, sucessCallback, errorCallback, autoUpdate) {
             var paras = sale_assistant.serialize(paraZone);
             $j.ajax({
-                url:sale_assistant.baseURLWithButton+action,
+                url: sale_assistant.baseURLWithButton + action,
                 header: {
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Methods": "POST"
@@ -107,16 +150,19 @@ if (jQuery) {
                 data: paras,
                 success: function(data, state) {
                     sale_assistant.callbackFunction(sucessCallback, data, state);
+                    if (autoUpdate) {
+                        sale_assistant.autoUpdate(data);
+                    }
                 },
                 error: function(data, state) {
                     sale_assistant.callbackFunction(errorCallback, data, state);
                 }
             });
         };
-        
-        sale_assistant.sumbit = function(action){
-            $j("#"+sale_assistant.actionButton).value = action;
-            $j("#"+sale_assistant.form).submit();
+
+        sale_assistant.sumbit = function(action) {
+            $j("#" + sale_assistant.actionButton).value = action;
+            $j("#" + sale_assistant.form).submit();
         };
 
 
