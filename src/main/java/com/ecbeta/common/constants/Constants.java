@@ -1,7 +1,7 @@
 package com.ecbeta.common.constants;
 
 public class Constants {
-    public static final String CORE_SERVLET = "CoreServlet";
+    public static final String CORE_SERVLET = "dispath";
     public static final String REQUEST_WORKER = "REQUEST_WORKER";
     public static final String REQUEST_WORKER_ATTRIBUTE_NAME = "REQUEST_WORKER_ATTRIBUTE_NAME";
     public static final String ALL_NAVIGATIONBEANS = "ALL_NAVIGATIONBEANS";
