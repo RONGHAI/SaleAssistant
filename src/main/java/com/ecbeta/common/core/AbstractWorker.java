@@ -439,8 +439,25 @@ public abstract class AbstractWorker {
             e.printStackTrace();
         }
     }
- 
+    
+    protected void setJSONHeader() {
+        this.getResponse().setContentType("application/json; charset=UTF-8");
+        this.getResponse().setHeader("Cache-Control", "no-store, max-age=0, no-cache, must-revalidate");
+        this.getResponse().addHeader("Cache-Control", "post-check=0, pre-check=0");
+        this.getResponse().setHeader("Pragma", "no-cache"); 
+    }
 
+    protected void returnJSON(Object o) {
+        this.setJSONHeader();
+        try{
+            this.getResponse().getWriter().write(JSONObject.fromObject(o).toString());
+        }catch(Exception e){
+            e.printStackTrace();;
+            this.getResponse().getWriter().write(JSONArray.fromObject(o).toString());
+        }
+    }
+ 
+   private transient Object result;
    private int  processButtonClickedAction (String action, Class<?> ownerClass, Object instance , Class<?>[] _classTypes, Object[] args) {
         if (action == null) return _PROCESS_STATUS_IGNORE;
         if (enableActionAnnotation() && findAnnotationInClassLevel(ownerClass, action)) {
@@ -457,11 +474,7 @@ public abstract class AbstractWorker {
                 method = ownerClass.getMethod(action, _classTypes);
                 withBtnPara = true;
             }
-            if(withBtnPara){
-                method.invoke(instance, args);
-            }else{
-                method.invoke(instance);
-            }
+            this.result = withBtnPara ? method.invoke(instance, args) : method.invoke(instance);
             this.doActionAnnotation(method, action);
             return _PROCESS_STATUS_SUCCESS;
         } catch (SecurityException e) {
@@ -478,6 +491,7 @@ public abstract class AbstractWorker {
     public void processRequest () {
         this.getResponse().setContentType("text/html");
         this.needForwordToJsp = true;
+        this.result = null;
         this.setRefreshZones("");
         HttpServletRequest request = this.getRequest();
         try {
@@ -516,7 +530,10 @@ public abstract class AbstractWorker {
                 this.addRefreshZone("result");
             }
             this.addRefreshZone("excludeDateTimeZone,footerZone,alwaysRefreshZone");
-            if (this.needForwordToJsp && (!getResponse().isCommitted() )) {
+            
+            if(this.result != null && StringUtils.isNotEmpty(this.result.toString())){
+                returnJSON(this.result);
+            }else if (this.needForwordToJsp && (!getResponse().isCommitted() )) {
                 try {
                     forwardToJsp(getJSP_TOGO());
                 } catch (Exception e) {
