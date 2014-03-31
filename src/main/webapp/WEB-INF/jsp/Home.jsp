@@ -12,7 +12,7 @@
 <html>
     <head>
         <title>${worker.appName}</title>
-        <sm:Head>
+        <sm:Head worker='${worker}'>
         </sm:Head>
     </head>
     <body>
