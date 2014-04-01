@@ -13,6 +13,26 @@
     <head>
         <title>${worker.appName}</title>
         <sm:Head worker='${worker}' >
+            
+            
+            <script type="text/javascript">
+                $(function() {
+                      $(document).ready(function() {
+                             $('#grid').w2grid({ 
+                                    name: 'grid', 
+                                    columns: [				
+                                            { field: 'name', caption: 'Name', size: '20%', sortable: true },
+                                            { field: 'wangwang', caption: 'Wangwang', size: '20%', sortable: true },
+                                            { field: 'qq', caption: 'QQ', size: '20%', sortable: true },
+                                            { field: 'birthday', caption: 'Birthday', size: '120px', sortable: true },
+                                            { field: 'gender', caption: 'Gender', size: '120px', sortable: true },
+                                            { field: 'phone', caption: 'Phone', size: '120px', sortable: true },
+                                    ]
+                            });	
+                            w2ui['grid'].load('${worker.url}'+'fetchAll');   
+                      });
+                });
+            </script>
         </sm:Head>
     </head>
     <body>
@@ -20,7 +40,7 @@
         <sm:Navigation navigationBeans="${servicer.navigationBeans}" /> 
         
         <sm:Form id='form' worker="${worker}"> 
-            
+            <div id="grid" style="width: 100%; height: 350px; overflow: hidden;"></div>
         </sm:Form> 
         
         <sm:Foot></sm:Foot>

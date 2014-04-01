@@ -4,6 +4,7 @@ import com.ecbeta.app.engine.servicer.ClientServicer;
 import com.ecbeta.common.core.AbstractServicer;
 import com.ecbeta.common.core.AbstractWorker;
 import com.ecbeta.common.core.annotation.ServicerType;
+import java.util.HashMap;
 
 public class ClientWorker extends AbstractWorker{
 
@@ -39,6 +40,14 @@ public class ClientWorker extends AbstractWorker{
     @Override
     public void submitAction(){
         
+    }
+    
+    
+    public HashMap<String, Object> fetchAllAction(){
+        HashMap<String, Object> json = new HashMap<>();
+        json.put("total", servicer.getClients().size());
+        json.put("records", servicer.getClients()); 
+        return json;
     }
 
 }
