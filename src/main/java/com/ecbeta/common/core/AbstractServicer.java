@@ -4,12 +4,22 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.ecbeta.common.core.bean.BaseServicerParaBean;
+import com.ecbeta.common.core.db.DatabaseHandler;
 import com.ecbeta.common.core.viewer.bean.ExportInformationBean;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import com.ecbeta.common.core.viewer.bean.PanelTab;
 import org.springframework.context.ApplicationContext;
 
 public abstract class AbstractServicer implements Serializable{
+    
+    private transient DatabaseHandler databaseHandler;
+    public DatabaseHandler getDatabaseHandler() {
+        return databaseHandler;
+    }
+
+    public void setDatabaseHandler(DatabaseHandler databaseHandler) {
+        this.databaseHandler = databaseHandler;
+    }
     
     protected ApplicationContext appContext;
 

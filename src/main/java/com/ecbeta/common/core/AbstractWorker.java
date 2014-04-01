@@ -31,6 +31,7 @@ import com.ecbeta.common.core.viewer.BaseViewer;
 import com.ecbeta.common.core.viewer.bean.ExportInformationBean;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import com.ecbeta.common.core.viewer.bean.PanelTab;
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -177,9 +178,7 @@ public abstract class AbstractWorker {
 
     }
 
-    /**
-     * @param btnClicked2
-     */
+    
     public void dispatchAction (String btnClicked) {
 
     }
@@ -367,6 +366,9 @@ public abstract class AbstractWorker {
    
     public String getUrl () {
         StringBuilder url = new StringBuilder();
+        if(this.navigationBean == null){
+            this.navigationBean = new NavigationBean();
+        }
         url.append(this.navigationBean.getUrl(this.request.getContextPath()));
         url.append("&");
         url.append(Constants.SRC_JSP).append("=").append(this.getJSP_TOGO()).append("&");
@@ -397,7 +399,7 @@ public abstract class AbstractWorker {
         if(StringUtils.isEmpty(navTier)){
             navTier = "0_0_0_0";
         }
-        this.navigationBean = servlet.find(navTier.split("_"));
+        this.navigationBean = servlet.find(navTier.split("_"), this.getClass().getName());
         this.btnClicked = request.getParameter(BTN_OPTION);
         this.jspPath = jspPath;
     }
@@ -452,7 +454,7 @@ public abstract class AbstractWorker {
     protected void returnJSON(Object o) {
         this.setJSONHeader();
         try{
-           // this.getResponse().getWriter().write(JSONObject.fromObject(o).toString());
+          //  this.getResponse().getWriter().write( new Gson.toJson(o).toString());
         }catch(Exception e){
             logger.log(Level.WARNING, null, e);
             //this.getResponse().getWriter().write(JSONArray.fromObject(o).toString());
@@ -477,6 +479,7 @@ public abstract class AbstractWorker {
                 withBtnPara = true;
             }
             this.result = withBtnPara ? method.invoke(instance, args) : method.invoke(instance);
+            logger.log(Level.INFO, action+" " + method.getName(), method);
             this.doActionAnnotation(method, action);
             return _PROCESS_STATUS_SUCCESS;
         } catch (SecurityException e) {
@@ -484,7 +487,7 @@ public abstract class AbstractWorker {
         } catch (NoSuchMethodException e) {
             this.showException(key + " " + (method ==  null ? "": method.toString() ) , e, false);
             return _PROCESS_STATUS_NOMETHOD;
-        } catch (Exception e) {
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             this.showException(key + " " + (method ==  null ? "": method.toString() ) , e, false);
         }
         return _PROCESS_STATUS_FAIL;
@@ -495,25 +498,27 @@ public abstract class AbstractWorker {
         this.needForwordToJsp = true;
         this.result = null;
         this.setRefreshZones("");
-        HttpServletRequest request = this.getRequest();
+        //HttpServletRequest request = this.getRequest();
         try {
             if (this.getServicer().getExportInformationBean() == null) {
                 this.getServicer().setExportInformationBean(this.getExportInformationBean());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "", e);
         }
+        String refresh = request.getParameter(REFRESH_TYPE);
         try{
             try {
                 this.btnClicked = request.getParameter(BTN_OPTION);
                 if(StringUtils.isEmpty(this.btnClicked)){
                     this.btnClicked = "";
                 }
-                String refresh = request.getParameter(REFRESH_TYPE);
+               
                 this.needForwordToJsp = !(refresh != null && refresh.equals(JSON_REFRESH_TYPE) );
                 String action = this.createAction(btnClicked);
                 if (this.btnClicked.equals(PROGRESS_PAGE_POSTBACK)) {
                 } else if ((refresh != null && refresh.equals(JSON_REFRESH_TYPE) )) {
+                     this.setJSONHeader();
                     this.bindJsonParams(request, btnClicked, action);
                 } else {
                     this.bindParams(request, btnClicked, action);
@@ -522,7 +527,7 @@ public abstract class AbstractWorker {
                     this.processButtonClickedAction(action);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.log(Level.WARNING, "", e);
             }
             String zones = request.getParameter(AA_REFRESH_ZONES_NAME);
             if (StringUtils.isNotEmpty(zones)) {
@@ -532,14 +537,16 @@ public abstract class AbstractWorker {
                 this.addRefreshZone("result");
             }
             this.addRefreshZone("excludeDateTimeZone,footerZone,alwaysRefreshZone");
-            
+            if ((refresh != null && refresh.equals(JSON_REFRESH_TYPE) )) {
+                this.needForwordToJsp = false;
+            }
             if(this.result != null && StringUtils.isNotEmpty(this.result.toString())){
                 returnJSON(this.result);
             }else if (this.needForwordToJsp && (!getResponse().isCommitted() )) {
                 try {
                     forwardToJsp(getJSP_TOGO());
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (IOException | ServletException e) {
+                    logger.log(Level.WARNING, "", e);
                 } 
             } 
         }finally{
@@ -574,7 +581,7 @@ public abstract class AbstractWorker {
 
     private void showException(String acc, Exception e, boolean forceOut){
         if (_SHOW_EXCEPTION || forceOut) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "", e);
         } 
     }
 
@@ -591,7 +598,7 @@ public abstract class AbstractWorker {
         try {
             this.getServicer().retrieveData();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "", e);
         }
         if(!withOutSort){
             servicer.sort();

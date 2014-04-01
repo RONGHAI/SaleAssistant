@@ -18,6 +18,7 @@ import com.ecbeta.common.constants.Constants;
 import com.ecbeta.common.core.AbstractServicer;
 import com.ecbeta.common.core.AbstractWorker;
 import com.ecbeta.common.core.annotation.ServicerType;
+import com.ecbeta.common.core.db.DatabaseHandler;
 import com.ecbeta.common.core.db.NavigationUtil;
 import com.ecbeta.common.core.engine.RequestManager;
 import com.ecbeta.common.core.engine.ServicerFactory;
@@ -26,6 +27,8 @@ import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import me.ronghai.sa.engine.service.NavigationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -94,7 +97,7 @@ public class CoreServlet extends HttpServlet  implements org.springframework.web
         return naviBeans;
     }
     
-    public NavigationBean find(String[] ar){
+    public NavigationBean find(String[] ar, String workerName){
         String li = StringUtils.join(ar,"_");
         List<NavigationBean> navBeans = this.getNavigationBeans();
         for(NavigationBean b : navBeans){
@@ -102,7 +105,23 @@ public class CoreServlet extends HttpServlet  implements org.springframework.web
                 return b;
             }
         }
+        for(NavigationBean b : navBeans){
+            if(b.getWorker().equals(workerName)){
+                return b;
+            }
+        }
+        
         return null;
+    }
+    
+    @PersistenceUnit(unitName = "SaleAssistantPU")
+    private EntityManagerFactory entityManagerFactory;
+
+    protected EntityManagerFactory getEntityManagerFactory(){
+        if(entityManagerFactory == null){
+            entityManagerFactory = (EntityManagerFactory)this.getAppContext().getBean("emf");
+        }
+        return entityManagerFactory;
     }
     
     protected void injectServicers(HttpServletRequest request, HttpServletResponse response, AbstractWorker worker)  {
@@ -116,11 +135,12 @@ public class CoreServlet extends HttpServlet  implements org.springframework.web
             }
             try {
                 AbstractServicer servicer = ServicerFactory.getService(request.getSession(), fieldClassName , field.getName(), this.getAppContext(), worker); 
+                servicer.setDatabaseHandler(new DatabaseHandler(this.getEntityManagerFactory().createEntityManager()));
                 if(ServicerFactory.isNewInstance(request.getSession(), fieldClassName , field.getName(), worker)){
                     servicer.setNavigationBeans(naviBeans);
                     servicer.setAppContext(this.getAppContext());
                     servicer.init(worker.getNavigationBean());
-                } 
+                }
                 Method setter = ReflectUtils.findSetter(worker, field, null, null); 
                 ReflectUtils.updateFieldValue(worker, field, setter,  servicer);
             } catch (    IllegalAccessException | IllegalArgumentException | InvocationTargetException |ClassNotFoundException | InstantiationException e) {
@@ -135,43 +155,4 @@ public class CoreServlet extends HttpServlet  implements org.springframework.web
         return jspPath;
     }
 }
-
-/*
-
-1. Implement HttpRequestHandler
-First of all, your servlet class must implement the org.springframework.web.HttpRequestHandler interface and provide an implementation for the handleRequest() method just like you would override doPost().
-2. Declare the servlet as a Spring Bean
-You can do this by either adding the @Component("myServlet") annotation to the class, or declaring a bean with a name myServlet in applicationContext.xml.
-Collapse | Copy Code
-
-@Component("myServlet")
-public class MyServlet implements HttpRequestHandler {
-...
-
-3. Declare in web.xml a servlet named exactly as the Spring Bean
-The last step is to declare a new servlet in web.xml that will have the same name as the previously declared Spring bean, in our case myServlet. The servlet class must be org.springframework.web.context.support.HttpRequestHandlerServlet.
-Collapse | Copy Code
-
-<servlet>
-    <display-name>MyServlet</display-name>
-    <servlet-name>myServlet</servlet-name>
-    <servlet-class>
-        org.springframework.web.context.support.HttpRequestHandlerServlet
-    </servlet-class>
-</servlet>
  
-<servlet-mapping>
-    <servlet-name>myServlet</servlet-name>
-    <url-pattern>/myurl</url-pattern>
-</servlet-mapping>
-
-Now you are ready to inject any spring bean in your servlet class.
-Collapse | Copy Code
-
-@Component("myServlet")
-public class MyServlet implements HttpRequestHandler {
-        
-        @Autowired
-        private MyService myService;
-
-*/
