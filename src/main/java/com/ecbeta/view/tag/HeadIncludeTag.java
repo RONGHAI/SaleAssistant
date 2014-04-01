@@ -62,11 +62,11 @@ public class HeadIncludeTag extends AbstractTag {
 
         StringBuilder sb = new StringBuilder();
         sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /> \n");
-        sb.append("<script src=\"resource/js/jquery-").append(jqueryVersion).append(".js\"></script> \n");
-        sb.append("<script src=\"resource/js/saleassistant.js?").append(dev ? ("time=" + System.currentTimeMillis()) : "").append("\"></script> \n");
+        sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/jquery-").append(jqueryVersion).append(".js\"></script> \n");
+        sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/saleassistant.js?").append(dev ? ("time=" + System.currentTimeMillis()) : "").append("\"></script> \n");
         sb.append("<script > \n");
         sb.append("$(document).ready(function() { \n");
-        sb.append("     ").append(this.worker.getUrl()).append(" sale_assistant.init('" + "','" + Constants.BTN_OPTION + "','").append(this.worker.getFORM_NAME()).append("'); \n");
+        sb.append("     ").append("").append(" sale_assistant.init('").append(this.worker.getUrl()).append("','" + Constants.BTN_OPTION + "','").append(this.worker.getFORM_NAME()).append("'); \n");
         sb.append("}); \n");
         sb.append("</script> \n");
         this.println(sb);

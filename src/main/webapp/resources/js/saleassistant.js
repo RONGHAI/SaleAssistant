@@ -99,6 +99,9 @@ if (jQuery) {
         };
 
         sale_assistant.serialize = function(zone) {
+            if(!zone){
+                return "";
+            }
             var zones = zone.split(/;|,/);
             var params = "";
             for (var index = 0; index < zones.length; index++) {
@@ -130,6 +133,7 @@ if (jQuery) {
                     }
                 },
                 error: function(data, state) {
+                    
                     sale_assistant.callbackFunction(errorCallback, data, state);
                 }
             });
@@ -149,12 +153,16 @@ if (jQuery) {
                 contentType: "application/json; charset=utf-8",
                 data: paras,
                 success: function(data, state) {
+                    sale_assistant.log(data);
+                    sale_assistant.log(state);
                     sale_assistant.callbackFunction(sucessCallback, data, state);
                     if (autoUpdate) {
                         sale_assistant.autoUpdate(data);
                     }
                 },
                 error: function(data, state) {
+                    sale_assistant.error(data);
+                    sale_assistant.error(state);
                     sale_assistant.callbackFunction(errorCallback, data, state);
                 }
             });
