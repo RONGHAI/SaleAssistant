@@ -1,5 +1,15 @@
 if (jQuery) {
     (function($j) {
+        
+        String.prototype.format = String.prototype.f = function(arg) {
+            var s = this,
+                i = arg.length;
+            while (i--) {
+                s = s.replace(new RegExp('\\{' + i + '\\}', 'gm'), arg[i]);
+            }
+            return s;
+        };
+        
         var sale_assistant = window.sale_assistant = window.sale_assistant || {};
 
         sale_assistant.error = function(d) {
