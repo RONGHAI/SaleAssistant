@@ -22,6 +22,7 @@ public class HeadIncludeTag extends AbstractTag {
 
     private AbstractWorker worker;
     private String jqueryVersion = "1.9.1";
+    private String w2uiVersion = "1.3.2";
     private boolean dev = true;
 
     public String getJqueryVersion() {
@@ -64,6 +65,8 @@ public class HeadIncludeTag extends AbstractTag {
         sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /> \n");
         sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/jquery-").append(jqueryVersion).append(".js\"></script> \n");
         sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/saleassistant.js?").append(dev ? ("time=" + System.currentTimeMillis()) : "").append("\"></script> \n");
+        sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/w2ui-").append(w2uiVersion).append(".js\"></script> \n");
+        sb.append("<link rel=\"stylesheet\" type=\"text/css\" hfre=\"").append(this.getContextPath()).append("/resources/css/w2ui-").append(w2uiVersion).append(".css\"/> \n");
         sb.append("<script > \n");
         sb.append("$(document).ready(function() { \n");
         sb.append("     ").append("").append(" sale_assistant.init('").append(this.worker.getUrl()).append("','" + Constants.BTN_OPTION + "','").append(this.worker.getFORM_NAME()).append("'); \n");
