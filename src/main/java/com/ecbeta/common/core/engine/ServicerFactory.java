@@ -12,8 +12,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.ecbeta.common.core.AbstractServicer;
 import com.ecbeta.common.core.AbstractWorker;
-import com.ecbeta.common.core.annotation.Dao;
-import com.ecbeta.common.core.annotation.Spring;
 import com.ecbeta.common.core.reflect.ReflectUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -66,7 +64,6 @@ public class ServicerFactory {
         } else {
             Class<?> class1 = ReflectUtils.classForName(className);
             Object newInstance = class1.newInstance();
-            injectDAOs((AbstractServicer) newInstance, appContext);
             autowired((AbstractServicer) newInstance, appContext);
             session.setAttribute(servicerId, newInstance);
             newServiceInstanceIds.add(date + "_" + servicerId);
@@ -74,17 +71,14 @@ public class ServicerFactory {
         }
     }
 
-    protected static void injectDAOs(AbstractServicer ser, ApplicationContext appContext) {
+    protected static void autowired(AbstractServicer ser, ApplicationContext appContext) {
         if(appContext == null ) return;
         Collection<Field> fields = ReflectUtils.getDeclaredFields((Map<String, Field>) null, ser.getClass(), false).values();
         for (Field field : fields) {
-            if (!field.isAnnotationPresent(Dao.class) ) {
+            if (!field.isAnnotationPresent(Autowired.class) ) {
                 continue;
             }
-            String fieldName = field.getAnnotation(Dao.class).value();
-            if (StringUtils.isEmpty(fieldName)) {
-                fieldName = field.getName();
-            }
+            String fieldName  = field.getName();
             try {
                 Method setter = ReflectUtils.findSetter(ser, field, null, null);
                 ReflectUtils.updateFieldValue(ser, field, setter, appContext.getBean(fieldName));
@@ -96,31 +90,7 @@ public class ServicerFactory {
 
     }
     
-    protected static void autowired(AbstractServicer ser, ApplicationContext appContext) {
-        if(appContext == null ) return;
-        Collection<Field> fields = ReflectUtils.getDeclaredFields((Map<String, Field>) null, ser.getClass(), false).values();
-        for (Field field : fields) {
-            if (!field.isAnnotationPresent(Spring.class) && !field.isAnnotationPresent(Autowired.class)) {
-                continue;
-            }
-            
-            String fieldName = field.getName();
-            if(field.isAnnotationPresent(Spring.class) ){
-                fieldName = field.getAnnotation(Spring.class).value();
-                if (StringUtils.isEmpty(fieldName)) {
-                    fieldName = field.getName();
-                }
-            }
-             
-            try {
-                Method setter = ReflectUtils.findSetter(ser, field, null, null);
-                ReflectUtils.updateFieldValue(ser, field, setter, appContext.getBean(fieldName));
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                logger.log(Level.SEVERE, null, e);
-            }
-        }
-
-    }
+    
 
     public static boolean isNewInstance(HttpSession session, String className, String instanceName, AbstractWorker worker) {
         cleanNewServiceInstanceIds();

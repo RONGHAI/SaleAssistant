@@ -26,12 +26,13 @@ import org.apache.commons.lang.StringUtils;
 import com.ecbeta.common.constants.Constants;
 import com.ecbeta.common.core.annotation.Action;
 import com.ecbeta.common.core.annotation.Actions;
-import com.ecbeta.common.core.db.NavigationUtil;
 import com.ecbeta.common.core.servlet.CoreServlet;
 import com.ecbeta.common.core.viewer.BaseViewer;
 import com.ecbeta.common.core.viewer.bean.ExportInformationBean;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import com.ecbeta.common.core.viewer.bean.PanelTab;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public abstract class AbstractWorker { 
     public static boolean debug = false;
@@ -45,6 +46,7 @@ public abstract class AbstractWorker {
 
 
 
+    private static final Logger logger =   Logger.getLogger(AbstractWorker.class.getName()) ;
 
     public static void main (String[] rags) {
     }
@@ -436,7 +438,7 @@ public abstract class AbstractWorker {
                 this.clearResultAction();
             }
         }catch(Exception e){
-            e.printStackTrace();
+            logger.log(Level.WARNING, null, e);
         }
     }
     
@@ -450,10 +452,10 @@ public abstract class AbstractWorker {
     protected void returnJSON(Object o) {
         this.setJSONHeader();
         try{
-            this.getResponse().getWriter().write(JSONObject.fromObject(o).toString());
+           // this.getResponse().getWriter().write(JSONObject.fromObject(o).toString());
         }catch(Exception e){
-            e.printStackTrace();;
-            this.getResponse().getWriter().write(JSONArray.fromObject(o).toString());
+            logger.log(Level.WARNING, null, e);
+            //this.getResponse().getWriter().write(JSONArray.fromObject(o).toString());
         }
     }
  

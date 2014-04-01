@@ -27,7 +27,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.ronghai.sa.engine.service.NavigationService;
-import me.ronghai.sa.model.Navigation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
