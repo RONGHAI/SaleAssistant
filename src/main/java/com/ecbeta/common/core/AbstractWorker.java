@@ -510,6 +510,7 @@ public abstract class AbstractWorker {
             logger.log(Level.WARNING, "", e);
         }
         String refresh = request.getParameter(REFRESH_TYPE);
+        boolean isJson = (refresh != null && refresh.equals(JSON_REFRESH_TYPE) );
         try{
             try {
                 this.btnClicked = request.getParameter(BTN_OPTION);
@@ -520,7 +521,7 @@ public abstract class AbstractWorker {
                 this.needForwordToJsp = !(refresh != null && refresh.equals(JSON_REFRESH_TYPE) );
                 String action = this.createAction(btnClicked);
                 if (this.btnClicked.equals(PROGRESS_PAGE_POSTBACK)) {
-                } else if ((refresh != null && refresh.equals(JSON_REFRESH_TYPE) )) {
+                } else if (isJson) {
                      this.setJSONHeader();
                     this.bindJsonParams(request, btnClicked, action);
                 } else {
@@ -540,10 +541,10 @@ public abstract class AbstractWorker {
                 this.addRefreshZone("result");
             }
             this.addRefreshZone("excludeDateTimeZone,footerZone,alwaysRefreshZone");
-            if ((refresh != null && refresh.equals(JSON_REFRESH_TYPE) )) {
+            if (isJson) {
                 this.needForwordToJsp = false;
             }
-            if(this.result != null && StringUtils.isNotEmpty(this.result.toString())){
+            if(isJson && this.result != null && StringUtils.isNotEmpty(this.result.toString())){
                 returnJSON(this.result);
             }else if (this.needForwordToJsp && (!getResponse().isCommitted() )) {
                 try {
