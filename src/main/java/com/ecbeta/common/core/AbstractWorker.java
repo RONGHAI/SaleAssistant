@@ -28,6 +28,7 @@ import com.ecbeta.common.core.annotation.Action;
 import com.ecbeta.common.core.annotation.Actions;
 import com.ecbeta.common.core.servlet.CoreServlet;
 import com.ecbeta.common.core.viewer.BaseViewer;
+import com.ecbeta.common.core.viewer.JsonModel;
 import com.ecbeta.common.core.viewer.bean.ExportInformationBean;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import com.ecbeta.common.core.viewer.bean.PanelTab;
@@ -447,7 +448,7 @@ public abstract class AbstractWorker {
         }
     }
     
-    protected void setJSONHeader() {
+    protected void setJsonContentType() {
         this.getResponse().setContentType("application/json; charset=UTF-8");
         this.getResponse().setHeader("Cache-Control", "no-store, max-age=0, no-cache, must-revalidate");
         this.getResponse().addHeader("Cache-Control", "post-check=0, pre-check=0");
@@ -455,8 +456,12 @@ public abstract class AbstractWorker {
     }
 
     protected void returnJSON(Object o) {
-        this.setJSONHeader();
+        this.setJsonContentType();
         try{
+            if(o instanceof JsonModel){
+                 this.getResponse().getWriter().write( ((JsonModel)o).toJson());
+            }
+            
           //  this.getResponse().getWriter().write( new Gson.toJson(o).toString());
         }catch(Exception e){
             logger.log(Level.WARNING, null, e);
@@ -522,7 +527,7 @@ public abstract class AbstractWorker {
                 String action = this.createAction(btnClicked);
                 if (this.btnClicked.equals(PROGRESS_PAGE_POSTBACK)) {
                 } else if (isJson) {
-                     this.setJSONHeader();
+                     this.setJsonContentType();
                     this.bindJsonParams(request, btnClicked, action);
                 } else {
                     this.bindParams(request, btnClicked, action);
