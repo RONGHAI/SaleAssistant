@@ -147,11 +147,12 @@ public abstract class AbstractWorker {
      * or with btnClick as parameter as neccersy.
      * 
      * @param btnClicked
+     * @return 
      */
 
     public String createAction (String btnClicked) {
         if (btnClicked == null || btnClicked.trim().equals("")) return null;
-        String methodName = null;
+        String methodName;
         if ("resetDialog".equals(btnClicked)) {
             methodName = "resetDialog" + ACTION_NAME;
         } else if (btnClicked.endsWith("Dialog")) {
@@ -263,7 +264,7 @@ public abstract class AbstractWorker {
         return workerName.substring(0, workerName.length() - "Worker".length());
     }
 
-    private final Object[][] getArgs(HttpServletRequest request, String btnClicked){
+    private Object[][] getArgs(HttpServletRequest request, String btnClicked){
         return new Object[][]{
                 null,
                 new Object[]{btnClicked},
@@ -340,6 +341,7 @@ public abstract class AbstractWorker {
                 String s = viewer.toHTML();
                 return s;
             } catch (Exception e) {
+                 logger.log(Level.WARNING, "Render HTML", e);
             }
         }
         return "";
@@ -546,7 +548,7 @@ public abstract class AbstractWorker {
             }else if (this.needForwordToJsp && (!getResponse().isCommitted() )) {
                 try {
                     forwardToJsp(getJSP_TOGO());
-                } catch (IOException | ServletException e) {
+                } catch (IOException e) {
                     logger.log(Level.WARNING, "", e);
                 } 
             } 
