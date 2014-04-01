@@ -12,8 +12,8 @@ public class Constants {
     public static final String AA_REFRESH_ZONES_NAME = "refreshZones";
     public static final String UNDER_LINE = "_";
     public static final String BTN_OPTION = "butOptions";
-    public static final String JSON_REFRESH_TYPE="jsonRefresh";
-    public static final String REFRESH_TYPE="ajaxRefreshMode"; 
+    public static final String JSON_REFRESH_TYPE="json";
+    public static final String REFRESH_TYPE="ajax"; 
     public static final String PROGRESS_PAGE_POSTBACK="progress_page_postback"; 
     public static final String PANEL_INDEX = "panelIndex";
     public static final String DEFAULT_WORKER = "com.ecbeta.app.engine.worker.HomeWorker";

@@ -372,6 +372,7 @@ public abstract class AbstractWorker {
         url.append(this.navigationBean.getUrl(this.request.getContextPath()));
         url.append("&");
         url.append(Constants.SRC_JSP).append("=").append(this.getJSP_TOGO()).append("&");
+        url.append(REFRESH_TYPE).append("=").append(JSON_REFRESH_TYPE).append("&");
         url.append(Constants.BTN_OPTION).append("=");
         return url.toString();
     }
