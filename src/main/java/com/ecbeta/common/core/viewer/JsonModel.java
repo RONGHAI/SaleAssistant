@@ -7,6 +7,8 @@
 package com.ecbeta.common.core.viewer;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -14,6 +16,14 @@ import java.io.Serializable;
  */
 public class JsonModel implements Serializable{
     
+    private final Map<String, Object> data = new HashMap<>();
+
+    public Object put(String key, Object value) {
+        return data.put(key, value);
+    }
+
+    public JsonModel() {
+    }
     
     
     public String toJson(){
