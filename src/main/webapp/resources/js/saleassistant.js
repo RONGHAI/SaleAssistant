@@ -190,7 +190,11 @@ if (jQuery) {
             $j("#" + sale_assistant.form).submit();
         };
 
-
+        sale_assistant.runApp = function(url){
+            
+            sale_assistant.log(url);
+            
+        };
 
 
     })(jQuery);

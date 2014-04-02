@@ -108,9 +108,9 @@ public class NavigationTag extends AbstractTag {
         
         
         JSONObject json = new JSONObject();
-        json.put("nodes", NavigationBean.toJson(this.navigationBeans, navPrefix));
+        json.put("nodes", NavigationBean.toJson(this.navigationBeans, navPrefix, contextPath, true));
         json.put("name", id);
-        json.put("onClick", "function(event){}");
+        //json.put("onClick", "function(event){}");
         
         sb.append("<div id=\"").append(id).append("\" style=\"height: 300px; width: 180px; float: left\"></div>");
         sb.append("<div style=\"clear: both\"></div>");
@@ -121,10 +121,15 @@ public class NavigationTag extends AbstractTag {
         sb.append("     );\n" );
         sb.append("});\n" );
         if(navTier != null){
-              sb.append("\"w2ui.").append(id).append(".click('").append(getNavTierID(navPrefix, navTier)).append("');");
+              sb.append("w2ui.").append(id).append(".click('").append(getNavTierID(navPrefix, navTier)).append("');");
         }
-      
-        sb.append("</script>");
+        sb.append("w2ui.").append(id).append(".on('*', function (event) {\n");
+        sb.append("         if(event.type === 'click'){   \n");
+        sb.append("                 var url = w2ui.").append(id).append(".get(event.target)['data-url'];\n");
+        sb.append("                 sa.runApp(url);\n");
+        sb.append("         };\n");
+        sb.append("});\n");
+        sb.append("</script>\n");
         sb.append("<div id='navigation' > ");
         sb.append(render(this.navigationBeans, 0));
         sb.append("</div>");

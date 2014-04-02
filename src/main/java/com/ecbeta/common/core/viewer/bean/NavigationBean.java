@@ -114,7 +114,7 @@ public class NavigationBean implements Serializable{
     
     @JsonIgnore
     public String getUrl(String contextPath){
-        if(StringUtils.isEmpty(contextPath)){
+        if(StringUtils.isEmpty(contextPath) || StringUtils.isEmpty(this.worker)){
             return "";
         }
         StringBuilder url = new StringBuilder();
@@ -127,25 +127,28 @@ public class NavigationBean implements Serializable{
         return url.toString();
     }
     
-    public JSONObject toJson(String idPrefix) {
+    public JSONObject toJson(String idPrefix, String contextPath,boolean withUri) {
         JSONObject json = new JSONObject();
         json.put("id", getNavTierID(idPrefix, navTier));
         json.put("text", this.getLabel());
         json.put("expanded", false);
+        if(withUri){
+            json.put("data-url", this.getUrl(contextPath));
+        }
         if(StringUtils.isNotEmpty(icon)){
             json.put("icon", icon);
         }
         if (this.children != null && this.children.size() > 0) {
             json.put("group", true);
-            json.put("nodes", toJson(this.children, idPrefix));
+            json.put("nodes", toJson(this.children, idPrefix, contextPath,withUri));
         }
         return json;
     }
 
-    public static JSONArray toJson(List<NavigationBean> beans, String idPrefix) { 
+    public static JSONArray toJson(List<NavigationBean> beans, String idPrefix, String contextPath, boolean withUri) { 
         JSONArray array = new JSONArray();
         for (NavigationBean b : beans) {
-            array.add(b.toJson(idPrefix));
+            array.add(b.toJson(idPrefix, contextPath, withUri));
         }
         return array;
     }
