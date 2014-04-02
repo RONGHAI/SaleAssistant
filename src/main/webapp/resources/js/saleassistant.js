@@ -28,7 +28,12 @@ if (jQuery) {
                 console.debug(d);
             }
         };
-
+        
+        sale_assistant.safeEval = function(sr){
+            var fu = new Function(sr);
+            fu();
+        };
+        
         sale_assistant.autoUpdate = function(data) {
             if (!data)
                 return;
@@ -42,22 +47,21 @@ if (jQuery) {
                     }
                 }
             }
-            var scripts = data['scriptRefreshZone'];
+            var scripts = data.scriptRefreshZone;
             if (scripts) {
                 for (var i = 0; i < scripts.length; i++) {
                     try {
-                        eval(scripts[i]);
+                        sale_assistant.safeEval(scripts[i]);
                     } catch (ex) {
                         sale_assistant.log(ex);
                     }
-                    ;
                 }
             }
-            var clearZones = data['clearRefreshZone'];
+            var clearZones = data.clearRefreshZone;
             if (clearZones) {
-                for (var i = 0; i < clearZones.length; i++) {
+                for (var m = 0; m < clearZones.length; m++) {
                     try {
-                        $(clearZones[i]).innerHTML = '';
+                        $(clearZones[m]).innerHTML = '';
                     } catch (e) {
                         sale_assistant.log(e);
                     }
@@ -111,6 +115,9 @@ if (jQuery) {
         sale_assistant.serialize = function(zone) {
             if(!zone){
                 return "";
+            }
+            if(zone.indexOf("=") >= 0){
+                return zone;
             }
             var zones = zone.split(/;|,/);
             var params = "";
