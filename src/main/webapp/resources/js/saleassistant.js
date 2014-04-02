@@ -104,12 +104,16 @@ if (jQuery) {
             });
             return JSON.parse(JSON.stringify(result));
         };
+        
+        sale_assistant.url = function(navUri, action, type){
+            return navUri + '&' + sale_assistant.BTN_OPTION +'='+action+"&" + sale_assistant.REFRESH_TYPE +"=" + type;
+        };
 
-
-        sale_assistant.init = function(uri, butName, formName) {
+        sale_assistant.init = function(uri, butName, formName, refreshTypeName) {
             sale_assistant.baseURLWithButton = uri;
-            sale_assistant.actionButton = butName;
+            sale_assistant.BTN_OPTION = butName;
             sale_assistant.form = formName;
+            sale_assistant.REFRESH_TYPE = refreshTypeName;
         };
 
         sale_assistant.serialize = function(zone) {
