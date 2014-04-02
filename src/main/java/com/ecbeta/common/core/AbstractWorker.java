@@ -698,6 +698,8 @@ public abstract class AbstractWorker {
     public Object saveRecordsAction(JSONObject json) {
         return getJSONError("Internal Error!");
     }
+    
+    //public Collection<Long> to
 
 
 }

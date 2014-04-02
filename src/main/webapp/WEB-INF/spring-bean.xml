@@ -31,7 +31,7 @@
     
     
     <bean id="clientDAO" class="me.ronghai.sa.dao.impl.ClientDAOImpl"/>
-    <bean id="clientService" class="me.ronghai.sa.engine.service.impl.ClientServiceImpl">
+    <bean id="clientService" class="com.ecbeta.app.engine.servicer.ClientServicer">
         <property name="clientDAO" ref = "clientDAO"/>        
     </bean>
     
