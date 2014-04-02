@@ -114,7 +114,7 @@ public class NavigationTag extends AbstractTag {
         
         sb.append("<div id=\"").append(id).append("\" style=\"height: 300px; width: 180px; float: left\"></div>");
         sb.append("<div style=\"clear: both\"></div>");
-        sb.append("<script type=\"text/javascript\">\n");
+        sb.append("<script type=\"text/javascript\">//<![CDATA[ \n");
         sb.append("$(document).ready(function () {\n" ); 
         sb.append("	$('#").append(id).append("').w2sidebar(");
         sb.append("             ").append(json.toString());
@@ -129,6 +129,7 @@ public class NavigationTag extends AbstractTag {
         sb.append("                 sa.runApp(url);\n");
         sb.append("         };\n");
         sb.append("});\n");
+        sb.append("//]]>\n");
         sb.append("</script>\n");
         sb.append("<div id='navigation' > ");
         sb.append(render(this.navigationBeans, 0));
