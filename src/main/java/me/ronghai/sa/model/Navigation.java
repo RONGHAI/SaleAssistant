@@ -21,7 +21,7 @@ import javax.persistence.TemporalType;
  * @author ronghai
  */
 @Entity(name="navigations")
-public class Navigation  implements Serializable, AbstractModel {
+public class Navigation   extends AbstractModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -136,7 +136,7 @@ public class Navigation  implements Serializable, AbstractModel {
     }
 
     
-
+    @Override
     public Long getId() {
         return id;
     }

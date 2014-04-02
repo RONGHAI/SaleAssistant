@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
  * @author ronghai
  */
 @Entity(name = "system_informations")
-public class Property implements Serializable, AbstractModel {
+public class Property  extends AbstractModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -70,7 +70,8 @@ public class Property implements Serializable, AbstractModel {
 
     @Column(name = "note")
     private String note;
-
+    
+    @Override
     public Long getId() {
         return id;
     }

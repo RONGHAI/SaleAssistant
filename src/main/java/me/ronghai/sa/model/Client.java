@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
  * @author L5M
  */
 @Entity(name="clients")
-public class Client implements Serializable, AbstractModel {
+public class Client extends AbstractModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -80,7 +80,8 @@ public class Client implements Serializable, AbstractModel {
         this.addTime = addTime;
         this.updateTime = updateTime;
     }
-
+    
+    @Override
     public Long getId() {
         return id;
     }

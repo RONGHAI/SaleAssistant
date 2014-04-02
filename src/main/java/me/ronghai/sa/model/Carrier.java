@@ -21,7 +21,7 @@ import javax.persistence.TemporalType;
  * @author ronghai
  */
 @Entity(name="carriers")
-public class Carrier implements Serializable, AbstractModel {
+public class Carrier extends AbstractModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -89,7 +89,7 @@ public class Carrier implements Serializable, AbstractModel {
         this.updateTime = updateTime;
         this.note = note;
     }
-
+    @Override
     public Long getId() {
         return id;
     }

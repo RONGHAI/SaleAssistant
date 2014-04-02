@@ -9,11 +9,17 @@ package me.ronghai.sa.model;
  *
  * @author L5M
  */
-public interface AbstractModel {
+public abstract class AbstractModel {
 
-    public void setDisabled(boolean disabled);
-    public boolean isDisabled();
+    public abstract void setDisabled(boolean disabled);
+    public abstract boolean isDisabled();
     
-    public boolean isChanged();
-    public void setChanged(boolean changed);
+    public abstract boolean isChanged();
+    public abstract void setChanged(boolean changed);
+    
+    public abstract Long getId() ;
+    public Long getRecid(){
+        return this.getId();
+    }
+    
 }
