@@ -122,7 +122,7 @@ public class NavigationBean implements Serializable{
             url.append(contextPath);
         }
         url.append("/").append(Constants.CORE_SERVLET).append("/?");
-        url.append(Constants.REQUEST_WORKER).append("=").append(this.worker).append("&"); 
+        //url.append(Constants.REQUEST_WORKER).append("=").append(this.worker).append("&"); 
         url.append(Constants.NAV_TIERS).append("=").append(this.getNavTier("_"));
         return url.toString();
     }
