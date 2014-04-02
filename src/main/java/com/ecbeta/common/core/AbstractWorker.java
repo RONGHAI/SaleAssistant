@@ -35,6 +35,7 @@ import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import com.ecbeta.common.core.viewer.bean.PanelTab;
 import java.io.BufferedReader;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -661,6 +662,14 @@ public abstract class AbstractWorker {
             logger.log(Level.SEVERE, "", e);
         }
         return null;
+    }
+    
+    
+    public static HashMap<String, String> getJSONError(String msg){
+        HashMap<String, String>  map = new HashMap<>();
+        map.put("status", "error");
+        map.put("message", msg);
+        return map;
     }
 
 
