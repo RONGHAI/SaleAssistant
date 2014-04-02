@@ -20,7 +20,15 @@
                       $(document).ready(function() {
                              $('#grid').w2grid({ 
                                     name: 'grid', 
-                                    //url : "${sm:url(worker, 'json', 'record')}"
+                                    show : {
+                                        toolbar : true,
+                                        toolbarColumns  : true,
+                                        toolbarSearch   : true,
+                                        toolbarDelete   : true,
+                                        toolbarAdd      : true,
+                                        toolbarSave     : true
+                                    },
+                                    url : "${sm:url(worker, 'json', 'record')}"
                                     columns: [				
                                             { field: 'name', caption: 'Name', size: '20%', sortable: true },
                                             { field: 'wangwang', caption: 'Wangwang', size: '20%', sortable: true },
@@ -30,7 +38,7 @@
                                             { field: 'phone', caption: 'Phone', size: '120px', sortable: true },
                                     ]
                             });	
-                            w2ui['grid'].load('${worker.url}'+'fetchAll');   
+                            //w2ui['grid'].load('${worker.url}'+'fetchAll');   
                       });
                 });
             </script>

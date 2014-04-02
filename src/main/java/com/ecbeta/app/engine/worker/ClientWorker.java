@@ -41,13 +41,6 @@ public class ClientWorker extends AbstractWorker{
     public void submitAction(){
         
     }
-    
-    
-    public HashMap<String, Object> fetchAllAction(){
-        HashMap<String, Object> json = new HashMap<>();
-        json.put("total", servicer.getClients().size());
-        json.put("records", servicer.getClients()); 
-        return json;
-    }
+   
 
 }
