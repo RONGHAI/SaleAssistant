@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="f"%>
-<%@ taglib prefix="sm" uri="/WEB-INF/ui.tld"%>
+<%@ taglib prefix="sm" uri="/WEB-INF/sm.tld"%>
 <c:set value='<%=request.getAttribute(Constants.REQUEST_WORKER_ATTRIBUTE_NAME)%>' var="worker" />
 <c:set value="${worker.servicer}" var="servicer" /> 
 <c:set value='${servicer.navigationBeans}' var='navigationBeans' />
@@ -20,6 +20,7 @@
                       $(document).ready(function() {
                              $('#grid').w2grid({ 
                                     name: 'grid', 
+                                    //url : "${sm:url(worker, 'json', 'record')}"
                                     columns: [				
                                             { field: 'name', caption: 'Name', size: '20%', sortable: true },
                                             { field: 'wangwang', caption: 'Wangwang', size: '20%', sortable: true },

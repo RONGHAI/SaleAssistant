@@ -4,6 +4,19 @@
     <tlib-version>1.0</tlib-version>
     <jsp-version>2.0</jsp-version>
     <short-name>Sale Assistant Tag</short-name>
+    
+    
+    <function>
+        <name>url</name>
+        <function-class>com.ecbeta.view.tag.HTMLFunctionUtils</function-class>
+        <function-signature>
+            java.lang.String getUrl(com.ecbeta.common.core.AbstractWorker, java.lang.String, java.lang.String)
+        </function-signature>
+    </function>
+    
+    
+    
+    
     <tag>
         <name>Navigation</name>
         <tag-class>com.ecbeta.view.tag.NavigationTag</tag-class>

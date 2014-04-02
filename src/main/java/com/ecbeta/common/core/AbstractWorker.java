@@ -380,6 +380,20 @@ public abstract class AbstractWorker {
         return url.toString();
     }
     
+    
+     public String getUrl (String type, String action) {
+        StringBuilder url = new StringBuilder();
+        if(this.navigationBean == null){
+            this.navigationBean = new NavigationBean();
+        }
+        url.append(this.navigationBean.getUrl(this.request.getContextPath()));
+        url.append("&");
+        url.append(Constants.SRC_JSP).append("=").append(this.getJSP_TOGO()).append("&");
+        url.append(REFRESH_TYPE).append("=").append(type).append("&");
+        url.append(Constants.BTN_OPTION).append("=").append(action);
+        return url.toString();
+    }
+    
     public BaseViewer getViewer (boolean isHTML) {
         return null;
     }
