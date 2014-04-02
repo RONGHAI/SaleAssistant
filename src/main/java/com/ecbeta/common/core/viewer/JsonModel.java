@@ -5,7 +5,7 @@
  */
 
 package com.ecbeta.common.core.viewer;
-
+import net.sf.json.JSONObject;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +27,6 @@ public class JsonModel implements Serializable{
     
     
     public String toJson(){
-        return "";
+        return JSONObject.fromObject(data).toString();
     }
 }
