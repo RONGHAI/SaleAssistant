@@ -39,15 +39,15 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class AbstractWorker { 
+public abstract class AbstractWorker {
     public static boolean debug = false;
-    
+
     public static final boolean _SHOW_EXCEPTION = true;
     private static final int _PROCESS_STATUS_IGNORE = 0, _PROCESS_STATUS_SUCCESS = 1,
     _PROCESS_STATUS_NOMETHOD = 2, _PROCESS_STATUS_FAIL = 3;
-    private final static Class<?> [][] PARAMETER_TYPES_ARRAY = new Class[][]{null,  new Class[] { String.class }, 
+    private final static Class<?> [][] PARAMETER_TYPES_ARRAY = new Class[][]{null,  new Class[] { String.class },
                 new Class[] {HttpServletRequest.class, String.class },  new Class[] { String.class , HttpServletRequest.class } };
-    
+
 
 
 
@@ -56,9 +56,9 @@ public abstract class AbstractWorker {
     public static void main (String[] rags) {
     }
 
- 
-     
-    
+
+
+
     private HttpServletRequest request;
     private HttpServletResponse response;
     private ServletContext servletContext;
@@ -68,13 +68,13 @@ public abstract class AbstractWorker {
     public boolean needForwordToJsp = true;
     // private static Map<String, Boolean> autoBindingFlagCache = new
     // HashMap<String, Boolean>();
-    
-     
 
 
 
- 
- 
+
+
+
+
 
     public void addRefreshZone (String zones) {
         if (zones == null || zones.trim().equals("")) return;
@@ -137,7 +137,7 @@ public abstract class AbstractWorker {
     }*/
 
 /*    public void changeTimeAction () {
-      
+
     }*/
     public void clearResultAction () {
         this.getServicer().destory();
@@ -149,9 +149,9 @@ public abstract class AbstractWorker {
      * this method only dispatch btnClicked action, don't write another
      * logic in this method. all method should be use Action as suffix w/o
      * or with btnClick as parameter as neccersy.
-     * 
+     *
      * @param btnClicked
-     * @return 
+     * @return
      */
 
     public String createAction (String btnClicked) {
@@ -183,13 +183,13 @@ public abstract class AbstractWorker {
 
     }
 
-    
+
     public void dispatchAction (String btnClicked) {
 
     }
 
   /*  @SuppressWarnings("unchecked")
-    public void displayRefreshAction () { 
+    public void displayRefreshAction () {
         this.getServicer().updateDisplay(this.btnClicked);
         this.setRefreshZones("result");
     }
@@ -218,16 +218,16 @@ public abstract class AbstractWorker {
         }
     }
 
-   
+
     protected boolean enableActionAnnotation () {
         return false;
     }
-    
+
 /*    public void exportExcelAction () {
-        
-      
+
+
     }*/
-/*    
+/*
     public void exportPDFAction () {
         this.needForwordToJsp = false;
     }*/
@@ -235,7 +235,7 @@ public abstract class AbstractWorker {
 /*    public void filterRefreshAction () {
         this.getServicer().processFilter();
         this.setRefreshZones("result");
-        //    
+        //
     }
 */
     private boolean findAnnotationInClassLevel ( Class<?> ownerClass, String action) {
@@ -249,19 +249,19 @@ public abstract class AbstractWorker {
         }
         return false;
     }
-    
+
    /* public void downloadExcelAction(){
-        
+
     }*/
 
-    protected void forwardToJsp(String jsp) throws IOException, ServletException{ 
+    protected void forwardToJsp(String jsp) throws IOException, ServletException{
         this.getServletContext().getRequestDispatcher(jspPath+jsp).forward(getRequest(), getResponse());
-    } 
+    }
 
-     
 
-   
-    
+
+
+
 
     public String getAppName () {
         String workerName = this.getWORKER_NAME();
@@ -287,7 +287,7 @@ public abstract class AbstractWorker {
     public String getClearResultActions () {
         return "";
     }
- 
+
     public ExportInformationBean getExportInformationBean(){
         return null;
     }
@@ -296,8 +296,8 @@ public abstract class AbstractWorker {
      * @return the fORM_NAME
      */
     public abstract String getFORM_NAME ();
- 
-     
+
+
     /**
      * @return the jSP_TOGO
      */
@@ -328,7 +328,7 @@ public abstract class AbstractWorker {
     public Object[] getOtherServicers () {
         return null;
     }
- 
+
 
     public PanelTab[] getPanels(){
         return this.getServicer().getPanels();
@@ -369,7 +369,7 @@ public abstract class AbstractWorker {
         return servletContext;
     }
 
-   
+
     public String getUrl () {
         StringBuilder url = new StringBuilder();
         if(this.navigationBean == null){
@@ -382,8 +382,8 @@ public abstract class AbstractWorker {
         url.append(Constants.BTN_OPTION).append("=");
         return url.toString();
     }
-    
-    
+
+
      public String getUrl (String type, String action) {
         StringBuilder url = new StringBuilder();
         if(this.navigationBean == null){
@@ -396,22 +396,22 @@ public abstract class AbstractWorker {
         url.append(Constants.BTN_OPTION).append("=").append(action);
         return url.toString();
     }
-    
+
     public BaseViewer getViewer (boolean isHTML) {
         return null;
     }
-    
+
     /**
      * @return the wORKER_NAME
      */
     public String getWORKER_NAME () {
         return this.getClass().getSimpleName();
     }
-    
+
     public boolean hasData (){
         return true;
     }
-    
+
     public void init (HttpServletRequest request, HttpServletResponse response, String jspPath, CoreServlet servlet, ServletContext servletContext) {
         this.request = request;
         this.response = response;
@@ -424,10 +424,10 @@ public abstract class AbstractWorker {
         this.btnClicked = request.getParameter(BTN_OPTION);
         this.jspPath = jspPath;
     }
-    
+
     public boolean isDebug () {
         return debug;
-    } 
+    }
     public boolean isUseActionFromServicer () {
         return true;
     }
@@ -444,7 +444,7 @@ public abstract class AbstractWorker {
             int []_processStatus = new int[_instance.length];
             Arrays.fill(_processStatus,  _PROCESS_STATUS_IGNORE);
             Object[][]  args = this.getArgs(this.getRequest(), btnClicked);
-            
+
             outer: for(int c = 0; c < _instance.length; c++){
                 for(int  i = 0 ; i < PARAMETER_TYPES_ARRAY.length && i < args.length; i++){
                     _processStatus[c] = this.processButtonClickedAction(action, _instance[c].getClass() , _instance[c], PARAMETER_TYPES_ARRAY[i], args[i]);
@@ -464,12 +464,12 @@ public abstract class AbstractWorker {
             logger.log(Level.WARNING, null, e);
         }
     }
-    
+
     protected void setJsonContentType() {
         this.getResponse().setContentType("application/json; charset=UTF-8");
         this.getResponse().setHeader("Cache-Control", "no-store, max-age=0, no-cache, must-revalidate");
         this.getResponse().addHeader("Cache-Control", "post-check=0, pre-check=0");
-        this.getResponse().setHeader("Pragma", "no-cache"); 
+        this.getResponse().setHeader("Pragma", "no-cache");
     }
 
     protected void returnJSON(Object o) {
@@ -478,14 +478,14 @@ public abstract class AbstractWorker {
             if(o instanceof JsonModel){
                  this.getResponse().getWriter().write( ((JsonModel)o).toJson());
             }
-            
+
           //  this.getResponse().getWriter().write( new Gson.toJson(o).toString());
         }catch(Exception e){
             logger.log(Level.WARNING, null, e);
             //this.getResponse().getWriter().write(JSONArray.fromObject(o).toString());
         }
     }
- 
+
    private transient Object result;
    private int  processButtonClickedAction (String action, Class<?> ownerClass, Object instance , Class<?>[] _classTypes, Object[] args) {
         if (action == null) return _PROCESS_STATUS_IGNORE;
@@ -539,7 +539,7 @@ public abstract class AbstractWorker {
                 if(StringUtils.isEmpty(this.btnClicked)){
                     this.btnClicked = "";
                 }
-               
+
                 this.needForwordToJsp = !(refresh != null && refresh.equals(JSON_REFRESH_TYPE) );
                 String action = this.createAction(btnClicked);
                 if (this.btnClicked.equals(PROGRESS_PAGE_POSTBACK)) {
@@ -573,8 +573,8 @@ public abstract class AbstractWorker {
                     forwardToJsp(getJSP_TOGO());
                 } catch (IOException e) {
                     logger.log(Level.WARNING, "", e);
-                } 
-            } 
+                }
+            }
         }finally{
         }
     }
@@ -596,19 +596,19 @@ public abstract class AbstractWorker {
     public void setRequest (HttpServletRequest request) {
         this.request = request;
     }
-    
+
     public void setResponse (HttpServletResponse response) {
         this.response = response;
     }
 
     public void setServletContext (ServletContext servletContext) {
         this.servletContext = servletContext;
-    } 
+    }
 
     private void showException(String acc, Exception e, boolean forceOut){
         if (_SHOW_EXCEPTION || forceOut) {
             logger.log(Level.WARNING, "", e);
-        } 
+        }
     }
 
 /*    public void sortRefreshAction () {
@@ -619,7 +619,7 @@ public abstract class AbstractWorker {
     }
 
     public void submitAction (boolean withOutSort, boolean withOutDisplay) {
-        final AbstractServicer servicer = this.getServicer(); 
+        final AbstractServicer servicer = this.getServicer();
         servicer.destory();
         try {
             this.getServicer().retrieveData();
@@ -636,12 +636,12 @@ public abstract class AbstractWorker {
         servicer.getBaseServicerParameterBean().setSelectionPanelStatusOpen(false);
         this.setRefreshZones("");
     }
- 
+
 
     public void updateExportInformationBean () {
         this.getServicer().updateExportInformationBean();
-    } 
-    
+    }
+
     public JSONObject getJSONObject() {
         StringBuilder jb = new StringBuilder();
         String line;
@@ -663,8 +663,8 @@ public abstract class AbstractWorker {
         }
         return null;
     }
-    
-    
+
+
     public static HashMap<String, String> getJSONError(String msg){
         HashMap<String, String>  map = new HashMap<>();
         map.put("status", "error");
@@ -672,8 +672,32 @@ public abstract class AbstractWorker {
         return map;
     }
 
+    public Object recordAction() {
+        JSONObject json = this.getJSONObject();
+        String cmd = json.get("cmd").toString();
+        if (cmd != null) {
+
+        } else if (cmd.equals("get-records")) {
+            return getRecordsAction(json);
+        } else if (cmd.equals("delete-records")) {
+            return deleteRecordsAction(json);
+        } else if (cmd.equals("save-records")) {
+            return saveRecordsAction(json);
+        }
+        return getJSONError("Internal Error!");
+    }
+
+    public Object getRecordsAction(JSONObject json) {
+        return getJSONError("Internal Error!");
+    }
+
+    public Object deleteRecordsAction(JSONObject json) {
+        return getJSONError("Internal Error!");
+    }
+
+    public Object saveRecordsAction(JSONObject json) {
+        return getJSONError("Internal Error!");
+    }
 
 
- 
-    
 }
