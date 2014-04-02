@@ -7,19 +7,20 @@
 <%@ taglib prefix="sm" uri="/WEB-INF/sm.tld"%>
 <c:set value='<%=request.getAttribute(Constants.REQUEST_WORKER_ATTRIBUTE_NAME)%>' var="worker" />
 <c:set value="${worker.servicer}" var="servicer" /> 
+<c:set var='controller' value='${worker}' />
 <c:set value='${servicer.navigationBeans}' var='navigationBeans' />
 <!DOCTYPE html>
 <html>
     <head>
         <title>${worker.appName}</title>
-        <sm:Head worker='${worker}'>
+        <sm:Head controller='${worker}'>
         </sm:Head>
     </head>
     <body>
         
         <sm:Navigation navigationBeans="${servicer.navigationBeans}"  navTier='${worker.navigationBean.navTier}'/> 
         
-        <sm:Form id='form' worker="${worker}"> 
+        <sm:Form id='form' controller="${worker}"> 
             
         </sm:Form> 
         

@@ -6,13 +6,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="f"%>
 <%@ taglib prefix="sm" uri="/WEB-INF/sm.tld"%>
 <c:set value='<%=request.getAttribute(Constants.REQUEST_WORKER_ATTRIBUTE_NAME)%>' var="worker" />
-<c:set value="${worker.servicer}" var="servicer" /> 
+<c:set value="${worker.servicer}" var="servicer" />
+<c:set var='controller' value='${worker}' />
 <c:set value='${servicer.navigationBeans}' var='navigationBeans' />
 <!DOCTYPE html>
 <html>
     <head>
         <title>${worker.appName}</title>
-        <sm:Head worker='${worker}' >
+        <sm:Head controller='${worker}' >
             
             
             <script type="text/javascript">
@@ -41,7 +42,7 @@
         
         <sm:Navigation navigationBeans="${servicer.navigationBeans}"  navTier='${worker.navigationBean.navTier}'/> 
         
-        <sm:Form id='form' worker="${worker}"> 
+        <sm:Form id='form' controller="${worker}"> 
             <div id="grid" style="width: 100%; height: 350px; overflow: hidden;"></div>
         </sm:Form> 
         

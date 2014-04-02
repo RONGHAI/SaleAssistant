@@ -16,7 +16,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.ecbeta.common.constants.Constants;
 import com.ecbeta.common.core.AbstractServicer;
-import com.ecbeta.common.core.AbstractWorker;
+import com.ecbeta.common.core.AbstractController;
 import com.ecbeta.common.core.annotation.ServicerType;
 import com.ecbeta.common.core.db.DatabaseHandler;
 import com.ecbeta.common.core.db.NavigationUtil;
@@ -69,7 +69,7 @@ public class CoreServlet extends HttpServlet  implements org.springframework.web
     @Override
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         
-        AbstractWorker worker = RequestManager.getInstance().createWorker(request, response, this);
+        AbstractController worker = RequestManager.getInstance().createWorker(request, response, this);
         this.injectServicers(request, response, worker);
         worker.processRequest();
     }
@@ -155,7 +155,7 @@ public class CoreServlet extends HttpServlet  implements org.springframework.web
         return entityManagerFactory;
     }
     
-    protected void injectServicers(HttpServletRequest request, HttpServletResponse response, AbstractWorker worker)  {
+    protected void injectServicers(HttpServletRequest request, HttpServletResponse response, AbstractController worker)  {
         Collection<Field> fields = ReflectUtils.getDeclaredFields((Map<String, Field>)null, worker.getClass(), false).values();
         List<NavigationBean> naviBeans  = this.getNavigationBeans();
         for(Field field : fields){

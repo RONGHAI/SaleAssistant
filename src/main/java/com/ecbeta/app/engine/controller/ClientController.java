@@ -1,15 +1,15 @@
-package com.ecbeta.app.engine.worker;
+package com.ecbeta.app.engine.controller;
 
 import com.ecbeta.app.engine.servicer.ClientServicer;
 import com.ecbeta.common.core.AbstractServicer;
-import com.ecbeta.common.core.AbstractWorker;
+import com.ecbeta.common.core.AbstractController;
 import com.ecbeta.common.core.annotation.ServicerType;
 import com.ecbeta.common.util.JSONUtils;
 import java.util.HashMap;
 import java.util.List;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-public class ClientWorker extends AbstractWorker{
+public class ClientController extends AbstractController{
 
     
     @ServicerType("com.ecbeta.app.engine.servicer.ClientServicer")

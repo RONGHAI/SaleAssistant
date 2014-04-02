@@ -6,14 +6,14 @@
 
 package com.ecbeta.view.tag;
 
-import com.ecbeta.common.core.AbstractWorker;
+import com.ecbeta.common.core.AbstractController;
 
 /**
  *
  * @author Ronghai Wei <ronghai.wei@outlook.com>
  */
 public class HTMLFunctionUtils {
-      public static String getUrl (AbstractWorker worker, String type, String action) {
+      public static String getUrl (AbstractController worker, String type, String action) {
           return worker.getUrl(type, action);
       }
     

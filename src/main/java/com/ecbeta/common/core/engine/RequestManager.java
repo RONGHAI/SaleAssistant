@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ecbeta.common.constants.Constants;
-import com.ecbeta.common.core.AbstractWorker;
+import com.ecbeta.common.core.AbstractController;
 import com.ecbeta.common.core.reflect.ReflectUtils;
 import com.ecbeta.common.core.servlet.CoreServlet;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
@@ -38,7 +38,7 @@ public class RequestManager implements Serializable, Cloneable {
         return getInstance();
     }
     
-    public AbstractWorker createWorker(final HttpServletRequest request,
+    public AbstractController createWorker(final HttpServletRequest request,
             final HttpServletResponse response,
             final CoreServlet serv) {
         
@@ -51,7 +51,7 @@ public class RequestManager implements Serializable, Cloneable {
         }
         try{
             Class<?> clazz = ReflectUtils.classForName(workerName);
-            AbstractWorker w = (AbstractWorker) clazz.newInstance();
+            AbstractController w = (AbstractController) clazz.newInstance();
             request.setAttribute(Constants.REQUEST_WORKER_ATTRIBUTE_NAME, w);
             w.init(request, response, navigationBean, serv.getJspPath(), serv, serv.getServletContext());
             return w;

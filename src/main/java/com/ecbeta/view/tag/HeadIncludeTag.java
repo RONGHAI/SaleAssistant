@@ -6,7 +6,7 @@
 package com.ecbeta.view.tag;
 
 import com.ecbeta.common.constants.Constants;
-import com.ecbeta.common.core.AbstractWorker;
+import com.ecbeta.common.core.AbstractController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 
@@ -20,9 +20,25 @@ public class HeadIncludeTag extends AbstractTag {
         super();
     }
 
-    private AbstractWorker worker;
+    private AbstractController controller;
+
+    public AbstractController getController() {
+        return controller;
+    }
+
+    public void setController(AbstractController controller) {
+        this.controller = controller;
+    }
     private String jqueryVersion = "1.9.1";
     private String w2uiVersion = "1.3.2";
+
+    public String getW2uiVersion() {
+        return w2uiVersion;
+    }
+
+    public void setW2uiVersion(String w2uiVersion) {
+        this.w2uiVersion = w2uiVersion;
+    }
     private boolean dev = true;
 
     public String getJqueryVersion() {
@@ -41,12 +57,12 @@ public class HeadIncludeTag extends AbstractTag {
         this.dev = dev;
     }
 
-    public AbstractWorker getWorker() {
-        return worker;
+    public AbstractController getWorker() {
+        return controller;
     }
 
-    public void setWorker(AbstractWorker worker) {
-        this.worker = worker;
+    public void setWorker(AbstractController worker) {
+        this.controller = worker;
     }
 
     @Override
@@ -70,7 +86,7 @@ public class HeadIncludeTag extends AbstractTag {
         sb.append("<link rel=\"stylesheet\" type=\"text/css\" hfre=\"").append(this.getContextPath()).append("/resources/css/w2ui-").append(w2uiVersion).append(".css\"/> \n");
         sb.append("<script > \n");
         sb.append("$(document).ready(function() { \n");
-        sb.append("     ").append("").append(" sale_assistant.init('").append(this.worker.getUrl()).append("','" + Constants.BTN_OPTION + "','").append(this.worker.getFORM_NAME()).append("','")
+        sb.append("     ").append("").append(" sale_assistant.init('").append(this.controller.getUrl()).append("','" + Constants.BTN_OPTION + "','").append(this.worker.getFORM_NAME()).append("','")
                 .append(Constants.REFRESH_TYPE).append("'); \n");
         sb.append("      var sa = window.sa = sale_assistant; ");
         sb.append("}); \n");
@@ -81,7 +97,7 @@ public class HeadIncludeTag extends AbstractTag {
 
     @Override
     public void release() {
-        this.worker = null;
+        this.controller = null;
         super.release();
     }
 

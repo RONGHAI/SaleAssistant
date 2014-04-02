@@ -4,17 +4,17 @@
  * and open the template in the editor.
  */
 
-package com.ecbeta.app.engine.worker;
+package com.ecbeta.app.engine.controller;
 
 import com.ecbeta.app.engine.servicer.BareServicer;
-import com.ecbeta.common.core.AbstractWorker;
+import com.ecbeta.common.core.AbstractController;
 import com.ecbeta.common.core.annotation.ServicerType;
 
 /**
  *
  * @author Ronghai Wei <ronghai.wei@outlook.com>
  */
-public class HomeWorker extends AbstractWorker{
+public class HomeController extends AbstractController{
     @ServicerType("com.ecbeta.app.engine.servicer.BareServicer")
     BareServicer  servicer;
 

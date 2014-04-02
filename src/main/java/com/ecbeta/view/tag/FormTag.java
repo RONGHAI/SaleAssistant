@@ -7,7 +7,7 @@
 package com.ecbeta.view.tag;
 
 import static com.ecbeta.common.constants.Constants.*;
-import com.ecbeta.common.core.AbstractWorker;
+import com.ecbeta.common.core.AbstractController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 /**
@@ -21,14 +21,22 @@ public class FormTag  extends AbstractTag{
     }
     
     
-    private AbstractWorker worker;
+    private AbstractController controller;
 
-    public AbstractWorker getWorker() {
-        return worker;
+    public AbstractController getController() {
+        return controller;
     }
 
-    public void setWorker(AbstractWorker worker) {
-        this.worker = worker;
+    public void setController(AbstractController controller) {
+        this.controller = controller;
+    }
+
+    public AbstractController getWorker() {
+        return controller;
+    }
+
+    public void setWorker(AbstractController worker) {
+        this.controller = worker;
     }
  
  
@@ -46,7 +54,7 @@ public class FormTag  extends AbstractTag{
         
         StringBuilder sb = new StringBuilder();
         sb.append("<dvi id='form' > ").append("\n");
-        sb.append("<form class='formnomargin' name='").append(worker.getFORM_NAME()).append("'  id='").append(worker.getFORM_NAME()).append("'  action='").append(this.getContextPath()).append("/"+CORE_SERVLET+"' method='post'>").append("\n");
+        sb.append("<form class='formnomargin' name='").append(controller.getFORM_NAME()).append("'  id='").append(worker.getFORM_NAME()).append("'  action='").append(this.getContextPath()).append("/"+CORE_SERVLET+"' method='post'>").append("\n");
         //sb.append("     <input type='hidden' name='" + REQUEST_WORKER + "' id='" + REQUEST_WORKER + "' value='").append(worker.getClass().getName()).append("' />").append("\n");
         //sb.append("     <input type='hidden' name='" + SRC_JSP + "' id='" + SRC_JSP + "' value='").append(worker.getJspGoto()).append("' />").append("\n");
         sb.append("     <input type='hidden' name='"+BTN_OPTION+"' id='"+BTN_OPTION+"'  value='' /> ").append("\n");
@@ -58,7 +66,7 @@ public class FormTag  extends AbstractTag{
     
     @Override
     public void release() { 
-        this.worker = null;
+        this.controller = null;
         super.release();
     }
  

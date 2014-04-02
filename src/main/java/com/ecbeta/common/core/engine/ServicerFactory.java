@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 
 import com.ecbeta.common.core.AbstractServicer;
-import com.ecbeta.common.core.AbstractWorker;
+import com.ecbeta.common.core.AbstractController;
 import com.ecbeta.common.core.reflect.ReflectUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -36,7 +36,7 @@ public class ServicerFactory {
     private ServicerFactory() {
     }
 
-    protected static String getServicerID(HttpSession session, String servicerClassName, String instanceName, AbstractWorker worker) {
+    protected static String getServicerID(HttpSession session, String servicerClassName, String instanceName, AbstractController worker) {
         String id = session.getId() + "_" + servicerClassName + "_" + instanceName;
 
         if (worker != null) {
@@ -54,7 +54,7 @@ public class ServicerFactory {
     }
 
     public static AbstractServicer getService(HttpSession session, String className, 
-            String instanceName,  ApplicationContext appContext, AbstractWorker worker) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+            String instanceName,  ApplicationContext appContext, AbstractController worker) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         String servicerId = getServicerID(session, className, instanceName, worker);
         Object servicer = session.getAttribute(servicerId);
         String date = buildDateString();
@@ -92,7 +92,7 @@ public class ServicerFactory {
     
     
 
-    public static boolean isNewInstance(HttpSession session, String className, String instanceName, AbstractWorker worker) {
+    public static boolean isNewInstance(HttpSession session, String className, String instanceName, AbstractController worker) {
         cleanNewServiceInstanceIds();
         String servicerId = getServicerID(session, className, instanceName, worker);
         String date = buildDateString();

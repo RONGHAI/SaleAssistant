@@ -10,7 +10,7 @@
         <name>url</name>
         <function-class>com.ecbeta.view.tag.HTMLFunctionUtils</function-class>
         <function-signature>
-            java.lang.String getUrl(com.ecbeta.common.core.AbstractWorker, java.lang.String, java.lang.String)
+            java.lang.String getUrl(com.ecbeta.common.core.AbstractController, java.lang.String, java.lang.String)
         </function-signature>
     </function>
     
@@ -49,7 +49,7 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <name>worker</name>
+            <name>controller</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
@@ -65,7 +65,7 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <name>worker</name>
+            <name>controller</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

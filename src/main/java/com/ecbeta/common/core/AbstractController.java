@@ -39,7 +39,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class AbstractWorker {
+public abstract class AbstractController {
     public static boolean debug = false;
 
     public static final boolean _SHOW_EXCEPTION = true;
@@ -51,7 +51,7 @@ public abstract class AbstractWorker {
 
 
 
-    private static final Logger logger =   Logger.getLogger(AbstractWorker.class.getName()) ;
+    private static final Logger logger =   Logger.getLogger(AbstractController.class.getName()) ;
 
     public static void main (String[] rags) {
     }
@@ -583,7 +583,7 @@ public abstract class AbstractWorker {
     }
 
     public void setDebug (boolean debug) {
-        AbstractWorker.debug = debug;
+        AbstractController.debug = debug;
     }
     public void setRefreshZones (String zones) {
         this.getRequest().setAttribute(AA_REFRESH_ZONES_NAME, zones);
