@@ -62,4 +62,22 @@ public class ClientWorker extends AbstractWorker{
         map.put("records", list);
         return map;
     }
+    
+    public Object getColumnsAction(){
+        return this.getColumns(); 
+    }
+    
+    
+    public String getColumns(){
+        String s = "[				\n" +
+"                                            { field: 'name', caption: 'Name', size: '20%', sortable: true },\n" +
+"                                            { field: 'wangwang', caption: 'Wangwang', size: '20%', sortable: true },\n" +
+"                                            { field: 'qq', caption: 'QQ', size: '20%', sortable: true },\n" +
+"                                            { field: 'birthday', caption: 'Birthday', size: '120px', sortable: true },\n" +
+"                                            { field: 'gender', caption: 'Gender', size: '120px', sortable: true },\n" +
+"                                            { field: 'phone', caption: 'Phone', size: '120px', sortable: true },\n" +
+"                                    ]";
+        return s;
+        
+    }
 }

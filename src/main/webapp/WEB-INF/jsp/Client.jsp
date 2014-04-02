@@ -29,14 +29,7 @@
                                         toolbarSave     : true
                                     },
                                     url : "${sm:url(worker, 'json', 'record')}"
-                                    columns: [				
-                                            { field: 'name', caption: 'Name', size: '20%', sortable: true },
-                                            { field: 'wangwang', caption: 'Wangwang', size: '20%', sortable: true },
-                                            { field: 'qq', caption: 'QQ', size: '20%', sortable: true },
-                                            { field: 'birthday', caption: 'Birthday', size: '120px', sortable: true },
-                                            { field: 'gender', caption: 'Gender', size: '120px', sortable: true },
-                                            { field: 'phone', caption: 'Phone', size: '120px', sortable: true },
-                                    ]
+                                    columns: ${worker.columns}
                             });	
                             //w2ui['grid'].load('${worker.url}'+'fetchAll');   
                       });
