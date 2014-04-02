@@ -25,6 +25,7 @@ import com.ecbeta.common.core.engine.ServicerFactory;
 import com.ecbeta.common.core.reflect.ReflectUtils;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
@@ -111,14 +112,37 @@ public class CoreServlet extends HttpServlet  implements org.springframework.web
         return null;
     }
     
+    protected  Map<String, NavigationBean>  getCache(){
+       Map<String, NavigationBean> cache = (Map<String, NavigationBean>  ) this.getServletContext().getAttribute("ALL_NAVIGATIONBEANS_CACHE");
+       if(cache == null){
+           cache = new HashMap<>();
+           this.getServletContext().put("ALL_NAVIGATIONBEANS_CACHE", cache); 
+       }
+       return cache;
+    }
+    
+    protected NavigationBean findFromCache(String key){
+       Map<String, NavigationBean> cache =  getCache();
+       NavigationBean bean = cache.get(key); 
+       return bean;
+    }
+    
+    protected NavigationBean save2Cache(String key, NavigationBean bean){
+        getCache().put(key, bean);    
+        return bean;
+    }
     public NavigationBean find(String navTier){
+        NavigationBean bean = this.findFromCache(navTier);
+        if(bean != null) return bean; 
         List<NavigationBean> navBeans = this.getNavigationBeans();
-        return find(navBeans, navTier, null);
+        return this.save2Cache(navTier, find(navBeans, navTier, null));
     }
     
     public NavigationBean findByWorker(String worker){
+        NavigationBean bean = this.findFromCache(worker);
+        if(bean != null) return bean; 
         List<NavigationBean> navBeans = this.getNavigationBeans();
-        return find(navBeans, null, worker);
+        return this.save2Cache(worker, find(navBeans, null, worker));
     }
     
     @PersistenceUnit(unitName = "SaleAssistantPU")
