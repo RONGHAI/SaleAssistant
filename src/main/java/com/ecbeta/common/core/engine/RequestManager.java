@@ -9,6 +9,7 @@ import com.ecbeta.common.constants.Constants;
 import com.ecbeta.common.core.AbstractWorker;
 import com.ecbeta.common.core.reflect.ReflectUtils;
 import com.ecbeta.common.core.servlet.CoreServlet;
+import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import com.ecbeta.common.util.StringUtils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,15 +41,19 @@ public class RequestManager implements Serializable, Cloneable {
     public AbstractWorker createWorker(final HttpServletRequest request,
             final HttpServletResponse response,
             final CoreServlet serv) {
-        String workerName = request.getParameter(Constants.REQUEST_WORKER);
+        
+        String navTier = request.getParameter(Constants.NAV_TIERS);
+        NavigationBean navigationBean = serv.find(navTier);
+        String workerName = navigationBean == null ? null : navigationBean.getWorker();
         if(StringUtils.isEmpty(workerName)){
             workerName = Constants.DEFAULT_WORKER;
+            navigationBean = serv.findByWorker(workerName);
         }
         try{
             Class<?> clazz = ReflectUtils.classForName(workerName);
             AbstractWorker w = (AbstractWorker) clazz.newInstance();
             request.setAttribute(Constants.REQUEST_WORKER_ATTRIBUTE_NAME, w);
-            w.init(request, response, serv.getJspPath(), serv, serv.getServletContext());
+            w.init(request, response, navigationBean, serv.getJspPath(), serv, serv.getServletContext());
             return w;
         }catch(ClassNotFoundException | IllegalAccessException | InstantiationException e){
             logger.log(Level.SEVERE, null, e);

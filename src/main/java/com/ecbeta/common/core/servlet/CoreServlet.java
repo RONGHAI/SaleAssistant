@@ -97,21 +97,28 @@ public class CoreServlet extends HttpServlet  implements org.springframework.web
         return naviBeans;
     }
     
-    public NavigationBean find(String[] ar, String workerName){
-        String li = StringUtils.join(ar,"_");
-        List<NavigationBean> navBeans = this.getNavigationBeans();
+    public static NavigationBean find(  List<NavigationBean> navBeans, String navTier, String worker){
+        if(navBeans == null || navBeans.isEmpty()) return null;
         for(NavigationBean b : navBeans){
-            if(b.getNavTier("_").equals(li)){
+            if( ( navTier != null && b.getNavTier("_").equals(navTier) ) || (  worker != null && worker.equals(b.getWorker()) )){
                 return b;
             }
+            NavigationBean cf = find(b.getChildren(), navTier, worker);
+            if(cf != null){
+                return cf;
+            } 
         }
-        for(NavigationBean b : navBeans){
-            if(b.getWorker().equals(workerName)){
-                return b;
-            }
-        }
-        
         return null;
+    }
+    
+    public NavigationBean find(String navTier){
+        List<NavigationBean> navBeans = this.getNavigationBeans();
+        return find(navBeans, navTier, null);
+    }
+    
+    public NavigationBean findByWorker(String worker){
+        List<NavigationBean> navBeans = this.getNavigationBeans();
+        return find(navBeans, null, worker);
     }
     
     @PersistenceUnit(unitName = "SaleAssistantPU")

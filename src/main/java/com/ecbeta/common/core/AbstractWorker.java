@@ -412,15 +412,10 @@ public abstract class AbstractWorker {
         return true;
     }
 
-    public void init (HttpServletRequest request, HttpServletResponse response, String jspPath, CoreServlet servlet, ServletContext servletContext) {
+    public void init (HttpServletRequest request, HttpServletResponse response,  NavigationBean navigationBean, String jspPath, CoreServlet servlet, ServletContext servletContext) {
         this.request = request;
         this.response = response;
         this.servletContext = servletContext;
-        String navTier = request.getParameter(Constants.NAV_TIERS);
-        if(StringUtils.isEmpty(navTier)){
-            navTier = "0_0_0_0";
-        }
-        this.navigationBean = servlet.find(navTier.split("_"), this.getClass().getName());
         this.btnClicked = request.getParameter(BTN_OPTION);
         this.jspPath = jspPath;
     }

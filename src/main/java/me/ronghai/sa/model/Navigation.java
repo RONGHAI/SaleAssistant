@@ -81,11 +81,11 @@ public class Navigation   extends AbstractModel implements Serializable {
         this.worker = worker;
     }
 
-    public String getOrder() {
+    public int getOrder() {
         return order;
     }
 
-    public void setOrder(String order) {
+    public void setOrder(int order) {
         this.order = order;
     }
     
@@ -106,7 +106,7 @@ public class Navigation   extends AbstractModel implements Serializable {
     private String worker;
     
     @Column(name = "[order]")
-    private String order;
+    private int order;
     
     @Column(name = "disabled")
     private boolean disabled;

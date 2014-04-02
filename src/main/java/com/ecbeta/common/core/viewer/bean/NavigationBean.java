@@ -5,8 +5,11 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.ecbeta.common.util.StringUtils;
+import java.util.ArrayList;
+import java.util.Arrays;
 import org.codehaus.jackson.annotate.JsonIgnore;
-
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 public class NavigationBean implements Serializable{
     /**
@@ -14,6 +17,15 @@ public class NavigationBean implements Serializable{
      */
     private static final long serialVersionUID = 1L;
     private List<NavigationBean> children;
+    private String icon;
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
     public List<NavigationBean> getChildren () {
         return children;
     }
@@ -28,8 +40,48 @@ public class NavigationBean implements Serializable{
     public void setNavTier (int[] navTier) {
         this.navTier = navTier;
     }
+    
+    
+    public int[] getParentNavTier() {
+        int _navTier[] = this.navTier.clone();
+        for(int i = _navTier.length - 1; i >= 0; i--){
+            if(_navTier[i] != 0){
+                _navTier[i] = 0;
+                break;
+            }
+        }
+        if(Arrays.equals(_navTier , navTier) || _navTier[0] == 0){
+            return null;
+        }
+        return _navTier;
+    }
+    public String getParentNavTier(String join){
+        int [] p = getParentNavTier();
+        if(p == null){
+            return null;
+        }
+        return StringUtils.join(p, join);
+    }
+    
     private String worker;
     private String label;
+    private int order;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
 
     public String getLabel() {
         return label;
@@ -52,8 +104,19 @@ public class NavigationBean implements Serializable{
          return getUrl("");
     }
     
+    public void addChild(NavigationBean bean){
+        if(this.children == null){
+            this.children = new ArrayList<>();
+        }
+        this.children.add(bean);
+    }
+    
+    
     @JsonIgnore
     public String getUrl(String contextPath){
+        if(StringUtils.isEmpty(contextPath)){
+            return "";
+        }
         StringBuilder url = new StringBuilder();
         if(StringUtils.isNotEmpty(contextPath)){
             url.append(contextPath);
@@ -64,4 +127,30 @@ public class NavigationBean implements Serializable{
         return url.toString();
     }
     
+    public JSONObject toJson(String idPrefix) {
+        JSONObject json = new JSONObject();
+        json.put("id", getNavTierID(idPrefix, navTier));
+        json.put("text", this.getLabel());
+        json.put("expanded", false);
+        if(StringUtils.isNotEmpty(icon)){
+            json.put("icon", icon);
+        }
+        if (this.children != null && this.children.size() > 0) {
+            json.put("group", true);
+            json.put("nodes", toJson(this.children, idPrefix));
+        }
+        return json;
+    }
+
+    public static JSONArray toJson(List<NavigationBean> beans, String idPrefix) { 
+        JSONArray array = new JSONArray();
+        for (NavigationBean b : beans) {
+            array.add(b.toJson(idPrefix));
+        }
+        return array;
+    }
+    
+    public static String getNavTierID(String idPrefix, int[] navTier){
+        return idPrefix+"-" + StringUtils.join(navTier, "-");
+    }
 }

@@ -8,6 +8,10 @@ package com.ecbeta.common.core.db;
 
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import me.ronghai.sa.model.Navigation;
 
@@ -17,16 +21,58 @@ import me.ronghai.sa.model.Navigation;
  */
 public class NavigationUtil {
 
-    public static List<NavigationBean> convert(List<Navigation> navs) {
-        List<NavigationBean> navBeans = new ArrayList<>();
-        for(Navigation na: navs){
-            NavigationBean bean = new NavigationBean();
-            bean.setWorker(na.getWorker());
-            bean.setLabel(na.getLabel());
-            bean.setNavTier(new int[]{(int)na.getTier_1(), (int)na.getTier_2(), (int)na.getTier_3(), (int)na.getTier_4()});
-            navBeans.add(bean);
-        }
-        return navBeans;
+    private static NavigationBean covert(Navigation na){
+        NavigationBean bean = new NavigationBean();
+        bean.setWorker(na.getWorker());
+        bean.setLabel(na.getLabel());
+        bean.setOrder(na.getOrder());
+        bean.setId(na.getId().intValue());
+        bean.setNavTier(new int[]{(int) na.getTier_1(), (int) na.getTier_2(), (int) na.getTier_3(), (int) na.getTier_4()});
+        return bean;
     }
     
+    public static List<NavigationBean> convert(List<Navigation> navs) {        
+        LinkedHashMap<String, NavigationBean> navBeans = new LinkedHashMap<>();
+        
+        List<NavigationBean> all = new ArrayList<>();
+        for(Navigation na: navs){
+            NavigationBean bean = covert(na);
+            navBeans.put(bean.getNavTier("_"), bean);
+            all.add(bean);
+        }
+        HashSet<String> removeKeys = new HashSet<>();
+        for(NavigationBean bean : all){
+            String parantKey = bean.getParentNavTier("_");
+            NavigationBean navBean = navBeans.get(parantKey);
+            if(navBean != null){
+                navBean.addChild(bean);
+                removeKeys.add(bean.getNavTier("_"));
+            }
+        }
+        for(String key : removeKeys){
+             navBeans.remove(key);
+        } 
+        List<NavigationBean> navBeanList = new ArrayList<>(navBeans.values());
+        return navBeanList;
+    }
+    
+    public final static Comparator<NavigationBean> comparator = new Comparator<NavigationBean>(){
+        @Override
+        public int compare(NavigationBean o1, NavigationBean o2) {
+            if(o1.getOrder() != o2.getOrder()){
+                return o1.getOrder() - o2.getOrder();
+            }else{
+                return o1.getId() - o2.getId();
+            }
+        }
+        
+    };
+    
+    public static void sort(List<NavigationBean> navBeans){
+        if(navBeans == null) return;
+        Collections.sort(navBeans, comparator);
+        for(NavigationBean bean : navBeans){
+            Collections.sort(bean.getChildren(), comparator);
+        }
+    } 
 }
