@@ -6,9 +6,13 @@
 package com.ecbeta.view.tag;
 
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
+import static com.ecbeta.common.core.viewer.bean.NavigationBean.getNavTierID;
 import java.util.List;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyContent;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 /**
  *
  * @author Ronghai Wei <ronghai.wei@outlook.com>
@@ -21,6 +25,25 @@ public class NavigationTag extends AbstractTag {
 
     private List<NavigationBean> navigationBeans;
     private String bodyString;
+    private int[] navTier;
+    private String navPrefix = "level";
+
+    public String getNavPrefix() {
+        return navPrefix;
+    }
+
+    public void setNavPrefix(String navPrefix) {
+        this.navPrefix = navPrefix;
+    }
+
+    public int[] getNavTier() {
+        return navTier;
+    }
+
+    public void setNavTier(int[] navTier) {
+        this.navTier = navTier;
+    }
+    
 
     public List<NavigationBean> getNavigationBeans() {
         return navigationBeans;
@@ -48,7 +71,9 @@ public class NavigationTag extends AbstractTag {
     @Override
     public int doStartTag() throws JspException {
         int returnValue = super.doStartTag();
-
+        if(this.getId() == null || "".equals(this.getId())){
+            this.setId("navigationbar");
+        }
         return returnValue;
     }
  
@@ -78,6 +103,28 @@ public class NavigationTag extends AbstractTag {
 
     private Object renderHTML(String contextPath, String bodyString) throws JspException {
         StringBuilder sb = new StringBuilder();
+        String id = this.getId();
+        
+        
+        
+        JSONObject json = new JSONObject();
+        json.put("nodes", NavigationBean.toJson(this.navigationBeans, navPrefix));
+        json.put("name", id);
+        json.put("onClick", "function(event){}");
+        
+        sb.append("<div id=\"").append(id).append("\" style=\"height: 300px; width: 180px; float: left\"></div>");
+        sb.append("<div style=\"clear: both\"></div>");
+        sb.append("<script type=\"text/javascript\">\n");
+        sb.append("$(document).ready(function () {\n" ); 
+        sb.append("	$('#").append(id).append("').w2sidebar(");
+        sb.append("             ").append(json.toString());
+        sb.append("     );\n" );
+        sb.append("});\n" );
+        if(navTier != null){
+              sb.append("\"w2ui.").append(id).append(".click('").append(getNavTierID(navPrefix, navTier)).append("');");
+        }
+      
+        sb.append("</script>");
         sb.append("<div id='navigation' > ");
         sb.append(render(this.navigationBeans, 0));
         sb.append("</div>");

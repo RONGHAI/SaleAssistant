@@ -46,7 +46,7 @@
     </head>
     <body>
         
-        <sm:Navigation navigationBeans="${servicer.navigationBeans}" /> 
+        <sm:Navigation navigationBeans="${servicer.navigationBeans}"  navTier='${worker.navigationBean.navTier}'/> 
         
         <sm:Form id='form' worker="${worker}"> 
             <div id="grid" style="width: 100%; height: 350px; overflow: hidden;"></div>

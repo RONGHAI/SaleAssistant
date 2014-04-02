@@ -17,7 +17,7 @@
     </head>
     <body>
         
-        <sm:Navigation navigationBeans="${servicer.navigationBeans}" /> 
+        <sm:Navigation navigationBeans="${servicer.navigationBeans}"  navTier='${worker.navigationBean.navTier}'/> 
         
         <sm:Form id='form' worker="${worker}"> 
             
