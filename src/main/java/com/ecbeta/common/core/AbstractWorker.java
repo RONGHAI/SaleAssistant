@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import net.sf.json.JSONObject;
 
 import com.ecbeta.common.constants.Constants;
 import com.ecbeta.common.core.annotation.Action;
@@ -32,6 +33,7 @@ import com.ecbeta.common.core.viewer.JsonModel;
 import com.ecbeta.common.core.viewer.bean.ExportInformationBean;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import com.ecbeta.common.core.viewer.bean.PanelTab;
+import java.io.BufferedReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -638,4 +640,31 @@ public abstract class AbstractWorker {
     public void updateExportInformationBean () {
         this.getServicer().updateExportInformationBean();
     } 
+    
+    public JSONObject getJSONObject() {
+        StringBuilder jb = new StringBuilder();
+        String line;
+        try {
+            BufferedReader reader = request.getReader();
+            while ((line = reader.readLine()) != null) {
+                jb.append(line);
+            }
+        }
+        catch (IOException e) {
+            logger.log(Level.SEVERE, "", e);
+        }
+        try {
+            JSONObject jsonObject = JSONObject.fromObject(jb.toString());
+            return jsonObject;
+        }
+        catch (Exception e) {
+            logger.log(Level.SEVERE, "", e);
+        }
+        return null;
+    }
+
+
+
+ 
+    
 }
