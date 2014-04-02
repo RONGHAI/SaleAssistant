@@ -53,7 +53,7 @@ if (jQuery) {
                     ;
                 }
             }
-            var clearZones = responseJSON['clearRefreshZone'];
+            var clearZones = data['clearRefreshZone'];
             if (clearZones) {
                 for (var i = 0; i < clearZones.length; i++) {
                     try {
