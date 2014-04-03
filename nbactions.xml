@@ -56,7 +56,16 @@
             <actionName>CUSTOM-更新数据库</actionName>
             <displayName>更新数据库</displayName>
             <goals>
+                <goal>compile</goal>
                 <goal>flyway:migrate</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-构建并运行</actionName>
+            <displayName>构建并运行</displayName>
+            <goals>
+                <goal>package</goal>
+                <goal>jetty:run</goal>
             </goals>
         </action>
     </actions>
