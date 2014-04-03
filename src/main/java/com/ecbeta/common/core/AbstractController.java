@@ -471,6 +471,9 @@ public abstract class AbstractController {
 
     protected void returnJSON(Object o) {
         this.setJsonContentType();
+        if(o == null){
+            return;
+        }
         System.out.println(o);
         try{
             if(o instanceof JsonModel){
