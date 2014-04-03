@@ -13,11 +13,7 @@ public class ClientController extends AbstractController{
     @ServicerType("com.ecbeta.app.engine.servicer.ClientServicer")
     private ClientServicer servicer;
     
-    @Override
-    public String getAppName () {
-        return "Client";
-    }
-
+    
     @Override
     public String getFORM_NAME () {
         return "ClientForm";

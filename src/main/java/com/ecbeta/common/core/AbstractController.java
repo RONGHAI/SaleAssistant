@@ -265,6 +265,9 @@ public abstract class AbstractController {
 
 
     public String getAppName () {
+        if(this.navigationBean != null && StringUtils.isNotEmpty(this.navigationBean.getLabel())){
+            return this.navigationBean.getLabel();
+        }
         String workerName = this.getWORKER_NAME();
         return workerName.substring(0, workerName.length() - "Worker".length());
     }
