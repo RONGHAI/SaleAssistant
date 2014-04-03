@@ -481,11 +481,11 @@ public abstract class AbstractController {
             }else if(o instanceof JSONObject || o instanceof  JSONArray){
                  this.getResponse().getWriter().write (o.toString());
             }
-            this.getResponse().getWriter().write( JSONObject.fromObject(o).toString());
         }catch(IOException e){
             logger.log(Level.WARNING, null, e);
             try {
                 this.getResponse().getWriter().write(JSONArray.fromObject(o).toString());
+                return;
             }
             catch (IOException ex) {
                logger.log(Level.WARNING, null, ex);
@@ -510,8 +510,9 @@ public abstract class AbstractController {
                 method = ownerClass.getMethod(action, _classTypes);
                 withBtnPara = true;
             }
-            this.result = withBtnPara ? method.invoke(instance, args) : method.invoke(instance);
             logger.log(Level.INFO, action+" " + method.getName(), method);
+            this.result = withBtnPara ? method.invoke(instance, args) : method.invoke(instance);
+           
             this.doActionAnnotation(method, action);
             return _PROCESS_STATUS_SUCCESS;
         } catch (SecurityException e) {
@@ -614,7 +615,7 @@ public abstract class AbstractController {
 
     private void showException(String acc, Exception e, boolean forceOut){
         if (_SHOW_EXCEPTION || forceOut) {
-            logger.log(Level.WARNING, "", e);
+            logger.log(Level.WARNING, "Show All Exception", e);
         }
     }
 
@@ -658,8 +659,8 @@ public abstract class AbstractController {
                 jb.append(line);
             }
         }
-        catch (IOException e) {
-            logger.log(Level.SEVERE, "", e);
+        catch (IOException | java.lang.IllegalStateException e) {
+            logger.log(Level.OFF, "Get Json Content issue " + e.getLocalizedMessage() , e);
         }
         if(jb.length() == 0){
             return null;
