@@ -116,7 +116,7 @@ public class CoreServlet extends HttpServlet  implements org.springframework.web
        Map<String, NavigationBean> cache = (Map<String, NavigationBean>  ) this.getServletContext().getAttribute("ALL_NAVIGATIONBEANS_CACHE");
        if(cache == null){
            cache = new HashMap<>();
-           this.getServletContext().put("ALL_NAVIGATIONBEANS_CACHE", cache); 
+           this.getServletContext().setAttribute("ALL_NAVIGATIONBEANS_CACHE", cache); 
        }
        return cache;
     }
