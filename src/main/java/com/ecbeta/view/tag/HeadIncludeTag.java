@@ -86,7 +86,7 @@ public class HeadIncludeTag extends AbstractTag {
         sb.append("<link rel=\"stylesheet\" type=\"text/css\" hfre=\"").append(this.getContextPath()).append("/resources/css/w2ui-").append(w2uiVersion).append(".css\"/> \n");
         sb.append("<script > \n");
         sb.append("$(document).ready(function() { \n");
-        sb.append("     ").append("").append(" sale_assistant.init('").append(this.controller.getUrl()).append("','" + Constants.BTN_OPTION + "','").append(this.worker.getFORM_NAME()).append("','")
+        sb.append("     ").append("").append(" sale_assistant.init('").append(this.controller.getUrl()).append("','" + Constants.BTN_OPTION + "','").append(this.controller.getFORM_NAME()).append("','")
                 .append(Constants.REFRESH_TYPE).append("'); \n");
         sb.append("      var sa = window.sa = sale_assistant; ");
         sb.append("}); \n");
