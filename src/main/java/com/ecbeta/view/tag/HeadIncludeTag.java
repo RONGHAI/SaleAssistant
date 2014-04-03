@@ -29,7 +29,7 @@ public class HeadIncludeTag extends AbstractTag {
     public void setController(AbstractController controller) {
         this.controller = controller;
     }
-    private String jqueryVersion = "1.9.1";
+    private String jqueryVersion = "2.1.0";
     private String w2uiVersion = "1.3.2";
 
     public String getW2uiVersion() {
