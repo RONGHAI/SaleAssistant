@@ -34,6 +34,10 @@ public class NavigationBean implements Serializable{
     }
     
     private int[] navTier;
+
+    public int[] getNavTier() {
+        return navTier;
+    }
     public String getNavTier(String join){
         return StringUtils.join(navTier, join);
     }
