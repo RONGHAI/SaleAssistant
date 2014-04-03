@@ -53,7 +53,7 @@ public class FormTag  extends AbstractTag{
         HttpServletRequest request = this.getRequest();
         
         StringBuilder sb = new StringBuilder();
-        sb.append("<dvi id='form' > ").append("\n");
+        sb.append("<div id='form' > ").append("\n");
         sb.append("<form class='formnomargin' name='").append(controller.getFORM_NAME()).append("'  id='").append(controller.getFORM_NAME()).append("'  action='").append(this.getContextPath()).append("/"+CORE_SERVLET+"' method='post'>").append("\n");
         //sb.append("     <input type='hidden' name='" + REQUEST_WORKER + "' id='" + REQUEST_WORKER + "' value='").append(worker.getClass().getName()).append("' />").append("\n");
         //sb.append("     <input type='hidden' name='" + SRC_JSP + "' id='" + SRC_JSP + "' value='").append(worker.getJspGoto()).append("' />").append("\n");
