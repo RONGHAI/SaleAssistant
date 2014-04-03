@@ -10,7 +10,6 @@ import static com.ecbeta.common.core.viewer.bean.NavigationBean.getNavTierID;
 import java.util.List;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyContent;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
@@ -94,20 +93,24 @@ public class NavigationTag extends AbstractTag {
         sb.append("<div id=\"").append(id).append("\" style=\"height: 300px; width: 180px; float: left\"></div>");
         sb.append("<div style=\"clear: both\"></div>");
         sb.append("<script type=\"text/javascript\">//<![CDATA[ \n");
-        sb.append("$(document).ready(function () {\n" ); 
-        sb.append("	$('#").append(id).append("').w2sidebar(");
-        sb.append("             ").append(json.toString());
-        sb.append("     );\n" );
+        sb.append("$(function () {\n" ); 
+        sb.append("    $('#").append(id).append("').w2sidebar(\n\n");
+        sb.append("        ").append(json.toString());
+        sb.append("    );\n\n" );
         sb.append("});\n" );
+        
+        
+        sb.append("$(document).ready(function () {\n" ); 
         if(navTier != null){
-              //sb.append("w2ui.").append(id).append(".select('").append(getNavTierID(navPrefix, navTier)).append("');\n");
+             sb.append("sale_assistant.selectSidebar('").append(id).append("','").append(getNavTierID(navPrefix, navTier)).append("');\n");
         }
         sb.append("w2ui.").append(id).append(".on('*', function (event) {\n");
-        sb.append("         if(event.type === 'click'){   \n");
-        sb.append("                 var url = w2ui.").append(id).append(".get(event.target)['data-url'];\n");
-        sb.append("                 sa.runApp(url);\n");
-        sb.append("         };\n");
+        sb.append("    if(event.type === 'click'){   \n");
+        sb.append("        var url = w2ui.").append(id).append(".get(event.target)['data-url'];\n");
+        sb.append("        sa.runApp(url);\n");
+        sb.append("    };\n");
         sb.append("});\n");
+        sb.append("});\n" );
         sb.append("//]]>\n");
         sb.append("</script>\n");
          

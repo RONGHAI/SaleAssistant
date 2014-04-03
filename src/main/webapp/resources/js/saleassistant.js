@@ -200,6 +200,25 @@ if (jQuery) {
             
         };
 
+        sale_assistant.expandSidebar = function(id, parent){
+            if(parent && parent.id && parent.parent){
+                  window.w2ui[id].expand(parent.id);
+                  if(parent.parent){
+                      sale_assistant.expandSidebar(id, parent.parent);
+                  }
+            }
+        };
+
+        sale_assistant.selectSidebar = function (id, item){
+            if(item){
+                window.w2ui[id].select(item);
+                var _sel = window.w2ui[id].get(item);
+                if(_sel){
+                    sale_assistant.expandSidebar(id ,_sel.parent);
+                }
+            }
+        };
+        
 
     })(jQuery);
 }
