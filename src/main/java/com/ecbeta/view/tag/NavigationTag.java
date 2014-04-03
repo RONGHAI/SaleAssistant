@@ -100,7 +100,7 @@ public class NavigationTag extends AbstractTag {
         sb.append("     );\n" );
         sb.append("});\n" );
         if(navTier != null){
-              sb.append("w2ui.").append(id).append(".select('").append(getNavTierID(navPrefix, navTier)).append("');");
+              //sb.append("w2ui.").append(id).append(".select('").append(getNavTierID(navPrefix, navTier)).append("');\n");
         }
         sb.append("w2ui.").append(id).append(".on('*', function (event) {\n");
         sb.append("         if(event.type === 'click'){   \n");

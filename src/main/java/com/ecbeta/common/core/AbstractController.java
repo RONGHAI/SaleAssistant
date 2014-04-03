@@ -38,6 +38,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.sf.json.JSONArray;
 
 public abstract class AbstractController {
     public static boolean debug = false;
@@ -470,15 +471,22 @@ public abstract class AbstractController {
 
     protected void returnJSON(Object o) {
         this.setJsonContentType();
+        System.out.println(o);
         try{
             if(o instanceof JsonModel){
                  this.getResponse().getWriter().write( ((JsonModel)o).toJson());
+            }else if(o instanceof JSONObject || o instanceof  JSONArray){
+                 this.getResponse().getWriter().write (o.toString());
             }
-
-          //  this.getResponse().getWriter().write( new Gson.toJson(o).toString());
-        }catch(Exception e){
+            this.getResponse().getWriter().write( JSONObject.fromObject(o).toString());
+        }catch(IOException e){
             logger.log(Level.WARNING, null, e);
-            //this.getResponse().getWriter().write(JSONArray.fromObject(o).toString());
+            try {
+                this.getResponse().getWriter().write(JSONArray.fromObject(o).toString());
+            }
+            catch (IOException ex) {
+               logger.log(Level.WARNING, null, ex);
+            }
         }
     }
 
@@ -650,6 +658,9 @@ public abstract class AbstractController {
         catch (IOException e) {
             logger.log(Level.SEVERE, "", e);
         }
+        if(jb.length() == 0){
+            return null;
+        }
         try {
             JSONObject jsonObject = JSONObject.fromObject(jb.toString());
             return jsonObject;
@@ -672,7 +683,7 @@ public abstract class AbstractController {
     public Object recordAction() {
         
         JSONObject json = this.getJSONObject();
-        String cmd = json.get("cmd").toString();
+        String cmd = json == null ? null :(String)json.get("cmd");
         logger.log(Level.INFO, "recordAction " + cmd, json);
         if (cmd == null) {
             return getRecordsAction(json);
