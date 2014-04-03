@@ -26,6 +26,15 @@ public class NavigationTag extends AbstractTag {
     private String bodyString;
     private int[] navTier;
     private String navPrefix = "level";
+    private boolean w2ui = false;
+
+    public boolean isW2ui() {
+        return w2ui;
+    }
+
+    public void setW2ui(boolean w2ui) {
+        this.w2ui = w2ui;
+    }
 
     public String getNavPrefix() {
         return navPrefix;
@@ -76,26 +85,66 @@ public class NavigationTag extends AbstractTag {
         return returnValue;
     }
  
-
+    
+    public String createW2UI(String contextPath){
+         StringBuilder sb = new StringBuilder();
+         
+        String navs = NavigationBean.toJson(this.navigationBeans, navPrefix, contextPath, true).toString();
      
+        JSONObject json = new JSONObject();
+        json.put("nodes", NavigationBean.toJson(this.navigationBeans, navPrefix, contextPath, true));
+        json.put("name", id);
+        
+        StringBuilder onclick = new StringBuilder();
+        onclick.append("function (event) {\n");
+        onclick.append("    if(event.type === 'click'){   \n");
+        onclick.append("        var url = w2ui.").append(id).append(".get(event.target)['data-url'];\n");
+        onclick.append("        var title = w2ui.").append(id).append(".get(event.target).text;\n");
+        onclick.append("        sa.runApp(url, title);\n");
+        onclick.append("    };\n");
+        onclick.append("}\n"); 
+        json.put("onClick" , onclick.toString() );
+        
+        sb.append("{\n" );  
+        //sb.append("        ").append(json.toString());
+        sb.append("         name: ").append("'").append(id).append("'").append(", \n");
+        sb.append("         nodes: ").append(navs).append(", \n");
+        sb.append("         onClick: ").append(onclick).append("").append("\n");
+        sb.append("}\n" ); 
+        return sb.toString();
+    }
+    
+    private Object renderW2UI(String contextPath, String bodyString) throws JspException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<script type=\"text/javascript\">//<![CDATA[ \n");
+        sb.append("$(function () {\n");
+        sb.append(" sa.").append(id).append("=").append(this.createW2UI(contextPath)).append("; ");
+        sb.append("});\n");
+        sb.append("//]]>\n");
+        sb.append("</script>\n");
+        return sb.toString();
+    }
 
     private Object renderHTML(String contextPath, String bodyString) throws JspException {
+        
+        if(w2ui){
+            return renderW2UI(contextPath, bodyString);
+        }
+        
+        
         StringBuilder sb = new StringBuilder();
        // String id = this.getId();
         
         
-        
-        JSONObject json = new JSONObject();
-        json.put("nodes", NavigationBean.toJson(this.navigationBeans, navPrefix, contextPath, true));
-        json.put("name", id);
-        //json.put("onClick", "function(event){}");
+         
+     
         
         sb.append("<div id=\"").append(id).append("\" style=\"height: 300px; width: 180px; float: left\"></div>");
-        sb.append("<div style=\"clear: both\"></div>");
+        
         sb.append("<script type=\"text/javascript\">//<![CDATA[ \n");
         sb.append("$(function () {\n" ); 
         sb.append("    $('#").append(id).append("').w2sidebar(\n\n");
-        sb.append("        ").append(json.toString());
+        sb.append( createW2UI(contextPath) );
         sb.append("    );\n\n" );
         sb.append("});\n" );
         
@@ -104,12 +153,7 @@ public class NavigationTag extends AbstractTag {
         if(navTier != null){
              sb.append("sale_assistant.selectSidebar('").append(id).append("','").append(getNavTierID(navPrefix, navTier)).append("');\n");
         }
-        sb.append("w2ui.").append(id).append(".on('*', function (event) {\n");
-        sb.append("    if(event.type === 'click'){   \n");
-        sb.append("        var url = w2ui.").append(id).append(".get(event.target)['data-url'];\n");
-        sb.append("        sa.runApp(url);\n");
-        sb.append("    };\n");
-        sb.append("});\n");
+       
         sb.append("});\n" );
         sb.append("//]]>\n");
         sb.append("</script>\n");

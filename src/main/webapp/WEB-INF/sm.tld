@@ -27,6 +27,11 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
+            <name>w2ui</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
             <name>navTier</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
