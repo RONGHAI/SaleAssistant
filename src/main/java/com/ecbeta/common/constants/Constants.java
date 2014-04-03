@@ -16,5 +16,5 @@ public class Constants {
     public static final String REFRESH_TYPE="ajax"; 
     public static final String PROGRESS_PAGE_POSTBACK="progress_page_postback"; 
     public static final String PANEL_INDEX = "panelIndex";
-    public static final String DEFAULT_WORKER = "com.ecbeta.app.engine.worker.HomeWorker";
+    public static final String DEFAULT_WORKER = "com.ecbeta.app.engine.controller.HomeController";
 }
