@@ -78,32 +78,11 @@ public class NavigationTag extends AbstractTag {
     }
  
 
-    private String render(List<NavigationBean> navigationBeans, int level) {
-        if (navigationBeans == null || navigationBeans.isEmpty()) {
-            return "";
-        }
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < navigationBeans.size(); i++) {
-            NavigationBean bean = navigationBeans.get(i);
-            sb.append("<div ");
-            sb.append(" data-level='").append(level).append("' ");
-            sb.append(" > ");
-            String url = bean.getUrl(this.getContextPath());
-            sb.append("<a href='").append(url).append("' ");
-            sb.append(" > ");
-            sb.append(bean.getLabel()).append("</a>"); 
-            if (bean.getChildren() != null) { 
-                sb.append(render(bean.getChildren(), level+1)); 
-            }
-            sb.append("</div>");
-        }
-        return sb.toString();
-    }
+     
 
     private Object renderHTML(String contextPath, String bodyString) throws JspException {
         StringBuilder sb = new StringBuilder();
-        String id = this.getId();
+       // String id = this.getId();
         
         
         
@@ -131,9 +110,7 @@ public class NavigationTag extends AbstractTag {
         sb.append("});\n");
         sb.append("//]]>\n");
         sb.append("</script>\n");
-        sb.append("<div id='navigation' > ");
-        sb.append(render(this.navigationBeans, 0));
-        sb.append("</div>");
+         
         return sb.toString();
     }
     
