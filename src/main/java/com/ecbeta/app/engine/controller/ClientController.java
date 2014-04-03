@@ -5,9 +5,7 @@ import com.ecbeta.common.core.AbstractServicer;
 import com.ecbeta.common.core.AbstractController;
 import com.ecbeta.common.core.annotation.ServicerType;
 import com.ecbeta.common.util.JSONUtils;
-import java.util.HashMap;
 import java.util.List;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 public class ClientController extends AbstractController{
 
@@ -48,7 +46,7 @@ public class ClientController extends AbstractController{
     @Override
     public Object deleteRecordsAction(JSONObject json) {
         this.servicer.remove(JSONUtils.toCollection(json, "selected", Long.class));
-        JSONObject<String, String> map = new JSONObject();
+        JSONObject map = new JSONObject();
         map.put("status", "success");
         return map;
     }
