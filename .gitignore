@@ -11,6 +11,7 @@ nbproject/private/
 
 # Package Files #
 *.jar
+!src/main/webapp/WEB-INF/lib/*.jar
 *.war
 *.ear
 /nbproject/
