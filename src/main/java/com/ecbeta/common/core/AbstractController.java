@@ -566,7 +566,7 @@ public abstract class AbstractController {
             }else if (this.needForwordToJsp && (!getResponse().isCommitted() )) {
                 try {
                     forwardToJsp(getJSP_TOGO());
-                } catch (IOException e) {
+                } catch (IOException | ServletException e ) {
                     logger.log(Level.WARNING, "", e);
                 }
             }
