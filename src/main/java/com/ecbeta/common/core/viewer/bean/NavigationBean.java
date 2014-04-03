@@ -118,7 +118,7 @@ public class NavigationBean implements Serializable{
     
     @JsonIgnore
     public String getUrl(String contextPath){
-        if(StringUtils.isEmpty(contextPath) || StringUtils.isEmpty(this.worker)){
+        if(StringUtils.isEmpty(contextPath)){
             return "";
         }
         StringBuilder url = new StringBuilder();
