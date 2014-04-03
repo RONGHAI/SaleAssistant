@@ -143,7 +143,7 @@ public class NavigationBean implements Serializable{
             json.put("icon", icon);
         }
         if (this.children != null && this.children.size() > 0) {
-            json.put("group", true);
+            //json.put("group", true);
             json.put("nodes", toJson(this.children, idPrefix, contextPath,withUri));
         }
         return json;
