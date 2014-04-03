@@ -417,6 +417,7 @@ public abstract class AbstractController {
         this.response = response;
         this.servletContext = servletContext;
         this.btnClicked = request.getParameter(BTN_OPTION);
+        this.navigationBean = navigationBean;
         this.jspPath = jspPath;
     }
 
@@ -666,12 +667,15 @@ public abstract class AbstractController {
         map.put("message", msg);
         return map;
     }
+    
 
     public Object recordAction() {
+        
         JSONObject json = this.getJSONObject();
         String cmd = json.get("cmd").toString();
-        if (cmd != null) {
-
+        logger.log(Level.INFO, "recordAction " + cmd, json);
+        if (cmd == null) {
+            return getRecordsAction(json);
         } else if (cmd.equals("get-records")) {
             return getRecordsAction(json);
         } else if (cmd.equals("delete-records")) {
