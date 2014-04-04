@@ -98,9 +98,8 @@ public class NavigationTag extends AbstractTag {
         StringBuilder onclick = new StringBuilder();
         onclick.append("function (event) {\n");
         onclick.append("    if(event.type === 'click'){   \n");
-        onclick.append("        var url = w2ui.").append(id).append(".get(event.target)['data-url'];\n");
-        onclick.append("        var title = w2ui.").append(id).append(".get(event.target).text;\n");
-        onclick.append("        sa.runApp(url, title);\n");
+        onclick.append("       var et = w2ui.").append(id).append(".get(event.target);\n");
+        onclick.append("       sa.runApp(et);\n");
         onclick.append("    };\n");
         onclick.append("}\n"); 
         json.put("onClick" , onclick.toString() );

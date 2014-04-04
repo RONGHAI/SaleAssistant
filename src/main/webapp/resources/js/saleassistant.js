@@ -193,13 +193,31 @@ if (jQuery) {
             $j("#" + sale_assistant.actionButton).value = action;
             $j("#" + sale_assistant.form).submit();
         };
-
-        sale_assistant.runApp = function(url){
-            
-            sale_assistant.log(url);
+        
+        sale_assistant.loadContent = function(url, title, navTier){
             
         };
-
+        
+        sale_assistant.runApp = function(et){
+            if(!et) return;
+            var url = et["data-url"];
+            var title = et.text;
+            var navTier = et.navTier;
+            if(url && url !== '' && (navTier && navTier !== '' && navTier !== sale_assistant.currentNavTier) ){
+                sale_assistant.currentNavTier = navTier;
+                sale_assistant.log(url);
+                document.title = title;
+                sale_assistant.loadContent(url, title);
+            }
+        };
+        
+        sale_assistant.generateSidebarID = function(prefix, nav){
+            if(nav && nav !== "" ){
+                return prefix + "-" +  nav.replace(/_/g, '-');  
+            }
+            return null;
+        };
+        
         sale_assistant.expandSidebar = function(id, parent){
             if(parent && parent.id && parent.parent){
                   window.w2ui[id].expand(parent.id);

@@ -136,6 +136,7 @@ public class NavigationBean implements Serializable{
         json.put("id", getNavTierID(idPrefix, navTier));
         json.put("text", this.getLabel());
         json.put("expanded", false);
+        json.put("navTier", this.getNavTier("_"));
         if(withUri){
             json.put("data-url", this.getUrl(contextPath));
         }

@@ -59,6 +59,8 @@ public class CoreServlet extends HttpServlet  implements org.springframework.web
         }catch(Exception e){
             logger.log(Level.SEVERE, null, e);
         }
+        logger.log(Level.INFO, "jsp path is " + jspPath, "");   
+        getNavigationBeans();
       
     }
     @Override

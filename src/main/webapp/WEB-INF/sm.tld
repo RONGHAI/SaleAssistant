@@ -37,6 +37,11 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
+            <name>navPrefix</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
             <name>navigationBeans</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>

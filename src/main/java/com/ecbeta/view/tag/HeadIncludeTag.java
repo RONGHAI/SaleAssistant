@@ -75,7 +75,7 @@ public class HeadIncludeTag extends AbstractTag {
     @Override
     public int doStartTag() throws JspException {
         super.doStartTag();
-        HttpServletRequest request = this.getRequest();
+        ///HttpServletRequest request = this.getRequest();
 
         StringBuilder sb = new StringBuilder();
         sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /> \n");
@@ -85,9 +85,12 @@ public class HeadIncludeTag extends AbstractTag {
         sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/w2ui-").append(w2uiVersion).append(".js\"></script> \n");
         sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"").append(this.getContextPath()).append("/resources/css/w2ui-").append(w2uiVersion).append(".css\"/> \n");
         sb.append("<script > \n");
+        
         sb.append("$(document).ready(function() { \n");
-        sb.append("     ").append("").append(" sale_assistant.init('").append(this.controller.getUrl()).append("','" + Constants.BTN_OPTION + "','").append(this.controller.getFORM_NAME()).append("','")
+        if(controller != null){
+            sb.append("     ").append("").append(" sale_assistant.init('").append(this.controller.getUrl()).append("','" + Constants.BTN_OPTION + "','").append(this.controller.getFORM_NAME()).append("','")
                 .append(Constants.REFRESH_TYPE).append("'); \n");
+         }
         sb.append("      var sa = window.sa = sale_assistant; ");
         sb.append("}); \n");
         sb.append("</script> \n");

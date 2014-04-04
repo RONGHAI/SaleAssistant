@@ -18,28 +18,9 @@
     </head>
     <body>
         
+       首页
         
-        <sm:Navigation id='navigationbar' navigationBeans="${servicer.navigationBeans}" w2ui='true' navTier='${worker.navigationBean.navTier}'/> 
-         
-        <div id="layout" style="width: 100%; height: 100%; min-height: 800px"></div>
-        <script type="text/javascript"> //<![CDATA[ 
-        $(function () {
-                var pstyle = 'border: 1px solid #dfdfdf; padding: 5px;';
-                $('#layout').w2layout({
-                        name: 'layout',
-                        padding: 4,
-                        panels: [
-                                { type: 'top', size: 50, resizable: false, style: pstyle, content: '' },
-                                { type: 'left', size: 180, resizable: false, style: pstyle, content: '' },
-                                { type: 'main', style: pstyle, content: '' }
-                                //,{ type: 'right', size: 200, resizable: true, style: pstyle, content: 'right' }
-                        ]
-                });
-                
-                w2ui.layout.content('left', $().w2sidebar(sa.navigationbar));
-         });
-        //]]>
-        </script> 
+        
     </body>
 </html>
 

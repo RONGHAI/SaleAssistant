@@ -2,7 +2,7 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee                http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <display-name>lims-core</display-name>
     <description>
-        LIMS Core Web Application
+       Sale Assistant
     </description>
     <context-param>
         <param-name>contextConfigLocation</param-name>
@@ -49,6 +49,7 @@
             <param-name>jspPath</param-name>
             <param-value>/WEB-INF/jsp/</param-value>
         </init-param>
+        <load-on-startup>0</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>CoreServlet</servlet-name>
