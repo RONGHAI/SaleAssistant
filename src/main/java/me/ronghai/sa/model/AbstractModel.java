@@ -5,6 +5,8 @@
  */
 package me.ronghai.sa.model;
 
+import net.sf.json.JSONObject;
+
 /**
  *
  * @author L5M
@@ -20,6 +22,14 @@ public abstract class AbstractModel {
     public abstract Long getId() ;
     public Long getRecid(){
         return this.getId();
+    }
+    
+    
+    public Object toJson(){
+        return this;
+    }
+    public <T extends AbstractModel> T fromJson(JSONObject json, Class<T> clazz){               
+        return (T) JSONObject.toBean( json, clazz);
     }
     
 }

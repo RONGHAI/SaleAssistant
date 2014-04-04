@@ -6,6 +6,8 @@ import com.ecbeta.common.core.AbstractController;
 import com.ecbeta.common.core.annotation.ServicerType;
 import com.ecbeta.common.util.JSONUtils;
 import java.util.List;
+import me.ronghai.sa.model.Client;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 public class ClientController extends AbstractController{
 
@@ -49,11 +51,16 @@ public class ClientController extends AbstractController{
 
     @Override
     public Object getRecordsAction(JSONObject json) {
-        List<?> list = this.servicer.getClients();
+        List<Client> list = this.servicer.getClients();
         JSONObject map = new JSONObject();
         map.put("status", "success");
         map.put("total", list.size());
-        map.put("records", list);
+        
+        JSONArray array = new JSONArray();
+        for(Client c : list ){
+            array.add(c.toJson());
+        }
+        map.put("records", array);
         return map;
     }
     
@@ -63,15 +70,6 @@ public class ClientController extends AbstractController{
     
     
     public String getColumns(){
-        String s = "[				\n" +
-"                                            { field: 'name', caption: 'Name', size: '20%', sortable: true },\n" +
-"                                            { field: 'wangwang', caption: 'Wangwang', size: '20%', sortable: true },\n" +
-"                                            { field: 'qq', caption: 'QQ', size: '20%', sortable: true },\n" +
-"                                            { field: 'birthday', caption: 'Birthday', size: '120px', sortable: true },\n" +
-"                                            { field: 'gender', caption: 'Gender', size: '120px', sortable: true },\n" +
-"                                            { field: 'phone', caption: 'Phone', size: '120px', sortable: true },\n" +
-"                                    ]";
-        return s;
-        
+        return Client.COLUMNS.toString();
     }
 }

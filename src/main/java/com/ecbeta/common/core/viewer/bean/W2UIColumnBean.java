@@ -128,10 +128,28 @@ public class W2UIColumnBean implements Serializable{
     private boolean resizable = false;
     private String attr = "";
     private String style="";
-    private String render = "";
-    private String title = "";
+    private String render = null;
+    private String title = null;
     private String min = "15";
     private String max = null;
+    private String type = null;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Object getItems() {
+        return items;
+    }
+
+    public void setItems(Object items) {
+        this.items = items;
+    }
+    private Object items = null;
 
     public W2UIColumnBean() {
     }
@@ -150,5 +168,33 @@ public class W2UIColumnBean implements Serializable{
         this.caption = caption;
         this.size = size;
         this.sortable = sortable;
+    }
+    
+    public W2UIColumnBean(String field, String caption,String size, String render , boolean sortable ) {
+        this.field = field;
+        this.caption = caption;
+        this.size = size;
+        this.sortable = sortable;
+        this.render = render;
+    }
+    public Object toJson(){
+        return this;
+    }
+    
+    public W2UIColumnBean(String field, String caption,String size, boolean sortable , String type ) {
+        this.field = field;
+        this.caption = caption;
+        this.size = size;
+        this.sortable = sortable;
+        this.type = type;
+    }
+    
+    public W2UIColumnBean(String field, String caption,String size, String render , boolean sortable  , String type) {
+        this.field = field;
+        this.caption = caption;
+        this.size = size;
+        this.sortable = sortable;
+        this.render = render;
+        this.type = type;
     }
 }

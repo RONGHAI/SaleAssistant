@@ -5,6 +5,7 @@
  */
 package me.ronghai.sa.model;
 
+import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -14,6 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 /**
  *
@@ -215,5 +218,34 @@ public class Client extends AbstractModel implements Serializable {
     public void setDate(String birthday){
         this.birthday = new Date();
     }
-
+    
+    
+    public static final JSONArray COLUMNS;
+    static{
+        COLUMNS = new JSONArray();
+        COLUMNS.add(new W2UIColumnBean("name", "Name", "20%", true, "text").toJson());
+        COLUMNS.add(new W2UIColumnBean("wangwang", "Wangwang", "20%", true, "text").toJson());
+        COLUMNS.add(new W2UIColumnBean("qq", "QQ", "20%", true, "text").toJson());
+        COLUMNS.add(new W2UIColumnBean("birthday", "Birthday", "20%" ,"date:mm/dd/yyyy", true , "date" ).toJson());
+        COLUMNS.add(new W2UIColumnBean("gender", "Gender", "20%", true, "text").toJson());
+        COLUMNS.add(new W2UIColumnBean("phone", "Phone", "120px", true, "text").toJson());
+    }
+    
+    @Override
+    public Object toJson(){
+        JSONObject map = new JSONObject();
+        map.put("name", this.name);
+        map.put("wangwang", this.wangwang);
+        map.put("qq", this.qq);
+        map.put("birthday", this.birthday == null ? 0L : this.birthday.getTime());
+        map.put("gender", this.gender);
+        map.put("phone", this.phone);
+        map.put("recid", this.getRecid());
+        map.put("id", this.id);
+        return map;
+    }
+    @Override
+    public  <T extends AbstractModel> T fromJson(JSONObject json, Class<T> clazz){               
+        return (T) JSONObject.toBean( json, clazz);
+    }
 }
