@@ -7,7 +7,6 @@ package com.ecbeta.view.tag;
 
 import com.ecbeta.common.constants.Constants;
 import com.ecbeta.common.core.AbstractController;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 
 /**
@@ -84,8 +83,8 @@ public class HeadIncludeTag extends AbstractTag {
         sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/saleassistant.i18n.js?").append(dev ? ("time=" + System.currentTimeMillis()) : "").append("\"></script> \n");
         sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/w2ui-").append(w2uiVersion).append(".js\"></script> \n");
         sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"").append(this.getContextPath()).append("/resources/css/w2ui-").append(w2uiVersion).append(".css\"/> \n");
+        sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"").append(this.getContextPath()).append("/resources/css/sa.css\"/> \n");
         sb.append("<script > \n");
-        
         sb.append("$(document).ready(function() { \n");
         if(controller != null){
             sb.append("     ").append("").append(" sale_assistant.init('").append(this.controller.getUrl()).append("','" + Constants.BTN_OPTION + "','").append(this.controller.getFORM_NAME()).append("','")

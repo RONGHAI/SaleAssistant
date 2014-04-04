@@ -29,9 +29,11 @@
                                         toolbarAdd      : true,
                                         toolbarSave     : true
                                     },
-                                    url : "${sm:url(worker, 'json', 'record')}",
+                                   
                                     columns: ${worker.columns}
-                            });	
+                            });
+                            w2ui['grid'].load("${sm:url(worker, 'json', 'record')}");
+                         
                       });
                 });
             </script>
