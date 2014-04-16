@@ -23,5 +23,6 @@ Any value defined here will override the pom.xml file value but is only applicab
         <org-netbeans-modules-css-prep.less_2e_compiler_2e_options>${web.root}/resources/css</org-netbeans-modules-css-prep.less_2e_compiler_2e_options>
         <org-netbeans-modules-web-clientproject-api.js_2e_libs_2e_folder>resources/js</org-netbeans-modules-web-clientproject-api.js_2e_libs_2e_folder>
         <netbeans.checkstyle.format>true</netbeans.checkstyle.format>
+        <netbeans.hint.license>gpl30</netbeans.hint.license>
     </properties>
 </project-shared-configuration>
