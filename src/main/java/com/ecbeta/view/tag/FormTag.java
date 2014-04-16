@@ -43,6 +43,7 @@ public class FormTag  extends AbstractTag{
     @Override
     public int doEndTag() throws JspException {
         int returnValue = super.doEndTag();
+        this.println("<div style='display:none;'> <input name='__nothing' id='__nothing' value='__nothing' /> </div>");
         this.println("</form>", "</div>"); 
         return returnValue;
     }
