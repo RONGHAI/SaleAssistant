@@ -1,5 +1,5 @@
 
-package com.ecbeta.common.bean;
+package com.ecbeta.common.core.viewer.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -5,7 +5,7 @@
  */
 
 package com.ecbeta.common.util;
-import com.ecbeta.common.bean.MapJSONBean;
+import com.ecbeta.common.core.viewer.bean.MapJSONBean;
 import java.util.ArrayList;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
