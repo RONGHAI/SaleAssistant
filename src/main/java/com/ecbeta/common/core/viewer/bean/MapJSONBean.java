@@ -101,7 +101,7 @@ public class MapJSONBean implements Serializable{
             }
         }
         catch (NumberFormatException e) {
-             logger.log(Level.OFF, e.getLocalizedMessage(), e);
+            logger.log(Level.OFF, e.toString());
         }
 
         if (keys.size() == 1 && keys.get(0).equals("")) {

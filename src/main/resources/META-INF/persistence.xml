@@ -3,6 +3,7 @@
   <persistence-unit name="SaleAssistantPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <!-- <class>me.ronghai.sa.model.Client</class> -->
+    <!-- <jta-data-source>jdbc/mysql</jta-data-source> -->
     <properties>
       <!--
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sale_assistant"/>

@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import me.ronghai.sa.dao.AbstractModelDAO;
 import me.ronghai.sa.model.AbstractModel;
@@ -25,7 +26,7 @@ import me.ronghai.sa.model.AbstractModel;
 public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractModelDAO<E>, Serializable {
     private static final long serialVersionUID = 1L;
 
-    @PersistenceContext
+    @PersistenceContext(type=PersistenceContextType.TRANSACTION)
     private EntityManager entityManager;
 
     public void setEntityManager(EntityManager entityManager) {
@@ -46,7 +47,7 @@ public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractMo
         try {
             entityManager.persist(entity);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, null, e);
+            logger.log(Level.SEVERE, "{0}", e);
         }
     }
 
@@ -67,18 +68,20 @@ public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractMo
     }
 
     @Override
-    public int  remove(boolean force, Collection<Long> ids){ 
-        if(ids == null || ids.isEmpty() ) return 0; 
-        String sql = "";
+    public int remove(boolean force, Collection<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return 0;
+        }
+        String sql;
         if (force) {
-            sql = "DELETE FROM "+ entityClass.getName()+"  e  where id in (:ids) ";
+            sql = "DELETE FROM " + entityClass.getName() + "  e  where id in (:ids) ";
         } else {
-            sql = "UPDATE "+entityClass.getName()+"  SET disabled = 1  where id in (:ids) ";
+            sql = "UPDATE " + entityClass.getName() + "  SET disabled = 1  where id in (:ids) ";
         }
         System.out.println(sql);
         Query query = entityManager.createQuery(sql);
         query.setParameter("ids", ids);
-        int  s =  query.executeUpdate(); 
+        int s = query.executeUpdate();
         return s;
     }
     
@@ -94,7 +97,7 @@ public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractMo
             entityManager.merge(entity);
             return entity;
         } catch (Exception e) {
-            logger.log(Level.SEVERE, null, e);
+            logger.log(Level.SEVERE, "{0}", e);
         }
         return null;
     }
@@ -103,6 +106,7 @@ public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractMo
         try {
             entityManager.refresh(entity);
         } catch (Exception e) {
+            logger.log(Level.SEVERE, "{0}", e);
         }
     }
 
@@ -111,7 +115,7 @@ public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractMo
         try {
             return entityManager.find(entityClass, id);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, null, e);
+            logger.log(Level.SEVERE, "{0}", e);
         }
         return null;
     }
@@ -158,7 +162,7 @@ public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractMo
         try {
             return entityManager.getReference(entityClass, id);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, null, e);
+            logger.log(Level.SEVERE, "{0}", e);
         }
         return null;
     }

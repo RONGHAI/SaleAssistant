@@ -15,12 +15,14 @@
 			http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd" >
 
     <!-- Doing so automatically registers all Spring standard post-processors for annotation-based configuration -->
+        <context:annotation-config/>
         <!--
         <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
-	-->
+	 -->
         <tx:annotation-driven transaction-manager="transactionManager"/>
+        <!-- <context:component-scan base-package="com.ecbeta.app.engine.servicer"/> -->
         <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
-
+        
 	<!-- Product Environment -->
 	<!--
         <bean id = "datasourceFactory" class="org.apache.tomcat.jdbc.pool.DataSourceFactory"/>
@@ -39,16 +41,41 @@
 			</bean>
 		</property> 
                 
-	    <property name="persistenceUnitName">
-	    	<value>SaleAssistantPU</value>
-	    </property>
-	</bean>
-	-->
+        <property name="persistenceUnitName">
+            <value>SaleAssistantPU</value>
+        </property>
+    </bean>
+    -->
         
-        <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-	    <property name="persistenceUnitName" value="SaleAssistantPU" />
-	</bean>
-         <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="emf" />
-	</bean>
+        
+    <bean id = "datasourceFactory" class="org.apache.tomcat.jdbc.pool.DataSourceFactory"/>
+	<!--
+    <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource">
+            <bean factory-bean="datasourceFactory" factory-method="createDataSource">
+                <constructor-arg>
+                    <bean class = "org.springframework.beans.factory.config.PropertiesFactoryBean">
+                        <property name="location" value="classpath:META-INF/dataSource.properties"/>
+                    </bean>
+                </constructor-arg>
+            </bean>
+        </property>
+        <property name="persistenceUnitName">
+            <value>SaleAssistantPU</value>
+        </property>
+    </bean>
+	-->
+    <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="SaleAssistantPU" />
+    </bean>
+        
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="emf" />
+    </bean>
+        
+    <!--  
+     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+            <property name="entityManagerFactory" ref="emf" />
+    </bean>
+    -->
 </beans>
