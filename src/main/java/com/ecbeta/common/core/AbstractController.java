@@ -33,6 +33,7 @@ import com.ecbeta.common.core.viewer.JsonModel;
 import com.ecbeta.common.core.viewer.bean.ExportInformationBean;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import com.ecbeta.common.core.viewer.bean.PanelTab;
+import com.ecbeta.common.util.JSONUtils;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
@@ -656,45 +657,9 @@ public abstract class AbstractController {
     }
     
     public JSONObject getJSONObject() {
-          JSONObject jsonObject = new JSONObject();
-          for(Object s : this.request.getParameterMap().keySet()){
-             
-              
-              
-          }
-          
-          return jsonObject;
-         
+          return JSONUtils.toJSON(request);
     }
-     /*
-    public JSONObject getJSONObject() {
-        StringBuilder jb = new StringBuilder();
-        String line;
-        try {
-            BufferedReader reader = new BufferedReader( 
-                            new InputStreamReader( 
-                                    request.getInputStream()));  
-            while ((line = reader.readLine()) != null) {
-                jb.append(line);
-            }
-        }
-        catch (IOException | java.lang.IllegalStateException e) {
-            logger.log(Level.OFF, "Get Json Content issue " + e.getLocalizedMessage() , e);
-        }
-        if(jb.length() == 0){
-            return null;
-        }
-        try {
-            JSONObject jsonObject = JSONObject.fromObject(jb.toString());
-            return jsonObject;
-        }
-        catch (Exception e) {
-            logger.log(Level.SEVERE, "", e);
-        }
-        return null;
-    }
-     */
-
+    
     public static HashMap<String, String> getJSONError(String msg){
         HashMap<String, String>  map = new HashMap<>();
         map.put("status", "error");
@@ -703,25 +668,11 @@ public abstract class AbstractController {
     }
     
 
-    public Object recordAction() {
-        
+    public Object recordAction() { 
         JSONObject json = this.getJSONObject();
-        logger.log(Level.INFO, "Request Content \n " + json, json);
-        
-        logger.log(Level.INFO, "search" + "<<<" + Arrays.toString(  request.getParameterValues("search")), "");
-        
-        Enumeration<String> parameterNames = this.request.getParameterNames();
-        while (parameterNames.hasMoreElements()) {
-            String paramName = parameterNames.nextElement();
-            String[] paramValues = request.getParameterValues(paramName);
-            logger.log(Level.INFO, paramName + ">>>" + Arrays.toString( paramValues), "");
-         }
-        
-      
-
-       
+        logger.log(Level.INFO, "Request Content:>>\n " + json, json);
         String cmd = json == null ? null :(String)json.get("cmd");
-        logger.log(Level.INFO, "recordAction " + cmd, json);
+        logger.log(Level.INFO, "recordAction:>>" + cmd, json);
         if (cmd == null) {
             return getRecordsAction(json);
         } else if (cmd.equals("get-records")) {
@@ -745,8 +696,4 @@ public abstract class AbstractController {
     public Object saveRecordsAction(JSONObject json) {
         return getJSONError("Internal Error!");
     }
-    
-    //public Collection<Long> to
-
-
 }
