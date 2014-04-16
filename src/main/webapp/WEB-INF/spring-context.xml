@@ -19,7 +19,7 @@
         <!--
         <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 	 -->
-        <tx:annotation-driven transaction-manager="transactionManager"/>
+        
         <!-- <context:component-scan base-package="com.ecbeta.app.engine.servicer"/> -->
         <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
         
@@ -69,13 +69,10 @@
         <property name="persistenceUnitName" value="SaleAssistantPU" />
     </bean>
         
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="emf" />
-    </bean>
-        
     <!--  
-     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
             <property name="entityManagerFactory" ref="emf" />
-    </bean>
-    -->
+    </bean> -->
+    
+    <!-- <tx:annotation-driven transaction-manager="transactionManager"/> -->
 </beans>

@@ -10,5 +10,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface ServicerType {
     String value();
+    String spring() default "";
 }
 

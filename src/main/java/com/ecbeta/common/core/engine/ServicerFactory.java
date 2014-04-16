@@ -49,12 +49,12 @@ public class ServicerFactory {
         return id;
     }
 
-    public static AbstractServicer getServicer(HttpSession session, Class<?> servicerClass, String instanceName , ApplicationContext appContext) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        return getService(session, servicerClass.getName(), instanceName, appContext, null);
+    public static AbstractServicer getServicer(HttpSession session, Class<?> servicerClass, String instanceName , ApplicationContext appContext, String spring) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        return getService(session, servicerClass.getName(), instanceName, appContext, spring, null);
     }
 
     public static AbstractServicer getService(HttpSession session, String className, 
-            String instanceName,  ApplicationContext appContext, AbstractController worker) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+            String instanceName,  ApplicationContext appContext, String spring, AbstractController worker) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         String servicerId = getServicerID(session, className, instanceName, worker);
         Object servicer = session.getAttribute(servicerId);
         String date = buildDateString();
@@ -62,8 +62,8 @@ public class ServicerFactory {
             newServiceInstanceIds.remove(date + "_" + servicerId);
             return (AbstractServicer) servicer;
         } else {
-            Class<?> class1 = ReflectUtils.classForName(className);
-            Object newInstance = class1.newInstance();
+            Class<?> clazz = ReflectUtils.classForName(className);
+            Object newInstance = clazz.newInstance(); 
             autowired((AbstractServicer) newInstance, appContext);
             session.setAttribute(servicerId, newInstance);
             newServiceInstanceIds.add(date + "_" + servicerId);
