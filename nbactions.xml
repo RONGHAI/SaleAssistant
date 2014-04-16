@@ -44,28 +44,30 @@
             </properties>
         </action>
         <action>
-            <actionName>CUSTOM-清理构建并运行</actionName>
-            <displayName>清理构建并运行</displayName>
+            <actionName>CUSTOM-runApp</actionName>
+            <displayName>run app</displayName>
+            <goals>
+                <goal>package</goal>
+                <goal>-Djetty.port=9999</goal>
+                <goal>jetty:run</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-cleanAndRunApp</actionName>
+            <displayName>clean and run app</displayName>
             <goals>
                 <goal>clean</goal>
                 <goal>package</goal>
+                <goal>-Djetty.port=9999</goal>
                 <goal>jetty:run</goal>
             </goals>
         </action>
         <action>
-            <actionName>CUSTOM-更新数据库</actionName>
-            <displayName>更新数据库</displayName>
+            <actionName>CUSTOM-mergeDatabase</actionName>
+            <displayName>merge database</displayName>
             <goals>
                 <goal>compile</goal>
                 <goal>flyway:migrate</goal>
-            </goals>
-        </action>
-        <action>
-            <actionName>CUSTOM-构建并运行</actionName>
-            <displayName>构建并运行</displayName>
-            <goals>
-                <goal>package</goal>
-                <goal>jetty:run</goal>
             </goals>
         </action>
     </actions>
