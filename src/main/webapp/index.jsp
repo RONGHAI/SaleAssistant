@@ -7,6 +7,7 @@
 <%@ taglib prefix="sm" uri="/WEB-INF/sm.tld"%>
 <c:set value='<%=application.getAttribute(Constants.ALL_NAVIGATIONBEANS)%>' var='navigationBeans' />
 <c:set value="${param.forward}" var="navTier" />
+<c:set value="${param.norun}" var="norun" />
 <c:set value='level' var="sidebarLevelPrefix"/>
 <c:set value='navigationbar' var="sidebarID"/>
 
@@ -43,14 +44,15 @@
                         ]
                 });
                 w2ui.layout.content('left', $().w2sidebar(sa.navigationbar));
-                //$("#mainFrame")[0].src = "http://www.google.com";
          });
          
          $(document).ready(function () {
              var sisid = sale_assistant.generateSidebarID("${sidebarLevelPrefix}", "${navTier}");
              if(sisid){
                  sale_assistant.selectSidebar("${sidebarID}" , sisid);
+                <c:if test='${empty norun || !norun}'>
                  sale_assistant.runApp(w2ui.navigationbar.get(sisid));
+                </c:if>
              }
          });
          
