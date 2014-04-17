@@ -8,11 +8,10 @@ import com.ecbeta.common.core.db.DatabaseHandler;
 import com.ecbeta.common.core.viewer.bean.ExportInformationBean;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import com.ecbeta.common.core.viewer.bean.PanelTab;
-import org.springframework.context.ApplicationContext;
 
 public abstract class AbstractServicer implements Serializable{
     
-    private transient DatabaseHandler databaseHandler;
+    protected transient DatabaseHandler databaseHandler;
     public DatabaseHandler getDatabaseHandler() {
         return databaseHandler;
     }
@@ -21,6 +20,7 @@ public abstract class AbstractServicer implements Serializable{
         this.databaseHandler = databaseHandler;
     }
     
+    /*
     protected ApplicationContext appContext;
 
     public ApplicationContext getAppContext() {
@@ -30,7 +30,7 @@ public abstract class AbstractServicer implements Serializable{
     public void setAppContext(ApplicationContext appContext) {
         this.appContext = appContext;
     }
-    
+    */
     public List<NavigationBean> navigationBeans;
     /**
      * 

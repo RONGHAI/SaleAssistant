@@ -14,5 +14,5 @@ import me.ronghai.sa.model.Client;
  * @author ronghai
  */
 public class ClientDAOImpl extends AbstractModelDAOImpl<Client> implements ClientDAO{
-    
+   
 }

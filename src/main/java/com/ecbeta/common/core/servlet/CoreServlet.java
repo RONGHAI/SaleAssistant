@@ -28,164 +28,173 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
-import me.ronghai.sa.engine.service.NavigationService;
+import me.ronghai.sa.dao.NavigationDAO;
+import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 @Component("CoreServlet")
-public class CoreServlet extends HttpServlet  implements org.springframework.web.HttpRequestHandler{
+public class CoreServlet extends HttpServlet implements org.springframework.web.HttpRequestHandler {
+
     private static final long serialVersionUID = 8170475189258718371L;
-    private static final Logger logger =   Logger.getLogger(CoreServlet.class.getName()) ;
-    private String jspPath="/WEB-INF/jsp/";
-    
+    private static final Logger logger = Logger.getLogger(CoreServlet.class.getName());
+    private String jspPath = "/WEB-INF/jsp/";
+
     @Autowired
     protected ApplicationContext appContext;
-    
-    
+
     @Autowired
-    protected NavigationService navigationService;
-    
+    protected NavigationDAO navigationDAO;
+
+    @Autowired
+    protected DataSource dataSource;
+
     @Override
-    public void init() throws ServletException{
-        try{ 
-            jspPath =  ( getServletConfig().getInitParameter("jspPath") );
-            if(jspPath.charAt(jspPath.length() - 1) != '/'){
+    public void init() throws ServletException {
+        try {
+            jspPath = (getServletConfig().getInitParameter("jspPath"));
+            if (jspPath.charAt(jspPath.length() - 1) != '/') {
                 jspPath += "/";
             }
-        }catch(Exception e){
+        }
+        catch (Exception e) {
             logger.log(Level.SEVERE, null, e);
         }
-        logger.log(Level.INFO, "jsp path is " + jspPath, "");   
+        logger.log(Level.INFO, "jsp path is " + jspPath, "");
         getNavigationBeans();
-      
+
     }
+
     @Override
-    public void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    public void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.service(request, response);
     }
-    
+
     @Override
-    public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        
+    public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         AbstractController worker = RequestManager.getInstance().createWorker(request, response, this);
         this.injectServicers(request, response, worker);
         worker.processRequest();
     }
-    
-    public ApplicationContext getAppContext(){
-        if(appContext == null){
+
+    public ApplicationContext getAppContext() {
+        if (appContext == null) {
             this.appContext = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
         }
         return this.appContext;
     }
-    
-    public NavigationService getNavigationService(){
-        if(navigationService == null){
-            this.navigationService = (NavigationService) this.getAppContext().getBean("navigationService");
+
+    public NavigationDAO getNavigationDAO() {
+        if (navigationDAO == null) {
+            this.navigationDAO = (NavigationDAO) this.getAppContext().getBean("navigationDAO");
         }
-        return this.navigationService;
+        return this.navigationDAO;
     }
-    
+
     @SuppressWarnings("unchecked")
-    protected  List<NavigationBean>  getNavigationBeans(){
-        List<NavigationBean> naviBeans = ( List<NavigationBean> ) this.getServletContext().getAttribute(Constants.ALL_NAVIGATIONBEANS);
-        if(naviBeans == null){
-            naviBeans  = NavigationUtil.convert(this.getNavigationService().find());
-            this.getServletContext().setAttribute(Constants.ALL_NAVIGATIONBEANS  , naviBeans);
+    protected List<NavigationBean> getNavigationBeans() {
+        List<NavigationBean> naviBeans = (List<NavigationBean>) this.getServletContext().getAttribute(Constants.ALL_NAVIGATIONBEANS);
+        if (naviBeans == null) {
+            naviBeans = NavigationUtil.convert(this.getNavigationDAO().find());
+            this.getServletContext().setAttribute(Constants.ALL_NAVIGATIONBEANS, naviBeans);
         }
         return naviBeans;
     }
-    
-    public static NavigationBean find(  List<NavigationBean> navBeans, String navTier, String worker){
-        if(navBeans == null || navBeans.isEmpty()) return null;
-        for(NavigationBean b : navBeans){
-            if( ( navTier != null && b.getNavTier("_").equals(navTier) ) || (  worker != null && worker.equals(b.getWorker()) )){
+
+    public static NavigationBean find(List<NavigationBean> navBeans, String navTier, String worker) {
+        if (navBeans == null || navBeans.isEmpty()) {
+            return null;
+        }
+        for (NavigationBean b : navBeans) {
+            if ((navTier != null && b.getNavTier("_").equals(navTier)) || (worker != null && worker.equals(b.getWorker()))) {
                 return b;
             }
             NavigationBean cf = find(b.getChildren(), navTier, worker);
-            if(cf != null){
+            if (cf != null) {
                 return cf;
-            } 
+            }
         }
         return null;
     }
-    
-    protected  Map<String, NavigationBean>  getCache(){
-       Map<String, NavigationBean> cache = (Map<String, NavigationBean>  ) this.getServletContext().getAttribute("ALL_NAVIGATIONBEANS_CACHE");
-       if(cache == null){
-           cache = new HashMap<>();
-           this.getServletContext().setAttribute("ALL_NAVIGATIONBEANS_CACHE", cache); 
-       }
-       return cache;
+
+    protected Map<String, NavigationBean> getCache() {
+        Map<String, NavigationBean> cache = (Map<String, NavigationBean>) this.getServletContext().getAttribute("ALL_NAVIGATIONBEANS_CACHE");
+        if (cache == null) {
+            cache = new HashMap<>();
+            this.getServletContext().setAttribute("ALL_NAVIGATIONBEANS_CACHE", cache);
+        }
+        return cache;
     }
-    
-    protected NavigationBean findFromCache(String key){
-       Map<String, NavigationBean> cache =  getCache();
-       NavigationBean bean = cache.get(key); 
-       return bean;
-    }
-    
-    protected NavigationBean save2Cache(String key, NavigationBean bean){
-        getCache().put(key, bean);    
+
+    protected NavigationBean findFromCache(String key) {
+        Map<String, NavigationBean> cache = getCache();
+        NavigationBean bean = cache.get(key);
         return bean;
     }
-    public NavigationBean find(String navTier){
+
+    protected NavigationBean save2Cache(String key, NavigationBean bean) {
+        getCache().put(key, bean);
+        return bean;
+    }
+
+    public NavigationBean find(String navTier) {
         NavigationBean bean = this.findFromCache(navTier);
-        if(bean != null) return bean; 
+        if (bean != null) {
+            return bean;
+        }
         List<NavigationBean> navBeans = this.getNavigationBeans();
         return this.save2Cache(navTier, find(navBeans, navTier, null));
     }
-    
-    public NavigationBean findByWorker(String worker){
+
+    public NavigationBean findByWorker(String worker) {
         NavigationBean bean = this.findFromCache(worker);
-        if(bean != null) return bean; 
+        if (bean != null) {
+            return bean;
+        }
         List<NavigationBean> navBeans = this.getNavigationBeans();
         return this.save2Cache(worker, find(navBeans, null, worker));
     }
-    
-    @PersistenceUnit(unitName = "SaleAssistantPU")
-    private EntityManagerFactory entityManagerFactory;
 
-    protected EntityManagerFactory getEntityManagerFactory(){
-        if(entityManagerFactory == null){
-            entityManagerFactory = (EntityManagerFactory)this.getAppContext().getBean("emf");
+    protected DataSource getDataSource() {
+        if (dataSource == null) {
+            dataSource = (DataSource) this.getAppContext().getBean("dataSource");
         }
-        return entityManagerFactory;
+        return dataSource;
     }
-    
-    protected void injectServicers(HttpServletRequest request, HttpServletResponse response, AbstractController worker)  {
-        Collection<Field> fields = ReflectUtils.getDeclaredFields((Map<String, Field>)null, worker.getClass(), false).values();
-        List<NavigationBean> naviBeans  = this.getNavigationBeans();
-        for(Field field : fields){
-            if(!field.isAnnotationPresent(ServicerType.class)) continue;
+
+    protected void injectServicers(HttpServletRequest request, HttpServletResponse response, AbstractController worker) {
+        Collection<Field> fields = ReflectUtils.getDeclaredFields((Map<String, Field>) null, worker.getClass(), false).values();
+        List<NavigationBean> naviBeans = this.getNavigationBeans();
+        for (Field field : fields) {
+            if (!field.isAnnotationPresent(ServicerType.class)) {
+                continue;
+            }
             String fieldClassName = field.getAnnotation(ServicerType.class).value();
-            if(StringUtils.isEmpty(fieldClassName)){
+            if (StringUtils.isEmpty(fieldClassName)) {
                 fieldClassName = field.getType().getName();
             }
             try {
-                AbstractServicer servicer = ServicerFactory.getService(request.getSession(), fieldClassName , field.getName(), this.getAppContext() , field.getAnnotation(ServicerType.class).spring(), worker); 
-                servicer.setDatabaseHandler(new DatabaseHandler(this.getEntityManagerFactory().createEntityManager()));
-                if(ServicerFactory.isNewInstance(request.getSession(), fieldClassName , field.getName(), worker)){
+                AbstractServicer servicer = ServicerFactory.getService(request.getSession(), fieldClassName, field.getName(), this.getAppContext(), field.getAnnotation(ServicerType.class).spring(), worker);
+                servicer.setDatabaseHandler(new DatabaseHandler(this.getDataSource()));
+                if (ServicerFactory.isNewInstance(request.getSession(), fieldClassName, field.getName(), worker)) {
                     servicer.setNavigationBeans(naviBeans);
-                    servicer.setAppContext(this.getAppContext());
+                    //servicer.setAppContext(this.getAppContext());
                     servicer.init(worker.getNavigationBean());
                 }
-                Method setter = ReflectUtils.findSetter(worker, field, null, null); 
-                ReflectUtils.updateFieldValue(worker, field, setter,  servicer);
-            } catch (    IllegalAccessException | IllegalArgumentException | InvocationTargetException |ClassNotFoundException | InstantiationException e) {
+                Method setter = ReflectUtils.findSetter(worker, field, null, null);
+                ReflectUtils.updateFieldValue(worker, field, setter, servicer);
+            }
+            catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException | InstantiationException e) {
                 logger.log(Level.SEVERE, null, e);
             }
         }
-        
-        
+
     }
 
-    public String getJspPath () {
+    public String getJspPath() {
         return jspPath;
     }
 }
- 

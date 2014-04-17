@@ -25,15 +25,10 @@
     <bean id="CoreServlet" class="com.ecbeta.common.core.servlet.CoreServlet"/>
     
     <bean id="navigationDAO" class="me.ronghai.sa.dao.impl.NavigationDAOImpl"/>
-    <bean id="navigationService" class="me.ronghai.sa.engine.service.impl.NavigationServiceImpl">
-        <property name="navigationDAO" ref = "navigationDAO"/>        
-    </bean>
     
     
     <bean id="clientDAO" class="me.ronghai.sa.dao.impl.ClientDAOImpl"/>
-    <bean id="clientService" class="com.ecbeta.app.engine.servicer.ClientServicer">
-        <property name="clientDAO" ref = "clientDAO"/>        
-    </bean>
+    
     
     <!--
     <bean id="clientController" class="me.ronghai.sabasicCURDPanel.controller.ClientController">
@@ -43,9 +38,7 @@
     -->
     
     <bean id="carrierDAO" class="me.ronghai.sa.dao.impl.CarrierDAOImpl"/>
-    <bean id="carrierService" class="me.ronghai.sa.engine.service.impl.CarrierServiceImpl">
-        <property name="carrierDAO" ref = "carrierDAO"/>        
-    </bean>
+  
     <!--
     <bean id="carrierController" class="me.ronghai.sa.controller.CarrierController">
         <property name="basicCURDPanel" ref = "basicCURDPanel"/>
@@ -54,9 +47,7 @@
     -->
     
     <bean id="propertyDAO" class="me.ronghai.sa.dao.impl.PropertyDAOImpl"/>
-    <bean id="propertyService" class="me.ronghai.sa.engine.service.impl.PropertyServiceImpl">
-        <property name="propertyDAO" ref = "propertyDAO"/>        
-    </bean>
+   
     <!--
     <bean id="propertyController" class="me.ronghai.sa.controller.PropertyController">
         <property name="basicCURDPanel" ref = "basicCURDPanel"/>

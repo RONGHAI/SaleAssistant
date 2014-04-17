@@ -13,7 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import me.ronghai.sa.dao.AbstractModelDAO;
 import me.ronghai.sa.model.AbstractModel;
@@ -26,8 +25,13 @@ import me.ronghai.sa.model.AbstractModel;
 public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractModelDAO<E>, Serializable {
     private static final long serialVersionUID = 1L;
 
-    @PersistenceContext(type=PersistenceContextType.TRANSACTION)
-    private EntityManager entityManager;
+    @PersistenceContext
+    protected EntityManager entityManager;
+    
+    @Override
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
 
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;

@@ -19,7 +19,7 @@
             <script type="text/javascript"> //<![CDATA[ 
                 sale_assistant.loadContent = function(url, title){
                     //w2ui['layout'].load('main', url);
-                    $("#mainFrame")[0].src = url;
+                    $("#mainFrame")[0].src = url+'&inframe=true';
                 };
             //]]>
             </script> 
