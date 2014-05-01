@@ -7,6 +7,7 @@ package me.ronghai.sa.dao;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import me.ronghai.sa.model.AbstractModel;
 
@@ -41,7 +42,7 @@ public interface AbstractModelDAO<E extends AbstractModel> {
 
     public E reference(Object id);
     
-    public List<Object[]> execute(String sql);
+    public List<Map<String, Object>> execute(String sql);
     
     public int update(String sql);
     

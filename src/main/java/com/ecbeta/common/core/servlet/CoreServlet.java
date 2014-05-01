@@ -50,6 +50,9 @@ public class CoreServlet extends HttpServlet implements org.springframework.web.
 
     @Autowired
     protected DataSource dataSource;
+    
+    @Autowired
+    protected DatabaseHandler databaseHandler;
 
     @Override
     public void init() throws ServletException {
@@ -164,7 +167,17 @@ public class CoreServlet extends HttpServlet implements org.springframework.web.
         }
         return dataSource;
     }
-
+    
+    protected DatabaseHandler getDatabaseHandler(){
+        if(databaseHandler == null){
+            databaseHandler = (DatabaseHandler) this.getAppContext().getBean("databaseHandler");
+        }
+        if(databaseHandler == null){
+            this.databaseHandler = new DatabaseHandler(this.getDataSource());
+        }
+        return databaseHandler;
+    }
+    
     protected void injectServicers(HttpServletRequest request, HttpServletResponse response, AbstractController worker) {
         Collection<Field> fields = ReflectUtils.getDeclaredFields((Map<String, Field>) null, worker.getClass(), false).values();
         List<NavigationBean> naviBeans = this.getNavigationBeans();
@@ -178,10 +191,9 @@ public class CoreServlet extends HttpServlet implements org.springframework.web.
             }
             try {
                 AbstractServicer servicer = ServicerFactory.getService(request.getSession(), fieldClassName, field.getName(), this.getAppContext(), field.getAnnotation(ServicerType.class).spring(), worker);
-                servicer.setDatabaseHandler(new DatabaseHandler(this.getDataSource()));
+                servicer.setDatabaseHandler(this.getDatabaseHandler());
                 if (ServicerFactory.isNewInstance(request.getSession(), fieldClassName, field.getName(), worker)) {
                     servicer.setNavigationBeans(naviBeans);
-                    //servicer.setAppContext(this.getAppContext());
                     servicer.init(worker.getNavigationBean());
                 }
                 Method setter = ReflectUtils.findSetter(worker, field, null, null);

@@ -5,17 +5,26 @@
  */
 package me.ronghai.sa.dao.impl;
 
+import com.ecbeta.common.core.db.DatabaseHandler;
+import com.mysql.jdbc.StringUtils;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import me.ronghai.sa.dao.AbstractModelDAO;
 import me.ronghai.sa.model.AbstractModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
 /**
  *
@@ -27,6 +36,9 @@ public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractMo
 
     @PersistenceContext
     protected EntityManager entityManager;
+    
+    @Autowired
+    protected DatabaseHandler databaseHandler;
     
     @Override
     public EntityManager getEntityManager() {
@@ -77,16 +89,15 @@ public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractMo
             return 0;
         }
         String sql;
+        String table = table(entityClass);
         if (force) {
-            sql = "DELETE FROM " + entityClass.getName() + "  e  where id in (:ids) ";
+            sql = "DELETE FROM " +  table + "  e  WHERE id IN (:ids) ";
         } else {
-            sql = "UPDATE " + entityClass.getName() + "  SET disabled = 1  where id in (:ids) ";
+            sql = "UPDATE " +table + "  SET disabled = 1  WHERE id IN (:ids) ";
         }
-        System.out.println(sql);
-        Query query = entityManager.createQuery(sql);
-        query.setParameter("ids", ids);
-        int s = query.executeUpdate();
-        return s;
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("ids", ids); 
+        return this.databaseHandler.update(sql, parameters);
     }
     
     
@@ -105,23 +116,30 @@ public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractMo
         }
         return null;
     }
-
-    public void refresh(E entity) {
-        try {
-            entityManager.refresh(entity);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "{0}", e);
-        }
+    
+    private RowMapper<E> createRowMapper(){ 
+        return new  RowMapper()   {
+            @Override
+            public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+                 /*   Customer customer = new Customer();
+                    customer.setCustId(rs.getInt("CUST_ID"));
+                    customer.setName(rs.getString("NAME"));
+                    customer.setAge(rs.getInt("AGE"));
+                    return customer; */
+                return null;
+            };
+        
+        };
     }
+
 
     @Override
     public E find(Object id) {
-        try {
-            return entityManager.find(entityClass, id);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "{0}", e);
-        }
-        return null;
+        
+        String sql = "SELECT * FROM " + table(entityClass)+ " WHERE id = ? ";
+        return this.databaseHandler.queryForObject(sql,  new Object[] { id }, createRowMapper());
+        
+       
     }
 
     @Override
@@ -149,16 +167,38 @@ public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractMo
         }
         return query.getResultList();
     }
+    
+    public static String table(Class<?> entityClass ){
+        String table = entityClass.getSimpleName();
+        if(entityClass.isAnnotationPresent(Entity.class)){
+            String t = ((Entity)entityClass.getAnnotation(Entity.class)).name();
+              if(org.apache.commons.lang.StringUtils.isNotEmpty(t)){
+                  table = t;
+              }
+        }
+        return table;
+    }
+    
+    public static String  column(Class<?> entityClass){
+        return "";
+    }
 
     @Override
     public long count(String configure) {
-        String jpql = "SELECT count(*) FROM " + entityClass.getName();
-        if (configure != null) {
-            jpql = jpql + configure;
+        String sql = " SELECT COUNT (*)  FROM " + table(entityClass);
+        if(org.apache.commons.lang.StringUtils.isNotEmpty(configure)){
+            sql += " " + configure;
         }
-        Query query = entityManager.createQuery(jpql);
-        Object rtn = query.getSingleResult();
-        return rtn == null ? 0 : Long.parseLong(rtn.toString());
+        try {
+            Collection<Object> values = this.databaseHandler.execute(sql).get(0).values();
+            for (Object o : values) {
+                return Long.parseLong(o.toString());
+            }
+        }catch (SQLException | ClassNotFoundException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
+        return 0;
+        
     }
 
     @Override
@@ -171,14 +211,22 @@ public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractMo
         return null;
     }
      @Override
-     public List<Object[]> execute(String sql){
-         Query query = entityManager.createNativeQuery(sql); 
-         return query.getResultList(); 
+     public List<Map<String, Object>> execute(String sql){
+        try {
+            return this.databaseHandler.execute(sql);
+        }catch (SQLException | ClassNotFoundException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
+        return null;
      }
      
      @Override
      public int update(String sql){
-        Query query = entityManager.createNativeQuery(sql); 
-        return query.executeUpdate();
+        try {
+            return this.databaseHandler.update(sql);
+        }catch (SQLException | ClassNotFoundException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
+        return 0;
      }  
 }
