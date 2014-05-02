@@ -59,7 +59,7 @@
    
    <bean id="databaseHandler" class="com.ecbeta.common.core.db.DatabaseHandler">
          <constructor-arg ref="dataSource"/>
-   </beans>
+   </bean>
 
     <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref='dataSource' />

@@ -42,11 +42,13 @@ import com.ecbeta.common.core.reflect.bean.FieldSortableBeanParse;
 import com.ecbeta.common.core.reflect.bean.MethodSortableBeanParse;
 import com.ecbeta.common.util.GeneralUtil;
 import com.ecbeta.common.util.SortBeanListUtil;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BingReflectUtils {
     
     public static boolean _SHOW_EXCEPTION = true;
-    
+    private static final Logger logger = Logger.getLogger(BingReflectUtils.class.getName());
 
     public static String __id__ (RequestParse annotation, Field field, Method setterMethod) {
         String name = annotation.id();
@@ -125,52 +127,40 @@ public class BingReflectUtils {
         if (servicers == null) return;
 
         for (T servicer : servicers) {
+            Class<?> ownerClass = servicer.getClass();
+            Map<String, PropertyDescriptor> fieldName2PropertyDescriptor =  ReflectUtils.findFieldName2PropertyDescriptor(ownerClass);
+            Map<String, Field> allFields = new LinkedHashMap<>();
+            allFields = getDeclaredFields(allFields, ownerClass, true);
+            List<Field>  allFieldList = new ArrayList<>(allFields.values());
             try {
-                Class<?> ownerClass = servicer.getClass();
-
-                BeanInfo info = Introspector.getBeanInfo(ownerClass, Object.class);
-                PropertyDescriptor[] props = info.getPropertyDescriptors();
-                Map<String, PropertyDescriptor> fieldName2PropertyDescriptor = new HashMap<String, PropertyDescriptor>();
-                for (PropertyDescriptor prop : props) {
-                    fieldName2PropertyDescriptor.put(prop.getName(), prop);
-                }
-                Map<String, Field> allFields = new LinkedHashMap<String, Field>();
-                allFields = getDeclaredFields(allFields, ownerClass, true);
-                List<Field>  allFieldList = new ArrayList<Field>(allFields.values());
-                try {
-                    SortBeanListUtil.sort(allFieldList, new int[] { 0 , 1 }, new boolean[] {true,  true }, FieldSortableBeanParse.instance());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                for ( Field field : allFieldList) {
-                    try {
-                        if (field.isAnnotationPresent(RequestParse.class)) {
-                            RequestParse annotation = (RequestParse) field.getAnnotation(RequestParse.class);
-                            if (!needAutoBinding(annotation, btnClicked, actionMethod, bindJson)) {
-                                continue;
-                            }
-                            Method getter = findGetter(servicer, field, fieldName2PropertyDescriptor, annotation);
-                            Method setter = findSetter(servicer, field, fieldName2PropertyDescriptor, annotation);
-                            Method parser = findParser(servicer, field, annotation);
-                            if (_SHOW_EXCEPTION) {
-                                System.out.println(String.format("Binding Filed %s with Getter (%s), Setter (%s) and Parser(%s) ", field.getName(), getter == null ? "" : getter.getName(),
-                                        setter == null ? "" : setter.toString(), parser == null ? "" : parser.toString()));
-                            }
-                            bindingParams(request, servicer, field, getter, setter, parser, annotation, btnClicked);
-                        }
-                    } catch (Exception e) {
-                        if (_SHOW_EXCEPTION) {
-                            e.printStackTrace();
-                            System.err.println( (field != null ?field.getName():"") + e);
-                        }
-                    }
-
-                }
-            } catch (IntrospectionException e) {
-                e.printStackTrace();
+                SortBeanListUtil.sort(allFieldList, new int[] { 0 , 1 }, new boolean[] {true,  true }, FieldSortableBeanParse.instance());
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.log(Level.WARNING, "{0}", e);
             }
+            for ( Field field : allFieldList) {
+                try {
+                    if (field.isAnnotationPresent(RequestParse.class)) {
+                        RequestParse annotation = (RequestParse) field.getAnnotation(RequestParse.class);
+                        if (!needAutoBinding(annotation, btnClicked, actionMethod, bindJson)) {
+                            continue;
+                        }
+                        Method getter = findGetter(servicer, field, fieldName2PropertyDescriptor, annotation);
+                        Method setter = findSetter(servicer, field, fieldName2PropertyDescriptor, annotation);
+                        Method parser = findParser(servicer, field, annotation);
+                        if (_SHOW_EXCEPTION) {
+                            System.out.println(String.format("Binding Filed %s with Getter (%s), Setter (%s) and Parser(%s) ", field.getName(), getter == null ? "" : getter.getName(),
+                                    setter == null ? "" : setter.toString(), parser == null ? "" : parser.toString()));
+                        }
+                        bindingParams(request, servicer, field, getter, setter, parser, annotation, btnClicked);
+                    }
+                } catch (IllegalArgumentException | SecurityException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                    if (_SHOW_EXCEPTION) {
+                        logger.log(Level.WARNING, "{0}", e);
+                        System.err.println( (field != null ?field.getName():"") + e);
+                    }
+                }
+                
+            }  
 
         }
     }
@@ -181,10 +171,10 @@ public class BingReflectUtils {
             try {
                 List<Method> methods = Arrays.asList(servicer.getClass().getMethods());
                 try {
-                    methods = new ArrayList<Method>(methods);
+                    methods = new ArrayList<>(methods);
                     SortBeanListUtil.sort(methods, new int[] { 0 , 1 }, new boolean[] {true,  true }, MethodSortableBeanParse.instance());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.log(Level.WARNING, "{0}", e);
                 }
                 for (Method method : methods) {
                     try {
@@ -198,12 +188,12 @@ public class BingReflectUtils {
                             }
                             bindingParams(request, servicer, null, null, null, method, annotation, btnClicked);
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    } catch (IllegalArgumentException | SecurityException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                        logger.log(Level.WARNING, "{0}", e);
                     }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (SecurityException e) {
+                 logger.log(Level.WARNING, "{0}", e);
             }
         }
     }
@@ -283,13 +273,13 @@ public class BingReflectUtils {
             }
             updateFieldValue(instance, field, setterMethod, args);
 
-        } catch (Exception e) {
+        } catch (ArrayIndexOutOfBoundsException | IllegalAccessException | IllegalArgumentException | NegativeArraySizeException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
             if (_SHOW_EXCEPTION) {
-                // e.printStackTrace();
+                 logger.log(Level.WARNING, "{0}", e);
                 System.err.println(field + " > " + setterMethod);
                 System.err.println(e);
             }
-            return;
+         //  return;
         }
     }
 
@@ -317,8 +307,8 @@ public class BingReflectUtils {
                     method.invoke(instance);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
+            logger.log(Level.WARNING, "{0}", e);
         }
 
     }
@@ -360,11 +350,7 @@ public class BingReflectUtils {
         } else {
             return false;
         }
-
-        if (!annotation.canJson() && bindJson) {
-            return false;
-        }
-        return true;
+        return annotation.canJson() || !bindJson;
     }
 
 }

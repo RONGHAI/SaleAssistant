@@ -23,6 +23,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.CallableStatementCallback;
 import org.springframework.jdbc.core.CallableStatementCreator;
 import org.springframework.jdbc.core.ConnectionCallback;
+import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -32,6 +33,8 @@ import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.StatementCallback;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.nativejdbc.NativeJdbcExtractor;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -44,39 +47,161 @@ public class DatabaseHandler implements Serializable, Cloneable {
 
     private static final Logger logger = Logger.getLogger(DatabaseHandler.class.getName());
     private JdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public JdbcTemplate getJdbcTemplate() {
         return jdbcTemplate;
     }
-
-    @Override
-    public DatabaseHandler clone() throws CloneNotSupportedException {
-        return this;
+    
+    public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate(){
+        if(namedParameterJdbcTemplate == null){
+           namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+        }
+        return namedParameterJdbcTemplate;
     }
 
-    public DatabaseHandler(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-        logger.log(Level.INFO, dataSource.toString());
+    public JdbcOperations getJdbcOperations() {
+        return getNamedParameterJdbcTemplate().getJdbcOperations();
     }
 
-    public void setDataSource(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-        logger.log(Level.INFO, dataSource.toString());
+    public void setCacheLimit(int cacheLimit) {
+        getNamedParameterJdbcTemplate().setCacheLimit(cacheLimit);
     }
 
-    private transient Statement statement = null;
-    private transient ResultSet resultSet = null;
+    public int getCacheLimit() {
+        return getNamedParameterJdbcTemplate().getCacheLimit();
+    }
+
+    public <T> T execute(String sql, SqlParameterSource paramSource, PreparedStatementCallback<T> action) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().execute(sql, paramSource, action);
+    }
+
+    public <T> T execute(String sql, Map<String, ?> paramMap, PreparedStatementCallback<T> action) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().execute(sql, paramMap, action);
+    }
+
+    public <T> T query(String sql, SqlParameterSource paramSource, ResultSetExtractor<T> rse) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().query(sql, paramSource, rse);
+    }
+
+    public <T> T query(String sql, Map<String, ?> paramMap, ResultSetExtractor<T> rse) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().query(sql, paramMap, rse);
+    }
+
+    public void query(String sql, SqlParameterSource paramSource, RowCallbackHandler rch) throws DataAccessException {
+        getNamedParameterJdbcTemplate().query(sql, paramSource, rch);
+    }
+
+    public void query(String sql, Map<String, ?> paramMap, RowCallbackHandler rch) throws DataAccessException {
+        getNamedParameterJdbcTemplate().query(sql, paramMap, rch);
+    }
+
+    public <T> List<T> query(String sql, SqlParameterSource paramSource, RowMapper<T> rowMapper) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().query(sql, paramSource, rowMapper);
+    }
+
+    public <T> List<T> query(String sql, Map<String, ?> paramMap, RowMapper<T> rowMapper) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().query(sql, paramMap, rowMapper);
+    }
+
+    public <T> T queryForObject(String sql, SqlParameterSource paramSource, RowMapper<T> rowMapper) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().queryForObject(sql, paramSource, rowMapper);
+    }
+
+    public <T> T queryForObject(String sql, Map<String, ?> paramMap, RowMapper<T> rowMapper) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().queryForObject(sql, paramMap, rowMapper);
+    }
+
+    public <T> T queryForObject(String sql, SqlParameterSource paramSource, Class<T> requiredType) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().queryForObject(sql, paramSource, requiredType);
+    }
+
+    public <T> T queryForObject(String sql, Map<String, ?> paramMap, Class<T> requiredType) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().queryForObject(sql, paramMap, requiredType);
+    }
+
+    public Map<String, Object> queryForMap(String sql, SqlParameterSource paramSource) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().queryForMap(sql, paramSource);
+    }
+
+    public Map<String, Object> queryForMap(String sql, Map<String, ?> paramMap) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().queryForMap(sql, paramMap);
+    }
+
+    public long queryForLong(String sql, SqlParameterSource paramSource) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().queryForLong(sql, paramSource);
+    }
+
+    public long queryForLong(String sql, Map<String, ?> paramMap) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().queryForLong(sql, paramMap);
+    }
+
+    public int queryForInt(String sql, SqlParameterSource paramSource) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().queryForInt(sql, paramSource);
+    }
+
+    public int queryForInt(String sql, Map<String, ?> paramMap) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().queryForInt(sql, paramMap);
+    }
+
+    public <T> List<T> queryForList(String sql, SqlParameterSource paramSource, Class<T> elementType) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().queryForList(sql, paramSource, elementType);
+    }
+
+    public <T> List<T> queryForList(String sql, Map<String, ?> paramMap, Class<T> elementType) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().queryForList(sql, paramMap, elementType);
+    }
+
+    public List<Map<String, Object>> queryForList(String sql, SqlParameterSource paramSource) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().queryForList(sql, paramSource);
+    }
+
+    public List<Map<String, Object>> queryForList(String sql, Map<String, ?> paramMap) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().queryForList(sql, paramMap);
+    }
+
+    public SqlRowSet queryForRowSet(String sql, SqlParameterSource paramSource) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().queryForRowSet(sql, paramSource);
+    }
+
+    public SqlRowSet queryForRowSet(String sql, Map<String, ?> paramMap) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().queryForRowSet(sql, paramMap);
+    }
+
+    public int update(String sql, SqlParameterSource paramSource) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().update(sql, paramSource);
+    }
+
+    public int update(String sql, Map<String, ?> paramMap) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().update(sql, paramMap);
+    }
+
+    public int update(String sql, SqlParameterSource paramSource, KeyHolder generatedKeyHolder) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().update(sql, paramSource, generatedKeyHolder);
+    }
+
+    public int update(String sql, SqlParameterSource paramSource, KeyHolder generatedKeyHolder, String[] keyColumnNames) throws DataAccessException {
+        return getNamedParameterJdbcTemplate().update(sql, paramSource, generatedKeyHolder, keyColumnNames);
+    }
+
+    public int[] batchUpdate(String sql, Map<String, ?>[] batchValues) {
+        return getNamedParameterJdbcTemplate().batchUpdate(sql, batchValues);
+    }
+
+    public int[] batchUpdate(String sql, SqlParameterSource[] batchArgs) {
+        return getNamedParameterJdbcTemplate().batchUpdate(sql, batchArgs);
+    }
+    
+    
 
     public List<Map<String, Object>> execute(String sql) throws SQLException,
             ClassNotFoundException {
-        this.close();
         System.out.println(sql);
         return this.jdbcTemplate.queryForList(sql);
     }
 
     public int update(String sql) throws SQLException,
             ClassNotFoundException {
-        this.close();
         System.out.println(sql);
         return this.jdbcTemplate.update(sql);
     }
@@ -369,7 +494,7 @@ public class DatabaseHandler implements Serializable, Cloneable {
     public int update(String sql, Object... args) throws DataAccessException {
         return jdbcTemplate.update(sql, args);
     }
-
+ 
     public int[] batchUpdate(String sql, BatchPreparedStatementSetter pss) throws DataAccessException {
         return jdbcTemplate.batchUpdate(sql, pss);
     }
@@ -386,6 +511,26 @@ public class DatabaseHandler implements Serializable, Cloneable {
         return jdbcTemplate.call(csc, declaredParameters);
     }
 
+    @Override
+    @SuppressWarnings("CloneDoesntCallSuperClone")
+    public DatabaseHandler clone() throws CloneNotSupportedException {
+        return this;
+    }
+
+    public DatabaseHandler(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+        logger.log(Level.INFO, dataSource.toString());
+    } 
+    
+     public void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.namedParameterJdbcTemplate = null;
+        logger.log(Level.INFO, dataSource.toString());
+    }
+
+    private transient Statement statement = null;
+    private transient ResultSet resultSet = null;
+    
     public void close() {
         try {
             if (resultSet != null) {

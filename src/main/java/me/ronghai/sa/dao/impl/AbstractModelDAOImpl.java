@@ -1,232 +1,105 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2014 Ronghai Wei <ronghai.wei@outlook.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package me.ronghai.sa.dao.impl;
 
-import com.ecbeta.common.core.db.DatabaseHandler;
-import com.mysql.jdbc.StringUtils;
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import me.ronghai.sa.dao.AbstractModelDAO;
 import me.ronghai.sa.model.AbstractModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
 /**
  *
- * @author L5M
+ * @author Ronghai Wei <ronghai.wei@outlook.com>
  * @param <E>
  */
-public class AbstractModelDAOImpl<E extends AbstractModel> implements AbstractModelDAO<E>, Serializable {
-    private static final long serialVersionUID = 1L;
-
-    @PersistenceContext
-    protected EntityManager entityManager;
+public class AbstractModelDAOImpl<E extends AbstractModel> extends AbstractModelDAOWithJDBCImpl<E> implements  Serializable {
+    /*
+    protected AbstractModelDAO<E> dao; 
     
-    @Autowired
-    protected DatabaseHandler databaseHandler;
+    public AbstractModelDAOImpl(AbstractModelDAO<E> dao){
+        this.dao = dao;
+    }
     
-    @Override
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
-
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
-    protected Class<E> entityClass;
-    private static final Logger logger = Logger.getLogger(AbstractModelDAOImpl.class.getName());
-
-    @SuppressWarnings("unchecked")
-    public AbstractModelDAOImpl() {
-        ParameterizedType type = (ParameterizedType) getClass()
-                .getGenericSuperclass();
-        this.entityClass = (Class<E>) type.getActualTypeArguments()[0];
-    }
-
     @Override
     public void persistent(E entity) {
-        try {
-            entityManager.persist(entity);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "{0}", e);
-        }
+        dao.persistent(entity);
     }
 
     @Override
     public void remove(E entity, boolean force) {
-        if (force) {
-            remove(entity);
-        } else {
-            entity.setDisabled(true);
-            merge(entity);
-        }
-
+        dao.remove(entity, force);
     }
 
     @Override
     public void remove(E entity) {
-        entityManager.remove(entity);
+        dao.remove(entity);
     }
 
     @Override
-    public int remove(boolean force, Collection<Long> ids) {
-        if (ids == null || ids.isEmpty()) {
-            return 0;
-        }
-        String sql;
-        String table = table(entityClass);
-        if (force) {
-            sql = "DELETE FROM " +  table + "  e  WHERE id IN (:ids) ";
-        } else {
-            sql = "UPDATE " +table + "  SET disabled = 1  WHERE id IN (:ids) ";
-        }
-        MapSqlParameterSource parameters = new MapSqlParameterSource();
-        parameters.addValue("ids", ids); 
-        return this.databaseHandler.update(sql, parameters);
-    }
-    
-    
-    @Override
-    public E update(E entity) {
-        return merge(entity);
+    public int remove(boolean force, Collection ids) {
+        return dao.remove(force, ids);
     }
 
     @Override
     public E merge(E entity) {
-        try {
-            entityManager.merge(entity);
-            return entity;
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "{0}", e);
-        }
-        return null;
-    }
-    
-    private RowMapper<E> createRowMapper(){ 
-        return new  RowMapper()   {
-            @Override
-            public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-                 /*   Customer customer = new Customer();
-                    customer.setCustId(rs.getInt("CUST_ID"));
-                    customer.setName(rs.getString("NAME"));
-                    customer.setAge(rs.getInt("AGE"));
-                    return customer; */
-                return null;
-            };
-        
-        };
+        return (E)dao.merge(entity);
     }
 
+    @Override
+    public E update(E entity) {
+        return dao.update(entity);
+    }
 
     @Override
     public E find(Object id) {
-        
-        String sql = "SELECT * FROM " + table(entityClass)+ " WHERE id = ? ";
-        return this.databaseHandler.queryForObject(sql,  new Object[] { id }, createRowMapper());
-        
-       
+        return dao.find(id);
     }
 
     @Override
-    public List<E> find() {
-        String jpql = "SELECT e FROM " + entityClass.getName() + " e";
-        Query query = entityManager.createQuery(jpql);
-        return query.getResultList();
+    public List find() {
+        return dao.find();
     }
 
     @Override
-    public List<E> find(String configure) {
-        return find(-1, 0, configure);
+    public List find(String condition) {
+        return dao.find(condition);
     }
 
     @Override
-    public List<E> find(int from, int size, String configure) {
-        String jpql = "SELECT e FROM " + entityClass.getName() + " e ";
-        if (configure != null) {
-            jpql = jpql + configure;
-        }
-        Query query = entityManager.createQuery(jpql);
-        if (from != -1) {
-            query.setFirstResult(from);
-            query.setMaxResults(size);
-        }
-        return query.getResultList();
-    }
-    
-    public static String table(Class<?> entityClass ){
-        String table = entityClass.getSimpleName();
-        if(entityClass.isAnnotationPresent(Entity.class)){
-            String t = ((Entity)entityClass.getAnnotation(Entity.class)).name();
-              if(org.apache.commons.lang.StringUtils.isNotEmpty(t)){
-                  table = t;
-              }
-        }
-        return table;
-    }
-    
-    public static String  column(Class<?> entityClass){
-        return "";
+    public List find(int from, int size, String condition) {
+        return dao.find(from, size, condition);
     }
 
     @Override
     public long count(String configure) {
-        String sql = " SELECT COUNT (*)  FROM " + table(entityClass);
-        if(org.apache.commons.lang.StringUtils.isNotEmpty(configure)){
-            sql += " " + configure;
-        }
-        try {
-            Collection<Object> values = this.databaseHandler.execute(sql).get(0).values();
-            for (Object o : values) {
-                return Long.parseLong(o.toString());
-            }
-        }catch (SQLException | ClassNotFoundException ex) {
-            logger.log(Level.SEVERE, null, ex);
-        }
-        return 0;
-        
+        return dao.count(configure);
     }
 
     @Override
-    public E reference(Object id) {
-        try {
-            return entityManager.getReference(entityClass, id);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "{0}", e);
-        }
-        return null;
+    public List execute(String sql) {
+        return dao.execute(sql);
     }
-     @Override
-     public List<Map<String, Object>> execute(String sql){
-        try {
-            return this.databaseHandler.execute(sql);
-        }catch (SQLException | ClassNotFoundException ex) {
-            logger.log(Level.SEVERE, null, ex);
-        }
-        return null;
-     }
-     
-     @Override
-     public int update(String sql){
-        try {
-            return this.databaseHandler.update(sql);
-        }catch (SQLException | ClassNotFoundException ex) {
-            logger.log(Level.SEVERE, null, ex);
-        }
-        return 0;
-     }  
+
+    @Override
+    public int update(String sql) {
+        return dao.update(sql);
+    }
+
+    @Override
+    public EntityManager getEntityManager() {
+        return dao.getEntityManager();
+    }*/
 }

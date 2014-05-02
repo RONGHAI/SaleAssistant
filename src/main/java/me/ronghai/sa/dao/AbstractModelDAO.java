@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
 import me.ronghai.sa.model.AbstractModel;
+import org.springframework.jdbc.core.RowMapper;
 
 /**
  *
@@ -18,7 +19,7 @@ import me.ronghai.sa.model.AbstractModel;
  */
 public interface AbstractModelDAO<E extends AbstractModel> {
 
-    public void persistent(E entity);
+    public E persistent(E entity);
 
     public void remove(E entity, boolean force);
 
@@ -40,11 +41,11 @@ public interface AbstractModelDAO<E extends AbstractModel> {
 
     public long count(String configure);
 
-    public E reference(Object id);
     
     public List<Map<String, Object>> execute(String sql);
     
     public int update(String sql);
     
-    public EntityManager getEntityManager();
+    
+    public RowMapper<E> createRowMapper();
 }

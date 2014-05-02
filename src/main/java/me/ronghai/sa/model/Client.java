@@ -38,7 +38,7 @@ public class Client extends AbstractModel implements Serializable {
     private String wangwang;
 
     @Column(name = "qq")
-    private int qq;
+    private String qq;
 
     @Column(name = "birthday", nullable=true)
     @Temporal(TemporalType.TIMESTAMP)
@@ -71,7 +71,7 @@ public class Client extends AbstractModel implements Serializable {
         this.id = id;
     }
 
-    public Client(Long id, String name, String wangwang, int qq, Date birthday, String gender, String phone, boolean disabled, Date addTime, Date updateTime) {
+    public Client(Long id, String name, String wangwang, String qq, Date birthday, String gender, String phone, boolean disabled, Date addTime, Date updateTime) {
         this.id = id;
         this.name = name;
         this.wangwang = wangwang;
@@ -89,6 +89,7 @@ public class Client extends AbstractModel implements Serializable {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -109,11 +110,11 @@ public class Client extends AbstractModel implements Serializable {
         this.wangwang = wangwang;
     }
 
-    public int getQq() {
+    public String getQq() {
         return qq;
     }
 
-    public void setQq(int qq) {
+    public void setQq(String qq) {
         this.qq = qq;
     }
 

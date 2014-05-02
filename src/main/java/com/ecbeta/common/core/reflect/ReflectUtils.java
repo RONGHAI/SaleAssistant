@@ -17,6 +17,9 @@ import org.apache.commons.lang.StringUtils;
 
 import com.ecbeta.common.core.annotation.ParseMethodType;
 import com.ecbeta.common.core.annotation.RequestParse;
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -117,7 +120,7 @@ public class ReflectUtils {
             logger.log(Level.WARNING, null, e);
         } catch (NoSuchMethodException e) {
             if (_SHOW_EXCEPTION) {
-                logger.log(Level.WARNING, null, e);
+                logger.log(Level.WARNING, "{0}", e);
                 System.err.println("BaseServicerParaBean.__findMethod__");
                 System.err.println("BaseServicerParaBean.__findMethod__ (" + name +")" + e); 
             }
@@ -126,6 +129,20 @@ public class ReflectUtils {
         return null;
     }
     
+    public static final Map<String, PropertyDescriptor> findFieldName2PropertyDescriptor (Class<?> ownerClass){
+        Map<String, PropertyDescriptor> fieldName2PropertyDescriptor = new HashMap<>();
+        try {
+            BeanInfo info = Introspector.getBeanInfo(ownerClass, Object.class);
+            PropertyDescriptor[] props = info.getPropertyDescriptors();
+            for (PropertyDescriptor prop : props) {
+                fieldName2PropertyDescriptor.put(prop.getName(), prop);
+            }
+        }
+        catch (IntrospectionException e) {
+            logger.log(Level.WARNING, "{0}", e);
+        }
+        return fieldName2PropertyDescriptor;
+    }
     
     public static final Method findSetter (Object instance, Field field, Map<String, PropertyDescriptor> name2Property, RequestParse annotation) {
         String fieldName = field.getName();

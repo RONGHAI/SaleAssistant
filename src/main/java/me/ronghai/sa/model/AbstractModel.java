@@ -20,6 +20,7 @@ public abstract class AbstractModel {
     public abstract void setChanged(boolean changed);
     
     public abstract Long getId() ;
+    public abstract void setId(Long id) ;
     public Long getRecid(){
         return this.getId();
     }

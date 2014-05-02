@@ -192,7 +192,7 @@ public class CoreServlet extends HttpServlet implements org.springframework.web.
             try {
                 AbstractServicer servicer = ServicerFactory.getService(request.getSession(), fieldClassName, field.getName(), this.getAppContext(), field.getAnnotation(ServicerType.class).spring(), worker);
                 servicer.setDatabaseHandler(this.getDatabaseHandler());
-                if (ServicerFactory.isNewInstance(request.getSession(), fieldClassName, field.getName(), worker)) {
+                if (ServicerFactory.isNewInstance(request.getSession(), fieldClassName, field.getName(), worker) || Boolean.parseBoolean(request.getParameter(Constants.FORCE_INIT))) {
                     servicer.setNavigationBeans(naviBeans);
                     servicer.init(worker.getNavigationBean());
                 }

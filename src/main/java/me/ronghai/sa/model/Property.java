@@ -6,6 +6,8 @@
 package me.ronghai.sa.model;
 
 import java.io.Serializable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.springframework.jdbc.core.RowMapper;
 
 /**
  *
@@ -118,4 +121,5 @@ public class Property  extends AbstractModel implements Serializable {
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
     }
+  
 }

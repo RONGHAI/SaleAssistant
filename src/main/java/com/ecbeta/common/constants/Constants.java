@@ -6,7 +6,7 @@ public class Constants {
     public static final String REQUEST_WORKER_ATTRIBUTE_NAME = "REQUEST_WORKER_ATTRIBUTE_NAME";
     public static final String ALL_NAVIGATIONBEANS = "ALL_NAVIGATIONBEANS";
     public static final String ALL_NAVIGATIONBEANS_IN_SESSION = "ALL_NAVIGATIONBEANS_IN_SESSION";
-
+    public static final String FORCE_INIT = "_forceinit_";
     //public static final String SRC_JSP = "SRC_JSP";
     public static final String NAV_TIERS = "NAV_TIERS";
     public static final String ACTION_NAME = "Action";
