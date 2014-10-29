@@ -126,11 +126,17 @@ if (jQuery) {
             var zones = zone.split(/;|,/);
             var params = "";
             for (var index = 0; index < zones.length; index++) {
-                params += $j("#" + zones[index]).serialize();
+                var el = $j("#" + zones[index]);
+                var serialized = el.serialize();
+                if (!serialized) // not a form
+                    serialized = el.
+                      find('input[name],select[name],textarea[name]').serialize();
+                params += serialized;
                 if (index !== zones.length - 1) {
                     params += "&";
                 }
             }
+            alert(params);
             return params;
         };
 
