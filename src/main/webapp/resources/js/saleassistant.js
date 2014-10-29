@@ -136,7 +136,6 @@ if (jQuery) {
                     params += "&";
                 }
             }
-            alert(params);
             return params;
         };
 
