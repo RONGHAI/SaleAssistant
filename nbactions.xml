@@ -43,19 +43,21 @@
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
-        <action>
-            <actionName>CUSTOM-runApp</actionName>
-            <displayName>run app</displayName>
+          <action>
+            <actionName>CUSTOM-restartApp</actionName>
+            <displayName>restart app</displayName>
             <goals>
+                <goal>jetty:stop</goal>
                 <goal>package</goal>
                 <goal>-Djetty.port=9999</goal>
                 <goal>jetty:run</goal>
             </goals>
         </action>
         <action>
-            <actionName>CUSTOM-cleanAndRunApp</actionName>
-            <displayName>clean and run app</displayName>
+            <actionName>CUSTOM-cleanAndRestartApp</actionName>
+            <displayName>clean and restart app</displayName>
             <goals>
+        <goal>jetty:stop</goal>
                 <goal>clean</goal>
                 <goal>package</goal>
                 <goal>-Djetty.port=9999</goal>

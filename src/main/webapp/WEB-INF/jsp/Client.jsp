@@ -35,7 +35,15 @@
                             });
                             //w2ui['grid'].load("${sm:url(worker, 'json', 'record')}");
                          
+                         queryResult = function(){
+                               sale_assistant.post("query",'hiddenValues', function(data, status){
+                                   //alert(data.success);
+                                   //alert(data.msg);
+                               }, function(){}, false);
+                         };
                       });
+                      //
+                      
                 });
             </script>
         </sm:Head>
@@ -44,6 +52,12 @@
         
         <sm:Form id='form' controller="${worker}"> 
             <div id="grid" style="width: 100%; height: 350px; overflow: hidden;"></div>
+            <div id='hiddenValues'> 
+                Query By Name <input id='username' name='username' value=''/>
+            <a href='javascript:queryResult()' >Query</a>
+            
+            </div>
+            
         </sm:Form> 
         
         <sm:Foot></sm:Foot>

@@ -72,4 +72,16 @@ public class ClientController extends AbstractController{
     public String getColumns(){
         return Client.COLUMNS.toString();
     }
+    
+    public Object queryAction(){
+         JSONObject jsonObj = this.getJSONObject();
+         System.out.println(jsonObj.toString());
+         String username = "he;"; // jsonObj.getString("username");
+         System.out.println("username is " + username);
+         
+         JSONObject map = new JSONObject();
+         map.put("success", true);
+         map.put("msg", "Hello " + username);
+         return map;
+    }
 }
