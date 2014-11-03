@@ -3,9 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.ecbeta.common.util;
+
 import com.ecbeta.common.core.viewer.bean.MapJSONBean;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -14,6 +18,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Ronghai Wei <ronghai.wei@outlook.com>
  */
 public class JSONUtils {
+
     @SuppressWarnings("unchecked")
     public static <T> Collection<T> toCollection(Object json, String key, Class<T> clazz) {
         if (json instanceof JSONArray) {
@@ -37,13 +44,58 @@ public class JSONUtils {
     public static JSONObject toJSON(HttpServletRequest request) {
         MapJSONBean json = new MapJSONBean();
         for (Object s : request.getParameterMap().keySet()) {
+            System.out.println(s);
             for (String value : request.getParameterValues(s.toString())) {
-
                 json.add(s.toString(), value);
             }
         }
+
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
+            String line;
+            String data = "";
+            while ((line = br.readLine()) != null) {
+                data += line;
+            }
+            data = URLDecoder.decode(data, "UTF-8");
+            try {
+                JSONObject oo = JSONObject.fromObject(data);
+                return oo;
+            }
+            catch (Exception ex) {
+                Map<String, List<String>> params = parseParameters(data);
+                for (Map.Entry<String, List<String>> entry : params.entrySet()) {
+                    for (String value : entry.getValue()) {
+                        json.add(entry.getKey(), value);
+                    }
+                }
+            }
+
+        }
+        catch (IOException ex) {
+            Logger.getLogger(JSONUtils.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         return json.toJson();
     }
 
-
+    private static Map<String, List<String>> parseParameters(String url) {
+        Map<String, List<String>> params = new HashMap<>();
+        String query = url;
+        for (String param : query.split("&")) {
+            String pair[] = param.split("=");
+            String key = pair[0];
+            String value = "";
+            if (pair.length > 1) {
+                value = pair[1];
+            }
+            List<String> values = params.get(key);
+            if (values == null) {
+                values = new ArrayList<>();
+                params.put(key, values);
+            }
+            values.add(value);
+        }
+        return params;
+    }
 }
