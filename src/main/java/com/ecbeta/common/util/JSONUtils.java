@@ -44,7 +44,6 @@ public class JSONUtils {
     public static JSONObject toJSON(HttpServletRequest request) {
         MapJSONBean json = new MapJSONBean();
         for (Object s : request.getParameterMap().keySet()) {
-            System.out.println(s);
             for (String value : request.getParameterValues(s.toString())) {
                 json.add(s.toString(), value);
             }
