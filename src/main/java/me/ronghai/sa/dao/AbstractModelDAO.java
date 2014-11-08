@@ -32,7 +32,7 @@ public interface AbstractModelDAO<E extends AbstractModel> {
     public E update(E entity);
 
     public E find(Object id);
-
+    public boolean exsit(Object id);
     public List<E> find();
 
     public List<E> find(String condition);

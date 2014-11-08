@@ -62,7 +62,7 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
            for ( Field field : allFieldList) {
                if (field.isAnnotationPresent(Column.class) && !field.isAnnotationPresent(Id.class)) {
                    Column annotation = (Column) field.getAnnotation(Column.class);
-                   String cname =  org.apache.commons.lang.StringUtils.isNotEmpty(annotation.name()) ? field.getName(): annotation.name();
+                   String cname =  org.apache.commons.lang.StringUtils.isEmpty(annotation.name()) ? field.getName(): annotation.name();
                    Method getter = ReflectUtils.findGetter(entity, field, fieldName2PropertyDescriptor, null);
                    try {
                        Object value =  getter.invoke(entity);
@@ -154,15 +154,18 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
         List<String> columnNames = columnsAndValues == null ? null : (List<String>) columnsAndValues[0];
         List<Object> values = columnsAndValues == null ? null : (List<Object>) columnsAndValues[1];        
         if (columnNames != null && !columnNames.isEmpty()) {
-            String sql = " UPDATE " + table(entityClass) ;
+            String sql = " UPDATE " + table(entityClass) +" SET " ;
             for(int i = 0; i <  columnNames.size(); i++){
-                sql += " SET " + columnNames.get(i)+" = ? ";
+                sql += "  " + columnNames.get(i)+" = ? ";
                 if(i != columnNames.size() - 1){
                     sql += ", ";
                 } 
             } 
+             System.out.println(values);
+            System.out.println(columnNames);
             sql += " WHERE ID =  " + entity.getId();  
-            this.databaseHandler.update(sql, values); 
+            this.databaseHandler.update(sql, values.toArray()); 
+           
             return  find(entity.getId());
         } 
         return entity;
@@ -180,7 +183,14 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
         return this.databaseHandler.queryForObject(sql, new Object[]{id}, createRowMapper());
 
     }
+    @Override
+    public boolean exsit(Object id) {
 
+        String sql = "SELECT count(*) FROM " + table(entityClass) + " WHERE id = ? ";
+        return this.databaseHandler.queryForInt(sql, new Object[]{id}) != 0;
+
+    }
+    
     @Override
     public List<E> find() {
         String sql = "SELECT * FROM " + table(entityClass);

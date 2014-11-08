@@ -35,6 +35,7 @@ public class ClientDAOImpl extends AbstractModelDAOImpl<Client> implements Clien
               bean.setName(rs.getString("name"));
               bean.setPhone(rs.getString("phone"));
               bean.setQq(rs.getString("qq"));
+              bean.setQqName(rs.getString("qq_name"));
               bean.setWangwang(rs.getString("wangwang"));
               return bean;
           }

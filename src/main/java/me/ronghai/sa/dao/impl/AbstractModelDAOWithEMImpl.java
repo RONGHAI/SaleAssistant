@@ -188,5 +188,10 @@ public class AbstractModelDAOWithEMImpl <E extends AbstractModel> implements Abs
     public RowMapper<E> createRowMapper() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public boolean exsit(Object id) {
+        return find(id ) != null;
+    }
 }
  
