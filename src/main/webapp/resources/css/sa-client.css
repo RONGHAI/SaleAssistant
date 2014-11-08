@@ -1,0 +1,24 @@
+.sa-client .addnew label{
+    display: inline-block; 
+    width: 90px;
+    margin: 4px 0px;
+    line-height: 100%;
+}
+.sa-client .addnew a{
+    width:40px;
+    margin: 4px 0px;
+    line-height: 100%;
+}
+.sa-client .addnew input[type="text"]{
+    width:130px;
+    margin: 4px 0px;
+    display: inline-block;
+}
+.sa-client .addnew .radio-span{
+    width:130px;
+    margin: 4px -2.5px;
+    display: inline-block;
+}
+
+
+

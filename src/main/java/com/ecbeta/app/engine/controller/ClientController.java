@@ -5,6 +5,7 @@ import com.ecbeta.common.core.AbstractServicer;
 import com.ecbeta.common.core.AbstractController;
 import com.ecbeta.common.core.annotation.ServicerType;
 import com.ecbeta.common.util.JSONUtils;
+import java.util.Iterator;
 import java.util.List;
 import me.ronghai.sa.model.Client;
 import net.sf.json.JSONArray;
@@ -64,6 +65,19 @@ public class ClientController extends AbstractController{
         return map;
     }
     
+    @Override
+    public Object saveRecordsAction(JSONObject json) {
+        System.out.println("~~~~~saveRecordsAction~~~~"+json.get("changed"));
+        JSONArray jsonArray = (JSONArray)json.get("changed");
+        
+        servicer.saveOrUpdate(jsonArray);
+        
+        JSONObject map = new JSONObject();
+        map.put("success", true);
+        return map;
+    }
+    
+   
     public Object getColumnsAction(){
         return this.getColumns(); 
     }
@@ -73,15 +87,5 @@ public class ClientController extends AbstractController{
         return Client.COLUMNS.toString();
     }
     
-    public Object queryAction(){
-         JSONObject jsonObj = this.getJSONObject();
-         System.out.println(jsonObj.toString());
-         String username = "he;"; // jsonObj.getString("username");
-         System.out.println("username is " + username);
-         
-         JSONObject map = new JSONObject();
-         map.put("success", true);
-         map.put("msg", "Hello " + username);
-         return map;
-    }
+   
 }

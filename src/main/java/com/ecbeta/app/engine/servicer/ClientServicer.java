@@ -2,12 +2,16 @@ package com.ecbeta.app.engine.servicer;
 
 import com.ecbeta.common.core.AbstractServicer;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import me.ronghai.sa.dao.impl.ClientDAOImpl;
 import me.ronghai.sa.model.Client;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ClientServicer extends AbstractServicer  {
@@ -86,6 +90,31 @@ public class ClientServicer extends AbstractServicer  {
         this.clientDAO.persistent(c);
         this.refresh();
         return c;
+    }
+
+    public void saveOrUpdate(JSONArray jsonArray) {
+        Iterator<JSONObject> it = jsonArray.iterator();
+        while(it.hasNext()){
+            JSONObject newJsonObj = it.next();
+            Client client = Client.fromJson(newJsonObj);
+            Long id  = client.getId();
+            if(this.clientDAO.exsit(id)){
+                client .setUpdateTime(new Date());
+            }else{
+                client.setId(null);
+                client.setAddTime(new Date());
+            }
+            this.saveOrUpdate(client);
+        };
+        this.refresh();
+    }
+
+    private Client saveOrUpdate(Client client) {
+        if(client.getId() == null){
+           return this.save (client);
+        }else{
+           return this.update(client);
+        }
     }
 
 }
