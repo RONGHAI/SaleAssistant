@@ -130,7 +130,7 @@ if (jQuery) {
                 var serialized = el.serialize();
                 if (!serialized) // not a form
                     serialized = el.
-                      find('input[name],select[name],textarea[name]').serialize();
+                      find('input,select,textarea').serialize();
                 params += serialized;
                 if (index !== zones.length - 1) {
                     params += "&";
@@ -167,6 +167,7 @@ if (jQuery) {
 
         sale_assistant.post = function(action, paraZone, sucessCallback, errorCallback, autoUpdate) {
             var paras = sale_assistant.serialize(paraZone);
+            alert(paras);
             $j.ajax({
                 url: sale_assistant.baseURLWithButton + action,
                 header: {
