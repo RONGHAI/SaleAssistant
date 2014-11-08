@@ -45,6 +45,7 @@ import net.sf.json.JSONArray;
 
 public abstract class AbstractController {
     public static boolean debug = false;
+    public static String QUERY_CMD = "get-records",DELETE_CMD = "delete-records",SAVE_CMD = "save-records";
 
     public static final boolean _SHOW_EXCEPTION = true;
     private static final int _PROCESS_STATUS_IGNORE = 0, _PROCESS_STATUS_SUCCESS = 1,
