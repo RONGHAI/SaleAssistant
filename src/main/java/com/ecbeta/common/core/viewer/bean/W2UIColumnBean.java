@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.ecbeta.common.core.viewer.bean;
 
 import java.io.Serializable;
-import java.util.Map;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
  * @author Ronghai Wei <ronghai.wei@outlook.com>
  */
-public class W2UIColumnBean implements Serializable{
+public class W2UIColumnBean implements Serializable {
 
     public String getField() {
         return field;
@@ -118,17 +118,16 @@ public class W2UIColumnBean implements Serializable{
     public void setMax(String max) {
         this.max = max;
     }
-   
-     
-    private String field = "";
+
+    private String field = null;
     private String size = null;
-    private String caption = "";
+    private String caption = null;
     private boolean sortable = true;
     private boolean searchable = false;
     private boolean hidden = false;
     private boolean resizable = false;
-    private String attr = "";
-    private String style="";
+    private String attr = null;
+    private String style = null;
     private String render = null;
     private String title = null;
     private String min = "15";
@@ -163,44 +162,99 @@ public class W2UIColumnBean implements Serializable{
 
     public W2UIColumnBean() {
     }
-    
-   /* 
-	min            : 15,     // minimum width of column in px
-	gridMinWidth   : null,   // minimum width of the grid when column is visible
-	sizeCorrected  : null,   // read only, corrected size (see explanation below)
-	sizeCalculated : null,   // read only, size in px (see explanation below)
-	render         : null,   // render function
-	editable       : {}      // editable object if column fields are editable
-*/
-    public Object toJson(){
-        return this;
-    }
-    
 
-    public W2UIColumnBean(String field, String caption,String size, boolean sortable ) {
+    /* 
+     min            : 15,     // minimum width of column in px
+     gridMinWidth   : null,   // minimum width of the grid when column is visible
+     sizeCorrected  : null,   // read only, corrected size (see explanation below)
+     sizeCalculated : null,   // read only, size in px (see explanation below)
+     render         : null,   // render function
+     editable       : {}      // editable object if column fields are editable
+     */
+    public Object toJson() {
+        JSONObject map = new JSONObject();
+        if (StringUtils.isNotEmpty(this.field)) {
+            map.put("field", this.field);
+        }
+        if (StringUtils.isNotEmpty(this.size)) {
+            map.put("size", this.size);
+        }
+        if (StringUtils.isNotEmpty(this.caption)) {
+            map.put("caption", this.caption);
+        }
+        map.put("sortable", this.sortable);
+        map.put("searchable", this.searchable);
+        map.put("hidden", this.hidden);
+        map.put("resizable", this.resizable);
+        if (StringUtils.isNotEmpty(this.attr)) {
+            map.put("attr", this.attr);
+        }
+        if (StringUtils.isNotEmpty(this.style)) {
+            map.put("style", this.style);
+        }
+        if (StringUtils.isNotEmpty(this.render)) {
+            map.put("render", this.render);
+        }
+        if (StringUtils.isNotEmpty(this.title)) {
+            map.put("title", this.title);
+        }
+        if (StringUtils.isNotEmpty(this.min)) {
+            map.put("min", this.min);
+        }
+        if (StringUtils.isNotEmpty(this.max)) {
+            map.put("max", this.max);
+        }
+        if (StringUtils.isNotEmpty(this.type)) {
+            map.put("type", this.type);
+        }
+        if (this.editable != null) {
+            map.put("editable", this.editable);
+        }
+        /*
+            
+         private String field = null;
+         private String size = null;
+         private String caption = null;
+         private boolean sortable = true;
+         private boolean searchable = false;
+         private boolean hidden = false;
+         private boolean resizable = false;
+         private String attr = null;
+         private String style= null;
+         private String render = null;
+         private String title = null;
+         private String min = "15";
+         private String max = null;
+         private String type = null;
+         private Object editable;
+         */
+        return map;
+    }
+
+    public W2UIColumnBean(String field, String caption, String size, boolean sortable) {
         this.field = field;
         this.caption = caption;
         this.size = size;
         this.sortable = sortable;
     }
-    
-    public W2UIColumnBean(String field, String caption,String size, String render , boolean sortable ) {
+
+    public W2UIColumnBean(String field, String caption, String size, String render, boolean sortable) {
         this.field = field;
         this.caption = caption;
         this.size = size;
         this.sortable = sortable;
         this.render = render;
     }
-   
-    public W2UIColumnBean(String field, String caption,String size, boolean sortable , String type ) {
+
+    public W2UIColumnBean(String field, String caption, String size, boolean sortable, String type) {
         this.field = field;
         this.caption = caption;
         this.size = size;
         this.sortable = sortable;
         this.type = type;
     }
-    
-    public W2UIColumnBean(String field, String caption,String size, String render , boolean sortable  , String type) {
+
+    public W2UIColumnBean(String field, String caption, String size, String render, boolean sortable, String type) {
         this.field = field;
         this.caption = caption;
         this.size = size;
@@ -208,18 +262,16 @@ public class W2UIColumnBean implements Serializable{
         this.render = render;
         this.type = type;
     }
-    
-    
-    
-    public W2UIColumnBean(String field, String caption,String size, boolean sortable, Object editable ) {
+
+    public W2UIColumnBean(String field, String caption, String size, boolean sortable, Object editable) {
         this.field = field;
         this.caption = caption;
         this.size = size;
         this.sortable = sortable;
         this.editable = editable;
     }
-    
-    public W2UIColumnBean(String field, String caption,String size, String render , boolean sortable, Object editable ) {
+
+    public W2UIColumnBean(String field, String caption, String size, String render, boolean sortable, Object editable) {
         this.field = field;
         this.caption = caption;
         this.size = size;
@@ -227,8 +279,8 @@ public class W2UIColumnBean implements Serializable{
         this.render = render;
         this.editable = editable;
     }
-  
-    public W2UIColumnBean(String field, String caption,String size, boolean sortable , String type, Object editable ) {
+
+    public W2UIColumnBean(String field, String caption, String size, boolean sortable, String type, Object editable) {
         this.field = field;
         this.caption = caption;
         this.size = size;
@@ -236,8 +288,8 @@ public class W2UIColumnBean implements Serializable{
         this.type = type;
         this.editable = editable;
     }
-    
-    public W2UIColumnBean(String field, String caption,String size, String render , boolean sortable  , String type, Object editable) {
+
+    public W2UIColumnBean(String field, String caption, String size, String render, boolean sortable, String type, Object editable) {
         this.field = field;
         this.caption = caption;
         this.size = size;

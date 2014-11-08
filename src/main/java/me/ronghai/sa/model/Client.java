@@ -17,7 +17,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
+import static com.ecbeta.common.util.JSONUtils.expectOne;
 /**
  *
  * @author L5M
@@ -39,6 +39,9 @@ public class Client extends AbstractModel implements Serializable {
 
     @Column(name = "qq")
     private String qq;
+    
+    @Column(name = "qq_name" , nullable=true)
+    private String qqName;
 
     @Column(name = "birthday", nullable=true)
     @Temporal(TemporalType.TIMESTAMP)
@@ -71,11 +74,12 @@ public class Client extends AbstractModel implements Serializable {
         this.id = id;
     }
 
-    public Client(Long id, String name, String wangwang, String qq, Date birthday, String gender, String phone, boolean disabled, Date addTime, Date updateTime) {
+    public Client(Long id, String name, String wangwang, String qq,String qqName, Date birthday, String gender, String phone, boolean disabled, Date addTime, Date updateTime) {
         this.id = id;
         this.name = name;
         this.wangwang = wangwang;
         this.qq = qq;
+        this.qqName = qqName;
         this.birthday = birthday;
         this.gender = gender;
         this.phone = phone;
@@ -116,6 +120,14 @@ public class Client extends AbstractModel implements Serializable {
 
     public void setQq(String qq) {
         this.qq = qq;
+    }
+
+    public String getQqName() {
+        return qqName;
+    }
+
+    public void setQqName(String qqName) {
+        this.qqName = qqName;
     }
 
     public Date getBirthday() {
@@ -224,12 +236,14 @@ public class Client extends AbstractModel implements Serializable {
     public static final JSONArray COLUMNS;
     static{
         COLUMNS = new JSONArray();
-        COLUMNS.add(new W2UIColumnBean("name", "Name", "20%", true, "text").toJson());
-        COLUMNS.add(new W2UIColumnBean("wangwang", "Wangwang", "20%", true, "text").toJson());
-        COLUMNS.add(new W2UIColumnBean("qq", "QQ", "20%", true, "text").toJson());
-        COLUMNS.add(new W2UIColumnBean("birthday", "Birthday", "20%" ,"date:mm/dd/yyyy", true , "date" ).toJson());
-        COLUMNS.add(new W2UIColumnBean("gender", "Gender", "20%", true, "text").toJson());
-        COLUMNS.add(new W2UIColumnBean("phone", "Phone", "120px", true, "text").toJson());
+        COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true ).toJson());
+        COLUMNS.add(new W2UIColumnBean("name", "Name", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("wangwang", "Wangwang", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("qq", "QQ", "20%", true, "int", JSONObject.fromObject("{ type: 'int', min: 10000 }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("qqName", "QQ Name", "20%", true, "text", JSONObject.fromObject("{ type: 'text'   }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("birthday", "Birthday", "20%" ,"date:mm/dd/yyyy", true , "date" , JSONObject.fromObject("{ type: 'date' }") ).toJson());
+        COLUMNS.add(new W2UIColumnBean("gender", "Gender", "20%", true, "text", JSONObject.fromObject("{ type: 'list', items:[{id:'M', text : \"Male\"}, {id:'F', text : \"Female\"}, {id:'U', text : \"U\"}]  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("phone", "Phone", "120px", true, "text", JSONObject.fromObject("{ type: 'text'  }")).toJson());
     }
     
     @Override
@@ -238,6 +252,7 @@ public class Client extends AbstractModel implements Serializable {
         map.put("name", this.name);
         map.put("wangwang", this.wangwang);
         map.put("qq", this.qq);
+        map.put("qqName", this.qqName);
         map.put("birthday", this.birthday == null ? 0L : this.birthday.getTime());
         map.put("gender", this.gender);
         map.put("phone", this.phone);
@@ -245,8 +260,20 @@ public class Client extends AbstractModel implements Serializable {
         map.put("id", this.id);
         return map;
     }
-    @Override
-    public  <T extends AbstractModel> T fromJson(JSONObject json, Class<T> clazz){               
-        return (T) JSONObject.toBean( json, clazz);
+   
+    public static  Client fromJson(JSONObject json){               
+        expectOne(json, "name");
+        expectOne(json, "wangwang");
+        expectOne(json, "qq");
+        expectOne(json, "qqName");
+        expectOne(json, "birthday");
+        expectOne(json, "gender");
+        expectOne(json, "phone");
+        expectOne(json, "recid");
+        expectOne(json, "id"); 
+        if(json.has("recid") && !json.has("id")){
+            json.put("id", json.get("recid"));
+        }
+        return Client.fromJson(json, Client.class);
     }
 }
