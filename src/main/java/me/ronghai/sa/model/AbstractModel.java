@@ -29,7 +29,7 @@ public abstract class AbstractModel {
     public Object toJson(){
         return this;
     }
-    public <T extends AbstractModel> T fromJson(JSONObject json, Class<T> clazz){               
+    public static <T extends AbstractModel>  T fromJson(JSONObject json, Class<T> clazz){               
         return (T) JSONObject.toBean( json, clazz);
     }
     
