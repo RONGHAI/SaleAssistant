@@ -14,14 +14,11 @@ import java.util.ArrayList;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -75,6 +72,7 @@ public class JSONUtils {
             Logger.getLogger(JSONUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        System.out.println("json:"+json.toString());
         return json.toJson();
     }
 
@@ -96,5 +94,27 @@ public class JSONUtils {
             values.add(value);
         }
         return params;
+    }
+     public static void expectOne(JSONObject json, String key){
+        if(json.has(key)){
+            Object o = json.get(key);
+            if(o instanceof JSONArray){
+                json.put(key, ((JSONArray)o ).get(0));
+            }
+        }
+          
+    }
+     public static void expectMore(JSONObject json, String key){
+        if(json.has(key)){
+            Object o = json.get(key);
+            if(o instanceof JSONArray){
+               
+            }else{
+                List<Object> list = new ArrayList<>(1);
+                list.add(o);
+                json.put(key, list);
+            }
+        }
+          
     }
 }
