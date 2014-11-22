@@ -66,7 +66,7 @@ public class CoreServlet extends HttpServlet implements org.springframework.web.
             logger.log(Level.SEVERE, null, e);
         }
         logger.log(Level.INFO, "jsp path is " + jspPath, "");
-        getNavigationBeans();
+        getNavigationBeans(false);
 
     }
 
@@ -96,11 +96,13 @@ public class CoreServlet extends HttpServlet implements org.springframework.web.
         }
         return this.navigationDAO;
     }
-
-    @SuppressWarnings("unchecked")
     protected List<NavigationBean> getNavigationBeans() {
+        return getNavigationBeans(false);
+    }
+    @SuppressWarnings("unchecked")
+    protected List<NavigationBean> getNavigationBeans(boolean init) {
         List<NavigationBean> naviBeans = (List<NavigationBean>) this.getServletContext().getAttribute(Constants.ALL_NAVIGATIONBEANS);
-        if (naviBeans == null) {
+        if (naviBeans == null || init) {
             naviBeans = NavigationUtil.convert(this.getNavigationDAO().find());
             this.getServletContext().setAttribute(Constants.ALL_NAVIGATIONBEANS, naviBeans);
         }
@@ -180,7 +182,7 @@ public class CoreServlet extends HttpServlet implements org.springframework.web.
     
     protected void injectServicers(HttpServletRequest request, HttpServletResponse response, AbstractController worker) {
         Collection<Field> fields = ReflectUtils.getDeclaredFields((Map<String, Field>) null, worker.getClass(), false).values();
-        List<NavigationBean> naviBeans = this.getNavigationBeans();
+        List<NavigationBean> naviBeans = this.getNavigationBeans( Boolean.parseBoolean(request.getParameter(Constants.FORCE_INIT)));
         for (Field field : fields) {
             if (!field.isAnnotationPresent(ServicerType.class)) {
                 continue;
@@ -192,8 +194,8 @@ public class CoreServlet extends HttpServlet implements org.springframework.web.
             try {
                 AbstractServicer servicer = ServicerFactory.getService(request.getSession(), fieldClassName, field.getName(), this.getAppContext(), field.getAnnotation(ServicerType.class).spring(), worker);
                 servicer.setDatabaseHandler(this.getDatabaseHandler());
+                servicer.setNavigationBeans(naviBeans);
                 if (ServicerFactory.isNewInstance(request.getSession(), fieldClassName, field.getName(), worker) || Boolean.parseBoolean(request.getParameter(Constants.FORCE_INIT))) {
-                    servicer.setNavigationBeans(naviBeans);
                     servicer.init(worker.getNavigationBean());
                 }
                 Method setter = ReflectUtils.findSetter(worker, field, null, null);
