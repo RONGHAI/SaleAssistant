@@ -62,7 +62,13 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
            for ( Field field : allFieldList) {
                if (field.isAnnotationPresent(Column.class) && !field.isAnnotationPresent(Id.class)) {
                    Column annotation = (Column) field.getAnnotation(Column.class);
-                   String cname =  org.apache.commons.lang.StringUtils.isEmpty(annotation.name()) ? field.getName(): annotation.name();
+                   String cname;
+                   if(org.apache.commons.lang.StringUtils.isNotEmpty(annotation.name())){
+                       cname = annotation.name();
+                       cname = cname.replaceAll("[\\[\\]]", "`");
+                   }else{
+                       cname = field.getName();
+                   }
                    Method getter = ReflectUtils.findGetter(entity, field, fieldName2PropertyDescriptor, null);
                    try {
                        Object value =  getter.invoke(entity);
