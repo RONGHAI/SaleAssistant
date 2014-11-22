@@ -6,6 +6,8 @@
 
 package me.ronghai.sa.model;
 
+import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
+import static com.ecbeta.common.util.JSONUtils.expectOne;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -15,6 +17,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 /**
  *
@@ -141,6 +145,7 @@ public class Navigation   extends AbstractModel implements Serializable {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -180,5 +185,53 @@ public class Navigation   extends AbstractModel implements Serializable {
     public void setChanged(boolean changed) {
         this.changed = changed;
     }
+    
+    @Override
+    public Object toJson(){
+        JSONObject map = new JSONObject();
+        map.put("id", this.id);
+        map.put("label", this.label);
+        map.put("worker", this.worker);
+        map.put("tier_1", this.tier_1);
+        map.put("tier_2", this.tier_2);
+        map.put("tier_3", this.tier_3);
+        map.put("tier_4", this.tier_4);
+        map.put("order", this.order);
+        map.put("recid", this.getRecid());
+        System.out.println(map);
+         
+        return map;
+    }
+    
+    public static  Navigation fromJson(JSONObject json){               
+        expectOne(json, "label");
+        expectOne(json, "worker");
+        expectOne(json, "order");
+        expectOne(json, "tier_1");
+        expectOne(json, "tier_2");
+        expectOne(json, "tier_3");
+        expectOne(json, "tier_4");
+        expectOne(json, "recid");
+        expectOne(json, "id"); 
+        if(json.has("recid") && !json.has("id")){
+            json.put("id", json.get("recid"));
+        }
+        return Navigation.fromJson(json, Navigation.class);
+    }
+     
+      public static final JSONArray COLUMNS;
+    static{
+        COLUMNS = new JSONArray();
+        COLUMNS.add(new W2UIColumnBean("recid", "ID", "10%", true ).toJson());
+        COLUMNS.add(new W2UIColumnBean("worker", "Worker", "40%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("label", "Label", "30%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("order", "order", "10%", true, "int", JSONObject.fromObject("{ type: 'int', min: 0 }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("tier_1", "Tier 1", "10%", true, "int", JSONObject.fromObject("{ type: 'int', min: 0 }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("tier_2", "Tier 2", "10%" ,true ,  "int", JSONObject.fromObject("{ type: 'int', min: 0 }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("tier_3", "Tier 3", "10%", true,  "int", JSONObject.fromObject("{ type: 'int', min: 0 }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("tier_4", "Tier 4", "10%", true,  "int", JSONObject.fromObject("{ type: 'int', min: 0 }")).toJson());
+    }
+    
+     
 }
 

@@ -10,7 +10,7 @@
 <c:set value="${worker.servicer}" var="servicer" />
 <c:set var='controller' value='${worker}' />
 <c:set value='${servicer.navigationBeans}' var='navigationBeans' />
-<link rel="stylesheet" type="text/css" href="${worker.request.contextPath}/resources/css/sa-client.css"/>
+<link rel="stylesheet" type="text/css" href="${worker.request.contextPath}/resources/css/sa-add.css"/>
 <!DOCTYPE html>
 <html>
     <head>
@@ -36,7 +36,9 @@
                                     columns: ${worker.columns},
                                     searches : ${worker.columns},
                                     onAdd: function (target,data) {
-                                        this.add({ recid: -1 });
+                                        this.add({ recid: new Date().getTime() });
+                                    },
+                                    onSave: function(event){
                                     }
                             });
                             
@@ -47,7 +49,7 @@
             </script>
         </sm:Head>
     </head>
-    <body class="sa-client">
+    <body class="sa-add">
         
         <sm:Form id='form' controller="${worker}"> 
             <div id="hiddenInputZone">
