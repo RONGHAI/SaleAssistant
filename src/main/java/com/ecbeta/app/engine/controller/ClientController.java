@@ -5,7 +5,6 @@ import com.ecbeta.common.core.AbstractServicer;
 import com.ecbeta.common.core.AbstractController;
 import com.ecbeta.common.core.annotation.ServicerType;
 import com.ecbeta.common.util.JSONUtils;
-import java.util.Iterator;
 import java.util.List;
 import me.ronghai.sa.model.Client;
 import net.sf.json.JSONArray;
