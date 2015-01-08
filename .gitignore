@@ -16,3 +16,5 @@ nbproject/private/
 *.ear
 /nbproject/
 /target/
+.project
+.settings
