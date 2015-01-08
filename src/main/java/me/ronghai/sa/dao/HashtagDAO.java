@@ -6,13 +6,13 @@
 
 package me.ronghai.sa.dao;
 
-import me.ronghai.sa.model.Carrier;
+import me.ronghai.sa.model.Hashtag;
 
 /**
  *
  * @author ronghai
  */
-public interface CarrierDAO extends AbstractModelDAO<Carrier>{
+public interface HashtagDAO extends AbstractModelDAO<Hashtag>{
    
 
 }

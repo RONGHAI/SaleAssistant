@@ -8,23 +8,23 @@ package me.ronghai.sa.dao.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import me.ronghai.sa.dao.CarrierDAO;
-import me.ronghai.sa.model.Carrier;
+import me.ronghai.sa.dao.AccountDAO;
+import me.ronghai.sa.model.Account;
 import org.springframework.jdbc.core.RowMapper;
 
 /**
  *
  * @author ronghai
  */
-public class CarrierDAOImpl extends AbstractModelDAOImpl<Carrier> implements CarrierDAO{
+public class AccountDAOImpl extends AbstractModelDAOImpl<Account> implements AccountDAO{
    
     
     @Override
-    public RowMapper<Carrier> createRowMapper() {
+    public RowMapper<Account> createRowMapper() {
       return new RowMapper() {
           @Override
           public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-              Carrier bean  = new Carrier();
+              Account bean  = new Account();
               bean.setId(rs.getLong("ID"));
               bean.setAddTime(rs.getDate("add_time"));
               bean.setDisabled(rs.getBoolean("disabled"));

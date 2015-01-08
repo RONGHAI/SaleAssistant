@@ -22,8 +22,8 @@ import static com.ecbeta.common.util.JSONUtils.expectOne;
  *
  * @author L5M
  */
-@Entity(name="carriers")
-public class Carrier extends AbstractModel implements Serializable {
+@Entity(name="products")
+public class Product extends AbstractModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -67,14 +67,14 @@ public class Carrier extends AbstractModel implements Serializable {
     @Column(name = "note")
     private String note;
 
-    public Carrier() {
+    public Product() {
     }
 
-    public Carrier(Long id) {
+    public Product(Long id) {
         this.id = id;
     }
 
-    public Carrier(Long id, String name, String wangwang, String qq,String qqName, Date birthday, String gender, String phone, boolean disabled, Date addTime, Date updateTime) {
+    public Product(Long id, String name, String wangwang, String qq,String qqName, Date birthday, String gender, String phone, boolean disabled, Date addTime, Date updateTime) {
         this.id = id;
         this.name = name;
         this.wangwang = wangwang;
@@ -201,10 +201,10 @@ public class Carrier extends AbstractModel implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Carrier)) {
+        if (!(object instanceof Product)) {
             return false;
         }
-        Carrier other = (Carrier) object;
+        Product other = (Product) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -213,7 +213,7 @@ public class Carrier extends AbstractModel implements Serializable {
 
     @Override
     public String toString() {
-        return "me.ronghai.sa.model.Carrier[ id=" + id + " ]";
+        return "me.ronghai.sa.model.Product[ id=" + id + " ]";
     }
     
     
@@ -261,7 +261,7 @@ public class Carrier extends AbstractModel implements Serializable {
         return map;
     }
    
-    public static  Carrier fromJson(JSONObject json){               
+    public static  Product fromJson(JSONObject json){               
         expectOne(json, "name");
         expectOne(json, "wangwang");
         expectOne(json, "qq");
@@ -274,6 +274,6 @@ public class Carrier extends AbstractModel implements Serializable {
         if(json.has("recid") && !json.has("id")){
             json.put("id", json.get("recid"));
         }
-        return Carrier.fromJson(json, Carrier.class);
+        return Product.fromJson(json, Product.class);
     }
 }

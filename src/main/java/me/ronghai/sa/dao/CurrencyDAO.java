@@ -6,13 +6,13 @@
 
 package me.ronghai.sa.dao;
 
-import me.ronghai.sa.model.Carrier;
+import me.ronghai.sa.model.Currency;
 
 /**
  *
  * @author ronghai
  */
-public interface CarrierDAO extends AbstractModelDAO<Carrier>{
+public interface CurrencyDAO extends AbstractModelDAO<Currency>{
    
 
 }
