@@ -195,6 +195,7 @@
             <artifactId>json-lib</artifactId>
             <version>${net.sf.json.version}</version>
             <type>jar</type>
+            <classifier>jdk15</classifier>
         </dependency>
     </dependencies>
     <build>
@@ -241,7 +242,7 @@
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
-                        <phase>compile</phase>
+                        <phase>default</phase>
                         <goals>
                             <goal>run</goal>
                         </goals>
