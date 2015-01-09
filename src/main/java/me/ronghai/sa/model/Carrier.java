@@ -185,6 +185,10 @@ public class Carrier extends AbstractModel implements Serializable {
         JSONObject map = new JSONObject();
         map.put("recid", this.getRecid());
         map.put("id", this.id);
+        map.put("name", this.name);
+        map.put("website", this.website);
+        map.put("trackURL", this.trackURL);
+        map.put("trackMethod", this.trackMethod);
         return map;
     }
    

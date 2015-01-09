@@ -1,4 +1,3 @@
-
 package me.ronghai.sa.model;
 
 import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
@@ -14,11 +13,12 @@ import javax.persistence.TemporalType;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import static com.ecbeta.common.util.JSONUtils.expectOne;
+
 /**
  *
  * @author ronghai
  */
-@Entity(name="currencies")
+@Entity(name = "currencies")
 public class Currency extends AbstractModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -27,16 +27,58 @@ public class Currency extends AbstractModel implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "code")
+    private String code;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
+
+    @Column(name = "sign")
+    private String sign;
+
+    @Column(name = "exchange_rate")
+    private double rate;
 
     @Column(name = "disabled")
     private boolean disabled;
 
-    @Column(name = "add_time", nullable=true)
+    @Column(name = "add_time", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date addTime;
 
-    @Column(name = "update_time", nullable=true)
+    @Column(name = "update_time", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
 
@@ -50,8 +92,6 @@ public class Currency extends AbstractModel implements Serializable {
         this.id = id;
     }
 
-    
-    
     @Override
     public Long getId() {
         return id;
@@ -62,7 +102,6 @@ public class Currency extends AbstractModel implements Serializable {
         this.id = id;
     }
 
-    
     @Override
     public boolean isDisabled() {
         return disabled;
@@ -125,64 +164,70 @@ public class Currency extends AbstractModel implements Serializable {
     public String toString() {
         return "me.ronghai.sa.model.Currency[ id=" + id + " ]";
     }
-    
-    
-    private transient  boolean changed;
+
+    private transient boolean changed;
 
     @Override
     public boolean isChanged() {
         return changed;
     }
+
     @Override
     public void setChanged(boolean changed) {
         this.changed = changed;
     }
-    
-    
+
     public static final JSONArray COLUMNS;
-    static{
+
+    static {
         COLUMNS = new JSONArray();
-        COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true ).toJson());
-        //COLUMNS.add(new W2UIColumnBean("name", "Name", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
-        //COLUMNS.add(new W2UIColumnBean("wangwang", "Wangwang", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
-        //COLUMNS.add(new W2UIColumnBean("qq", "QQ", "20%", true, "int", JSONObject.fromObject("{ type: 'int', min: 10000 }")).toJson());
-        //COLUMNS.add(new W2UIColumnBean("qqName", "QQ Name", "20%", true, "text", JSONObject.fromObject("{ type: 'text'   }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true).toJson());
+        COLUMNS.add(new W2UIColumnBean("name", "Name", "20%", true, "text", JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("code", "Code", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("sign", "Sign", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("rate", "ExRate", "20%", true, "double", JSONObject.fromObject("{ type: 'double'   }")).toJson());
         //COLUMNS.add(new W2UIColumnBean("birthday", "Birthday", "20%" ,"date:mm/dd/yyyy", true , "date" , JSONObject.fromObject("{ type: 'date' }") ).toJson());
         //COLUMNS.add(new W2UIColumnBean("gender", "Gender", "20%", true, "text", JSONObject.fromObject("{ type: 'list', items:[{id:'M', text : \"Male\"}, {id:'F', text : \"Female\"}, {id:'U', text : \"U\"}]  }")).toJson());
         //COLUMNS.add(new W2UIColumnBean("phone", "Phone", "120px", true, "text", JSONObject.fromObject("{ type: 'text'  }")).toJson());
     }
-    
+
     @Override
-    public Object toJson(){
+    public Object toJson() {
         JSONObject map = new JSONObject();
         map.put("recid", this.getRecid());
         map.put("id", this.id);
+        map.put("code", this.code);
+        map.put("name", this.name);
+        map.put("sign", this.sign);
+        map.put("rate", this.rate);
         return map;
     }
-   
-    public static  Currency fromJson(JSONObject json){               
-        /*expectOne(json, "name");
-        expectOne(json, "wangwang");
-        expectOne(json, "qq");
-        expectOne(json, "qqName");
-        expectOne(json, "birthday");
-        expectOne(json, "gender");
-        expectOne(json, "phone");*/
+
+    public static Currency fromJson(JSONObject json) {
+        expectOne(json, "name");
+        expectOne(json, "code");
+        expectOne(json, "sign");
+        expectOne(json, "rate");
+        /*expectOne(json, "birthday");
+         expectOne(json, "gender");
+         expectOne(json, "phone");*/
         expectOne(json, "recid");
-        expectOne(json, "id"); 
-        if(json.has("recid") && !json.has("id")){
+        expectOne(json, "id");
+        if (json.has("recid") && !json.has("id")) {
             json.put("id", json.get("recid"));
         }
         return Currency.fromJson(json, Currency.class);
     }
 
     private static ModelMeta<Currency> modelMeta;
+
     @Override
-    public   ModelMeta<Currency> modelMeta(){
+    public ModelMeta<Currency> modelMeta() {
         return _getModelMeta();
     }
-    public static   ModelMeta<Currency> _getModelMeta(){
-        if(modelMeta == null){
+
+    public static ModelMeta<Currency> _getModelMeta() {
+        if (modelMeta == null) {
             modelMeta = new ModelMeta<>(Currency.class);
         }
         return modelMeta;
