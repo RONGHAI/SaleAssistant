@@ -18,7 +18,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <hibernate-core.version>3.6.4.Final</hibernate-core.version>
         <hibernate-jpa.version>1.0.0.Final</hibernate-jpa.version>
-        <mysql-connector-java.version>5.1.16</mysql-connector-java.version>
+        <mysql-connector-java.version>5.1.34</mysql-connector-java.version>
         <slf4j.version>1.6.1</slf4j.version>
         <log4j.version>1.6.1</log4j.version>
         <junit.version>4.7</junit.version>
