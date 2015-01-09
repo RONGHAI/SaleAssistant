@@ -39,6 +39,7 @@
                                         this.add({ recid: new Date().getTime() });
                                     },
                                     onSave: function(event){
+                                        w2ui['grid'].reload();
                                     }
                             });
                             
