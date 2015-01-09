@@ -103,6 +103,7 @@ public class CategoryServicer extends AbstractServicer  {
             }else{
                 category.setId(null);
                 category.setAddTime(new Date());
+                category .setUpdateTime(new Date());
             }
             this.saveOrUpdate(category);
         }

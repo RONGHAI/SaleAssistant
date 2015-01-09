@@ -103,6 +103,7 @@ public class HashtagServicer extends AbstractServicer  {
             }else{
                 hashtag.setId(null);
                 hashtag.setAddTime(new Date());
+                hashtag .setUpdateTime(new Date());
             }
             this.saveOrUpdate(hashtag);
         }

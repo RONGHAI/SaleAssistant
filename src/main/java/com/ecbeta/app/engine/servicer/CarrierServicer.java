@@ -103,6 +103,7 @@ public class CarrierServicer extends AbstractServicer  {
             }else{
                 carrier.setId(null);
                 carrier.setAddTime(new Date());
+                carrier .setUpdateTime(new Date());
             }
             this.saveOrUpdate(carrier);
         }

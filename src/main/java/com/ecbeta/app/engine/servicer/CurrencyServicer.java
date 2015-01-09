@@ -103,6 +103,7 @@ public class CurrencyServicer extends AbstractServicer  {
             }else{
                 currency.setId(null);
                 currency.setAddTime(new Date());
+                currency .setUpdateTime(new Date());
             }
             this.saveOrUpdate(currency);
         };

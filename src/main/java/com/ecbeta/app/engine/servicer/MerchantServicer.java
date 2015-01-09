@@ -103,6 +103,7 @@ public class MerchantServicer extends AbstractServicer  {
             }else{
                 merchant.setId(null);
                 merchant.setAddTime(new Date());
+                merchant .setUpdateTime(new Date());
             }
             this.saveOrUpdate(merchant);
         }

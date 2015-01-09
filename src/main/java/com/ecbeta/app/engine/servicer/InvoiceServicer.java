@@ -103,6 +103,8 @@ public class InvoiceServicer extends AbstractServicer  {
             }else{
                 invoice.setId(null);
                 invoice.setAddTime(new Date());
+                invoice .setUpdateTime(new Date());
+                
             }
             this.saveOrUpdate(invoice);
         }

@@ -103,6 +103,7 @@ public class ClientServicer extends AbstractServicer  {
             }else{
                 client.setId(null);
                 client.setAddTime(new Date());
+                client.setUpdateTime(new Date());
             }
             this.saveOrUpdate(client);
         };

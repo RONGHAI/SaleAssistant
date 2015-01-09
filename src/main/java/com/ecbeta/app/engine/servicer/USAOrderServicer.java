@@ -103,6 +103,7 @@ public class USAOrderServicer extends AbstractServicer  {
             }else{
                 order.setId(null);
                 order.setAddTime(new Date());
+                order .setUpdateTime(new Date());
             }
             this.saveOrUpdate(order);
         }

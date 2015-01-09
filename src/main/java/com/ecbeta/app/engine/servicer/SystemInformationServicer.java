@@ -103,6 +103,7 @@ public class SystemInformationServicer extends AbstractServicer  {
             }else{
                 bean.setId(null);
                 bean.setAddTime(new Date());
+                bean .setUpdateTime(new Date());
             }
             this.saveOrUpdate(bean);
         }

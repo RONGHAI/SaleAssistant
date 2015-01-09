@@ -103,6 +103,7 @@ public class ProductServicer extends AbstractServicer  {
             }else{
                 product.setId(null);
                 product.setAddTime(new Date());
+                product .setUpdateTime(new Date());
             }
             this.saveOrUpdate(product);
         }
