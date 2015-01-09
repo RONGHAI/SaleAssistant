@@ -12,7 +12,7 @@ import net.sf.json.JSONObject;
 public class MerchantController extends AbstractController{
 
     
-    @ServicerType(value="com.ecbeta.app.engine.servicer.MerchantServicer", spring="clientService")
+    @ServicerType(value="com.ecbeta.app.engine.servicer.MerchantServicer", spring="")
     private MerchantServicer servicer;
     
     

@@ -17,20 +17,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CategoryServicer extends AbstractServicer  {
 
     @Autowired
-    private me.ronghai.sa.dao.impl.CategoryDAOImpl clientDAO;
+    private me.ronghai.sa.dao.impl.CategoryDAOImpl categoryDAO;
 
     public CategoryDAOImpl getCategoryDAO() {
-        return clientDAO;
+        return categoryDAO;
     }
 
-    public void setCategoryDAO(CategoryDAOImpl clientDAO) {
-        this.clientDAO = clientDAO;
+    public void setCategoryDAO(CategoryDAOImpl categoryDAO) {
+        this.categoryDAO = categoryDAO;
     }
 
-    private List<Category> clients;
+    private List<Category> categories;
 
-    public List<Category> getCategorys() {
-        return clients;
+    public List<Category> getCategories() {
+        return categories;
     }
 
     /**
@@ -44,7 +44,7 @@ public class CategoryServicer extends AbstractServicer  {
     }
 
     private void refresh() {
-        this.clients = this.find();
+        this.categories = this.find();
     }
 
     @Override
@@ -54,40 +54,40 @@ public class CategoryServicer extends AbstractServicer  {
 
    
     public Category update(Category entity) {
-        Category c = clientDAO.update(entity);
+        Category c = categoryDAO.update(entity);
         this.refresh();
         return c;
     }
 
  
     public Category find(Object id) {
-        return clientDAO.find(id);
+        return categoryDAO.find(id);
     }
 
     public List<Category> find() {
-        return clientDAO.find(" WHERE disabled = false ");
+        return categoryDAO.find(" WHERE disabled = false ");
     }
 
 
     public void remove(Category c) {
-        this.clientDAO.remove(c, false);
+        this.categoryDAO.remove(c, false);
         this.refresh();
     }
 
 
     public void remove(Long... ids) {
-        this.clientDAO.remove(false, Arrays.asList(ids));
+        this.categoryDAO.remove(false, Arrays.asList(ids));
         this.refresh();
     }
 
 
     public void remove(Collection<Long> ids) {
-        this.clientDAO.remove(false, new ArrayList<>(ids));
+        this.categoryDAO.remove(false, new ArrayList<>(ids));
         this.refresh();
     }
 
     public Category save(Category c) {
-        this.clientDAO.persistent(c);
+        this.categoryDAO.persistent(c);
         this.refresh();
         return c;
     }
@@ -96,24 +96,24 @@ public class CategoryServicer extends AbstractServicer  {
         Iterator<JSONObject> it = jsonArray.iterator();
         while(it.hasNext()){
             JSONObject newJsonObj = it.next();
-            Category client = Category.fromJson(newJsonObj);
-            Long id  = client.getId();
-            if(this.clientDAO.exsit(id)){
-                client .setUpdateTime(new Date());
+            Category category = Category.fromJson(newJsonObj);
+            Long id  = category.getId();
+            if(this.categoryDAO.exsit(id)){
+                category .setUpdateTime(new Date());
             }else{
-                client.setId(null);
-                client.setAddTime(new Date());
+                category.setId(null);
+                category.setAddTime(new Date());
             }
-            this.saveOrUpdate(client);
-        };
+            this.saveOrUpdate(category);
+        }
         this.refresh();
     }
 
-    private Category saveOrUpdate(Category client) {
-        if(client.getId() == null){
-           return this.save (client);
+    private Category saveOrUpdate(Category category) {
+        if(category.getId() == null){
+           return this.save (category);
         }else{
-           return this.update(client);
+           return this.update(category);
         }
     }
 

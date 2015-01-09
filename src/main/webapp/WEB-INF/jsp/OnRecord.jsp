@@ -1,5 +1,6 @@
 <%@ page language="java"
-          import="com.ecbeta.common.constants.Constants,
+         
+         pageEncoding="UTF-8" import="com.ecbeta.common.constants.Constants,
          com.ecbeta.common.core.AbstractController"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -35,10 +36,9 @@
                                     columns: ${worker.columns},
                                     searches : ${worker.columns},
                                     onAdd: function (target,data) {
-                                        this.add({ recid: -1 });
+                                        this.add({ recid: new Date().getTime() });
                                     },
-                                    onSave: function(target, data){
-                                      //    alert(eventData);
+                                    onSave: function(event){
                                     }
                             });
                             
@@ -48,7 +48,6 @@
                 });
             </script>
         </sm:Head>
-        <!-- -->
     </head>
     <body class="sa-add">
         
@@ -58,8 +57,23 @@
             </div>
             
             <div id="addNewZone" style="display:none;" class="addnew">
-                
-                
+                <!--
+                <label>Name</label><input value="" type="text" id="name" name="name"/>
+                <label>Wangwang</label><input value="" type="text" id="wangwang" name="wangwang">
+                <label>QQ</label><input value="" type="text" id="qq" name="qq">
+                <label>QQ Name</label><input value="" type="text" id="qqName" name="qqName"/><br/>
+                <label>Birthday</label><input value="" type="text" id="birthday" name="birthday"/>
+                <label>Gender</label>
+                <span class="radio-span">
+                     <input type="radio" name="gender" value="M"/>M
+                      <input type="radio" name="gender" value="F"/>F
+                      <input type="radio" name="gender" value="U" checked="true"/>U
+                </span>
+                     
+                <label>Phone</label><input value="" type="text" id="phone" name="phone"/>
+                <a href="javascript:saveNew()">[Save]</a>
+                <a href="">[Cancel]</a>
+                -->
             </div>
             <div id="grid" style="width: 100%; height: 350px; overflow: hidden;"></div>
            

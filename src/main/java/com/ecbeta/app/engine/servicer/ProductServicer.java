@@ -17,20 +17,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ProductServicer extends AbstractServicer  {
 
     @Autowired
-    private me.ronghai.sa.dao.impl.ProductDAOImpl clientDAO;
+    private me.ronghai.sa.dao.impl.ProductDAOImpl productDAO;
 
     public ProductDAOImpl getProductDAO() {
-        return clientDAO;
+        return productDAO;
     }
 
-    public void setProductDAO(ProductDAOImpl clientDAO) {
-        this.clientDAO = clientDAO;
+    public void setProductDAO(ProductDAOImpl productDAO) {
+        this.productDAO = productDAO;
     }
 
-    private List<Product> clients;
+    private List<Product> products;
 
     public List<Product> getProducts() {
-        return clients;
+        return products;
     }
 
     /**
@@ -44,7 +44,7 @@ public class ProductServicer extends AbstractServicer  {
     }
 
     private void refresh() {
-        this.clients = this.find();
+        this.products = this.find();
     }
 
     @Override
@@ -54,40 +54,40 @@ public class ProductServicer extends AbstractServicer  {
 
    
     public Product update(Product entity) {
-        Product c = clientDAO.update(entity);
+        Product c = productDAO.update(entity);
         this.refresh();
         return c;
     }
 
  
     public Product find(Object id) {
-        return clientDAO.find(id);
+        return productDAO.find(id);
     }
 
     public List<Product> find() {
-        return clientDAO.find(" WHERE disabled = false ");
+        return productDAO.find(" WHERE disabled = false ");
     }
 
 
     public void remove(Product c) {
-        this.clientDAO.remove(c, false);
+        this.productDAO.remove(c, false);
         this.refresh();
     }
 
 
     public void remove(Long... ids) {
-        this.clientDAO.remove(false, Arrays.asList(ids));
+        this.productDAO.remove(false, Arrays.asList(ids));
         this.refresh();
     }
 
 
     public void remove(Collection<Long> ids) {
-        this.clientDAO.remove(false, new ArrayList<>(ids));
+        this.productDAO.remove(false, new ArrayList<>(ids));
         this.refresh();
     }
 
     public Product save(Product c) {
-        this.clientDAO.persistent(c);
+        this.productDAO.persistent(c);
         this.refresh();
         return c;
     }
@@ -96,24 +96,24 @@ public class ProductServicer extends AbstractServicer  {
         Iterator<JSONObject> it = jsonArray.iterator();
         while(it.hasNext()){
             JSONObject newJsonObj = it.next();
-            Product client = Product.fromJson(newJsonObj);
-            Long id  = client.getId();
-            if(this.clientDAO.exsit(id)){
-                client .setUpdateTime(new Date());
+            Product product = Product.fromJson(newJsonObj);
+            Long id  = product.getId();
+            if(this.productDAO.exsit(id)){
+                product .setUpdateTime(new Date());
             }else{
-                client.setId(null);
-                client.setAddTime(new Date());
+                product.setId(null);
+                product.setAddTime(new Date());
             }
-            this.saveOrUpdate(client);
-        };
+            this.saveOrUpdate(product);
+        }
         this.refresh();
     }
 
-    private Product saveOrUpdate(Product client) {
-        if(client.getId() == null){
-           return this.save (client);
+    private Product saveOrUpdate(Product product) {
+        if(product.getId() == null){
+           return this.save (product);
         }else{
-           return this.update(client);
+           return this.update(product);
         }
     }
 

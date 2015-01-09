@@ -12,7 +12,7 @@ import net.sf.json.JSONObject;
 public class HashtagController extends AbstractController{
 
     
-    @ServicerType(value="com.ecbeta.app.engine.servicer.HashtagServicer", spring="clientService")
+    @ServicerType(value="com.ecbeta.app.engine.servicer.HashtagServicer", spring="")
     private HashtagServicer servicer;
     
     

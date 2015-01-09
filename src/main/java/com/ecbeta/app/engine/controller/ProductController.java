@@ -12,7 +12,7 @@ import net.sf.json.JSONObject;
 public class ProductController extends AbstractController{
 
     
-    @ServicerType(value="com.ecbeta.app.engine.servicer.ProductServicer", spring="clientService")
+    @ServicerType(value="com.ecbeta.app.engine.servicer.ProductServicer", spring="")
     private ProductServicer servicer;
     
     

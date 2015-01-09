@@ -6,13 +6,13 @@ import com.ecbeta.common.core.AbstractController;
 import com.ecbeta.common.core.annotation.ServicerType;
 import com.ecbeta.common.util.JSONUtils;
 import java.util.List;
-import me.ronghai.sa.model.SystemInformation;
+import me.ronghai.sa.model.Property;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 public class SystemInformationController extends AbstractController{
 
     
-    @ServicerType(value="com.ecbeta.app.engine.servicer.SystemInformationServicer", spring="clientService")
+    @ServicerType(value="com.ecbeta.app.engine.servicer.SystemInformationServicer", spring="")
     private SystemInformationServicer servicer;
     
     
@@ -51,13 +51,12 @@ public class SystemInformationController extends AbstractController{
 
     @Override
     public Object getRecordsAction(JSONObject json) {
-        List<SystemInformation> list = this.servicer.getSystemInformations();
+        List<Property> list = this.servicer.getSystemInformations();
         JSONObject map = new JSONObject();
         map.put("status", "success");
         map.put("total", list.size());
-        
         JSONArray array = new JSONArray();
-        for(SystemInformation c : list ){
+        for(Property c : list ){
             array.add(c.toJson());
         }
         map.put("records", array);
@@ -66,11 +65,8 @@ public class SystemInformationController extends AbstractController{
     
     @Override
     public Object saveRecordsAction(JSONObject json) {
-        System.out.println("~~~~~saveRecordsAction~~~~"+json.get("changed"));
-        JSONArray jsonArray = (JSONArray)json.get("changed");
-        
+        JSONArray jsonArray = (JSONArray)json.get("changed");        
         servicer.saveOrUpdate(jsonArray);
-        
         JSONObject map = new JSONObject();
         map.put("success", true);
         return map;
@@ -83,7 +79,7 @@ public class SystemInformationController extends AbstractController{
     
     
     public String getColumns(){
-        return SystemInformation.COLUMNS.toString();
+        return Property.COLUMNS.toString();
     }
     
    

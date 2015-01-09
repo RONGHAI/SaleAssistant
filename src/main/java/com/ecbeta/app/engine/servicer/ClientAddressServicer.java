@@ -17,20 +17,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ClientAddressServicer extends AbstractServicer  {
 
     @Autowired
-    private me.ronghai.sa.dao.impl.ClientAddressDAOImpl clientDAO;
+    private me.ronghai.sa.dao.impl.ClientAddressDAOImpl clientAddressDAO;
 
     public ClientAddressDAOImpl getClientAddressDAO() {
-        return clientDAO;
+        return clientAddressDAO;
     }
 
-    public void setClientAddressDAO(ClientAddressDAOImpl clientDAO) {
-        this.clientDAO = clientDAO;
+    public void setClientAddressDAO(ClientAddressDAOImpl clientAddressDAO) {
+        this.clientAddressDAO = clientAddressDAO;
     }
 
-    private List<ClientAddress> clients;
+    private List<ClientAddress> clientAddreses;
 
-    public List<ClientAddress> getClientAddresss() {
-        return clients;
+    public List<ClientAddress> getClientAddreses() {
+        return clientAddreses;
     }
 
     /**
@@ -44,7 +44,7 @@ public class ClientAddressServicer extends AbstractServicer  {
     }
 
     private void refresh() {
-        this.clients = this.find();
+        this.clientAddreses = this.find();
     }
 
     @Override
@@ -54,40 +54,40 @@ public class ClientAddressServicer extends AbstractServicer  {
 
    
     public ClientAddress update(ClientAddress entity) {
-        ClientAddress c = clientDAO.update(entity);
+        ClientAddress c = clientAddressDAO.update(entity);
         this.refresh();
         return c;
     }
 
  
     public ClientAddress find(Object id) {
-        return clientDAO.find(id);
+        return clientAddressDAO.find(id);
     }
 
     public List<ClientAddress> find() {
-        return clientDAO.find(" WHERE disabled = false ");
+        return clientAddressDAO.find(" WHERE disabled = false ");
     }
 
 
     public void remove(ClientAddress c) {
-        this.clientDAO.remove(c, false);
+        this.clientAddressDAO.remove(c, false);
         this.refresh();
     }
 
 
     public void remove(Long... ids) {
-        this.clientDAO.remove(false, Arrays.asList(ids));
+        this.clientAddressDAO.remove(false, Arrays.asList(ids));
         this.refresh();
     }
 
 
     public void remove(Collection<Long> ids) {
-        this.clientDAO.remove(false, new ArrayList<>(ids));
+        this.clientAddressDAO.remove(false, new ArrayList<>(ids));
         this.refresh();
     }
 
     public ClientAddress save(ClientAddress c) {
-        this.clientDAO.persistent(c);
+        this.clientAddressDAO.persistent(c);
         this.refresh();
         return c;
     }
@@ -96,24 +96,24 @@ public class ClientAddressServicer extends AbstractServicer  {
         Iterator<JSONObject> it = jsonArray.iterator();
         while(it.hasNext()){
             JSONObject newJsonObj = it.next();
-            ClientAddress client = ClientAddress.fromJson(newJsonObj);
-            Long id  = client.getId();
-            if(this.clientDAO.exsit(id)){
-                client .setUpdateTime(new Date());
+            ClientAddress clientAddress = ClientAddress.fromJson(newJsonObj);
+            Long id  = clientAddress.getId();
+            if(this.clientAddressDAO.exsit(id)){
+                clientAddress .setUpdateTime(new Date());
             }else{
-                client.setId(null);
-                client.setAddTime(new Date());
+                clientAddress.setId(null);
+                clientAddress.setAddTime(new Date());
             }
-            this.saveOrUpdate(client);
-        };
+            this.saveOrUpdate(clientAddress);
+        }
         this.refresh();
     }
 
-    private ClientAddress saveOrUpdate(ClientAddress client) {
-        if(client.getId() == null){
-           return this.save (client);
+    private ClientAddress saveOrUpdate(ClientAddress clientAddress) {
+        if(clientAddress.getId() == null){
+           return this.save (clientAddress);
         }else{
-           return this.update(client);
+           return this.update(clientAddress);
         }
     }
 

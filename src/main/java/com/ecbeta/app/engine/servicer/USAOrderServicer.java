@@ -17,20 +17,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class USAOrderServicer extends AbstractServicer  {
 
     @Autowired
-    private me.ronghai.sa.dao.impl.USAOrderDAOImpl clientDAO;
+    private me.ronghai.sa.dao.impl.USAOrderDAOImpl americaOrderDAO;
 
-    public USAOrderDAOImpl getUSAOrderDAO() {
-        return clientDAO;
+    public USAOrderDAOImpl getAmericaOrderDAO() {
+        return americaOrderDAO;
     }
 
-    public void setUSAOrderDAO(USAOrderDAOImpl clientDAO) {
-        this.clientDAO = clientDAO;
+    public void setOrderDAO(USAOrderDAOImpl americaOrderDAO) {
+        this.americaOrderDAO = americaOrderDAO;
     }
 
-    private List<USAOrder> clients;
+    private List<USAOrder> orders;
 
     public List<USAOrder> getUSAOrders() {
-        return clients;
+        return orders;
     }
 
     /**
@@ -44,7 +44,7 @@ public class USAOrderServicer extends AbstractServicer  {
     }
 
     private void refresh() {
-        this.clients = this.find();
+        this.orders = this.find();
     }
 
     @Override
@@ -54,40 +54,40 @@ public class USAOrderServicer extends AbstractServicer  {
 
    
     public USAOrder update(USAOrder entity) {
-        USAOrder c = clientDAO.update(entity);
+        USAOrder c = americaOrderDAO.update(entity);
         this.refresh();
         return c;
     }
 
  
     public USAOrder find(Object id) {
-        return clientDAO.find(id);
+        return americaOrderDAO.find(id);
     }
 
     public List<USAOrder> find() {
-        return clientDAO.find(" WHERE disabled = false ");
+        return americaOrderDAO.find(" WHERE disabled = false ");
     }
 
 
     public void remove(USAOrder c) {
-        this.clientDAO.remove(c, false);
+        this.americaOrderDAO.remove(c, false);
         this.refresh();
     }
 
 
     public void remove(Long... ids) {
-        this.clientDAO.remove(false, Arrays.asList(ids));
+        this.americaOrderDAO.remove(false, Arrays.asList(ids));
         this.refresh();
     }
 
 
     public void remove(Collection<Long> ids) {
-        this.clientDAO.remove(false, new ArrayList<>(ids));
+        this.americaOrderDAO.remove(false, new ArrayList<>(ids));
         this.refresh();
     }
 
     public USAOrder save(USAOrder c) {
-        this.clientDAO.persistent(c);
+        this.americaOrderDAO.persistent(c);
         this.refresh();
         return c;
     }
@@ -96,24 +96,24 @@ public class USAOrderServicer extends AbstractServicer  {
         Iterator<JSONObject> it = jsonArray.iterator();
         while(it.hasNext()){
             JSONObject newJsonObj = it.next();
-            USAOrder client = USAOrder.fromJson(newJsonObj);
-            Long id  = client.getId();
-            if(this.clientDAO.exsit(id)){
-                client .setUpdateTime(new Date());
+            USAOrder order = USAOrder.fromJson(newJsonObj);
+            Long id  = order.getId();
+            if(this.americaOrderDAO.exsit(id)){
+                order .setUpdateTime(new Date());
             }else{
-                client.setId(null);
-                client.setAddTime(new Date());
+                order.setId(null);
+                order.setAddTime(new Date());
             }
-            this.saveOrUpdate(client);
-        };
+            this.saveOrUpdate(order);
+        }
         this.refresh();
     }
 
-    private USAOrder saveOrUpdate(USAOrder client) {
-        if(client.getId() == null){
-           return this.save (client);
+    private USAOrder saveOrUpdate(USAOrder order) {
+        if(order.getId() == null){
+           return this.save (order);
         }else{
-           return this.update(client);
+           return this.update(order);
         }
     }
 

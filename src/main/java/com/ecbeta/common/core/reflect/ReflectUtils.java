@@ -72,8 +72,12 @@ public class ReflectUtils {
     }
     
     
-
     public static final Method findGetter (Object instance, Field field, Map<String, PropertyDescriptor> name2Property, RequestParse annotation) {
+        return findGetter(instance.getClass(), field, name2Property, annotation);
+    }     
+    
+
+    public static final Method findGetter (Class<?> instanceClass, Field field, Map<String, PropertyDescriptor> name2Property, RequestParse annotation) {
         String fieldName = field.getName();
         if (annotation == null || StringUtils.isEmpty(annotation.getter())) {
             PropertyDescriptor pro = name2Property == null ? null : name2Property.get(fieldName);
@@ -81,27 +85,28 @@ public class ReflectUtils {
                 return pro.getReadMethod();
             }
         } else {
-            Method getter = findMethod(instance, annotation.getter(), new Class<?>[] {});
+            Method getter = findMethod(instanceClass, annotation.getter(), new Class<?>[] {});
             if (getter != null) {
                 return getter;
             }
         }
         {
-            Method getter = findMethod(instance, "get" + fieldName.substring(0, 1).toUpperCase() + (fieldName.length() > 1 ? fieldName.substring(1) : "" ), new Class<?>[] {});
+            Method getter = findMethod(instanceClass, "get" + fieldName.substring(0, 1).toUpperCase() + (fieldName.length() > 1 ? fieldName.substring(1) : "" ), new Class<?>[] {});
             if (getter != null) {
                 return getter;
             }
         }
-
-        if (field != null && (Boolean.TYPE.equals(field.getType()) || Boolean.class.equals(field.getClass()) )) {
-            Method getter = findMethod(instance, "is" + fieldName.substring(0, 1).toUpperCase() + (fieldName.length() > 1 ? fieldName.substring(1) : "" ), new Class<?>[] {});
+         
+        if ( (!Boolean.TYPE.equals(field.getType()) && !Boolean.class.equals(field.getClass()) )) {
+        } else {
+            Method getter = findMethod(instanceClass, "is" + fieldName.substring(0, 1).toUpperCase() + (fieldName.length() > 1 ? fieldName.substring(1) : "" ), new Class<?>[] {});
             if (getter != null) {
                 return getter;
             }
         }
-        if (field != null && (Boolean.TYPE.equals(field.getType()) || Boolean.class.equals(field.getClass()) ) && fieldName.startsWith("is") && fieldName.length() > 3
+        if ( (Boolean.TYPE.equals(field.getType()) || Boolean.class.equals(field.getClass()) ) && fieldName.startsWith("is") && fieldName.length() > 3
                 && fieldName.charAt(3) >= 'A' && fieldName.charAt(3) <= 'Z') {
-            Method getter = findMethod(instance, fieldName, new Class<?>[] {});
+            Method getter = findMethod(instanceClass, fieldName, new Class<?>[] {});
             if (getter != null) {
                 return getter;
             }
@@ -112,9 +117,10 @@ public class ReflectUtils {
 
     protected static boolean _SHOW_EXCEPTION = true;
 
-    public static final Method findMethod (Object instance, String name, Class<?>[] clazz) {
-        try {
-            Method setter = instance.getClass().getMethod(name, clazz);
+    public static final Method findMethod(Class<?> instanceClazz, String name, Class<?>[] clazz) {
+        
+      try {
+            Method setter = instanceClazz.getMethod(name, clazz);
             return setter;
         } catch (SecurityException e) {
             logger.log(Level.WARNING, null, e);
@@ -124,9 +130,13 @@ public class ReflectUtils {
                 System.err.println("BaseServicerParaBean.__findMethod__");
                 System.err.println("BaseServicerParaBean.__findMethod__ (" + name +")" + e); 
             }
-
         }
         return null;
+        
+    }
+    
+    public static final Method findMethod (Object instance, String name, Class<?>[] clazz) {
+        return findMethod(instance.getClass(), name, clazz);
     }
     
     public static final Map<String, PropertyDescriptor> findFieldName2PropertyDescriptor (Class<?> ownerClass){
@@ -145,6 +155,12 @@ public class ReflectUtils {
     }
     
     public static final Method findSetter (Object instance, Field field, Map<String, PropertyDescriptor> name2Property, RequestParse annotation) {
+    
+        return findSetter(instance.getClass(), field, name2Property, annotation);
+        
+    }
+    
+    public static final Method findSetter (Class<?> instanceClass, Field field, Map<String, PropertyDescriptor> name2Property, RequestParse annotation) {
         String fieldName = field.getName();
         if (annotation == null || StringUtils.isEmpty(annotation.setter())) {
             PropertyDescriptor pro = name2Property == null ? null : name2Property.get(fieldName);
@@ -152,11 +168,11 @@ public class ReflectUtils {
                 return pro.getWriteMethod();
             }
         } else {
-            Method setter = findMethod(instance, annotation.setter(), new Class[] { field.getType() });
+            Method setter = findMethod(instanceClass, annotation.setter(), new Class[] { field.getType() });
             if (setter != null) {
                 return setter;
             }
-            setter = findMethod(instance, annotation.setter(), new Class[] { String.class });
+            setter = findMethod(instanceClass, annotation.setter(), new Class[] { String.class });
             if (setter != null) {
                 return setter;
             }
@@ -166,14 +182,14 @@ public class ReflectUtils {
         } else {
             String setname = "set" + fieldName.substring(0, 1).toUpperCase() + (fieldName.length() > 1 ? fieldName.substring(1) : "" );
             {
-                Method setter = findMethod(instance, setname, new Class[] { field.getType() });
+                Method setter = findMethod(instanceClass, setname, new Class[] { field.getType() });
                 if (setter != null) {
                     return setter;
                 }
             }
 
             {
-                Method setter = findMethod(instance, setname, new Class[] { String.class });
+                Method setter = findMethod(instanceClass, setname, new Class[] { String.class });
                 if (setter != null) {
                     return setter;
                 }
@@ -206,7 +222,7 @@ public class ReflectUtils {
                 field.set(instance, value);
             }
         } catch (IllegalAccessException | IllegalArgumentException | SecurityException | InvocationTargetException e) {
-            
+            e.printStackTrace();
         }
     }
     

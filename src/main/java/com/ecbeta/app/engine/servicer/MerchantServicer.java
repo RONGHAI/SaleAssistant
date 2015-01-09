@@ -17,20 +17,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class MerchantServicer extends AbstractServicer  {
 
     @Autowired
-    private me.ronghai.sa.dao.impl.MerchantDAOImpl clientDAO;
+    private me.ronghai.sa.dao.impl.MerchantDAOImpl merchantDAO;
 
     public MerchantDAOImpl getMerchantDAO() {
-        return clientDAO;
+        return merchantDAO;
     }
 
-    public void setMerchantDAO(MerchantDAOImpl clientDAO) {
-        this.clientDAO = clientDAO;
+    public void setMerchantDAO(MerchantDAOImpl merchantDAO) {
+        this.merchantDAO = merchantDAO;
     }
 
-    private List<Merchant> clients;
+    private List<Merchant> merchants;
 
     public List<Merchant> getMerchants() {
-        return clients;
+        return merchants;
     }
 
     /**
@@ -44,7 +44,7 @@ public class MerchantServicer extends AbstractServicer  {
     }
 
     private void refresh() {
-        this.clients = this.find();
+        this.merchants = this.find();
     }
 
     @Override
@@ -54,40 +54,40 @@ public class MerchantServicer extends AbstractServicer  {
 
    
     public Merchant update(Merchant entity) {
-        Merchant c = clientDAO.update(entity);
+        Merchant c = merchantDAO.update(entity);
         this.refresh();
         return c;
     }
 
  
     public Merchant find(Object id) {
-        return clientDAO.find(id);
+        return merchantDAO.find(id);
     }
 
     public List<Merchant> find() {
-        return clientDAO.find(" WHERE disabled = false ");
+        return merchantDAO.find(" WHERE disabled = false ");
     }
 
 
     public void remove(Merchant c) {
-        this.clientDAO.remove(c, false);
+        this.merchantDAO.remove(c, false);
         this.refresh();
     }
 
 
     public void remove(Long... ids) {
-        this.clientDAO.remove(false, Arrays.asList(ids));
+        this.merchantDAO.remove(false, Arrays.asList(ids));
         this.refresh();
     }
 
 
     public void remove(Collection<Long> ids) {
-        this.clientDAO.remove(false, new ArrayList<>(ids));
+        this.merchantDAO.remove(false, new ArrayList<>(ids));
         this.refresh();
     }
 
     public Merchant save(Merchant c) {
-        this.clientDAO.persistent(c);
+        this.merchantDAO.persistent(c);
         this.refresh();
         return c;
     }
@@ -96,24 +96,24 @@ public class MerchantServicer extends AbstractServicer  {
         Iterator<JSONObject> it = jsonArray.iterator();
         while(it.hasNext()){
             JSONObject newJsonObj = it.next();
-            Merchant client = Merchant.fromJson(newJsonObj);
-            Long id  = client.getId();
-            if(this.clientDAO.exsit(id)){
-                client .setUpdateTime(new Date());
+            Merchant merchant = Merchant.fromJson(newJsonObj);
+            Long id  = merchant.getId();
+            if(this.merchantDAO.exsit(id)){
+                merchant .setUpdateTime(new Date());
             }else{
-                client.setId(null);
-                client.setAddTime(new Date());
+                merchant.setId(null);
+                merchant.setAddTime(new Date());
             }
-            this.saveOrUpdate(client);
-        };
+            this.saveOrUpdate(merchant);
+        }
         this.refresh();
     }
 
-    private Merchant saveOrUpdate(Merchant client) {
-        if(client.getId() == null){
-           return this.save (client);
+    private Merchant saveOrUpdate(Merchant merchant) {
+        if(merchant.getId() == null){
+           return this.save (merchant);
         }else{
-           return this.update(client);
+           return this.update(merchant);
         }
     }
 

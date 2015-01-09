@@ -12,7 +12,7 @@ import net.sf.json.JSONObject;
 public class InvoiceController extends AbstractController{
 
     
-    @ServicerType(value="com.ecbeta.app.engine.servicer.InvoiceServicer", spring="clientService")
+    @ServicerType(value="com.ecbeta.app.engine.servicer.InvoiceServicer", spring="")
     private InvoiceServicer servicer;
     
     

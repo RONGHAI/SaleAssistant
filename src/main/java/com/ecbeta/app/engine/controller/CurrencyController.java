@@ -12,7 +12,7 @@ import net.sf.json.JSONObject;
 public class CurrencyController extends AbstractController{
 
     
-    @ServicerType(value="com.ecbeta.app.engine.servicer.CurrencyServicer", spring="clientService")
+    @ServicerType(value="com.ecbeta.app.engine.servicer.CurrencyServicer", spring="")
     private CurrencyServicer servicer;
     
     
@@ -51,7 +51,7 @@ public class CurrencyController extends AbstractController{
 
     @Override
     public Object getRecordsAction(JSONObject json) {
-        List<Currency> list = this.servicer.getCurrencys();
+        List<Currency> list = this.servicer.getCurrencies();
         JSONObject map = new JSONObject();
         map.put("status", "success");
         map.put("total", list.size());

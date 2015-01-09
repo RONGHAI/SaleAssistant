@@ -12,7 +12,7 @@ import net.sf.json.JSONObject;
 public class CarrierController extends AbstractController{
 
     
-    @ServicerType(value="com.ecbeta.app.engine.servicer.CarrierServicer", spring="clientService")
+    @ServicerType(value="com.ecbeta.app.engine.servicer.CarrierServicer", spring="")
     private CarrierServicer servicer;
     
     

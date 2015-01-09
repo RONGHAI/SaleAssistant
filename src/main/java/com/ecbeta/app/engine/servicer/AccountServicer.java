@@ -17,20 +17,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class AccountServicer extends AbstractServicer  {
 
     @Autowired
-    private me.ronghai.sa.dao.impl.AccountDAOImpl clientDAO;
+    private me.ronghai.sa.dao.impl.AccountDAOImpl accountDAO;
 
     public AccountDAOImpl getAccountDAO() {
-        return clientDAO;
+        return accountDAO;
     }
 
-    public void setAccountDAO(AccountDAOImpl clientDAO) {
-        this.clientDAO = clientDAO;
+    public void setAccountDAO(AccountDAOImpl accountDAO) {
+        this.accountDAO = accountDAO;
     }
 
-    private List<Account> clients;
+    private List<Account> accounts;
 
     public List<Account> getAccounts() {
-        return clients;
+        return accounts;
     }
 
     /**
@@ -44,7 +44,7 @@ public class AccountServicer extends AbstractServicer  {
     }
 
     private void refresh() {
-        this.clients = this.find();
+        this.accounts = this.find();
     }
 
     @Override
@@ -54,40 +54,40 @@ public class AccountServicer extends AbstractServicer  {
 
    
     public Account update(Account entity) {
-        Account c = clientDAO.update(entity);
+        Account c = accountDAO.update(entity);
         this.refresh();
         return c;
     }
 
  
     public Account find(Object id) {
-        return clientDAO.find(id);
+        return accountDAO.find(id);
     }
 
     public List<Account> find() {
-        return clientDAO.find(" WHERE disabled = false ");
+        return accountDAO.find(" WHERE disabled = false ");
     }
 
 
     public void remove(Account c) {
-        this.clientDAO.remove(c, false);
+        this.accountDAO.remove(c, false);
         this.refresh();
     }
 
 
     public void remove(Long... ids) {
-        this.clientDAO.remove(false, Arrays.asList(ids));
+        this.accountDAO.remove(false, Arrays.asList(ids));
         this.refresh();
     }
 
 
     public void remove(Collection<Long> ids) {
-        this.clientDAO.remove(false, new ArrayList<>(ids));
+        this.accountDAO.remove(false, new ArrayList<>(ids));
         this.refresh();
     }
 
     public Account save(Account c) {
-        this.clientDAO.persistent(c);
+        this.accountDAO.persistent(c);
         this.refresh();
         return c;
     }
@@ -96,24 +96,24 @@ public class AccountServicer extends AbstractServicer  {
         Iterator<JSONObject> it = jsonArray.iterator();
         while(it.hasNext()){
             JSONObject newJsonObj = it.next();
-            Account client = Account.fromJson(newJsonObj);
-            Long id  = client.getId();
-            if(this.clientDAO.exsit(id)){
-                client .setUpdateTime(new Date());
+            Account account = Account.fromJson(newJsonObj);
+            Long id  = account.getId();
+            if(this.accountDAO.exsit(id)){
+                account .setUpdateTime(new Date());
             }else{
-                client.setId(null);
-                client.setAddTime(new Date());
+                account.setId(null);
+                account.setAddTime(new Date());
             }
-            this.saveOrUpdate(client);
+            this.saveOrUpdate(account);
         };
         this.refresh();
     }
 
-    private Account saveOrUpdate(Account client) {
-        if(client.getId() == null){
-           return this.save (client);
+    private Account saveOrUpdate(Account account) {
+        if(account.getId() == null){
+           return this.save (account);
         }else{
-           return this.update(client);
+           return this.update(account);
         }
     }
 

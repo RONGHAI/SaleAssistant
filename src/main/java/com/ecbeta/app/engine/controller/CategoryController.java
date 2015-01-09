@@ -12,7 +12,7 @@ import net.sf.json.JSONObject;
 public class CategoryController extends AbstractController{
 
     
-    @ServicerType(value="com.ecbeta.app.engine.servicer.CategoryServicer", spring="clientService")
+    @ServicerType(value="com.ecbeta.app.engine.servicer.CategoryServicer", spring="")
     private CategoryServicer servicer;
     
     
@@ -51,7 +51,7 @@ public class CategoryController extends AbstractController{
 
     @Override
     public Object getRecordsAction(JSONObject json) {
-        List<Category> list = this.servicer.getCategorys();
+        List<Category> list = this.servicer.getCategories();
         JSONObject map = new JSONObject();
         map.put("status", "success");
         map.put("total", list.size());

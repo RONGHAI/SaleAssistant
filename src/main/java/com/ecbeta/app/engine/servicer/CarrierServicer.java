@@ -17,20 +17,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CarrierServicer extends AbstractServicer  {
 
     @Autowired
-    private me.ronghai.sa.dao.impl.CarrierDAOImpl clientDAO;
+    private me.ronghai.sa.dao.impl.CarrierDAOImpl carrierDAO;
 
     public CarrierDAOImpl getCarrierDAO() {
-        return clientDAO;
+        return carrierDAO;
     }
 
-    public void setCarrierDAO(CarrierDAOImpl clientDAO) {
-        this.clientDAO = clientDAO;
+    public void setCarrierDAO(CarrierDAOImpl carrierDAO) {
+        this.carrierDAO = carrierDAO;
     }
 
-    private List<Carrier> clients;
+    private List<Carrier> carriers;
 
     public List<Carrier> getCarriers() {
-        return clients;
+        return carriers;
     }
 
     /**
@@ -44,7 +44,7 @@ public class CarrierServicer extends AbstractServicer  {
     }
 
     private void refresh() {
-        this.clients = this.find();
+        this.carriers = this.find();
     }
 
     @Override
@@ -54,40 +54,40 @@ public class CarrierServicer extends AbstractServicer  {
 
    
     public Carrier update(Carrier entity) {
-        Carrier c = clientDAO.update(entity);
+        Carrier c = carrierDAO.update(entity);
         this.refresh();
         return c;
     }
 
  
     public Carrier find(Object id) {
-        return clientDAO.find(id);
+        return carrierDAO.find(id);
     }
 
     public List<Carrier> find() {
-        return clientDAO.find(" WHERE disabled = false ");
+        return carrierDAO.find(" WHERE disabled = false ");
     }
 
 
     public void remove(Carrier c) {
-        this.clientDAO.remove(c, false);
+        this.carrierDAO.remove(c, false);
         this.refresh();
     }
 
 
     public void remove(Long... ids) {
-        this.clientDAO.remove(false, Arrays.asList(ids));
+        this.carrierDAO.remove(false, Arrays.asList(ids));
         this.refresh();
     }
 
 
     public void remove(Collection<Long> ids) {
-        this.clientDAO.remove(false, new ArrayList<>(ids));
+        this.carrierDAO.remove(false, new ArrayList<>(ids));
         this.refresh();
     }
 
     public Carrier save(Carrier c) {
-        this.clientDAO.persistent(c);
+        this.carrierDAO.persistent(c);
         this.refresh();
         return c;
     }
@@ -96,24 +96,24 @@ public class CarrierServicer extends AbstractServicer  {
         Iterator<JSONObject> it = jsonArray.iterator();
         while(it.hasNext()){
             JSONObject newJsonObj = it.next();
-            Carrier client = Carrier.fromJson(newJsonObj);
-            Long id  = client.getId();
-            if(this.clientDAO.exsit(id)){
-                client .setUpdateTime(new Date());
+            Carrier carrier = Carrier.fromJson(newJsonObj);
+            Long id  = carrier.getId();
+            if(this.carrierDAO.exsit(id)){
+                carrier .setUpdateTime(new Date());
             }else{
-                client.setId(null);
-                client.setAddTime(new Date());
+                carrier.setId(null);
+                carrier.setAddTime(new Date());
             }
-            this.saveOrUpdate(client);
-        };
+            this.saveOrUpdate(carrier);
+        }
         this.refresh();
     }
 
-    private Carrier saveOrUpdate(Carrier client) {
-        if(client.getId() == null){
-           return this.save (client);
+    private Carrier saveOrUpdate(Carrier carrier) {
+        if(carrier.getId() == null){
+           return this.save (carrier);
         }else{
-           return this.update(client);
+           return this.update(carrier);
         }
     }
 

@@ -17,20 +17,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class InvoiceServicer extends AbstractServicer  {
 
     @Autowired
-    private me.ronghai.sa.dao.impl.InvoiceDAOImpl clientDAO;
+    private me.ronghai.sa.dao.impl.InvoiceDAOImpl invoiceDAO;
 
     public InvoiceDAOImpl getInvoiceDAO() {
-        return clientDAO;
+        return invoiceDAO;
     }
 
-    public void setInvoiceDAO(InvoiceDAOImpl clientDAO) {
-        this.clientDAO = clientDAO;
+    public void setInvoiceDAO(InvoiceDAOImpl invoiceDAO) {
+        this.invoiceDAO = invoiceDAO;
     }
 
-    private List<Invoice> clients;
+    private List<Invoice> invoices;
 
     public List<Invoice> getInvoices() {
-        return clients;
+        return invoices;
     }
 
     /**
@@ -44,7 +44,7 @@ public class InvoiceServicer extends AbstractServicer  {
     }
 
     private void refresh() {
-        this.clients = this.find();
+        this.invoices = this.find();
     }
 
     @Override
@@ -54,40 +54,40 @@ public class InvoiceServicer extends AbstractServicer  {
 
    
     public Invoice update(Invoice entity) {
-        Invoice c = clientDAO.update(entity);
+        Invoice c = invoiceDAO.update(entity);
         this.refresh();
         return c;
     }
 
  
     public Invoice find(Object id) {
-        return clientDAO.find(id);
+        return invoiceDAO.find(id);
     }
 
     public List<Invoice> find() {
-        return clientDAO.find(" WHERE disabled = false ");
+        return invoiceDAO.find(" WHERE disabled = false ");
     }
 
 
     public void remove(Invoice c) {
-        this.clientDAO.remove(c, false);
+        this.invoiceDAO.remove(c, false);
         this.refresh();
     }
 
 
     public void remove(Long... ids) {
-        this.clientDAO.remove(false, Arrays.asList(ids));
+        this.invoiceDAO.remove(false, Arrays.asList(ids));
         this.refresh();
     }
 
 
     public void remove(Collection<Long> ids) {
-        this.clientDAO.remove(false, new ArrayList<>(ids));
+        this.invoiceDAO.remove(false, new ArrayList<>(ids));
         this.refresh();
     }
 
     public Invoice save(Invoice c) {
-        this.clientDAO.persistent(c);
+        this.invoiceDAO.persistent(c);
         this.refresh();
         return c;
     }
@@ -96,24 +96,24 @@ public class InvoiceServicer extends AbstractServicer  {
         Iterator<JSONObject> it = jsonArray.iterator();
         while(it.hasNext()){
             JSONObject newJsonObj = it.next();
-            Invoice client = Invoice.fromJson(newJsonObj);
-            Long id  = client.getId();
-            if(this.clientDAO.exsit(id)){
-                client .setUpdateTime(new Date());
+            Invoice invoice = Invoice.fromJson(newJsonObj);
+            Long id  = invoice.getId();
+            if(this.invoiceDAO.exsit(id)){
+                invoice .setUpdateTime(new Date());
             }else{
-                client.setId(null);
-                client.setAddTime(new Date());
+                invoice.setId(null);
+                invoice.setAddTime(new Date());
             }
-            this.saveOrUpdate(client);
-        };
+            this.saveOrUpdate(invoice);
+        }
         this.refresh();
     }
 
-    private Invoice saveOrUpdate(Invoice client) {
-        if(client.getId() == null){
-           return this.save (client);
+    private Invoice saveOrUpdate(Invoice invoice) {
+        if(invoice.getId() == null){
+           return this.save (invoice);
         }else{
-           return this.update(client);
+           return this.update(invoice);
         }
     }
 

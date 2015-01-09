@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package me.ronghai.sa.model;
 
 import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
+import static com.ecbeta.common.util.JSONUtils.expectOne;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -17,10 +13,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import static com.ecbeta.common.util.JSONUtils.expectOne;
+
 /**
  *
- * @author L5M
+ * @author ronghai
  */
 @Entity(name="carriers")
 public class Carrier extends AbstractModel implements Serializable {
@@ -30,31 +26,25 @@ public class Carrier extends AbstractModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
-
     @Column(name = "name")
     private String name;
-
-    @Column(name = "wangwang")
-    private String wangwang;
-
-    @Column(name = "qq")
-    private String qq;
     
-    @Column(name = "qq_name" , nullable=true)
-    private String qqName;
-
-    @Column(name = "birthday", nullable=true)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date birthday;
-
-    @Column(name = "gender")
-    private String gender;
-
-    @Column(name = "phone")
-    private String phone;
-
+    @Column(name = "website")
+    private String website;
+    
+    @Column(name = "track_url")
+    private String trackURL;
+    
+    @Column(name =  "track_method")
+    private String trackMethod;
+    
     @Column(name = "disabled")
     private boolean disabled;
+
+    @Override
+    public boolean isDisabled() {
+        return disabled;
+    }
 
     @Column(name = "add_time", nullable=true)
     @Temporal(TemporalType.TIMESTAMP)
@@ -67,33 +57,41 @@ public class Carrier extends AbstractModel implements Serializable {
     @Column(name = "note")
     private String note;
 
+    @Override
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
     public Carrier() {
     }
 
-    public Carrier(Long id) {
-        this.id = id;
-    }
-
-    public Carrier(Long id, String name, String wangwang, String qq,String qqName, Date birthday, String gender, String phone, boolean disabled, Date addTime, Date updateTime) {
+    public Carrier(Long id, String name, String website, String trackURL, String trackMethod, boolean disabled, Date addTime, Date updateTime, String note) {
         this.id = id;
         this.name = name;
-        this.wangwang = wangwang;
-        this.qq = qq;
-        this.qqName = qqName;
-        this.birthday = birthday;
-        this.gender = gender;
-        this.phone = phone;
+        this.website = website;
+        this.trackURL = trackURL;
+        this.trackMethod = trackMethod;
         this.disabled = disabled;
         this.addTime = addTime;
         this.updateTime = updateTime;
+        this.note = note;
     }
     
+    public Carrier(String name, String website, String trackURL, String trackMethod, boolean disabled, Date addTime, Date updateTime, String note) {
+        this.name = name;
+        this.website = website;
+        this.trackURL = trackURL;
+        this.trackMethod = trackMethod;
+        this.disabled = disabled;
+        this.addTime = addTime;
+        this.updateTime = updateTime;
+        this.note = note;
+    }
     @Override
     public Long getId() {
         return id;
     }
 
-    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -106,65 +104,28 @@ public class Carrier extends AbstractModel implements Serializable {
         this.name = name;
     }
 
-    public String getWangwang() {
-        return wangwang;
+    public String getWebsite() {
+        return website;
     }
 
-    public void setWangwang(String wangwang) {
-        this.wangwang = wangwang;
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
-    public String getQq() {
-        return qq;
+    public String getTrackURL() {
+        return trackURL;
     }
 
-    public void setQq(String qq) {
-        this.qq = qq;
+    public void setTrackURL(String trackURL) {
+        this.trackURL = trackURL;
     }
 
-    public String getQqName() {
-        return qqName;
+    public String getTrackMethod() {
+        return trackMethod;
     }
 
-    public void setQqName(String qqName) {
-        this.qqName = qqName;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-    @Override
-    public boolean isDisabled() {
-        return disabled;
-    }
-
-    /**
-     *
-     * @param disabled
-     */
-    @Override
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
+    public void setTrackMethod(String trackMethod) {
+        this.trackMethod = trackMethod;
     }
 
     public Date getAddTime() {
@@ -190,35 +151,8 @@ public class Carrier extends AbstractModel implements Serializable {
     public void setNote(String note) {
         this.note = note;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Carrier)) {
-            return false;
-        }
-        Carrier other = (Carrier) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "me.ronghai.sa.model.Carrier[ id=" + id + " ]";
-    }
-    
     
     private transient  boolean changed;
-
     @Override
     public boolean isChanged() {
         return changed;
@@ -228,9 +162,6 @@ public class Carrier extends AbstractModel implements Serializable {
         this.changed = changed;
     }
     
-    public void setDate(String birthday){
-        this.birthday = new Date();
-    }
     
     
     public static final JSONArray COLUMNS;
@@ -238,24 +169,20 @@ public class Carrier extends AbstractModel implements Serializable {
         COLUMNS = new JSONArray();
         COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true ).toJson());
         COLUMNS.add(new W2UIColumnBean("name", "Name", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("wangwang", "Wangwang", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("qq", "QQ", "20%", true, "int", JSONObject.fromObject("{ type: 'int', min: 10000 }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("qqName", "QQ Name", "20%", true, "text", JSONObject.fromObject("{ type: 'text'   }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("birthday", "Birthday", "20%" ,"date:mm/dd/yyyy", true , "date" , JSONObject.fromObject("{ type: 'date' }") ).toJson());
-        COLUMNS.add(new W2UIColumnBean("gender", "Gender", "20%", true, "text", JSONObject.fromObject("{ type: 'list', items:[{id:'M', text : \"Male\"}, {id:'F', text : \"Female\"}, {id:'U', text : \"U\"}]  }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("phone", "Phone", "120px", true, "text", JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("website", "Homesite", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("trackURL", "Tracking URL", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("trackMethod", "HTTP", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
+
+        //COLUMNS.add(new W2UIColumnBean("qq", "QQ", "20%", true, "int", JSONObject.fromObject("{ type: 'int', min: 10000 }")).toJson());
+        //COLUMNS.add(new W2UIColumnBean("qqName", "QQ Name", "20%", true, "text", JSONObject.fromObject("{ type: 'text'   }")).toJson());
+        //COLUMNS.add(new W2UIColumnBean("birthday", "Birthday", "20%" ,"date:mm/dd/yyyy", true , "date" , JSONObject.fromObject("{ type: 'date' }") ).toJson());
+        //COLUMNS.add(new W2UIColumnBean("gender", "Gender", "20%", true, "text", JSONObject.fromObject("{ type: 'list', items:[{id:'M', text : \"Male\"}, {id:'F', text : \"Female\"}, {id:'U', text : \"U\"}]  }")).toJson());
+        //COLUMNS.add(new W2UIColumnBean("phone", "Phone", "120px", true, "text", JSONObject.fromObject("{ type: 'text'  }")).toJson());
     }
     
     @Override
     public Object toJson(){
         JSONObject map = new JSONObject();
-        map.put("name", this.name);
-        map.put("wangwang", this.wangwang);
-        map.put("qq", this.qq);
-        map.put("qqName", this.qqName);
-        map.put("birthday", this.birthday == null ? 0L : this.birthday.getTime());
-        map.put("gender", this.gender);
-        map.put("phone", this.phone);
         map.put("recid", this.getRecid());
         map.put("id", this.id);
         return map;
@@ -263,17 +190,26 @@ public class Carrier extends AbstractModel implements Serializable {
    
     public static  Carrier fromJson(JSONObject json){               
         expectOne(json, "name");
-        expectOne(json, "wangwang");
-        expectOne(json, "qq");
-        expectOne(json, "qqName");
-        expectOne(json, "birthday");
-        expectOne(json, "gender");
-        expectOne(json, "phone");
+        expectOne(json, "website");
+        expectOne(json, "trackURL");
+        expectOne(json, "trackMethod");
         expectOne(json, "recid");
         expectOne(json, "id"); 
         if(json.has("recid") && !json.has("id")){
             json.put("id", json.get("recid"));
         }
         return Carrier.fromJson(json, Carrier.class);
+    }
+    
+    private static ModelMeta<Carrier> modelMeta;
+    @Override
+    public   ModelMeta<Carrier> modelMeta(){
+        return _getModelMeta();
+    }
+    public static   ModelMeta<Carrier> _getModelMeta(){
+        if(modelMeta == null){
+            modelMeta = new ModelMeta<>(Carrier.class);
+        }
+        return modelMeta;
     }
 }

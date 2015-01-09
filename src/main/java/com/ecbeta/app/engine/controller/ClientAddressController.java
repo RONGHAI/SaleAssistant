@@ -12,7 +12,7 @@ import net.sf.json.JSONObject;
 public class ClientAddressController extends AbstractController{
 
     
-    @ServicerType(value="com.ecbeta.app.engine.servicer.ClientAddressServicer", spring="clientService")
+    @ServicerType(value="com.ecbeta.app.engine.servicer.ClientAddressServicer", spring="")
     private ClientAddressServicer servicer;
     
     
@@ -51,7 +51,7 @@ public class ClientAddressController extends AbstractController{
 
     @Override
     public Object getRecordsAction(JSONObject json) {
-        List<ClientAddress> list = this.servicer.getClientAddresss();
+        List<ClientAddress> list = this.servicer.getClientAddreses();
         JSONObject map = new JSONObject();
         map.put("status", "success");
         map.put("total", list.size());

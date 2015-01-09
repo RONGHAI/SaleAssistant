@@ -26,6 +26,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import me.ronghai.sa.dao.AbstractModelDAO;
 import me.ronghai.sa.model.AbstractModel;
+import me.ronghai.sa.model.ModelMeta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -54,48 +55,79 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
     }
     
     
-    private   List<?>[] findColumnsAndValues (E entity) {
-        List<Field> allFieldList =  ReflectUtils.getDeclaredFields((List<Field>)null, entityClass, false);
-        Map<String, PropertyDescriptor> fieldName2PropertyDescriptor =  ReflectUtils.findFieldName2PropertyDescriptor(entityClass);    
+    private List<?>[] findColumnsAndValues(boolean excludeId, E entity) {
+
         List<String> columnNames = new ArrayList<>();
         List<Object> values = new ArrayList<>();
-           for ( Field field : allFieldList) {
-               if (field.isAnnotationPresent(Column.class) && !field.isAnnotationPresent(Id.class)) {
-                   Column annotation = (Column) field.getAnnotation(Column.class);
-                   String cname;
-                   if(org.apache.commons.lang.StringUtils.isNotEmpty(annotation.name())){
-                       cname = annotation.name();
-                       cname = cname.replaceAll("[\\[\\]]", "`");
-                   }else{
-                       cname = field.getName();
-                   }
-                   Method getter = ReflectUtils.findGetter(entity, field, fieldName2PropertyDescriptor, null);
-                   try {
-                       Object value =  getter.invoke(entity);
-                       if(value == null && !annotation.nullable()){
-                            logger.log(Level.SEVERE, "{0}",  cname + " is not null. ");
-                            return null;
-                       }else if(value != null){
-                           columnNames.add(cname);
-                           values.add(value);
-                       }
-                   }catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) { 
-                        if(!annotation.nullable()){
-                            logger.log(Level.SEVERE, "{0}", ex);
-                            return null;
-                        }else{
-                            logger.log(Level.WARNING, "{0}", ex);
-                        }
-                   }
-               }
-           }
-           return new List[]{columnNames, values};
+
+        Map<String, Field> columnFields = entity.modelMeta().getColumnFields();
+        Map<String, Method> field2Getter = entity.modelMeta().getField2Getter();
+
+        for (Map.Entry<String, Field> entry : columnFields.entrySet()) {
+            Field field = entry.getValue();
+            if(excludeId && field.isAnnotationPresent(Id.class)){
+                continue;
+            }
+            String cname = entry.getKey();
+            Object value = null;
+            try {
+                value = field2Getter.get(field.getName()).invoke(entity);
+            }
+            catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            }
+            Column annotation = field.isAnnotationPresent(Column.class) ? (Column) field.getAnnotation(Column.class) : null;
+            if (annotation != null && value == null && !annotation.nullable()) {
+                logger.log(Level.SEVERE, "{0}", cname + " is not null. ");
+                return null;
+            } else if (value != null) {
+                columnNames.add(cname);
+                values.add(value);
+            }
+        }
+
+        /*
+        
+         List<Field> allFieldList =  ReflectUtils.getDeclaredFields((List<Field>)null, entityClass, false);
+         Map<String, PropertyDescriptor> fieldName2PropertyDescriptor =  ReflectUtils.findFieldName2PropertyDescriptor(entityClass);    
+        
+         for ( Field field : allFieldList) {
+         if (field.isAnnotationPresent(Column.class) && !field.isAnnotationPresent(Id.class)) {
+         Column annotation = field.isAnnotationPresent(Column.class) ?  (Column) field.getAnnotation(Column.class) : null;
+         String cname;
+         if(annotation  != null && org.apache.commons.lang.StringUtils.isNotEmpty(annotation.name())){
+         cname = annotation.name();
+         cname = cname.replaceAll("[\\[\\]]", "`");
+         }else{
+         cname = field.getName();
+         }
+         Method getter = ReflectUtils.findGetter(entity, field, fieldName2PropertyDescriptor, null);
+         try {
+         Object value =  getter.invoke(entity);
+         if(value == null && annotation != null && !annotation.nullable()){
+         logger.log(Level.SEVERE, "{0}",  cname + " is not null. ");
+         return null;
+         }else if(value != null){
+         columnNames.add(cname);
+         values.add(value);
+         }
+         }catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) { 
+         if(annotation != null && !annotation.nullable()){
+         logger.log(Level.SEVERE, "{0}", ex);
+         return null;
+         }else{
+         logger.log(Level.WARNING, "{0}", ex);
+         }
+         }
+         }
+         }
+         */
+        return new List[]{columnNames, values};
     }
     
     @Override
     public E persistent(E entity) { 
      
-        List<?>[] columnsAndValues = findColumnsAndValues(entity);
+        List<?>[] columnsAndValues = findColumnsAndValues(true, entity);
         List<String> columnNames = columnsAndValues == null ? null : (List<String>) columnsAndValues[0];
         List<Object> values = columnsAndValues == null ? null : (List<Object>) columnsAndValues[1];
 
@@ -156,7 +188,7 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
     @Override
     public E merge(E entity) {
         //TODO ..
-        List<?>[] columnsAndValues = findColumnsAndValues(entity);
+        List<?>[] columnsAndValues = findColumnsAndValues(true, entity);
         List<String> columnNames = columnsAndValues == null ? null : (List<String>) columnsAndValues[0];
         List<Object> values = columnsAndValues == null ? null : (List<Object>) columnsAndValues[1];        
         if (columnNames != null && !columnNames.isEmpty()) {
@@ -177,8 +209,17 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
         return entity;
     }
     @Override
-    public RowMapper<E> createRowMapper() {
-         throw new UnsupportedOperationException("Not supported yet."); 
+    public RowMapper<E> createRowMapper() {        
+        Method m = ReflectUtils.findMethod(entityClass, "_getModelMeta", null);
+        ModelMeta<E> me;
+        try {
+            me = ( ModelMeta<E>) m.invoke(null);
+            return me.getRowMapper();
+        }
+        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(AbstractModelDAOWithJDBCImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
 

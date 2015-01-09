@@ -17,20 +17,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CurrencyServicer extends AbstractServicer  {
 
     @Autowired
-    private me.ronghai.sa.dao.impl.CurrencyDAOImpl clientDAO;
+    private me.ronghai.sa.dao.impl.CurrencyDAOImpl currencyDAO;
 
     public CurrencyDAOImpl getCurrencyDAO() {
-        return clientDAO;
+        return currencyDAO;
     }
 
-    public void setCurrencyDAO(CurrencyDAOImpl clientDAO) {
-        this.clientDAO = clientDAO;
+    public void setCurrencyDAO(CurrencyDAOImpl currencyDAO) {
+        this.currencyDAO = currencyDAO;
     }
 
-    private List<Currency> clients;
+    private List<Currency> currencies;
 
-    public List<Currency> getCurrencys() {
-        return clients;
+    public List<Currency> getCurrencies() {
+        return currencies;
     }
 
     /**
@@ -44,7 +44,7 @@ public class CurrencyServicer extends AbstractServicer  {
     }
 
     private void refresh() {
-        this.clients = this.find();
+        this.currencies = this.find();
     }
 
     @Override
@@ -54,40 +54,40 @@ public class CurrencyServicer extends AbstractServicer  {
 
    
     public Currency update(Currency entity) {
-        Currency c = clientDAO.update(entity);
+        Currency c = currencyDAO.update(entity);
         this.refresh();
         return c;
     }
 
  
     public Currency find(Object id) {
-        return clientDAO.find(id);
+        return currencyDAO.find(id);
     }
 
     public List<Currency> find() {
-        return clientDAO.find(" WHERE disabled = false ");
+        return currencyDAO.find(" WHERE disabled = false ");
     }
 
 
     public void remove(Currency c) {
-        this.clientDAO.remove(c, false);
+        this.currencyDAO.remove(c, false);
         this.refresh();
     }
 
 
     public void remove(Long... ids) {
-        this.clientDAO.remove(false, Arrays.asList(ids));
+        this.currencyDAO.remove(false, Arrays.asList(ids));
         this.refresh();
     }
 
 
     public void remove(Collection<Long> ids) {
-        this.clientDAO.remove(false, new ArrayList<>(ids));
+        this.currencyDAO.remove(false, new ArrayList<>(ids));
         this.refresh();
     }
 
     public Currency save(Currency c) {
-        this.clientDAO.persistent(c);
+        this.currencyDAO.persistent(c);
         this.refresh();
         return c;
     }
@@ -96,24 +96,24 @@ public class CurrencyServicer extends AbstractServicer  {
         Iterator<JSONObject> it = jsonArray.iterator();
         while(it.hasNext()){
             JSONObject newJsonObj = it.next();
-            Currency client = Currency.fromJson(newJsonObj);
-            Long id  = client.getId();
-            if(this.clientDAO.exsit(id)){
-                client .setUpdateTime(new Date());
+            Currency currency = Currency.fromJson(newJsonObj);
+            Long id  = currency.getId();
+            if(this.currencyDAO.exsit(id)){
+                currency .setUpdateTime(new Date());
             }else{
-                client.setId(null);
-                client.setAddTime(new Date());
+                currency.setId(null);
+                currency.setAddTime(new Date());
             }
-            this.saveOrUpdate(client);
+            this.saveOrUpdate(currency);
         };
         this.refresh();
     }
 
-    private Currency saveOrUpdate(Currency client) {
-        if(client.getId() == null){
-           return this.save (client);
+    private Currency saveOrUpdate(Currency currency) {
+        if(currency.getId() == null){
+           return this.save (currency);
         }else{
-           return this.update(client);
+           return this.update(currency);
         }
     }
 

@@ -26,8 +26,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import me.ronghai.sa.dao.impl.NavigationDAOImpl;
-import me.ronghai.sa.dao.impl.NavigationDAOImpl;
-import me.ronghai.sa.model.Navigation;
 import me.ronghai.sa.model.Navigation;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -133,7 +131,7 @@ public class NavigationServicer extends AbstractServicer  {
                 client.setAddTime(new Date());
             }
             this.saveOrUpdate(client);
-        };
+        }
         this.refresh();
     }
 

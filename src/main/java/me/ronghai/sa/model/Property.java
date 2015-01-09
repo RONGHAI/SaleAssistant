@@ -5,9 +5,9 @@
  */
 package me.ronghai.sa.model;
 
+import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
+import static com.ecbeta.common.util.JSONUtils.expectOne;
 import java.io.Serializable;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +16,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import org.springframework.jdbc.core.RowMapper;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 /**
  *
@@ -78,7 +79,8 @@ public class Property  extends AbstractModel implements Serializable {
     public Long getId() {
         return id;
     }
-
+    
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -122,4 +124,46 @@ public class Property  extends AbstractModel implements Serializable {
         this.disabled = disabled;
     }
   
+    
+    
+    public static final JSONArray COLUMNS;
+    static{
+        COLUMNS = new JSONArray();
+        COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true ).toJson());
+        COLUMNS.add(new W2UIColumnBean("code", "Code", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("value", "Value", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+    }
+    
+    @Override
+    public Object toJson(){
+        JSONObject map = new JSONObject();
+        map.put("code", this.code);
+        map.put("value", this.value);
+        map.put("recid", this.getRecid());
+        map.put("id", this.id);
+        return map;
+    }
+   
+    public static  Property fromJson(JSONObject json){               
+        expectOne(json, "code");
+        expectOne(json, "value");
+        expectOne(json, "recid");
+        expectOne(json, "id"); 
+        if(json.has("recid") && !json.has("id")){
+            json.put("id", json.get("recid"));
+        }
+        return Property.fromJson(json, Property.class);
+    }
+
+    private static ModelMeta<Property> modelMeta;
+    @Override
+    public   ModelMeta<Property> modelMeta(){
+        return _getModelMeta();
+    }
+    public static   ModelMeta<Property> _getModelMeta(){
+        if(modelMeta == null){
+            modelMeta = new ModelMeta<>(Property.class);
+        }
+        return modelMeta;
+    }
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package me.ronghai.sa.model;
 
 import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
@@ -20,7 +15,7 @@ import net.sf.json.JSONObject;
 import static com.ecbeta.common.util.JSONUtils.expectOne;
 /**
  *
- * @author L5M
+ * @author ronghai
  */
 @Entity(name="accounts")
 public class Account extends AbstractModel implements Serializable {
@@ -31,27 +26,7 @@ public class Account extends AbstractModel implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "wangwang")
-    private String wangwang;
-
-    @Column(name = "qq")
-    private String qq;
     
-    @Column(name = "qq_name" , nullable=true)
-    private String qqName;
-
-    @Column(name = "birthday", nullable=true)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date birthday;
-
-    @Column(name = "gender")
-    private String gender;
-
-    @Column(name = "phone")
-    private String phone;
 
     @Column(name = "disabled")
     private boolean disabled;
@@ -74,19 +49,7 @@ public class Account extends AbstractModel implements Serializable {
         this.id = id;
     }
 
-    public Account(Long id, String name, String wangwang, String qq,String qqName, Date birthday, String gender, String phone, boolean disabled, Date addTime, Date updateTime) {
-        this.id = id;
-        this.name = name;
-        this.wangwang = wangwang;
-        this.qq = qq;
-        this.qqName = qqName;
-        this.birthday = birthday;
-        this.gender = gender;
-        this.phone = phone;
-        this.disabled = disabled;
-        this.addTime = addTime;
-        this.updateTime = updateTime;
-    }
+    
     
     @Override
     public Long getId() {
@@ -98,61 +61,7 @@ public class Account extends AbstractModel implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getWangwang() {
-        return wangwang;
-    }
-
-    public void setWangwang(String wangwang) {
-        this.wangwang = wangwang;
-    }
-
-    public String getQq() {
-        return qq;
-    }
-
-    public void setQq(String qq) {
-        this.qq = qq;
-    }
-
-    public String getQqName() {
-        return qqName;
-    }
-
-    public void setQqName(String qqName) {
-        this.qqName = qqName;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+    
     @Override
     public boolean isDisabled() {
         return disabled;
@@ -228,47 +137,36 @@ public class Account extends AbstractModel implements Serializable {
         this.changed = changed;
     }
     
-    public void setDate(String birthday){
-        this.birthday = new Date();
-    }
-    
     
     public static final JSONArray COLUMNS;
     static{
         COLUMNS = new JSONArray();
         COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true ).toJson());
-        COLUMNS.add(new W2UIColumnBean("name", "Name", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("wangwang", "Wangwang", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("qq", "QQ", "20%", true, "int", JSONObject.fromObject("{ type: 'int', min: 10000 }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("qqName", "QQ Name", "20%", true, "text", JSONObject.fromObject("{ type: 'text'   }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("birthday", "Birthday", "20%" ,"date:mm/dd/yyyy", true , "date" , JSONObject.fromObject("{ type: 'date' }") ).toJson());
-        COLUMNS.add(new W2UIColumnBean("gender", "Gender", "20%", true, "text", JSONObject.fromObject("{ type: 'list', items:[{id:'M', text : \"Male\"}, {id:'F', text : \"Female\"}, {id:'U', text : \"U\"}]  }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("phone", "Phone", "120px", true, "text", JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        //COLUMNS.add(new W2UIColumnBean("name", "Name", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        //COLUMNS.add(new W2UIColumnBean("wangwang", "Wangwang", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
+        //COLUMNS.add(new W2UIColumnBean("qq", "QQ", "20%", true, "int", JSONObject.fromObject("{ type: 'int', min: 10000 }")).toJson());
+        //COLUMNS.add(new W2UIColumnBean("qqName", "QQ Name", "20%", true, "text", JSONObject.fromObject("{ type: 'text'   }")).toJson());
+        //COLUMNS.add(new W2UIColumnBean("birthday", "Birthday", "20%" ,"date:mm/dd/yyyy", true , "date" , JSONObject.fromObject("{ type: 'date' }") ).toJson());
+        //COLUMNS.add(new W2UIColumnBean("gender", "Gender", "20%", true, "text", JSONObject.fromObject("{ type: 'list', items:[{id:'M', text : \"Male\"}, {id:'F', text : \"Female\"}, {id:'U', text : \"U\"}]  }")).toJson());
+        //COLUMNS.add(new W2UIColumnBean("phone", "Phone", "120px", true, "text", JSONObject.fromObject("{ type: 'text'  }")).toJson());
     }
     
     @Override
     public Object toJson(){
         JSONObject map = new JSONObject();
-        map.put("name", this.name);
-        map.put("wangwang", this.wangwang);
-        map.put("qq", this.qq);
-        map.put("qqName", this.qqName);
-        map.put("birthday", this.birthday == null ? 0L : this.birthday.getTime());
-        map.put("gender", this.gender);
-        map.put("phone", this.phone);
         map.put("recid", this.getRecid());
         map.put("id", this.id);
         return map;
     }
    
     public static  Account fromJson(JSONObject json){               
-        expectOne(json, "name");
+        /*expectOne(json, "name");
         expectOne(json, "wangwang");
         expectOne(json, "qq");
         expectOne(json, "qqName");
         expectOne(json, "birthday");
         expectOne(json, "gender");
-        expectOne(json, "phone");
+        expectOne(json, "phone");*/
         expectOne(json, "recid");
         expectOne(json, "id"); 
         if(json.has("recid") && !json.has("id")){
@@ -276,4 +174,17 @@ public class Account extends AbstractModel implements Serializable {
         }
         return Account.fromJson(json, Account.class);
     }
+
+    private static ModelMeta<Account> modelMeta;
+    @Override
+    public   ModelMeta<Account> modelMeta(){
+        return _getModelMeta();
+    }
+    public static   ModelMeta<Account> _getModelMeta(){
+        if(modelMeta == null){
+            modelMeta = new ModelMeta<>(Account.class);
+        }
+        return modelMeta;
+    }
+    
 }

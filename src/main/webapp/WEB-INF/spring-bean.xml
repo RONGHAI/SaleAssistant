@@ -29,6 +29,26 @@
     
     <bean id="clientDAO" class="me.ronghai.sa.dao.impl.ClientDAOImpl"/>
     
+    <bean id="systemInformationDAO" class="me.ronghai.sa.dao.impl.PropertyDAOImpl"/>
+    
+    <bean id="accountDAO" class="me.ronghai.sa.dao.impl.AccountDAOImpl"/>
+    
+    <bean id="carrierDAO" class="me.ronghai.sa.dao.impl.CarrierDAOImpl"/>
+    
+    <bean id="categoryDAO" class="me.ronghai.sa.dao.impl.CategoryDAOImpl"/>
+    
+    <bean id="currencyDAO" class="me.ronghai.sa.dao.impl.CurrencyDAOImpl"/>
+    
+    <bean id="hashtagDAO" class="me.ronghai.sa.dao.impl.HashtagDAOImpl"/>
+    
+    <bean id="invoiceDAO" class="me.ronghai.sa.dao.impl.InvoiceDAOImpl"/>
+    
+    <bean id="merchantDAO" class="me.ronghai.sa.dao.impl.MerchantDAOImpl"/>
+    
+    <bean id="productDAO" class="me.ronghai.sa.dao.impl.ProductDAOImpl"/>
+    
+    <bean id="americaOrderDAO" class="me.ronghai.sa.dao.impl.USAOrderDAOImpl"/>
+
     
     <!--
     <bean id="clientController" class="me.ronghai.sabasicCURDPanel.controller.ClientController">
@@ -37,7 +57,6 @@
     </bean>
     -->
     
-    <bean id="carrierDAO" class="me.ronghai.sa.dao.impl.CarrierDAOImpl"/>
   
     <!--
     <bean id="carrierController" class="me.ronghai.sa.controller.CarrierController">

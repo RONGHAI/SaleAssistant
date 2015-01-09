@@ -12,7 +12,7 @@ import net.sf.json.JSONObject;
 public class AccountController extends AbstractController{
 
     
-    @ServicerType(value="com.ecbeta.app.engine.servicer.AccountServicer", spring="clientService")
+    @ServicerType(value="com.ecbeta.app.engine.servicer.AccountServicer", spring="")
     private AccountServicer servicer;
     
     

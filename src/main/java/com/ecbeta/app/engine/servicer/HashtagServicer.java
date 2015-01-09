@@ -17,20 +17,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class HashtagServicer extends AbstractServicer  {
 
     @Autowired
-    private me.ronghai.sa.dao.impl.HashtagDAOImpl clientDAO;
+    private me.ronghai.sa.dao.impl.HashtagDAOImpl hashtagDAO;
 
     public HashtagDAOImpl getHashtagDAO() {
-        return clientDAO;
+        return hashtagDAO;
     }
 
-    public void setHashtagDAO(HashtagDAOImpl clientDAO) {
-        this.clientDAO = clientDAO;
+    public void setHashtagDAO(HashtagDAOImpl hashtagDAO) {
+        this.hashtagDAO = hashtagDAO;
     }
 
-    private List<Hashtag> clients;
+    private List<Hashtag> hashtags;
 
     public List<Hashtag> getHashtags() {
-        return clients;
+        return hashtags;
     }
 
     /**
@@ -44,7 +44,7 @@ public class HashtagServicer extends AbstractServicer  {
     }
 
     private void refresh() {
-        this.clients = this.find();
+        this.hashtags = this.find();
     }
 
     @Override
@@ -54,40 +54,40 @@ public class HashtagServicer extends AbstractServicer  {
 
    
     public Hashtag update(Hashtag entity) {
-        Hashtag c = clientDAO.update(entity);
+        Hashtag c = hashtagDAO.update(entity);
         this.refresh();
         return c;
     }
 
  
     public Hashtag find(Object id) {
-        return clientDAO.find(id);
+        return hashtagDAO.find(id);
     }
 
     public List<Hashtag> find() {
-        return clientDAO.find(" WHERE disabled = false ");
+        return hashtagDAO.find(" WHERE disabled = false ");
     }
 
 
     public void remove(Hashtag c) {
-        this.clientDAO.remove(c, false);
+        this.hashtagDAO.remove(c, false);
         this.refresh();
     }
 
 
     public void remove(Long... ids) {
-        this.clientDAO.remove(false, Arrays.asList(ids));
+        this.hashtagDAO.remove(false, Arrays.asList(ids));
         this.refresh();
     }
 
 
     public void remove(Collection<Long> ids) {
-        this.clientDAO.remove(false, new ArrayList<>(ids));
+        this.hashtagDAO.remove(false, new ArrayList<>(ids));
         this.refresh();
     }
 
     public Hashtag save(Hashtag c) {
-        this.clientDAO.persistent(c);
+        this.hashtagDAO.persistent(c);
         this.refresh();
         return c;
     }
@@ -96,24 +96,24 @@ public class HashtagServicer extends AbstractServicer  {
         Iterator<JSONObject> it = jsonArray.iterator();
         while(it.hasNext()){
             JSONObject newJsonObj = it.next();
-            Hashtag client = Hashtag.fromJson(newJsonObj);
-            Long id  = client.getId();
-            if(this.clientDAO.exsit(id)){
-                client .setUpdateTime(new Date());
+            Hashtag hashtag = Hashtag.fromJson(newJsonObj);
+            Long id  = hashtag.getId();
+            if(this.hashtagDAO.exsit(id)){
+                hashtag .setUpdateTime(new Date());
             }else{
-                client.setId(null);
-                client.setAddTime(new Date());
+                hashtag.setId(null);
+                hashtag.setAddTime(new Date());
             }
-            this.saveOrUpdate(client);
-        };
+            this.saveOrUpdate(hashtag);
+        }
         this.refresh();
     }
 
-    private Hashtag saveOrUpdate(Hashtag client) {
-        if(client.getId() == null){
-           return this.save (client);
+    private Hashtag saveOrUpdate(Hashtag hashtag) {
+        if(hashtag.getId() == null){
+           return this.save (hashtag);
         }else{
-           return this.update(client);
+           return this.update(hashtag);
         }
     }
 

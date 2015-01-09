@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package me.ronghai.sa.model;
 
 import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
@@ -20,7 +16,7 @@ import net.sf.json.JSONObject;
 import static com.ecbeta.common.util.JSONUtils.expectOne;
 /**
  *
- * @author L5M
+ * @author ronghai
  */
 @Entity(name="clients")
 public class Client extends AbstractModel implements Serializable {
@@ -275,5 +271,17 @@ public class Client extends AbstractModel implements Serializable {
             json.put("id", json.get("recid"));
         }
         return Client.fromJson(json, Client.class);
+    }
+    
+    private static ModelMeta<Client> modelMeta;
+    @Override
+    public   ModelMeta<Client> modelMeta(){
+        return _getModelMeta();
+    }
+    public static   ModelMeta<Client> _getModelMeta(){
+        if(modelMeta == null){
+            modelMeta = new ModelMeta<>(Client.class);
+        }
+        return modelMeta;
     }
 }

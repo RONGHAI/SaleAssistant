@@ -232,6 +232,18 @@ public class Navigation   extends AbstractModel implements Serializable {
         COLUMNS.add(new W2UIColumnBean("tier_4", "Tier 4", "10%", true,  "int", JSONObject.fromObject("{ type: 'int', min: 0 }")).toJson());
     }
     
+    
+    private static ModelMeta<Navigation> modelMeta;
+    @Override
+    public   ModelMeta<Navigation> modelMeta(){
+        return _getModelMeta();
+    }
+    public static   ModelMeta<Navigation> _getModelMeta(){
+        if(modelMeta == null){
+            modelMeta = new ModelMeta<>(Navigation.class);
+        }
+        return modelMeta;
+    }
      
 }
 

@@ -17,20 +17,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class OrderServicer extends AbstractServicer  {
 
     @Autowired
-    private me.ronghai.sa.dao.impl.OrderDAOImpl clientDAO;
+    private me.ronghai.sa.dao.impl.OrderDAOImpl orderDAO;
 
     public OrderDAOImpl getOrderDAO() {
-        return clientDAO;
+        return orderDAO;
     }
 
-    public void setOrderDAO(OrderDAOImpl clientDAO) {
-        this.clientDAO = clientDAO;
+    public void setOrderDAO(OrderDAOImpl orderDAO) {
+        this.orderDAO = orderDAO;
     }
 
-    private List<Order> clients;
+    private List<Order> orders;
 
     public List<Order> getOrders() {
-        return clients;
+        return orders;
     }
 
     /**
@@ -44,7 +44,7 @@ public class OrderServicer extends AbstractServicer  {
     }
 
     private void refresh() {
-        this.clients = this.find();
+        this.orders = this.find();
     }
 
     @Override
@@ -54,40 +54,40 @@ public class OrderServicer extends AbstractServicer  {
 
    
     public Order update(Order entity) {
-        Order c = clientDAO.update(entity);
+        Order c = orderDAO.update(entity);
         this.refresh();
         return c;
     }
 
  
     public Order find(Object id) {
-        return clientDAO.find(id);
+        return orderDAO.find(id);
     }
 
     public List<Order> find() {
-        return clientDAO.find(" WHERE disabled = false ");
+        return orderDAO.find(" WHERE disabled = false ");
     }
 
 
     public void remove(Order c) {
-        this.clientDAO.remove(c, false);
+        this.orderDAO.remove(c, false);
         this.refresh();
     }
 
 
     public void remove(Long... ids) {
-        this.clientDAO.remove(false, Arrays.asList(ids));
+        this.orderDAO.remove(false, Arrays.asList(ids));
         this.refresh();
     }
 
 
     public void remove(Collection<Long> ids) {
-        this.clientDAO.remove(false, new ArrayList<>(ids));
+        this.orderDAO.remove(false, new ArrayList<>(ids));
         this.refresh();
     }
 
     public Order save(Order c) {
-        this.clientDAO.persistent(c);
+        this.orderDAO.persistent(c);
         this.refresh();
         return c;
     }
@@ -96,24 +96,24 @@ public class OrderServicer extends AbstractServicer  {
         Iterator<JSONObject> it = jsonArray.iterator();
         while(it.hasNext()){
             JSONObject newJsonObj = it.next();
-            Order client = Order.fromJson(newJsonObj);
-            Long id  = client.getId();
-            if(this.clientDAO.exsit(id)){
-                client .setUpdateTime(new Date());
+            Order order = Order.fromJson(newJsonObj);
+            Long id  = order.getId();
+            if(this.orderDAO.exsit(id)){
+                order .setUpdateTime(new Date());
             }else{
-                client.setId(null);
-                client.setAddTime(new Date());
+                order.setId(null);
+                order.setAddTime(new Date());
             }
-            this.saveOrUpdate(client);
-        };
+            this.saveOrUpdate(order);
+        }
         this.refresh();
     }
 
-    private Order saveOrUpdate(Order client) {
-        if(client.getId() == null){
-           return this.save (client);
+    private Order saveOrUpdate(Order order) {
+        if(order.getId() == null){
+           return this.save (order);
         }else{
-           return this.update(client);
+           return this.update(order);
         }
     }
 
