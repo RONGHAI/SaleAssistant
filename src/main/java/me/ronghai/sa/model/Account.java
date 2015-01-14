@@ -1,8 +1,10 @@
 package me.ronghai.sa.model;
 
 import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
+
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import static com.ecbeta.common.util.JSONUtils.expectOne;
@@ -26,6 +29,13 @@ public class Account extends AbstractModel implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    
+    @Column(name = "email")
+    private String email;
+    
+    @Column(name = "user_name")
+    private String username;
+    
     
 
     @Column(name = "disabled")
@@ -176,6 +186,7 @@ public class Account extends AbstractModel implements Serializable {
     }
 
     private static ModelMeta<Account> modelMeta;
+    @SuppressWarnings("unchecked")
     @Override
     public   ModelMeta<Account> modelMeta(){
         return _getModelMeta();

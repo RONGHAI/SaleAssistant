@@ -25,6 +25,7 @@ public abstract class AbstractModel {
     public Object toJson(){
         return this;
     }
+    @SuppressWarnings("unchecked")
     public static <T extends AbstractModel>  T fromJson(JSONObject json, Class<T> clazz){               
         return (T) JSONObject.toBean( json, clazz);
     }
