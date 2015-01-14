@@ -35,6 +35,7 @@
         <maven.compiler.plugin.version>1.6</maven.compiler.plugin.version>
         <tomcat-jdbc.version>7.0.40</tomcat-jdbc.version>
         <commons.io.version>2.4</commons.io.version>
+        <commons-codec.version>1.9</commons-codec.version>
         <javax.mail.version>1.4</javax.mail.version>
         <json.version>1.8.4</json.version>
         <jsp-api.version>2.0</jsp-api.version>
@@ -167,6 +168,14 @@
             <type>jar</type>
         </dependency>
         <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${commons-codec.version}</version>
+            <type>jar</type>
+        </dependency>
+        
+        
+        <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
             <version>${javax.mail.version}</version>
@@ -196,6 +205,12 @@
             <version>${net.sf.json.version}</version>
             <type>jar</type>
             <classifier>jdk15</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15</artifactId>
+            <type>jar</type>
+            <version>140</version>
         </dependency>
     </dependencies>
     <build>
