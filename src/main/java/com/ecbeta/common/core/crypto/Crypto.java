@@ -62,12 +62,17 @@ public class Crypto {
         AlgorithmParameters params = cipher.getParameters();
         byte[] iv = params.getParameterSpec(IvParameterSpec.class).getIV();
         byte[] data = cipher.doFinal(context.getBytes());
+        
+        System.out.println(Hex.encodeHexString(iv).toUpperCase());
+        String ds = Hex.encodeHexString(data);
+        System.out.println(Base64.encodeBase64String(ds.getBytes()));
+        
         return  Hex.encodeHexString(iv).toUpperCase() + Base64.encodeBase64String(data);
     }
 
     public static String decrypt(String key, String context)  throws NoSuchAlgorithmException, NoSuchPaddingException, DecoderException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException, InvalidParameterSpecException, InvalidKeyException, InvalidAlgorithmParameterException   {
-        String iv = context.substring(0, KEYLEN_BITS / 4);
-        context = context.substring(KEYLEN_BITS / 4);
+        String iv = context.substring(0, 32);
+        context = context.substring(32);
         SecretKeySpec secret = new SecretKeySpec(Hex.decodeHex(key.toCharArray()), "AES");
         Cipher cipher = Cipher.getInstance(AES);
         cipher.init(Cipher.DECRYPT_MODE, secret, new IvParameterSpec(Hex.decodeHex(iv.toCharArray())));
@@ -120,7 +125,7 @@ public class Crypto {
             InvalidParameterSpecException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, IOException {
         
         FileInputStream fin = new FileInputStream(input);
-        byte[] iv = new byte[KEYLEN_BITS / 8];
+        byte[] iv = new byte[16];
         fin.read(iv);
         SecretKeySpec secret = new SecretKeySpec(Hex.decodeHex(key.toCharArray()), "AES");
         Cipher cipher = Cipher.getInstance(AES);
@@ -180,7 +185,7 @@ public class Crypto {
         System.out.println(key);
         key = "D63BF8D127D210B6364054CEDA905F4C";
         System.out.println(key);
-        String e = encrypt(key, "need");
+        String e = encrypt(key, "Very, very confidential data");
         System.out.println(e);
         String newv = decrypt(key, e);
         System.out.println(newv);
