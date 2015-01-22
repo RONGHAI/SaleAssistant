@@ -5,20 +5,26 @@
  */
 package com.ecbeta.common.util;
 
+import com.ecbeta.common.constants.Constants;
 import com.ecbeta.common.core.viewer.bean.MapJSONBean;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+
+import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -116,5 +122,49 @@ public class JSONUtils {
             }
         }
           
+    }
+     
+    public static String toString(JSONArray o){
+        if(o == null ){
+            return null;
+        }
+        return reformatJSON(o.toString(2));
+    }
+    public static String toString(JSONObject o){
+        if(o == null ){
+            return null;
+        }
+        return reformatJSON(o.toString(2));
+    }
+    
+    public static String toString(JSONArray o, int start){
+        if(o == null ){
+            return null;
+        }
+        return reformatJSON(o.toString(start, 2));
+    }
+    public static String toString(JSONObject o, int start){
+        if(o == null ){
+            return null;
+        }
+        return reformatJSON(o.toString(start, 2));
+    }
+    
+    
+    private static String reformatJSON(String str){
+        str = str.replaceAll("\"(\\w+)\":", "$1:"); // remove quotes from keys
+        str = str.replaceAll("\"(sale_assistant[.])([\\w\\(\\)]+)\"", "$1$2"); //remove quotes from javascript object
+        str = str.replaceAll("\"(\\d+)\"", "$1");
+        return str;
+    }
+    
+    public final static JSONArray getChanges(JSONObject json){
+        for(String s : Constants.W2UI_CHANGES){
+            JSONArray ar = json.getJSONArray(s);
+            if(ar != null){
+                return ar;
+            }
+        }
+        return null;
     }
 }
