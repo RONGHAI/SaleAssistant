@@ -66,8 +66,7 @@ public class CarrierController extends AbstractController{
     
     @Override
     public Object saveRecordsAction(JSONObject json) {
-        System.out.println("~~~~~saveRecordsAction~~~~"+json.get("changed"));
-        JSONArray jsonArray = (JSONArray)json.get("changed");
+        JSONArray jsonArray = JSONUtils.getChanges(json);
         
         servicer.saveOrUpdate(jsonArray);
         
@@ -83,7 +82,7 @@ public class CarrierController extends AbstractController{
     
     
     public String getColumns(){
-        return Carrier.COLUMNS.toString();
+        return JSONUtils.toString(Carrier.COLUMNS);
     }
     
    

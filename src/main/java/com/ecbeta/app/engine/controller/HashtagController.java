@@ -66,9 +66,7 @@ public class HashtagController extends AbstractController{
     
     @Override
     public Object saveRecordsAction(JSONObject json) {
-        System.out.println("~~~~~saveRecordsAction~~~~"+json.get("changed"));
-        JSONArray jsonArray = (JSONArray)json.get("changed");
-        
+        JSONArray jsonArray = JSONUtils.getChanges(json);
         servicer.saveOrUpdate(jsonArray);
         
         JSONObject map = new JSONObject();
@@ -83,7 +81,7 @@ public class HashtagController extends AbstractController{
     
     
     public String getColumns(){
-        return Hashtag.COLUMNS.toString();
+        return JSONUtils.toString(Hashtag.COLUMNS);
     }
     
    

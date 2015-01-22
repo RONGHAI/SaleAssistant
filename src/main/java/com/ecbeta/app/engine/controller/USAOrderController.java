@@ -5,7 +5,9 @@ import com.ecbeta.common.core.AbstractServicer;
 import com.ecbeta.common.core.AbstractController;
 import com.ecbeta.common.core.annotation.ServicerType;
 import com.ecbeta.common.util.JSONUtils;
+
 import java.util.List;
+
 import me.ronghai.sa.model.USAOrder;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -66,8 +68,8 @@ public class USAOrderController extends AbstractController{
     
     @Override
     public Object saveRecordsAction(JSONObject json) {
-        System.out.println("~~~~~saveRecordsAction~~~~"+json.get("changed"));
-        JSONArray jsonArray = (JSONArray)json.get("changed");
+        JSONArray jsonArray = JSONUtils.getChanges(json);
+        System.out.println("~~~~~saveRecordsAction~~~~"+jsonArray);
         
         servicer.saveOrUpdate(jsonArray);
         
@@ -83,7 +85,7 @@ public class USAOrderController extends AbstractController{
     
     
     public String getColumns(){
-        return USAOrder.COLUMNS.toString();
+        return JSONUtils.toString(USAOrder.COLUMNS);
     }
     
    

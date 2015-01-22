@@ -88,7 +88,7 @@ public class NavigationController     extends AbstractController{
     
     @Override
     public Object saveRecordsAction(JSONObject json) {
-        JSONArray jsonArray = (JSONArray)json.get("changed");
+        JSONArray jsonArray = JSONUtils.getChanges(json);
         servicer.saveOrUpdate(jsonArray);
         JSONObject map = new JSONObject();
         map.put("success", true);
@@ -102,7 +102,7 @@ public class NavigationController     extends AbstractController{
     
     
     public String getColumns(){
-        return Navigation.COLUMNS.toString();
+        return JSONUtils.toString(Navigation.COLUMNS);
     }
     
    

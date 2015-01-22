@@ -13,16 +13,22 @@ import static com.ecbeta.common.core.reflect.BingReflectUtils.findAction;
 import static com.ecbeta.common.core.reflect.BingReflectUtils.findActionMethod;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.ecbeta.common.constants.Constants;
 import com.ecbeta.common.core.annotation.Action;
@@ -34,14 +40,6 @@ import com.ecbeta.common.core.viewer.bean.ExportInformationBean;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import com.ecbeta.common.core.viewer.bean.PanelTab;
 import com.ecbeta.common.util.JSONUtils;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import net.sf.json.JSONArray;
 
 public abstract class AbstractController {
     public static boolean debug = false;
@@ -106,10 +104,14 @@ public abstract class AbstractController {
 
     protected void bindParams (HttpServletRequest request, String btnClicked, String actionMethod) {
         if (this.getServicer() != null) {
-            this.getServicer().beforeBinding(btnClicked);
+            this.getServicer().beforeBinding(request, btnClicked, actionMethod);
         }
         automaticBindingParams(request, btnClicked, actionMethod, this.getServicer());
         automaticBindingParams(request, btnClicked, actionMethod, this.getOtherServicers());
+        
+        if (this.getServicer() != null) {
+            this.getServicer().afterBinding(request, btnClicked, actionMethod);
+        }
         // TODO;
     }
 /*
@@ -443,6 +445,9 @@ public abstract class AbstractController {
     }*/
 
     public void processButtonClickedAction (String action) {
+        if(this.getServicer() != null){
+            this.getServicer().beforeProcessing(request, this.btnClicked ,action);
+        }
         try{
             Object[] _instance = this.isUseActionFromServicer() ?  new Object[]{this, this.getServicer()} : new Object[]{this};
             int []_processStatus = new int[_instance.length];
@@ -466,6 +471,9 @@ public abstract class AbstractController {
             }
         }catch(Exception e){
             logger.log(Level.WARNING, null, e);
+        }
+        if(this.getServicer() != null){
+            this.getServicer().afterProcessing(request, this.btnClicked, action);
         }
     }
 
@@ -621,7 +629,7 @@ public abstract class AbstractController {
     }
 
     private void showException(String acc, Exception e, boolean forceOut){
-        if (_SHOW_EXCEPTION || forceOut) {
+        if ( forceOut || _SHOW_EXCEPTION) {
             logger.log(Level.WARNING, "Show All Exception", e);
         }
     }

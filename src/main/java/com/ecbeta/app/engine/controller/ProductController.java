@@ -5,7 +5,9 @@ import com.ecbeta.common.core.AbstractServicer;
 import com.ecbeta.common.core.AbstractController;
 import com.ecbeta.common.core.annotation.ServicerType;
 import com.ecbeta.common.util.JSONUtils;
+
 import java.util.List;
+
 import me.ronghai.sa.model.Product;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -66,9 +68,7 @@ public class ProductController extends AbstractController{
     
     @Override
     public Object saveRecordsAction(JSONObject json) {
-        System.out.println("~~~~~saveRecordsAction~~~~"+json.get("changed"));
-        JSONArray jsonArray = (JSONArray)json.get("changed");
-        
+        JSONArray jsonArray = JSONUtils.getChanges(json);
         servicer.saveOrUpdate(jsonArray);
         
         JSONObject map = new JSONObject();
@@ -83,7 +83,7 @@ public class ProductController extends AbstractController{
     
     
     public String getColumns(){
-        return Product.COLUMNS.toString();
+        return JSONUtils.toString(Product.COLUMNS);
     }
     
    
