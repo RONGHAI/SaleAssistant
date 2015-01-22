@@ -11,7 +11,29 @@ if (jQuery) {
         };
         
         var sale_assistant = window.sale_assistant = window.sale_assistant || {};
+        sale_assistant.__gender_list = [{id:'M', text : "Male"}, {id:'F', text : "Female"}, {id:'U', text : "U"}];
 
+        sale_assistant.genders = function(){
+            return sale_assistant.__gender_list;
+        };
+
+        sale_assistant.render_gender = function(record, index, col_index){
+            var cellvalue = this.getCellValue(index, col_index);
+            sale_assistant.log(this);
+            sale_assistant.log(record);
+            sale_assistant.log(index);
+            sale_assistant.log(col_index);
+            sale_assistant.log(cellvalue);
+            var html = "";
+            var gs = sale_assistant.__gender_list;
+            for (var p in gs) {
+                if (gs[p].id === cellvalue){
+                    html = gs[p].text;
+                    break;
+                } 
+            }
+            return html;
+        };
         sale_assistant.error = function(d) {
             if (console) {
                 console.error(d);
@@ -242,6 +264,7 @@ if (jQuery) {
                 }
             }
         };
+
         
 
     })(jQuery);
