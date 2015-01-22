@@ -19,4 +19,6 @@ public class Constants {
     public static final String PROGRESS_PAGE_POSTBACK="progress_page_postback"; 
     public static final String PANEL_INDEX = "panelIndex";
     public static final String DEFAULT_WORKER = "com.ecbeta.app.engine.controller.HomeController";
+    public static final String SAJS_PREFIX = "sale_assistant";
+    public static final String[] W2UI_CHANGES = new String[]{ "changes","changed"};
 }
