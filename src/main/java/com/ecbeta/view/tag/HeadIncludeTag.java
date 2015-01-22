@@ -15,6 +15,11 @@ import javax.servlet.jsp.JspException;
  */
 public class HeadIncludeTag extends AbstractTag {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     public HeadIncludeTag() {
         super();
     }
@@ -29,7 +34,7 @@ public class HeadIncludeTag extends AbstractTag {
         this.controller = controller;
     }
     private String jqueryVersion = "2.1.0";
-    private String w2uiVersion = "1.3.2";
+    private String w2uiVersion = "release";
 
     public String getW2uiVersion() {
         return w2uiVersion;

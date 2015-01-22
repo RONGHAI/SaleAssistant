@@ -5,18 +5,26 @@
  */
 package com.ecbeta.view.tag;
 
-import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import static com.ecbeta.common.core.viewer.bean.NavigationBean.getNavTierID;
+
 import java.util.List;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyContent;
-import net.sf.json.JSONObject;
+
+import com.ecbeta.common.core.viewer.bean.NavigationBean;
+import com.ecbeta.common.util.JSONUtils;
 
 /**
  *
  * @author Ronghai Wei <ronghai.wei@outlook.com>
  */
 public class NavigationTag extends AbstractTag {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
     public NavigationTag() {
         super();
@@ -89,11 +97,11 @@ public class NavigationTag extends AbstractTag {
     public String createW2UI(String contextPath){
          StringBuilder sb = new StringBuilder();
          
-        String navs = NavigationBean.toJson(this.navigationBeans, navPrefix, contextPath, true).toString();
+        String navs = JSONUtils.toString(NavigationBean.toJson(this.navigationBeans, navPrefix, contextPath, true));
      
-        JSONObject json = new JSONObject();
+       /* JSONObject json = new JSONObject();
         json.put("nodes", NavigationBean.toJson(this.navigationBeans, navPrefix, contextPath, true));
-        json.put("name", id);
+        json.put("name", id);*/
         
         StringBuilder onclick = new StringBuilder();
         onclick.append("function (event) {\n");
@@ -102,7 +110,7 @@ public class NavigationTag extends AbstractTag {
         onclick.append("       sa.runApp(et);\n");
         onclick.append("    };\n");
         onclick.append("}\n"); 
-        json.put("onClick" , onclick.toString() );
+       // json.put("onClick" , onclick.toString() );
         
         sb.append("{\n" );  
         //sb.append("        ").append(json.toString());
