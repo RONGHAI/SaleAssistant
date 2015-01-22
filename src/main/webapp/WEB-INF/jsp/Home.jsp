@@ -20,7 +20,7 @@
         
        首页
         
-       <script>
+       <script type="text/javascript">
            if(self === window){
                 sale_assistant.log('home.html is not in iframe');
            }else{
