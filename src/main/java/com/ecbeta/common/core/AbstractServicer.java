@@ -3,8 +3,11 @@ package com.ecbeta.common.core;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.ecbeta.common.core.bean.BaseServicerParaBean;
 import com.ecbeta.common.core.db.DatabaseHandler;
+import com.ecbeta.common.core.delegate.ProcessDelegate;
 import com.ecbeta.common.core.viewer.bean.ExportInformationBean;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import com.ecbeta.common.core.viewer.bean.PanelTab;
@@ -39,9 +42,32 @@ public abstract class AbstractServicer implements Serializable{
     protected BaseServicerParaBean baseServicerParameterBean = new BaseServicerParaBean();
     
     private ExportInformationBean exportInformationBean;
-    public void beforeBinding(String btn){
-        
+   
+    protected ProcessDelegate processDelegate;
+    
+    public void beforeBinding (HttpServletRequest request, String btnClicked, String actionMethod) {
+        if(processDelegate != null){
+            processDelegate.beforeBinding(request, btnClicked, actionMethod);
+        }
     }
+    
+    public void afterBinding (HttpServletRequest request, String btnClicked, String actionMethod) {
+        if(processDelegate != null){
+            processDelegate.afterBinding(request, btnClicked, actionMethod);
+        }
+    }
+    
+    public void afterProcessing (HttpServletRequest request, String btnClicked, String actionMethod) {
+        if(processDelegate != null){
+            processDelegate.afterProcessing(request, btnClicked, actionMethod);
+        }
+    }
+    public void beforeProcessing (HttpServletRequest request, String btnClicked, String actionMethod) {
+        if(processDelegate != null){
+            processDelegate.beforeProcessing(request, btnClicked, actionMethod);
+        }
+    }
+    
     public void destory(){
         
     }

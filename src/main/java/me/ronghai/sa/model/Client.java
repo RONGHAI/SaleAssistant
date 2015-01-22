@@ -1,9 +1,12 @@
 
 package me.ronghai.sa.model;
 
+import com.ecbeta.common.constants.Constants;
 import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
+
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +14,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.apache.commons.lang.ArrayUtils;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import static com.ecbeta.common.util.JSONUtils.expectOne;
@@ -238,8 +244,21 @@ public class Client extends AbstractModel implements Serializable {
         COLUMNS.add(new W2UIColumnBean("qq", "QQ", "20%", true, "int", JSONObject.fromObject("{ type: 'int', min: 10000 }")).toJson());
         COLUMNS.add(new W2UIColumnBean("qqName", "QQ Name", "20%", true, "text", JSONObject.fromObject("{ type: 'text'   }")).toJson());
         COLUMNS.add(new W2UIColumnBean("birthday", "Birthday", "20%" ,"date:mm/dd/yyyy", true , "date" , JSONObject.fromObject("{ type: 'date' }") ).toJson());
-        COLUMNS.add(new W2UIColumnBean("gender", "Gender", "20%", true, "text", JSONObject.fromObject("{ type: 'list', items:[{id:'M', text : \"Male\"}, {id:'F', text : \"Female\"}, {id:'U', text : \"U\"}]  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("gender", "Gender", "20%", Constants.SAJS_PREFIX+".render_gender", true,  null , JSONObject.fromObject("{ type: 'select', items:'"+Constants.SAJS_PREFIX+".genders()' }")).toJson());
         COLUMNS.add(new W2UIColumnBean("phone", "Phone", "120px", true, "text", JSONObject.fromObject("{ type: 'text'  }")).toJson());
+    }
+    
+    public static void main(String args[]){
+        System.out.println(COLUMNS.toString(2));
+        System.out.println(COLUMNS.toString());
+        
+        
+        String col = COLUMNS.toString(2);
+        col =  col.replaceAll("\"(\\w*)\":", "$1:");
+        col = col.replaceAll("\"(sale_assistant[.])([\\w\\(\\)]*)\"", "$1$2");
+        col = col.replaceAll("\"(\\d*)\"", "$1");
+        System.out.println(col);
+        
     }
     
     @Override
@@ -274,6 +293,7 @@ public class Client extends AbstractModel implements Serializable {
     }
     
     private static ModelMeta<Client> modelMeta;
+    @SuppressWarnings("unchecked")
     @Override
     public   ModelMeta<Client> modelMeta(){
         return _getModelMeta();

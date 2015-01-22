@@ -2,8 +2,10 @@
 package me.ronghai.sa.model;
 
 import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
+
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import static com.ecbeta.common.util.JSONUtils.expectOne;
@@ -27,6 +30,18 @@ public class Merchant extends AbstractModel implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "name")
+    private String name;
+    
+    @Column(name = "code")
+    private String code;
+    
+    @Column(name = "website")
+    private String website;
+    
+    @Column(name = "track_url")
+    private String trackURL;
+    
     
 
     @Column(name = "disabled")
@@ -143,31 +158,32 @@ public class Merchant extends AbstractModel implements Serializable {
     static{
         COLUMNS = new JSONArray();
         COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true ).toJson());
-        //COLUMNS.add(new W2UIColumnBean("name", "Name", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
-        //COLUMNS.add(new W2UIColumnBean("wangwang", "Wangwang", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
-        //COLUMNS.add(new W2UIColumnBean("qq", "QQ", "20%", true, "int", JSONObject.fromObject("{ type: 'int', min: 10000 }")).toJson());
-        //COLUMNS.add(new W2UIColumnBean("qqName", "QQ Name", "20%", true, "text", JSONObject.fromObject("{ type: 'text'   }")).toJson());
-        //COLUMNS.add(new W2UIColumnBean("birthday", "Birthday", "20%" ,"date:mm/dd/yyyy", true , "date" , JSONObject.fromObject("{ type: 'date' }") ).toJson());
-        //COLUMNS.add(new W2UIColumnBean("gender", "Gender", "20%", true, "text", JSONObject.fromObject("{ type: 'list', items:[{id:'M', text : \"Male\"}, {id:'F', text : \"Female\"}, {id:'U', text : \"U\"}]  }")).toJson());
-        //COLUMNS.add(new W2UIColumnBean("phone", "Phone", "120px", true, "text", JSONObject.fromObject("{ type: 'text'  }")).toJson());
-    }
+        COLUMNS.add(new W2UIColumnBean("name", "Name", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("code", "Code", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("website", "Website", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("trackURL", "Track URL", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("note", "note", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+   }
     
     @Override
     public Object toJson(){
         JSONObject map = new JSONObject();
         map.put("recid", this.getRecid());
         map.put("id", this.id);
+        map.put("name", this.name);
+        map.put("website", this.website);
+        map.put("code", this.code);
+        map.put("trackURL", this.trackURL);
+        map.put("note", this.note);
         return map;
     }
    
     public static  Merchant fromJson(JSONObject json){               
-        /*expectOne(json, "name");
-        expectOne(json, "wangwang");
-        expectOne(json, "qq");
-        expectOne(json, "qqName");
-        expectOne(json, "birthday");
-        expectOne(json, "gender");
-        expectOne(json, "phone");*/
+        expectOne(json, "name");
+        expectOne(json, "code");
+        expectOne(json, "website");
+        expectOne(json, "trackURL");
+        expectOne(json, "note");
         expectOne(json, "recid");
         expectOne(json, "id"); 
         if(json.has("recid") && !json.has("id")){
@@ -177,6 +193,7 @@ public class Merchant extends AbstractModel implements Serializable {
     }
     
     private static ModelMeta<Merchant> modelMeta;
+    @SuppressWarnings("unchecked")
     @Override
     public   ModelMeta<Merchant> modelMeta(){
         return _getModelMeta();
@@ -186,5 +203,37 @@ public class Merchant extends AbstractModel implements Serializable {
             modelMeta = new ModelMeta<>(Merchant.class);
         }
         return modelMeta;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getTrackURL() {
+        return trackURL;
+    }
+
+    public void setTrackURL(String trackURL) {
+        this.trackURL = trackURL;
     }
 }

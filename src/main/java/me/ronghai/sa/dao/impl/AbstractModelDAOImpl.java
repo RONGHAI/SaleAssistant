@@ -26,6 +26,11 @@ import me.ronghai.sa.model.AbstractModel;
  * @param <E>
  */
 public class AbstractModelDAOImpl<E extends AbstractModel> extends AbstractModelDAOWithJDBCImpl<E> implements  Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     /*
     protected AbstractModelDAO<E> dao; 
     

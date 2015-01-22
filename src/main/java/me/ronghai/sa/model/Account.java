@@ -1,5 +1,6 @@
 package me.ronghai.sa.model;
 
+import com.ecbeta.common.constants.Constants;
 import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
 
 import java.io.Serializable;
@@ -23,20 +24,66 @@ import static com.ecbeta.common.util.JSONUtils.expectOne;
 @Entity(name="accounts")
 public class Account extends AbstractModel implements Serializable {
 
+    public static   ModelMeta<Account> _getModelMeta(){
+        if(modelMeta == null){
+            modelMeta = new ModelMeta<>(Account.class);
+        }
+        return modelMeta;
+    }
+    public static  Account fromJson(JSONObject json){               
+        expectOne(json, "merchantId");
+        expectOne(json, "email");
+        expectOne(json, "username");
+        expectOne(json, "recid");
+        expectOne(json, "id"); 
+        if(json.has("recid") && !json.has("id")){
+            json.put("id", json.get("recid"));
+        }
+        return Account.fromJson(json, Account.class);
+    }
+
+    public static final JSONArray COLUMNS;
+
+
+    static{
+        COLUMNS = new JSONArray();
+        COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true ).toJson());
+        COLUMNS.add(new W2UIColumnBean("username", "UserName", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("email", "email", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("merchantId", "Merchant", "20%", true, "int", JSONObject.fromObject("{ type: 'int', min: 10000 , render : '"+Constants.SAJS_PREFIX+".render_merchant' }")).toJson());
+        
+    }
+
+    @Override
+    public Object toJson(){
+        JSONObject map = new JSONObject();
+        map.put("recid", this.getRecid());
+        map.put("id", this.id);
+        map.put("username", username);
+        map.put("email", email);
+        map.put("merchantId", this.merchantId);
+        map.put("merchant", merchant);
+        return map;
+    }
+    
+    
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
-
     
     @Column(name = "email")
     private String email;
     
     @Column(name = "user_name")
     private String username;
-    
-    
+
+    @Column(name = "merchant_id")
+    private Long merchantId;
+
+    protected transient Merchant merchant;
 
     @Column(name = "disabled")
     private boolean disabled;
@@ -49,72 +96,20 @@ public class Account extends AbstractModel implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
 
+
     @Column(name = "note")
     private String note;
+
+    private transient  boolean changed;
+
+    
+    private static ModelMeta<Account> modelMeta;
 
     public Account() {
     }
 
     public Account(Long id) {
         this.id = id;
-    }
-
-    
-    
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    
-    @Override
-    public boolean isDisabled() {
-        return disabled;
-    }
-
-    /**
-     *
-     * @param disabled
-     */
-    @Override
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
-    }
-
-    public Date getAddTime() {
-        return addTime;
-    }
-
-    public void setAddTime(Date addTime) {
-        this.addTime = addTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
     }
 
     @Override
@@ -130,72 +125,115 @@ public class Account extends AbstractModel implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "me.ronghai.sa.model.Account[ id=" + id + " ]";
+    public Date getAddTime() {
+        return addTime;
     }
+
     
     
-    private transient  boolean changed;
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    
+    public Merchant getMerchant() {
+        return merchant;
+    }
+
+
+    public String getNote() {
+        return note;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
 
     @Override
     public boolean isChanged() {
         return changed;
     }
+
+    @Override
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public   ModelMeta<Account> modelMeta(){
+        return _getModelMeta();
+    }
+
+    public void setAddTime(Date addTime) {
+        this.addTime = addTime;
+    }
+
     @Override
     public void setChanged(boolean changed) {
         this.changed = changed;
     }
     
     
-    public static final JSONArray COLUMNS;
-    static{
-        COLUMNS = new JSONArray();
-        COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true ).toJson());
-        //COLUMNS.add(new W2UIColumnBean("name", "Name", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
-        //COLUMNS.add(new W2UIColumnBean("wangwang", "Wangwang", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
-        //COLUMNS.add(new W2UIColumnBean("qq", "QQ", "20%", true, "int", JSONObject.fromObject("{ type: 'int', min: 10000 }")).toJson());
-        //COLUMNS.add(new W2UIColumnBean("qqName", "QQ Name", "20%", true, "text", JSONObject.fromObject("{ type: 'text'   }")).toJson());
-        //COLUMNS.add(new W2UIColumnBean("birthday", "Birthday", "20%" ,"date:mm/dd/yyyy", true , "date" , JSONObject.fromObject("{ type: 'date' }") ).toJson());
-        //COLUMNS.add(new W2UIColumnBean("gender", "Gender", "20%", true, "text", JSONObject.fromObject("{ type: 'list', items:[{id:'M', text : \"Male\"}, {id:'F', text : \"Female\"}, {id:'U', text : \"U\"}]  }")).toJson());
-        //COLUMNS.add(new W2UIColumnBean("phone", "Phone", "120px", true, "text", JSONObject.fromObject("{ type: 'text'  }")).toJson());
-    }
-    
+    /**
+     *
+     * @param disabled
+     */
     @Override
-    public Object toJson(){
-        JSONObject map = new JSONObject();
-        map.put("recid", this.getRecid());
-        map.put("id", this.id);
-        return map;
-    }
-   
-    public static  Account fromJson(JSONObject json){               
-        /*expectOne(json, "name");
-        expectOne(json, "wangwang");
-        expectOne(json, "qq");
-        expectOne(json, "qqName");
-        expectOne(json, "birthday");
-        expectOne(json, "gender");
-        expectOne(json, "phone");*/
-        expectOne(json, "recid");
-        expectOne(json, "id"); 
-        if(json.has("recid") && !json.has("id")){
-            json.put("id", json.get("recid"));
-        }
-        return Account.fromJson(json, Account.class);
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
     }
 
-    private static ModelMeta<Account> modelMeta;
-    @SuppressWarnings("unchecked")
-    @Override
-    public   ModelMeta<Account> modelMeta(){
-        return _getModelMeta();
+    public void setEmail(String email) {
+        this.email = email;
     }
-    public static   ModelMeta<Account> _getModelMeta(){
-        if(modelMeta == null){
-            modelMeta = new ModelMeta<>(Account.class);
-        }
-        return modelMeta;
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    
+    public void setMerchant(Merchant merchant) {
+        this.merchant = merchant;
+    }
+  
+    public void setNote(String note) {
+        this.note = note;
+    }
+   
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+   
+    @Override
+    public String toString() {
+        return "me.ronghai.sa.model.Account[ id=" + id + " ]";
+    }
+    public Long getMerchantId() {
+        return merchantId;
+    }
+    public void setMerchantId(Long merchantId) {
+        this.merchantId = merchantId;
     }
     
 }

@@ -1,27 +1,28 @@
 package com.ecbeta.common.core.engine;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
-
-import com.ecbeta.common.core.AbstractServicer;
-import com.ecbeta.common.core.AbstractController;
-import com.ecbeta.common.core.reflect.ReflectUtils;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+
+import com.ecbeta.common.core.AbstractController;
+import com.ecbeta.common.core.AbstractServicer;
+import com.ecbeta.common.core.reflect.ReflectUtils;
 
 /**
  *
@@ -81,7 +82,22 @@ public class ServicerFactory {
             String fieldName  = field.getName();
             try {
                 Method setter = ReflectUtils.findSetter(ser, field, null, null);
-                ReflectUtils.updateFieldValue(ser, field, setter, appContext.getBean(fieldName));
+                Object autoInstance = null;
+                try{
+                    autoInstance =  appContext.getBean(fieldName);
+                }catch(BeansException be){
+                    logger.log(Level.SEVERE, null, be);
+                    autoInstance = null;
+                    try {
+                        Class<?> clazz = ReflectUtils.classForName(field.getType().getName());
+                        autoInstance = clazz.newInstance(); 
+                        ReflectUtils.updateFieldValue(autoInstance, autoInstance.getClass().getField( "databaseHandler" ), null, appContext.getBean("databaseHandler") );
+                    } catch (ClassNotFoundException | InstantiationException | BeansException | NoSuchFieldException | SecurityException e) {
+                        logger.log(Level.SEVERE, null, e);
+                        autoInstance = null;
+                    }
+                }
+                ReflectUtils.updateFieldValue(ser, field, setter, autoInstance );
             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                 logger.log(Level.SEVERE, null, fieldName);
                 logger.log(Level.SEVERE, null, e);

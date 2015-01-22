@@ -15,6 +15,11 @@ import org.springframework.jdbc.core.RowMapper;
  */
 public class ClientDAOImpl extends AbstractModelDAOImpl<Client> implements ClientDAO {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     @Override
     public RowMapper<Client> createRowMapper() {
         return Client._getModelMeta().getRowMapper();

@@ -5,9 +5,6 @@
  */
 package me.ronghai.sa.dao.impl;
 
-import com.ecbeta.common.core.db.DatabaseHandler;
-import com.ecbeta.common.core.reflect.ReflectUtils;
-import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -21,15 +18,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
 import me.ronghai.sa.dao.AbstractModelDAO;
 import me.ronghai.sa.model.AbstractModel;
 import me.ronghai.sa.model.ModelMeta;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+
+import com.ecbeta.common.core.db.DatabaseHandler;
+import com.ecbeta.common.core.reflect.ReflectUtils;
 
 /**
  *
@@ -208,6 +211,7 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
         } 
         return entity;
     }
+    @SuppressWarnings("unchecked")
     @Override
     public RowMapper<E> createRowMapper() {        
         Method m = ReflectUtils.findMethod(entityClass, "_getModelMeta", null);

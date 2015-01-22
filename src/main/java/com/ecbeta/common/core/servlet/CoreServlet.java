@@ -24,11 +24,14 @@ import com.ecbeta.common.core.engine.RequestManager;
 import com.ecbeta.common.core.engine.ServicerFactory;
 import com.ecbeta.common.core.reflect.ReflectUtils;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import me.ronghai.sa.dao.NavigationDAO;
+
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -126,6 +129,7 @@ public class CoreServlet extends HttpServlet implements org.springframework.web.
     }
 
     protected Map<String, NavigationBean> getCache() {
+        @SuppressWarnings("unchecked")
         Map<String, NavigationBean> cache = (Map<String, NavigationBean>) this.getServletContext().getAttribute("ALL_NAVIGATIONBEANS_CACHE");
         if (cache == null) {
             cache = new HashMap<>();
