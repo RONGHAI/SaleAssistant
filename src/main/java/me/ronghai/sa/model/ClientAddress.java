@@ -1,9 +1,11 @@
 
 package me.ronghai.sa.model;
 
-import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
+import static com.ecbeta.common.util.JSONUtils.expectOne;
+
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,9 +13,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import static com.ecbeta.common.util.JSONUtils.expectOne;
+
+import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
 /**
  *
  * @author ronghai
@@ -27,6 +31,19 @@ public class ClientAddress extends AbstractModel implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "client_id")
+    private Long clientId;
+    
+    private transient Client client;
+    
+    @Column(name = "address", nullable=true)
+    private String address;
+    
+    @Column(name = "phone", nullable=true)
+    private String phone;
+    
+    @Column(name = "zip_code", nullable=true)
+    private String zipcode;
     
 
     @Column(name = "disabled")
@@ -142,8 +159,12 @@ public class ClientAddress extends AbstractModel implements Serializable {
     public static final JSONArray COLUMNS;
     static{
         COLUMNS = new JSONArray();
-        COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true ).toJson());
-        //COLUMNS.add(new W2UIColumnBean("name", "Name", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("recid", "ID", "10%", true ).toJson());
+      //  COLUMNS.add(new W2UIColumnBean("clientId", "Client", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("address", "Address", "30%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("zipcode", "Zipcode", "10%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("phone", "Phone", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+
         //COLUMNS.add(new W2UIColumnBean("wangwang", "Wangwang", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
         //COLUMNS.add(new W2UIColumnBean("qq", "QQ", "20%", true, "int", JSONObject.fromObject("{ type: 'int', min: 10000 }")).toJson());
         //COLUMNS.add(new W2UIColumnBean("qqName", "QQ Name", "20%", true, "text", JSONObject.fromObject("{ type: 'text'   }")).toJson());
@@ -157,6 +178,10 @@ public class ClientAddress extends AbstractModel implements Serializable {
         JSONObject map = new JSONObject();
         map.put("recid", this.getRecid());
         map.put("id", this.id);
+        map.put("zipcode", this.zipcode);
+        map.put("address", this.address);
+        map.put("clientId", this.clientId);
+        map.put("phone", this.phone);
         return map;
     }
    
@@ -168,6 +193,7 @@ public class ClientAddress extends AbstractModel implements Serializable {
         expectOne(json, "birthday");
         expectOne(json, "gender");
         expectOne(json, "phone");*/
+        expectOne(json, "zipcode", "address", "clientId", "phone", "recid");
         expectOne(json, "recid");
         expectOne(json, "id"); 
         if(json.has("recid") && !json.has("id")){
@@ -177,6 +203,7 @@ public class ClientAddress extends AbstractModel implements Serializable {
     }
     
     private static ModelMeta<ClientAddress> modelMeta;
+    @SuppressWarnings("unchecked")
     @Override
     public   ModelMeta<ClientAddress> modelMeta(){
         return _getModelMeta();
@@ -186,5 +213,45 @@ public class ClientAddress extends AbstractModel implements Serializable {
             modelMeta = new ModelMeta<>(ClientAddress.class);
         }
         return modelMeta;
+    }
+
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
     }
 }

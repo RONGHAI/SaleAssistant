@@ -72,7 +72,11 @@ public class ClientAddressServicer extends AbstractServicer  {
     public List<ClientAddress> find() {
         return clientAddressDAO.find(" WHERE disabled = false ");
     }
-
+    
+    
+    public List<ClientAddress> findWithClient(Long cid) {
+        return clientAddressDAO.find(" WHERE disabled = false and client_id = " + cid);
+    }
 
     public void remove(ClientAddress c) {
         this.clientAddressDAO.remove(c, false);

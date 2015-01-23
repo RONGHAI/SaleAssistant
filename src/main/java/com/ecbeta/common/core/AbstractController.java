@@ -676,24 +676,33 @@ public abstract class AbstractController {
         return map;
     }
     
+    public AbstractServicer getServicer (String swithServicer){
+        return this.getServicer();
+    }
 
-    public Object recordAction() { 
+    
+    
+    public Object recordAction() {
         JSONObject json = this.getJSONObject();
+        String swithServicer = json == null ? null : (String)json.get("servicer");
+        if(swithServicer == null){
+            swithServicer = this.getRequest().getParameter("servicer");
+        }
         String cmd = json == null ? null :(String)json.get("cmd");
         if (cmd == null) {
-            return getRecordsAction(json);
+            return getRecordsAction(json, swithServicer);
         } else if (cmd.equals("get-records")) {
-            return getRecordsAction(json);
+            return getRecordsAction(json, swithServicer);
         } else if (cmd.equals("delete-records")) {
-            return deleteRecordsAction(json);
+            return deleteRecordsAction(json, swithServicer);
         } else if (cmd.equals("save-records")) {
-            return saveRecordsAction(json);
+            return saveRecordsAction(json, swithServicer);
         }
         return getJSONError("Internal Error!");
     }
 
-    public Object getRecordsAction(JSONObject json) {
-        JSONArray array = this.getServicer().getJSONArray();
+    public Object getRecordsAction(JSONObject json, String swithServicer) {
+        JSONArray array = this.getServicer(swithServicer).getJSONArray();
         JSONObject map = new JSONObject();
         map.put("status", "success");
         map.put("total", array.size());
@@ -701,8 +710,8 @@ public abstract class AbstractController {
         return map;
     }
 
-    public Object deleteRecordsAction(JSONObject json) {
-        boolean st = this.getServicer().remove(JSONUtils.toCollection(json, "selected", Long.class));
+    public Object deleteRecordsAction(JSONObject json, String swithServicer) {
+        boolean st = this.getServicer(swithServicer).remove(JSONUtils.toCollection(json, "selected", Long.class));
         JSONObject map = new JSONObject();
         map.put("status", "success");
         logger.info("Delete status " + st);
@@ -710,11 +719,11 @@ public abstract class AbstractController {
         return map;
     }
 
-    public Object saveRecordsAction(JSONObject json) {
+    public Object saveRecordsAction(JSONObject json, String swithServicer) {
         JSONObject map = new JSONObject();
         boolean st = false;
         try{
-            st = this.getServicer().saveOrUpdate(JSONUtils.getChanges(json));
+            st = this.getServicer(swithServicer).saveOrUpdate(JSONUtils.getChanges(json));
             map.put("status", "success");
         }catch(Exception e){
             map.put("message", e.toString()); 

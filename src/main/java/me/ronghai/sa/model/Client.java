@@ -245,6 +245,8 @@ public class Client extends AbstractModel implements Serializable {
         COLUMNS.add(new W2UIColumnBean("birthday", "Birthday", "20%" ,"date:mm/dd/yyyy", true , "date" , JSONObject.fromObject("{ type: 'date' }") ).toJson());
         COLUMNS.add(new W2UIColumnBean("gender", "Gender", "20%", Constants.SAJS_PREFIX+".render_gender", true,  null , JSONObject.fromObject("{ type: 'select', items:'"+Constants.SAJS_PREFIX+".genders()' }")).toJson());
         COLUMNS.add(new W2UIColumnBean("phone", "Phone", "120px", true, "text", JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("recid", "Address", "20%" , Constants.SAJS_PREFIX+".render_address" , false , null, null));
+
     }
     
     public static void main(String args[]){

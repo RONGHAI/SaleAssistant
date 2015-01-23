@@ -49,6 +49,7 @@
     
     <bean id="americaOrderDAO" class="me.ronghai.sa.dao.impl.USAOrderDAOImpl"/>
 
+	<bean id="clientAddressDAO" class="me.ronghai.sa.dao.impl.ClientAddressDAOImpl"/>
     
     <!--
     <bean id="clientController" class="me.ronghai.sabasicCURDPanel.controller.ClientController">

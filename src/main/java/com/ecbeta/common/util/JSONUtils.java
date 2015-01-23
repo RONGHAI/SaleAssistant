@@ -111,8 +111,13 @@ public class JSONUtils {
                 json.put(key, ((JSONArray)o ).get(0));
             }
         }
-          
     }
+     public static void expectOne(JSONObject json, String... keys){
+         if(keys == null ) return;
+         for(String key : keys){
+             expectOne(json, key);
+         }
+     }
      public static void expectMore(JSONObject json, String key){
         if(json.has(key)){
             Object o = json.get(key);
@@ -124,9 +129,14 @@ public class JSONUtils {
                 json.put(key, list);
             }
         }
-          
     }
      
+     public static void expectMore(JSONObject json, String... keys){
+         if(keys == null ) return;
+         for(String key : keys){
+             expectMore(json, key);
+         }
+     }
     public static String toString(JSONArray o){
         if(o == null ){
             return null;
