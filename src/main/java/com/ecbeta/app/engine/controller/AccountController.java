@@ -3,6 +3,7 @@ package com.ecbeta.app.engine.controller;
 import me.ronghai.sa.model.Account;
 
 import com.ecbeta.app.engine.servicer.AccountServicer;
+import com.ecbeta.app.engine.servicer.MerchantServicer;
 import com.ecbeta.common.core.AbstractController;
 import com.ecbeta.common.core.AbstractServicer;
 import com.ecbeta.common.core.annotation.ServicerType;
@@ -12,6 +13,9 @@ public class AccountController extends AbstractController{
     
     @ServicerType(value="com.ecbeta.app.engine.servicer.AccountServicer", spring="")
     private AccountServicer servicer;
+    
+    @ServicerType(value="com.ecbeta.app.engine.servicer.MerchantServicer", spring="")
+    private MerchantServicer merchantServicer;
     
     
     @Override
@@ -46,6 +50,20 @@ public class AccountController extends AbstractController{
     
     public String getColumns(){
         return JSONUtils.toString(Account.COLUMNS, 36);
+    }
+    
+    
+
+    public MerchantServicer getMerchantServicer() {
+        return merchantServicer;
+    }
+
+    public void setMerchantServicer(MerchantServicer merchantServicer) {
+        this.merchantServicer = merchantServicer;
+    }
+    
+    public Object listMerchantsAction(){
+        return this.merchantServicer.getJSONArray();
     }
     
    

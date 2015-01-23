@@ -165,7 +165,7 @@ if (jQuery) {
             return params;
         };
 
-        sale_assistant.get = function(action, paraZone, sucessCallback, errorCallback, autoUpdate) {
+        sale_assistant.get = function(action, paraZone, sucessCallback, errorCallback, autoUpdate, sync) {
             var paras = sale_assistant.serialize(paraZone);
             $j.ajax({
                 url: sale_assistant.baseURLWithButton + action,
@@ -173,9 +173,9 @@ if (jQuery) {
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Methods": "GET"
                 },
-                async: true,
-                type: "POST",
-                dataType: "GET",
+                async: sync ? false : true,
+                type: "GET",
+                dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 data: paras,
                 success: function(data, state) {
@@ -185,7 +185,6 @@ if (jQuery) {
                     }
                 },
                 error: function(data, state) {
-                    
                     sale_assistant.callbackFunction(errorCallback, data, state);
                 }
             });

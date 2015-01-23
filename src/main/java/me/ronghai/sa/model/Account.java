@@ -1,7 +1,6 @@
 package me.ronghai.sa.model;
 
-import com.ecbeta.common.constants.Constants;
-import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
+import static com.ecbeta.common.util.JSONUtils.expectOne;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -16,7 +15,9 @@ import javax.persistence.TemporalType;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import static com.ecbeta.common.util.JSONUtils.expectOne;
+
+import com.ecbeta.common.constants.Constants;
+import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
 /**
  *
  * @author ronghai
@@ -49,8 +50,8 @@ public class Account extends AbstractModel implements Serializable {
         COLUMNS = new JSONArray();
         COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true ).toJson());
         COLUMNS.add(new W2UIColumnBean("username", "UserName", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("email", "email", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("merchantId", "Merchant", "20%", true, "int", JSONObject.fromObject("{ type: 'int', min: 10000 , render : '"+Constants.SAJS_PREFIX+".render_merchant' }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("email", "Email", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("merchantId", "Merchant", "20%", Constants.SAJS_PREFIX+".render_merchant", true, null,  JSONObject.fromObject("{ type: 'select', items:'"+Constants.SAJS_PREFIX+".merchants()' }")).toJson());
         
     }
 

@@ -144,13 +144,13 @@ public class JSONUtils {
         if(o == null ){
             return null;
         }
-        return reformatJSON(o.toString(start, 2));
+        return reformatJSON(o.toString(2, 2));
     }
     public static String toString(JSONObject o, int start){
         if(o == null ){
             return null;
         }
-        return reformatJSON(o.toString(start, 2));
+        return reformatJSON(o.toString(2, 2));
     }
     
     

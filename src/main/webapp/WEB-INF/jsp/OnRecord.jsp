@@ -16,8 +16,7 @@
     <head>
         <title>${worker.appName}</title>
         <sm:Head controller='${worker}' >
-            
-            
+            ${javascript} 
             <script type="text/javascript">
                 $(function() {
                       $(document).ready(function() {
