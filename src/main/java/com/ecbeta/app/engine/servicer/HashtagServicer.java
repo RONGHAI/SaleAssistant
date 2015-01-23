@@ -2,16 +2,21 @@ package com.ecbeta.app.engine.servicer;
 
 import com.ecbeta.common.core.AbstractServicer;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
+import com.ecbeta.common.util.JSONUtils;
+
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
 import me.ronghai.sa.dao.impl.HashtagDAOImpl;
+import me.ronghai.sa.model.AbstractModel;
 import me.ronghai.sa.model.Hashtag;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class HashtagServicer extends AbstractServicer  {
@@ -79,11 +84,26 @@ public class HashtagServicer extends AbstractServicer  {
         this.hashtagDAO.remove(false, Arrays.asList(ids));
         this.refresh();
     }
+    
+    @Override
+    public JSONArray getJSONArray(){
+        return JSONUtils.toJSONArray(this.hashtags);
+    }
+    
+    @Override
+    public List<? extends AbstractModel> beans(){
+        return this.hashtags;
+    }
+    
 
-
-    public void remove(Collection<Long> ids) {
-        this.hashtagDAO.remove(false, new ArrayList<>(ids));
+    @Override
+    public boolean remove(Collection<Long> ids) {
+        if(ids == null || ids.isEmpty() ) return false;
+        if( 0 == this.hashtagDAO.remove(false, new ArrayList<>(ids))){
+            return false;
+        }
         this.refresh();
+        return true;
     }
 
     public Hashtag save(Hashtag c) {
@@ -91,8 +111,11 @@ public class HashtagServicer extends AbstractServicer  {
         this.refresh();
         return c;
     }
-
-    public void saveOrUpdate(JSONArray jsonArray) {
+    
+    @Override
+    public boolean saveOrUpdate(JSONArray jsonArray) {
+        if(jsonArray == null || jsonArray.isEmpty() ) return false;
+        @SuppressWarnings("unchecked")
         Iterator<JSONObject> it = jsonArray.iterator();
         while(it.hasNext()){
             JSONObject newJsonObj = it.next();
@@ -108,6 +131,7 @@ public class HashtagServicer extends AbstractServicer  {
             this.saveOrUpdate(hashtag);
         }
         this.refresh();
+        return true;
     }
 
     private Hashtag saveOrUpdate(Hashtag hashtag) {

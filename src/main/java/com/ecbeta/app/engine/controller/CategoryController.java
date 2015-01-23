@@ -41,38 +41,6 @@ public class CategoryController extends AbstractController{
         
     }
     
-    @Override
-    public Object deleteRecordsAction(JSONObject json) {
-        this.servicer.remove(JSONUtils.toCollection(json, "selected", Long.class));
-        JSONObject map = new JSONObject();
-        map.put("status", "success");
-        return map;
-    }
-
-    @Override
-    public Object getRecordsAction(JSONObject json) {
-        List<Category> list = this.servicer.getCategories();
-        JSONObject map = new JSONObject();
-        map.put("status", "success");
-        map.put("total", list.size());
-        
-        JSONArray array = new JSONArray();
-        for(Category c : list ){
-            array.add(c.toJson());
-        }
-        map.put("records", array);
-        return map;
-    }
-    
-    @Override
-    public Object saveRecordsAction(JSONObject json) {
-        JSONArray jsonArray = JSONUtils.getChanges(json);
-        servicer.saveOrUpdate(jsonArray);
-        
-        JSONObject map = new JSONObject();
-        map.put("success", true);
-        return map;
-    }
     
    
     public Object getColumnsAction(){

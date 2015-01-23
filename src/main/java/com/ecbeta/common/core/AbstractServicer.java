@@ -1,9 +1,13 @@
 package com.ecbeta.common.core;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
+import me.ronghai.sa.model.AbstractModel;
+import net.sf.json.JSONArray;
 
 import com.ecbeta.common.core.bean.BaseServicerParaBean;
 import com.ecbeta.common.core.db.DatabaseHandler;
@@ -113,5 +117,20 @@ public abstract class AbstractServicer implements Serializable{
     }
     public void setNavigationBeans (List<NavigationBean> navigationBeans) {
         this.navigationBeans = navigationBeans;
+    }
+
+    public boolean saveOrUpdate(JSONArray changes) {
+        throw new UnsupportedOperationException();
+    }
+
+    public boolean remove(Collection<Long> collection) {
+        throw new UnsupportedOperationException();
+    }
+    
+    public JSONArray getJSONArray(){
+        throw new UnsupportedOperationException();
+    }
+    public List<? extends AbstractModel> beans(){
+        throw new UnsupportedOperationException();
     }
 }

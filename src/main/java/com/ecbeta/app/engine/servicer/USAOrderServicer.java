@@ -2,16 +2,21 @@ package com.ecbeta.app.engine.servicer;
 
 import com.ecbeta.common.core.AbstractServicer;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
+import com.ecbeta.common.util.JSONUtils;
+
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
 import me.ronghai.sa.dao.impl.USAOrderDAOImpl;
+import me.ronghai.sa.model.AbstractModel;
 import me.ronghai.sa.model.USAOrder;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class USAOrderServicer extends AbstractServicer  {
@@ -81,9 +86,14 @@ public class USAOrderServicer extends AbstractServicer  {
     }
 
 
-    public void remove(Collection<Long> ids) {
-        this.americaOrderDAO.remove(false, new ArrayList<>(ids));
+    @Override
+    public boolean remove(Collection<Long> ids) {
+        if(ids == null || ids.isEmpty()) return false;
+        if( 0 == this.americaOrderDAO.remove(false, new ArrayList<>(ids))){
+            return false;
+        };
         this.refresh();
+        return true;
     }
 
     public USAOrder save(USAOrder c) {
@@ -91,8 +101,22 @@ public class USAOrderServicer extends AbstractServicer  {
         this.refresh();
         return c;
     }
-
-    public void saveOrUpdate(JSONArray jsonArray) {
+    
+    @Override
+    public JSONArray getJSONArray(){
+        return JSONUtils.toJSONArray(this.orders);
+    }
+    
+    @Override
+    public List<? extends AbstractModel> beans(){
+        return this.orders;
+    }
+    
+    
+    @Override
+    public boolean saveOrUpdate(JSONArray jsonArray) {
+        if(jsonArray == null || jsonArray.isEmpty() ) return false;
+        @SuppressWarnings("unchecked")
         Iterator<JSONObject> it = jsonArray.iterator();
         while(it.hasNext()){
             JSONObject newJsonObj = it.next();
@@ -108,6 +132,7 @@ public class USAOrderServicer extends AbstractServicer  {
             this.saveOrUpdate(order);
         }
         this.refresh();
+        return true;
     }
 
     private USAOrder saveOrUpdate(USAOrder order) {

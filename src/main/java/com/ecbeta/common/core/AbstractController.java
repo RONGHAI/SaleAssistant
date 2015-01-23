@@ -679,9 +679,7 @@ public abstract class AbstractController {
 
     public Object recordAction() { 
         JSONObject json = this.getJSONObject();
-        logger.log(Level.INFO, "Request Content:>>\n " + json, json);
         String cmd = json == null ? null :(String)json.get("cmd");
-        logger.log(Level.INFO, "recordAction:>>" + cmd, json);
         if (cmd == null) {
             return getRecordsAction(json);
         } else if (cmd.equals("get-records")) {
@@ -695,14 +693,35 @@ public abstract class AbstractController {
     }
 
     public Object getRecordsAction(JSONObject json) {
-        return getJSONError("Internal Error!");
+        JSONArray array = this.getServicer().getJSONArray();
+        JSONObject map = new JSONObject();
+        map.put("status", "success");
+        map.put("total", array.size());
+        map.put("records", array);
+        return map;
     }
 
     public Object deleteRecordsAction(JSONObject json) {
-        return getJSONError("Internal Error!");
+        boolean st = this.getServicer().remove(JSONUtils.toCollection(json, "selected", Long.class));
+        JSONObject map = new JSONObject();
+        map.put("status", "success");
+        logger.info("Delete status " + st);
+        map.put("refresh", st);
+        return map;
     }
 
     public Object saveRecordsAction(JSONObject json) {
-        return getJSONError("Internal Error!");
+        JSONObject map = new JSONObject();
+        boolean st = false;
+        try{
+            st = this.getServicer().saveOrUpdate(JSONUtils.getChanges(json));
+            map.put("status", "success");
+        }catch(Exception e){
+            map.put("message", e.toString()); 
+            logger.log(Level.SEVERE, null, e);
+            map.put("status", "error");
+        }
+        map.put("refresh", st);
+        return map;
     }
 }

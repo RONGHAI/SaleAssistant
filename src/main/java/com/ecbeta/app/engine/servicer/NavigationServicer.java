@@ -19,16 +19,21 @@ package com.ecbeta.app.engine.servicer;
 
 import com.ecbeta.common.core.AbstractServicer;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
+import com.ecbeta.common.util.JSONUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
 import me.ronghai.sa.dao.impl.NavigationDAOImpl;
+import me.ronghai.sa.model.AbstractModel;
 import me.ronghai.sa.model.Navigation;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -106,10 +111,25 @@ public class NavigationServicer extends AbstractServicer  {
         this.refresh();
     }
 
-
-    public void remove(Collection<Long> ids) {
-        this.navigationDAO.remove(false, new ArrayList<>(ids));
+    @Override
+    public JSONArray getJSONArray(){
+        return JSONUtils.toJSONArray(this.navigations);
+    }
+    
+    @Override
+    public List<? extends AbstractModel> beans(){
+        return this.navigations;
+    }
+    
+    
+    @Override
+    public boolean remove(Collection<Long> ids) {
+        if(ids == null || ids.isEmpty()) return false;
+        if( 0 == this.navigationDAO.remove(false, new ArrayList<>(ids))){
+            return false;
+        }
         this.refresh();
+        return true;
     }
 
     public Navigation save(Navigation c) {
@@ -118,7 +138,10 @@ public class NavigationServicer extends AbstractServicer  {
         return c;
     }
 
-    public void saveOrUpdate(JSONArray jsonArray) {
+    @Override
+    public boolean saveOrUpdate(JSONArray jsonArray) {
+        if(jsonArray == null  || jsonArray.isArray()) return false;
+        @SuppressWarnings("unchecked")
         Iterator<JSONObject> it = jsonArray.iterator();
         while(it.hasNext()){
             JSONObject newJsonObj = it.next();
@@ -134,6 +157,7 @@ public class NavigationServicer extends AbstractServicer  {
             this.saveOrUpdate(client);
         }
         this.refresh();
+        return true;
     }
 
     private Navigation saveOrUpdate(Navigation client) {

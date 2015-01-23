@@ -3,3 +3,17 @@ body, html{
     font-family: Verdana, Arial;
     font-size: 11px;
 }
+
+
+#grid_grid_rec_bottom{
+    height:0px;
+    display:none;
+}
+
+.unsave-odd{
+    background-color: rgb(242, 220, 219);
+}
+
+.unsave-even{
+    background-color: rgb(230, 184, 183);
+}

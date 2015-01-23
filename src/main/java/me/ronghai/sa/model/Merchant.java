@@ -1,6 +1,7 @@
 
 package me.ronghai.sa.model;
 
+import com.ecbeta.common.constants.Constants;
 import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
 
 import java.io.Serializable;
@@ -160,8 +161,8 @@ public class Merchant extends AbstractModel implements Serializable {
         COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true ).toJson());
         COLUMNS.add(new W2UIColumnBean("name", "Name", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
         COLUMNS.add(new W2UIColumnBean("code", "Code", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("website", "Website", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("trackURL", "Track URL", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("website", "Website", "20%", Constants.SAJS_PREFIX+".renderLink",true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("trackURL", "Track URL", "20%",  true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
         COLUMNS.add(new W2UIColumnBean("note", "note", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
    }
     

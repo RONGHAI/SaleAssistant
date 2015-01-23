@@ -36,14 +36,41 @@
                                     columns: ${worker.columns},
                                     searches : ${worker.columns},
                                     onAdd: function (target,data) {
-                                        this.add({ recid: new Date().getTime() });
+                                        var  recid = sa.generateRecid(this , '${worker.appName}');
+                                        this.add({ recid: recid });
+                                        var tr = $('#grid_'+this.name+"_rec_"+recid);
+                                        tr.css('background-color', tr.hasClass("w2ui-odd") ?  "rgb(235, 241, 222)" : "rgb(216, 228, 188)" );
+                                        var st =  tr.hasClass("w2ui-odd") ?  "background-color:rgb(235, 241, 222)" : "background-color:rgb(216, 228, 188)";
+                                        this.get(recid).style = st;
                                     },
                                     onSave: function(event){
-                                        w2ui['grid'].reload();
+                                        event.onComplete = function () {
+                                            var data = sa.eventData(event);
+                                            if(!data || data.refresh ){
+                                                this.reload();
+                                            }
+                                        }
+                                    },
+                                    onLoad: function(event) {
+                                        event.onComplete = function () {
+                                           sa.initMaxRecId(this, '${worker.appName}');
+                                        }
+                                    },
+                                    onDelete: function(event){
+                                         sa.log("delete");
+                                         sa.log(event);
+                                         event.force = true; // no confirmation
+                                    },
+                                    onError: function(event){
+                                        //event.isCancelled = true;
+                                        var data = sa.eventData(event);
+                                        if(data && !data.refresh && !data.message){
+                                            //event.isCancelled = true;
+                                        }
+                                        //sa.log(event);
                                     }
                             });
-                            
-                            
+
                       });
                     
                 });

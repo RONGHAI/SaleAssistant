@@ -19,11 +19,6 @@ if (jQuery) {
 
         sale_assistant.render_gender = function(record, index, col_index){
             var cellvalue = this.getCellValue(index, col_index);
-            sale_assistant.log(this);
-            sale_assistant.log(record);
-            sale_assistant.log(index);
-            sale_assistant.log(col_index);
-            sale_assistant.log(cellvalue);
             var html = "";
             var gs = sale_assistant.__gender_list;
             for (var p in gs) {
@@ -34,6 +29,14 @@ if (jQuery) {
             }
             return html;
         };
+
+        sale_assistant.renderLink = function(record, index, col_index){
+            var cellvalue = this.getCellValue(index, col_index);
+            var html = "";
+            //<a href="http://www.w3schools.com" target="_blank">Visit W3Schools.com!</a> 
+            return "<a href='http://"+cellvalue+"' target='_blank'>"+cellvalue+"</a>";
+        };
+
         sale_assistant.error = function(d) {
             if (console) {
                 console.error(d);
@@ -265,6 +268,38 @@ if (jQuery) {
             }
         };
 
+        sale_assistant.max_recid = {};
+        sale_assistant.generateRecid = function(grid, app){
+            var rs = grid.records;
+            sale_assistant.max_recid[app]  = sale_assistant.max_recid[app] || 0;
+            for(var i =0; i< rs.length; i++){
+                var recid = rs[i].recid;
+                if(sale_assistant.max_recid[app] < recid){
+                    sale_assistant.max_recid[app] = recid;
+                }
+            }
+            sale_assistant.max_recid[app] += 1;
+            return sale_assistant.max_recid[app];
+        };
+
+        sale_assistant.initMaxRecId = function(grid, app){
+            var rs = grid.records;
+            sale_assistant.max_recid[app]  =  0;
+            for(var i =0; i< rs.length; i++){
+                var recid = rs[i].recid;
+                if(sale_assistant.max_recid[app] < recid){
+                    sale_assistant.max_recid[app] = recid;
+                }
+            }
+            //sa.log(sale_assistant.max_recid[app]);
+        };
+
+        sale_assistant.eventData = function(evt){
+            var data;
+            try { data = $.parseJSON(evt.xhr.responseText) } catch (e) {}
+            sa.log(data);
+            return data;
+        };
         
 
     })(jQuery);

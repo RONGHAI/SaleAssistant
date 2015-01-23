@@ -2,16 +2,21 @@ package com.ecbeta.app.engine.servicer;
 
 import com.ecbeta.common.core.AbstractServicer;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
+import com.ecbeta.common.util.JSONUtils;
+
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
 import me.ronghai.sa.dao.impl.AccountDAOImpl;
+import me.ronghai.sa.model.AbstractModel;
 import me.ronghai.sa.model.Account;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class AccountServicer extends AbstractServicer  {
@@ -76,14 +81,29 @@ public class AccountServicer extends AbstractServicer  {
 
 
     public void remove(Long... ids) {
+        if(ids == null) return;
         this.accountDAO.remove(false, Arrays.asList(ids));
         this.refresh();
     }
 
-
-    public void remove(Collection<Long> ids) {
-        this.accountDAO.remove(false, new ArrayList<>(ids));
+    @Override
+    public JSONArray getJSONArray(){
+        return JSONUtils.toJSONArray(this.accounts);
+    }
+    
+    @Override
+    public List<? extends AbstractModel> beans(){
+        return this.accounts;
+    }
+    
+    @Override
+    public boolean remove(Collection<Long> ids) {
+        if(ids == null || ids.isEmpty() ) return false;
+        if( 0 ==  this.accountDAO.remove(false, new ArrayList<>(ids))){
+            return false;
+        }
         this.refresh();
+        return true;
     }
 
     public Account save(Account c) {
@@ -92,7 +112,10 @@ public class AccountServicer extends AbstractServicer  {
         return c;
     }
 
-    public void saveOrUpdate(JSONArray jsonArray) {
+    @Override
+    public boolean saveOrUpdate(JSONArray jsonArray) {
+        if(jsonArray == null || jsonArray.isEmpty() ) return false;
+        @SuppressWarnings("unchecked")
         Iterator<JSONObject> it = jsonArray.iterator();
         while(it.hasNext()){
             JSONObject newJsonObj = it.next();
@@ -107,6 +130,7 @@ public class AccountServicer extends AbstractServicer  {
             this.saveOrUpdate(account);
         };
         this.refresh();
+        return true;
     }
 
     private Account saveOrUpdate(Account account) {

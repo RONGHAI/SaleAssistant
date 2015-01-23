@@ -1,8 +1,7 @@
 
 package me.ronghai.sa.model;
 
-import com.ecbeta.common.constants.Constants;
-import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
+import static com.ecbeta.common.util.JSONUtils.expectOne;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,11 +14,11 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.apache.commons.lang.ArrayUtils;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import static com.ecbeta.common.util.JSONUtils.expectOne;
+
+import com.ecbeta.common.constants.Constants;
+import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
 /**
  *
  * @author ronghai

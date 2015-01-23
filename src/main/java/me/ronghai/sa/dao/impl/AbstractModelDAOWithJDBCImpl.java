@@ -131,7 +131,9 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
     public E persistent(E entity) { 
      
         List<?>[] columnsAndValues = findColumnsAndValues(true, entity);
+        @SuppressWarnings("unchecked")
         List<String> columnNames = columnsAndValues == null ? null : (List<String>) columnsAndValues[0];
+        @SuppressWarnings("unchecked")
         List<Object> values = columnsAndValues == null ? null : (List<Object>) columnsAndValues[1];
 
         if (columnNames != null && !columnNames.isEmpty()) {
@@ -177,7 +179,7 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
         } else {
             sql = "UPDATE " + table + "  SET disabled = 1  WHERE id IN (:ids) ";
         }
-        System.out.println(ids);
+        logger.info("remove ids " + ids);
         MapSqlParameterSource parameters = new MapSqlParameterSource() ;
         parameters.addValue("ids", new ArrayList<>(ids));
         return this.databaseHandler.update(sql, parameters);
@@ -192,7 +194,9 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
     public E merge(E entity) {
         //TODO ..
         List<?>[] columnsAndValues = findColumnsAndValues(true, entity);
+        @SuppressWarnings("unchecked")
         List<String> columnNames = columnsAndValues == null ? null : (List<String>) columnsAndValues[0];
+        @SuppressWarnings("unchecked")
         List<Object> values = columnsAndValues == null ? null : (List<Object>) columnsAndValues[1];        
         if (columnNames != null && !columnNames.isEmpty()) {
             String sql = " UPDATE " + table(entityClass) +" SET " ;
@@ -221,7 +225,7 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
             return me.getRowMapper();
         }
         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            Logger.getLogger(AbstractModelDAOWithJDBCImpl.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
         throw new UnsupportedOperationException("Not supported yet."); 
     }

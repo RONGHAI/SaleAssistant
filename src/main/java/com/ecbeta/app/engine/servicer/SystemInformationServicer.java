@@ -1,18 +1,23 @@
 package com.ecbeta.app.engine.servicer;
 
-import com.ecbeta.common.core.AbstractServicer;
-import com.ecbeta.common.core.viewer.bean.NavigationBean;
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
 import me.ronghai.sa.dao.impl.PropertyDAOImpl;
+import me.ronghai.sa.model.AbstractModel;
 import me.ronghai.sa.model.Property;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.ecbeta.common.core.AbstractServicer;
+import com.ecbeta.common.core.viewer.bean.NavigationBean;
+import com.ecbeta.common.util.JSONUtils;
 
 public class SystemInformationServicer extends AbstractServicer  {
 
@@ -80,10 +85,25 @@ public class SystemInformationServicer extends AbstractServicer  {
         this.refresh();
     }
 
-
-    public void remove(Collection<Long> ids) {
-        this.systemInformationDAO.remove(false, new ArrayList<>(ids));
+    @Override
+    public JSONArray getJSONArray(){
+        return JSONUtils.toJSONArray(this.systemInformations);
+    }
+    
+    @Override
+    public List<? extends AbstractModel> beans(){
+        return this.systemInformations;
+    }
+    
+    
+    @Override
+    public boolean remove(Collection<Long> ids) {
+        if(ids == null || ids.isEmpty()) return false;
+        if( 0 ==  this.systemInformationDAO.remove(false, new ArrayList<>(ids))){
+            return false;
+        }
         this.refresh();
+        return true;
     }
 
     public Property save(Property c) {
@@ -92,7 +112,10 @@ public class SystemInformationServicer extends AbstractServicer  {
         return c;
     }
 
-    public void saveOrUpdate(JSONArray jsonArray) {
+    @Override
+    public boolean saveOrUpdate(JSONArray jsonArray) {
+        if(jsonArray == null || jsonArray.isEmpty() ) return false;
+        @SuppressWarnings("unchecked")
         Iterator<JSONObject> it = jsonArray.iterator();
         while(it.hasNext()){
             JSONObject newJsonObj = it.next();
@@ -108,6 +131,7 @@ public class SystemInformationServicer extends AbstractServicer  {
             this.saveOrUpdate(bean);
         }
         this.refresh();
+        return true;
     }
 
     private Property saveOrUpdate(Property client) {

@@ -5,19 +5,11 @@
  */
 package com.ecbeta.common.util;
 
-import com.ecbeta.common.constants.Constants;
-import com.ecbeta.common.core.viewer.bean.MapJSONBean;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-
-import net.sf.json.JSON;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -27,11 +19,19 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+import me.ronghai.sa.model.AbstractModel;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import com.ecbeta.common.constants.Constants;
+import com.ecbeta.common.core.viewer.bean.MapJSONBean;
+
 /**
  *
  * @author Ronghai Wei <ronghai.wei@outlook.com>
  */
 public class JSONUtils {
+    private static final Logger logger = Logger.getLogger(JSONUtils.class.getName());
 
     @SuppressWarnings("unchecked")
     public static <T> Collection<T> toCollection(Object json, String key, Class<T> clazz) {
@@ -75,11 +75,14 @@ public class JSONUtils {
 
         }
         catch (IOException ex) {
-            Logger.getLogger(JSONUtils.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
-
-        System.out.println("json:"+json.toString());
-        return json.toJson();
+        
+        JSONObject job = json.toJson();
+        logger.info("~~~~~~~~~AutoCreating~~~~~~~~~");
+        logger.info(json == null ?  "" : job.toString(2) );
+        logger.info("~~~~~~~~~End~~~~~~~~~");
+        return job;
     }
 
     private static Map<String, List<String>> parseParameters(String url) {
@@ -160,11 +163,19 @@ public class JSONUtils {
     
     public final static JSONArray getChanges(JSONObject json){
         for(String s : Constants.W2UI_CHANGES){
-            JSONArray ar = json.getJSONArray(s);
+            Object ar = json.get(s);
             if(ar != null){
-                return ar;
+                return (JSONArray)ar;
             }
         }
         return null;
+    }
+    
+    public static JSONArray toJSONArray(Collection<? extends AbstractModel> list){
+        JSONArray jsonArray = new JSONArray();
+        for(AbstractModel o : list){
+            jsonArray.add(o.toJson());
+        }
+        return jsonArray;
     }
 }
