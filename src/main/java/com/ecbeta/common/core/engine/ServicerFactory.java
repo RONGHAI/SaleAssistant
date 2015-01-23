@@ -22,6 +22,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.ecbeta.common.core.AbstractController;
 import com.ecbeta.common.core.AbstractServicer;
+import com.ecbeta.common.core.db.DatabaseHandler;
 import com.ecbeta.common.core.reflect.ReflectUtils;
 
 /**
@@ -51,11 +52,11 @@ public class ServicerFactory {
     }
 
     public static AbstractServicer getServicer(HttpSession session, Class<?> servicerClass, String instanceName , ApplicationContext appContext, String spring) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        return getService(session, servicerClass.getName(), instanceName, appContext, spring, null);
+        return getService(session, servicerClass.getName(), instanceName, appContext, spring, null, null);
     }
 
     public static AbstractServicer getService(HttpSession session, String className, 
-            String instanceName,  ApplicationContext appContext, String spring, AbstractController worker) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+            String instanceName,  ApplicationContext appContext, String spring, AbstractController worker, DatabaseHandler dbhandler) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         String servicerId = getServicerID(session, className, instanceName, worker);
         Object servicer = session.getAttribute(servicerId);
         String date = buildDateString();
@@ -65,14 +66,14 @@ public class ServicerFactory {
         } else {
             Class<?> clazz = ReflectUtils.classForName(className);
             Object newInstance = clazz.newInstance(); 
-            autowired((AbstractServicer) newInstance, appContext);
+            autowired((AbstractServicer) newInstance, appContext, dbhandler);
             session.setAttribute(servicerId, newInstance);
             newServiceInstanceIds.add(date + "_" + servicerId);
             return (AbstractServicer) newInstance;
         }
     }
 
-    protected static void autowired(AbstractServicer ser, ApplicationContext appContext) {
+    protected static void autowired(AbstractServicer ser, ApplicationContext appContext, DatabaseHandler dbhandler) {
         if(appContext == null ) return;
         Collection<Field> fields = ReflectUtils.getDeclaredFields((Map<String, Field>) null, ser.getClass(), false).values();
         for (Field field : fields) {
@@ -91,7 +92,7 @@ public class ServicerFactory {
                     try {
                         Class<?> clazz = ReflectUtils.classForName(field.getType().getName());
                         autoInstance = clazz.newInstance(); 
-                        ReflectUtils.updateFieldValue(autoInstance, autoInstance.getClass().getField( "databaseHandler" ), null, appContext.getBean("databaseHandler") );
+                        ReflectUtils.updateFieldValue(autoInstance, autoInstance.getClass().getField( "databaseHandler" ), null, dbhandler );
                     } catch (ClassNotFoundException | InstantiationException | BeansException | NoSuchFieldException | SecurityException e) {
                         logger.log(Level.SEVERE, null, e);
                         autoInstance = null;
