@@ -59,7 +59,7 @@
                                     onDelete: function(event){
                                          sa.log("delete");
                                          sa.log(event);
-                                         event.force = true; // no confirmation
+                                         //event.force = true; // no confirmation
                                     },
                                     onError: function(event){
                                         //event.isCancelled = true;
@@ -70,7 +70,7 @@
                                         //sa.log(event);
                                     }
                             });
-
+                            w2ui['grid'].add = sa.add_record;
                       });
                     
                 });

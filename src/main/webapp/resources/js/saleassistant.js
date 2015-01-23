@@ -37,6 +37,7 @@ if (jQuery) {
             return "<a href='http://"+cellvalue+"' target='_blank'>"+cellvalue+"</a>";
         };
 
+        sale_assistant.render_link  = sale_assistant.renderLink ;
         sale_assistant.error = function(d) {
             if (console) {
                 console.error(d);
@@ -301,6 +302,29 @@ if (jQuery) {
             return data;
         };
         
+
+        sale_assistant.add_record = function(record){
+            if (!$.isArray(record)) record = [record];
+            var added = 0;
+            for (var o in record) {
+                if (!this.recid && typeof record[o].recid == 'undefined') record[o].recid = record[o][this.recid];
+                if (record[o].recid == null || typeof record[o].recid == 'undefined') {
+                    console.log('ERROR: Cannot add record without recid. (obj: '+ this.name +')');
+                    continue;
+                }
+                this.records.unshift(record[o]);
+                added++;
+            }
+            var url = (typeof this.url != 'object' ? this.url : this.url.get);
+            if (!url) {
+                this.total = this.records.length;
+                this.localSort();
+                this.localSearch();
+            }
+            this.refresh(); // ??  should it be reload?
+            return added;
+
+        }
 
     })(jQuery);
 }
