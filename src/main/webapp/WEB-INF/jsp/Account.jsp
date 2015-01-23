@@ -11,4 +11,4 @@
     sale_assistant.render_merchant = function(record, index, column_index){
         return "M"+record.merchantId;
     };
-</script>>
+</script>
