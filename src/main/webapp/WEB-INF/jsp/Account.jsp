@@ -9,8 +9,8 @@
         sale_assistant._merchants_ = [];
         $(function() {
             $(document).ready(function() {            
-                sale_assistant.merchants = function(){
-                    if(sale_assistant._merchants_ && sale_assistant._merchants_.length > 0){
+                sale_assistant.merchants = function(force){
+                    if(!force && sale_assistant._merchants_ && sale_assistant._merchants_.length > 0){
                         return sale_assistant._merchants_;
                     }else{
                         sale_assistant.get("listMerchants", "", function(data, state){

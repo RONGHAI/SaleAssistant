@@ -1,9 +1,11 @@
 
 package me.ronghai.sa.model;
 
-import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
+import static com.ecbeta.common.util.JSONUtils.expectOne;
+
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,9 +13,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import static com.ecbeta.common.util.JSONUtils.expectOne;
+
+import com.ecbeta.common.constants.Constants;
+import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
 /**
  *
  * @author ronghai
@@ -27,6 +32,19 @@ public class Category extends AbstractModel implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "name")
+    private String name;
+    
+    @Column(name = "code")
+    private String code;
+    
+    @Column(name = "level")
+    private int level = 1;
+    
+    @Column(name = "parent_id")
+    private Long parentId = -1L;
+    
+    private transient Category parent;
     
 
     @Column(name = "disabled")
@@ -142,14 +160,13 @@ public class Category extends AbstractModel implements Serializable {
     public static final JSONArray COLUMNS;
     static{
         COLUMNS = new JSONArray();
-        COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true ).toJson());
-        //COLUMNS.add(new W2UIColumnBean("name", "Name", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
-        //COLUMNS.add(new W2UIColumnBean("wangwang", "Wangwang", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
-        //COLUMNS.add(new W2UIColumnBean("qq", "QQ", "20%", true, "int", JSONObject.fromObject("{ type: 'int', min: 10000 }")).toJson());
-        //COLUMNS.add(new W2UIColumnBean("qqName", "QQ Name", "20%", true, "text", JSONObject.fromObject("{ type: 'text'   }")).toJson());
-        //COLUMNS.add(new W2UIColumnBean("birthday", "Birthday", "20%" ,"date:mm/dd/yyyy", true , "date" , JSONObject.fromObject("{ type: 'date' }") ).toJson());
-        //COLUMNS.add(new W2UIColumnBean("gender", "Gender", "20%", true, "text", JSONObject.fromObject("{ type: 'list', items:[{id:'M', text : \"Male\"}, {id:'F', text : \"Female\"}, {id:'U', text : \"U\"}]  }")).toJson());
-        //COLUMNS.add(new W2UIColumnBean("phone", "Phone", "120px", true, "text", JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true ,"int").toJson());
+        COLUMNS.add(new W2UIColumnBean("name", "Name", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("code", "Code", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        W2UIColumnBean col = new W2UIColumnBean("parentId", "Parent", "20%", Constants.SAJS_PREFIX+".render_parent", true, null,  JSONObject.fromObject("{ type: 'select', items:'"+Constants.SAJS_PREFIX+".categories()' }"));
+        col.setSearchable(false);
+        COLUMNS.add(col.toJson());
+        COLUMNS.add(new W2UIColumnBean("note", "Note", "120px", true, "text", JSONObject.fromObject("{ type: 'text'  }")).toJson());
     }
     
     @Override
@@ -157,18 +174,16 @@ public class Category extends AbstractModel implements Serializable {
         JSONObject map = new JSONObject();
         map.put("recid", this.getRecid());
         map.put("id", this.id);
+        map.put("name", this.name);
+        map.put("code", this.code);
+        map.put("level", this.level);
+        map.put("parentId", this.parentId);
+        map.put("note", this.note);
         return map;
     }
    
     public static  Category fromJson(JSONObject json){               
-        /*expectOne(json, "name");
-        expectOne(json, "wangwang");
-        expectOne(json, "qq");
-        expectOne(json, "qqName");
-        expectOne(json, "birthday");
-        expectOne(json, "gender");
-        expectOne(json, "phone");*/
-        expectOne(json, "recid");
+        expectOne(json, "recid", "name", "code", "level", "parentId", "note");
         expectOne(json, "id"); 
         if(json.has("recid") && !json.has("id")){
             json.put("id", json.get("recid"));
@@ -177,6 +192,7 @@ public class Category extends AbstractModel implements Serializable {
     }
     
     private static ModelMeta<Category> modelMeta;
+    @SuppressWarnings("unchecked")
     @Override
     public   ModelMeta<Category> modelMeta(){
         return _getModelMeta();
@@ -186,5 +202,45 @@ public class Category extends AbstractModel implements Serializable {
             modelMeta = new ModelMeta<>(Category.class);
         }
         return modelMeta;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
+    public Category getParent() {
+        return parent;
+    }
+
+    public void setParent(Category parent) {
+        this.parent = parent;
     }
 }
