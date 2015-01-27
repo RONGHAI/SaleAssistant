@@ -12,6 +12,7 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -19,7 +20,12 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.springframework.expression.spel.ast.OpAnd;
+
+import sun.print.resources.serviceui;
 import me.ronghai.sa.model.AbstractModel;
+import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -185,6 +191,219 @@ public class JSONUtils {
         JSONArray jsonArray = new JSONArray();
         for(AbstractModel o : list){
             jsonArray.add(o.toJson());
+        }
+        return jsonArray;
+    }
+    
+    
+    public static List<JSONObject> toJSONObjects(Collection<? extends AbstractModel> list){
+        List<JSONObject>  jsonArray = new  ArrayList<>();
+        for(AbstractModel o : list){
+            Object obj = o.toJson();
+            if(obj instanceof JSONObject){
+                jsonArray.add((JSONObject)obj);
+            }else{
+                jsonArray.add(JSONObject.fromObject(obj));
+            }
+        }
+        logger.log(Level.INFO, "all Json Object Arrays \n{0}", jsonArray);
+        return jsonArray;
+    }
+    
+    public static JSONArray toJSONArray(List<? extends AbstractModel> list, JSONObject json){
+        List<JSONObject> jsonArray  = toJSONObjects(list);
+        jsonArray = limit(jsonArray, json);
+        jsonArray = search(jsonArray, json);
+        jsonArray = sort(jsonArray, json);
+        return JSONArray.fromObject(jsonArray);
+    }
+    
+    public static List<JSONObject> search(List<JSONObject> jsonArray, JSONObject json){
+        JSONArray searchs  = json != null && json.has("search") ? json.getJSONArray("search") : null;
+        if(searchs == null){
+            return jsonArray;
+        }
+        
+        String searchLogic = json.getString("searchLogic");
+        boolean or = "OR".equals(searchLogic);
+        for (Iterator<JSONObject> iterator = jsonArray.iterator(); iterator.hasNext();) {
+            JSONObject bean = iterator.next();
+            boolean in = or ? false : true;
+            for(Object o : searchs.toArray()){
+                if(isIn(bean, (JSONObject)o)){
+                   if(or){
+                       in = true;
+                       break;
+                   }
+                }else{
+                    if(!or){
+                        in = false;
+                        break;
+                    }
+                }
+            }
+            if(!in){
+                iterator.remove();
+                continue;
+            }
+        }
+        return jsonArray;
+    }
+    
+    public static boolean isIn(JSONObject obj, JSONObject search){
+        if(!search.has("value")){
+            return true;
+        }
+        try{
+            expectOne(search, "field", "type", "operator");
+            String operator = search.getString("operator");
+            String field = search.getString("field");
+            String type = search.getString("type");
+            expectMore(search, "value");
+            JSONArray value = search.getJSONArray("value");
+            String v0 = value.getString(0);
+            String v1 = value.size() > 1 ? value.getString(1):null;
+            String sf = obj.getString(field);
+            
+            if("text".equals(type)){
+                if("contains".equals(operator)){
+                    if(obj.has(field) && sf.contains(v0)){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else if("begins with".equals(operator)){
+                    if(obj.has(field) && sf.startsWith(v0)){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else if("ends with".equals(operator)){
+                    if(obj.has(field) && sf.endsWith(v0)){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else if("is".equals(operator)){
+                    if(obj.has(field) && sf.equals(v0)){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+            }else if("int".equals(type) || "float".equals(type)){
+                if("is".equals(operator)){
+                    if(obj.has(field) && obj.getDouble(field) == Double.parseDouble(v0)){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else if("between".equals(operator)){
+                    if(obj.has(field) && obj.getDouble(field) >= Double.parseDouble(v0) && obj.getDouble(field) <= Double.parseDouble(v1)){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else if("in".equals(operator)){
+                    if(obj.has(field) && ArrayUtils.indexOf(value.toArray(), sf) >= 0){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else if("not in".equals(operator)){
+                    if(obj.has(field) && ArrayUtils.indexOf(value.toArray(), sf) < 0){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+            }else if("date".equals(type)){
+                if("is".equals(operator)){
+                    if(obj.has(field) && obj.getLong(field) == Long.parseLong(v0)){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else if("between".equals(operator)){
+                    if(obj.has(field) && obj.getLong(field) >=  Long.parseLong(v0) && obj.getLong(field) <=  Long.parseLong(v1)){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+            }else{
+                if("is".equals(operator)){
+                    if(obj.has(field) && obj.getLong(field) == Long.parseLong(v0)){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+            }
+        }catch(Exception e){
+            logger.log(Level.WARNING, "{0}", e);
+        }
+        
+     /*   
+        field    : '',    // search field name
+        value    : '',    // string or array of string with values
+        operator : 'is',  // search operator [is, in, between, begins with, contains, ends with]
+        type     : ''     // data type, [text, int, float, date]
+*/    /*       "field": ["qqName"],
+   "type": ["text"],
+   "value": ["A"],
+   "operator": ["contains"]*/
+        return true;
+    }
+    
+    
+    
+    public static List<JSONObject> sort(List<JSONObject> jsonArray, JSONObject json){
+        final JSONArray searchs  = json != null && json.has("sort") ? json.getJSONArray("sort") : null;
+        if(searchs == null){
+            return jsonArray;
+        }
+        logger.log(Level.INFO, "{0}", searchs);
+        int[] sortKeys = new int[searchs.size()];
+        for(int i = 0; i < sortKeys.length; i++){
+            sortKeys[i] = i;
+        }
+        final boolean sortAscending[]  = new boolean[searchs.size()];
+        for(int i = 0; i < sortAscending.length; i++){
+            expectOne(searchs.getJSONObject(i), "direction", "field");
+            sortAscending[i] = searchs.getJSONObject(i).get("direction").toString().equals("asc");
+        }
+        SortBeanListUtil.sort2(jsonArray, sortKeys, sortAscending, false, new SortableBeanParse<JSONObject>() {
+            @Override
+            public List<String> parseBeanToList(JSONObject o) {
+                List<String>  list = new  ArrayList<String>();
+                for(int i = 0; i < sortAscending.length; i++){
+                    list.add(o.getString(searchs.getJSONObject(i).getString("field")));
+                }
+                return list;
+            }
+            @Override
+            public List<Comparable<?>> parse(JSONObject o) {
+                List<Comparable<?>>  list = new  ArrayList<Comparable<?>> ();
+                for(int i = 0; i < sortAscending.length; i++){
+                    list.add(o.getString(searchs.getJSONObject(i).getString("field")));
+                }
+                return list;
+            }
+            
+        }, SortBeanListUtil.NA_LAST);
+        return  jsonArray;
+    }
+    
+    public static List<JSONObject> limit(List<JSONObject> jsonArray, JSONObject json){
+        if(json != null && !json.isEmpty()){
+            try{
+                int offset = json.getInt("offset");
+                int limit = json.getInt("limit");
+                jsonArray =jsonArray.subList( offset , Math.min(offset + limit, jsonArray.size()));
+            }catch(Exception e){
+                logger.log(Level.INFO, "{0}",e);
+            }
         }
         return jsonArray;
     }

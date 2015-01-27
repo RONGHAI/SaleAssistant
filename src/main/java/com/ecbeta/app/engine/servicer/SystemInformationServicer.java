@@ -86,8 +86,8 @@ public class SystemInformationServicer extends AbstractServicer  {
     }
 
     @Override
-    public JSONArray getJSONArray(){
-        return JSONUtils.toJSONArray(this.systemInformations);
+    public JSONArray getJSONArray(JSONObject json){
+        return JSONUtils.toJSONArray(this.systemInformations, json);
     }
     
     @Override

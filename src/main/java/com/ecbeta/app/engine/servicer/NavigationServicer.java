@@ -112,8 +112,8 @@ public class NavigationServicer extends AbstractServicer  {
     }
 
     @Override
-    public JSONArray getJSONArray(){
-        return JSONUtils.toJSONArray(this.navigations);
+    public JSONArray getJSONArray(JSONObject json){
+        return JSONUtils.toJSONArray(this.navigations, json);
     }
     
     @Override

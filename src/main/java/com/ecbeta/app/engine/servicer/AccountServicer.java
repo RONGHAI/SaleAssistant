@@ -87,8 +87,8 @@ public class AccountServicer extends AbstractServicer  {
     }
 
     @Override
-    public JSONArray getJSONArray(){
-        return JSONUtils.toJSONArray(this.accounts);
+    public JSONArray getJSONArray(JSONObject json){
+        return JSONUtils.toJSONArray(this.accounts, json);
     }
     
     @Override

@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import com.ecbeta.common.constants.Constants;
 import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
 /**
  *
@@ -49,6 +50,9 @@ public class ClientAddress extends AbstractModel implements Serializable {
     @Column(name = "disabled")
     private boolean disabled;
 
+    @Column(name = "[default]")
+    private boolean defaultAdress;
+    
     @Column(name = "add_time", nullable=true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date addTime;
@@ -159,12 +163,12 @@ public class ClientAddress extends AbstractModel implements Serializable {
     public static final JSONArray COLUMNS;
     static{
         COLUMNS = new JSONArray();
-        COLUMNS.add(new W2UIColumnBean("recid", "ID", "10%", true ).toJson());
-      //  COLUMNS.add(new W2UIColumnBean("clientId", "Client", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("recid", "ID", /*"10%",*/ true ).toJson());
+        COLUMNS.add(new W2UIColumnBean("clientId", "Client", "20%",  Constants.SAJS_PREFIX+".render_client",true, "text" , null ).toJson());
         COLUMNS.add(new W2UIColumnBean("address", "Address", "30%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
         COLUMNS.add(new W2UIColumnBean("zipcode", "Zipcode", "10%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
         COLUMNS.add(new W2UIColumnBean("phone", "Phone", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
-
+        COLUMNS.add(new W2UIColumnBean("defaultAdress", "Default", "20%", true,  null , JSONObject.fromObject("{ type: 'checkbox'  }")).toJson());
         //COLUMNS.add(new W2UIColumnBean("wangwang", "Wangwang", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
         //COLUMNS.add(new W2UIColumnBean("qq", "QQ", "20%", true, "int", JSONObject.fromObject("{ type: 'int', min: 10000 }")).toJson());
         //COLUMNS.add(new W2UIColumnBean("qqName", "QQ Name", "20%", true, "text", JSONObject.fromObject("{ type: 'text'   }")).toJson());
@@ -182,6 +186,7 @@ public class ClientAddress extends AbstractModel implements Serializable {
         map.put("address", this.address);
         map.put("clientId", this.clientId);
         map.put("phone", this.phone);
+        map.put("defaultAdress", this.defaultAdress);
         return map;
     }
    
@@ -193,8 +198,7 @@ public class ClientAddress extends AbstractModel implements Serializable {
         expectOne(json, "birthday");
         expectOne(json, "gender");
         expectOne(json, "phone");*/
-        expectOne(json, "zipcode", "address", "clientId", "phone", "recid");
-        expectOne(json, "recid");
+        expectOne(json, "zipcode", "address", "clientId", "phone", "recid",  "defaultAdress");
         expectOne(json, "id"); 
         if(json.has("recid") && !json.has("id")){
             json.put("id", json.get("recid"));
@@ -253,5 +257,13 @@ public class ClientAddress extends AbstractModel implements Serializable {
 
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
+    }
+
+    public boolean isDefaultAdress() {
+        return defaultAdress;
+    }
+
+    public void setDefaultAdress(boolean defaultAdress) {
+        this.defaultAdress = defaultAdress;
     }
 }

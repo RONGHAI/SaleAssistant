@@ -205,11 +205,136 @@ public class SortBeanListUtil{
       }
     }
 
-  
+
   public static <T> void sort(List<T> beanList, final int[] sortKeys, final boolean[] sortAscending, final boolean nullAlwaysFirst, final SortableBeanParse<T> parseBean){
-	   sort(beanList, sortKeys, sortAscending, nullAlwaysFirst, parseBean, NA_NONE);
+      sort(beanList, sortKeys, sortAscending, nullAlwaysFirst, parseBean, NA_NONE);
   }
 
+
+
+  public static <T> void sort3(List<T> beanList, final int[] sortKeys, final boolean[] sortAscending, final SortableBeanParse<T> parseBean){
+      sort3(beanList, sortKeys, sortAscending, parseBean, NA_NONE);
+  }
+
+  public static <T> void sort3(List<T> beanList, final int[] sortKeys, final boolean[] sortAscending, final SortableBeanParse<T> parseBean, int naOrder ){
+      sort3(beanList, sortKeys, sortAscending, false, parseBean, naOrder);
+  }
+
+
+  public static <T> void sort3(List<T> beanList, final int[] sortKeys, final boolean[] sortAscending, final boolean nullAlwaysFirst, final SortableBeanParse<T> parseBean){
+      sort3(beanList, sortKeys, sortAscending, nullAlwaysFirst, parseBean, NA_NONE);
+  }
+
+  public static <T> void sort3(List<T> beanList, final int[] sortKeys, final boolean[] sortAscending, final boolean nullAlwaysFirst, final SortableBeanParse<T> parseBean , final int naOrder){
+      if (beanList == null || beanList.isEmpty()) return; 
+      if (sortKeys == null || sortKeys.length <= 0) return; 
+      if (parseBean == null) return;
+      @SuppressWarnings("unchecked")
+      List<Comparable<?>>[]beanParsers = new List[beanList.size()];
+      List<Integer> indices = new ArrayList<Integer>();
+      for(int i = 0 ; i < beanList.size() ; i++){
+          beanParsers[i] = parseBean.parse(beanList.get(i));
+          indices.add(i);
+      } 
+      Collections.sort(indices, SortBeanListUtil.getBeanComparator3(beanParsers, sortKeys, sortAscending , nullAlwaysFirst , naOrder)); 
+      List<T> _beanList = new ArrayList<T>(beanList);
+      beanList.clear();
+      for(Integer i : indices){
+          beanList.add(_beanList.get(i.intValue()));
+      }
+  }
+
+
+  private static  Comparator<Integer> getBeanComparator3(final List<Comparable<?>> [] beanParsers,final int[] sortKeys, final boolean[] sortAscending, final boolean nullAlwaysFirst,  final int naOrder){
+      return new Comparator<Integer>(){
+          public int compare(Integer o1, Integer o2){
+              List<Comparable<?>> beanList1 = beanParsers[o1];
+              List<Comparable<?>> beanList2 = beanParsers[o2];
+              return SortBeanListUtil.compare(beanList1, beanList2, sortKeys, sortAscending , nullAlwaysFirst , naOrder);
+          }
+      };
+  }
+
+  private static boolean isNA(   Comparable<?> na){
+      return na == null;
+  }
+
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  public static <T extends Object  > int compare(List< Comparable<?>> beanList1, List<Comparable<?>> beanList2, final int[] sortKeys, final boolean[] sortAscending, final boolean nullAlwaysFirst, final int naOrder){
+      int comp = EQUAL;
+      for (int i = 0; i < sortKeys.length; i++){
+          if (sortKeys[i] < 0){
+              continue;
+          }
+          boolean asc = true;
+          try{
+              asc = sortAscending[i];
+          }
+          catch (Exception e){}
+
+          if(sortKeys[i] >= beanList1.size() ) return 0;
+          Comparable<?> field1 = beanList1.get(sortKeys[i]);
+          Comparable<?> field2 = beanList2.get(sortKeys[i]);
+
+
+
+          //TODO .... 
+          if(naOrder !=  NA_NONE){
+              if(isNA(field1) &&  !isNA(field2) ){
+                  comp = naOrder == NA_FIRST ? SMALLER : GREATER;
+                  return comp;
+              }else  if(!isNA(field1) &&  isNA(field2) ){
+                  comp = naOrder == NA_FIRST ? GREATER : SMALLER;
+                  return comp;
+              }
+          }
+
+          if (field1 == null){
+              if (field2 != null){
+                  comp = SMALLER; 
+                  if(nullAlwaysFirst){
+                      return comp;
+                  }
+              }
+          } else if (field2 == null){
+              comp = GREATER; 
+              if(nullAlwaysFirst){
+                  return comp;
+              }
+          } else if (!field1.equals(field2)){
+              try{
+                  if(asc){
+                      return ((Comparable)field1).compareTo(field2);
+                  }
+                  else{
+                      return ((Comparable)field2).compareTo(field1);
+                  }
+              }
+              catch (Exception e){
+                  return EQUAL;
+              }
+          }
+
+
+
+
+
+          if (comp != EQUAL){
+              if (asc){
+                  return ((comp == SMALLER) ? SMALLER : GREATER);
+              }
+              else{
+                  return ((comp == SMALLER) ? GREATER : SMALLER);
+              }
+          }
+      }
+      return EQUAL;
+  }
+
+
+
+
+  
   public static final void main(String are[]){
     List<TestBean> list = new ArrayList<TestBean>();
     TestBean bean = new TestBean();

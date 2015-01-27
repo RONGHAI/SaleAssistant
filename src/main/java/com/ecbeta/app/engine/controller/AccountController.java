@@ -1,6 +1,7 @@
 package com.ecbeta.app.engine.controller;
 
 import me.ronghai.sa.model.Account;
+import net.sf.json.JSONObject;
 
 import com.ecbeta.app.engine.servicer.AccountServicer;
 import com.ecbeta.app.engine.servicer.MerchantServicer;
@@ -63,7 +64,7 @@ public class AccountController extends AbstractController{
     }
     
     public Object listMerchantsAction(){
-        return this.merchantServicer.getJSONArray();
+        return this.merchantServicer.getJSONArray(new JSONObject());
     }
     
    

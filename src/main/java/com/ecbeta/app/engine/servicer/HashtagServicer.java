@@ -86,8 +86,8 @@ public class HashtagServicer extends AbstractServicer  {
     }
     
     @Override
-    public JSONArray getJSONArray(){
-        return JSONUtils.toJSONArray(this.hashtags);
+    public JSONArray getJSONArray(JSONObject json){
+        return JSONUtils.toJSONArray(this.hashtags, json);
     }
     
     @Override

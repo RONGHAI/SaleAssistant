@@ -24,12 +24,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
+
 import me.ronghai.sa.dao.AbstractModelDAO;
 import me.ronghai.sa.model.AbstractModel;
+
 import org.springframework.jdbc.core.RowMapper;
 /**
  *
@@ -101,6 +104,28 @@ public class AbstractModelDAOWithEMImpl <E extends AbstractModel> implements Abs
     
     
     @Override
+    public int remove(boolean force, Collection<Long> ids, String configure) {
+        if (ids == null || ids.isEmpty()) {
+            return 0;
+        }
+        String sql;
+        if (force) {
+            sql = "DELETE FROM " + entityClass.getName() + "  e  where id in (:ids) ";
+        } else {
+            sql = "UPDATE " + entityClass.getName() + "  SET disabled = 1  where id in (:ids) ";
+        }
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(configure)) {
+            sql += " " + configure.replaceAll("'", "''");
+        }
+        System.out.println(sql);
+        Query query = entityManager.createQuery(sql);
+        query.setParameter("ids", ids);
+        int s = query.executeUpdate();
+        return s;
+    }
+    
+    
+    @Override
     public E update(E entity) {
         return merge(entity);
     }
@@ -134,6 +159,8 @@ public class AbstractModelDAOWithEMImpl <E extends AbstractModel> implements Abs
         return null;
     }
 
+    
+    
     @Override
     public List<E> find() {
         String jpql = "SELECT e FROM " + entityClass.getName() + " e";
@@ -192,6 +219,17 @@ public class AbstractModelDAOWithEMImpl <E extends AbstractModel> implements Abs
     @Override
     public boolean exsit(Object id) {
         return find(id ) != null;
+    }
+
+    @Override
+    public E find(Object id, String condition) {
+        List<E> list = find(" id = " +id + condition);
+        return list.size() > 0 ? list.get(0) : null;
+    }
+
+    @Override
+    public boolean exsit(Object id, String condition) {
+        return find(id, condition ) != null;
     }
 }
  

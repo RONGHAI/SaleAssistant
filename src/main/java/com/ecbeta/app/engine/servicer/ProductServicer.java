@@ -86,8 +86,8 @@ public class ProductServicer extends AbstractServicer  {
     }
 
     @Override
-    public JSONArray getJSONArray(){
-        return JSONUtils.toJSONArray(this.products);
+    public JSONArray getJSONArray(JSONObject json){
+        return JSONUtils.toJSONArray(this.products, json);
     }
     
     @Override

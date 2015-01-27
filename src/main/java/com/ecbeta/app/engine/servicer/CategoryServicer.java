@@ -87,8 +87,8 @@ public class CategoryServicer extends AbstractServicer  {
     }
 
     @Override
-    public JSONArray getJSONArray(){
-        return JSONUtils.toJSONArray(this.categories);
+    public JSONArray getJSONArray(JSONObject json){
+        return JSONUtils.toJSONArray(this.categories, json);
     }
     
     @Override

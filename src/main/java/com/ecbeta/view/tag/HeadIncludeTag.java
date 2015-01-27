@@ -86,6 +86,7 @@ public class HeadIncludeTag extends AbstractTag {
         sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/jquery-").append(jqueryVersion).append(".js\"></script> \n");
         sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/saleassistant.js?").append(dev ? ("time=" + System.currentTimeMillis()) : "").append("\"></script> \n");
         sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/saleassistant.i18n.js?").append(dev ? ("time=" + System.currentTimeMillis()) : "").append("\"></script> \n");
+        sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/saleassistant.grid.js?").append(dev ? ("time=" + System.currentTimeMillis()) : "").append("\"></script> \n");
         sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/w2ui-").append(w2uiVersion).append(".js\"></script> \n");
         sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"").append(this.getContextPath()).append("/resources/css/w2ui-").append(w2uiVersion).append(".css\"/> \n");
         sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"").append(this.getContextPath()).append("/resources/css/sa.css\"/> \n");

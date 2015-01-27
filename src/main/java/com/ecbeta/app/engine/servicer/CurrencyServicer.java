@@ -86,8 +86,8 @@ public class CurrencyServicer extends AbstractServicer  {
     }
 
     @Override
-    public JSONArray getJSONArray(){
-        return JSONUtils.toJSONArray(this.currencies);
+    public JSONArray getJSONArray(JSONObject json){
+        return JSONUtils.toJSONArray(this.currencies, json);
     }
     
     @Override

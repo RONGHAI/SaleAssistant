@@ -102,8 +102,8 @@ public class InvoiceServicer extends AbstractServicer  {
     }
     
     @Override
-    public JSONArray getJSONArray(){
-        return JSONUtils.toJSONArray(this.invoices);
+    public JSONArray getJSONArray(JSONObject json){
+        return JSONUtils.toJSONArray(this.invoices, json);
     }
     
     @Override

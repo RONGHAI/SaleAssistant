@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import me.ronghai.sa.model.AbstractModel;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import com.ecbeta.common.core.bean.BaseServicerParaBean;
 import com.ecbeta.common.core.db.DatabaseHandler;
@@ -127,7 +128,7 @@ public abstract class AbstractServicer implements Serializable{
         throw new UnsupportedOperationException();
     }
     
-    public JSONArray getJSONArray(){
+    public JSONArray getJSONArray(JSONObject json){
         throw new UnsupportedOperationException();
     }
     public List<? extends AbstractModel> beans(){

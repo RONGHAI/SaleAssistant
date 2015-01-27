@@ -23,6 +23,8 @@ public class ClientAddressServicer extends AbstractServicer  {
 
     @Autowired
     private me.ronghai.sa.dao.impl.ClientAddressDAOImpl clientAddressDAO;
+    
+    private transient Long client;
 
     public ClientAddressDAOImpl getClientAddressDAO() {
         return clientAddressDAO;
@@ -70,12 +72,12 @@ public class ClientAddressServicer extends AbstractServicer  {
     }
 
     public List<ClientAddress> find() {
-        return clientAddressDAO.find(" WHERE disabled = false ");
+        return clientAddressDAO.find(" WHERE DISABLED = FALSE " + (this.client == null ? "" : " AND CLIENT_ID = "+this.client));
     }
     
     
     public List<ClientAddress> findWithClient(Long cid) {
-        return clientAddressDAO.find(" WHERE disabled = false and client_id = " + cid);
+        return clientAddressDAO.find(" WHERE DISABLED = FALSE AND CLIENT_ID = " + cid);
     }
 
     public void remove(ClientAddress c) {
@@ -86,13 +88,13 @@ public class ClientAddressServicer extends AbstractServicer  {
 
     public void remove(Long... ids) {
         if(ids == null) return;
-        this.clientAddressDAO.remove(false, Arrays.asList(ids));
+        this.clientAddressDAO.remove(false, Arrays.asList(ids),  this.client == null ? null : ( "AND CLIENT_ID = " + this.client));
         this.refresh();
     }
 
     @Override
-    public JSONArray getJSONArray(){
-        return JSONUtils.toJSONArray(this.clientAddreses);
+    public JSONArray getJSONArray(JSONObject json){
+        return JSONUtils.toJSONArray(this.clientAddreses, json);
     }
     
     @Override
@@ -103,7 +105,7 @@ public class ClientAddressServicer extends AbstractServicer  {
     @Override
     public boolean remove(Collection<Long> ids) {
         if(ids == null || ids.isEmpty() ) return false;
-        if( 0 == this.clientAddressDAO.remove(false, new ArrayList<>(ids))){
+        if( 0 == this.clientAddressDAO.remove(false, new ArrayList<>(ids),  this.client == null ? null : ( "AND CLIENT_ID = " + this.client))){
             return false;
         };
         this.refresh();
@@ -124,8 +126,12 @@ public class ClientAddressServicer extends AbstractServicer  {
         while(it.hasNext()){
             JSONObject newJsonObj = it.next();
             ClientAddress clientAddress = ClientAddress.fromJson(newJsonObj);
+            if(this.client != null){
+                clientAddress.setClientId(this.client);
+            }
             Long id  = clientAddress.getId();
-            if(this.clientAddressDAO.exsit(id)){
+            System.out.println("clientAddress" + clientAddress.getClientId());
+            if(this.clientAddressDAO.exsit(id, this.client == null ? null : ( "AND CLIENT_ID = " + this.client))){
                 clientAddress .setUpdateTime(new Date());
             }else{
                 clientAddress.setId(null);
@@ -143,6 +149,20 @@ public class ClientAddressServicer extends AbstractServicer  {
         }else{
            return this.update(clientAddress);
         }
+    }
+
+    public Long getClient() {
+        return client;
+    }
+
+    public void setClient(Long client) {
+        if(client.equals(this.client)){
+        }else{
+            this.client = client;
+            this.refresh();
+        }
+       
+        
     }
 
 }

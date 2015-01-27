@@ -86,8 +86,8 @@ public class MerchantServicer extends AbstractServicer  {
     }
 
     @Override
-    public JSONArray getJSONArray(){
-        return JSONUtils.toJSONArray(this.merchants);
+    public JSONArray getJSONArray(JSONObject json){
+        return JSONUtils.toJSONArray(this.merchants, json );
     }
     
     @Override

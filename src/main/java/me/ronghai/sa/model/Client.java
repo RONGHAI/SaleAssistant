@@ -237,15 +237,17 @@ public class Client extends AbstractModel implements Serializable {
     public static final JSONArray COLUMNS;
     static{
         COLUMNS = new JSONArray();
-        COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true ).toJson());
+        COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true ,"int" ).toJson());
         COLUMNS.add(new W2UIColumnBean("name", "Name", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
         COLUMNS.add(new W2UIColumnBean("wangwang", "Wangwang", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
         COLUMNS.add(new W2UIColumnBean("qq", "QQ", "20%", true, "int", JSONObject.fromObject("{ type: 'int', min: 10000 }")).toJson());
         COLUMNS.add(new W2UIColumnBean("qqName", "QQ Name", "20%", true, "text", JSONObject.fromObject("{ type: 'text'   }")).toJson());
         COLUMNS.add(new W2UIColumnBean("birthday", "Birthday", "20%" ,"date:mm/dd/yyyy", true , "date" , JSONObject.fromObject("{ type: 'date' }") ).toJson());
-        COLUMNS.add(new W2UIColumnBean("gender", "Gender", "20%", Constants.SAJS_PREFIX+".render_gender", true,  null , JSONObject.fromObject("{ type: 'select', items:'"+Constants.SAJS_PREFIX+".genders()' }")).toJson());
+        W2UIColumnBean col = new W2UIColumnBean("gender", "Gender", "20%", Constants.SAJS_PREFIX+".render_gender", true,  "list" , JSONObject.fromObject("{ type: 'select', items:'"+Constants.SAJS_PREFIX+".genders()' }"));
+        col.setOptions(JSONObject.fromObject("{ items:'"+Constants.SAJS_PREFIX+".genders()' }"));
+        COLUMNS.add(col.toJson());
         COLUMNS.add(new W2UIColumnBean("phone", "Phone", "120px", true, "text", JSONObject.fromObject("{ type: 'text'  }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("recid", "Address", "20%" , Constants.SAJS_PREFIX+".render_address" , false , null, null));
+        COLUMNS.add(new W2UIColumnBean("recid", "Address", "20%" , Constants.SAJS_PREFIX+".render_address" , false , null, null, false).toJson());
 
     }
     

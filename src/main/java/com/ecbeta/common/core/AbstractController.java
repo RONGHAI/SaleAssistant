@@ -702,7 +702,7 @@ public abstract class AbstractController {
     }
 
     public Object getRecordsAction(JSONObject json, String swithServicer) {
-        JSONArray array = this.getServicer(swithServicer).getJSONArray();
+        JSONArray array = this.getServicer(swithServicer).getJSONArray(json);
         JSONObject map = new JSONObject();
         map.put("status", "success");
         map.put("total", array.size());

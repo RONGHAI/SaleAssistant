@@ -75,6 +75,7 @@ public class ClientController extends AbstractController{
     @Override
     public AbstractServicer getServicer (String swithServicer){
         if("addressServicer".equals(swithServicer)){
+            this.addressServicer.setClient(new Long(this.getRequest().getParameter("client")));
             return this.addressServicer;
         }
         return this.servicer;

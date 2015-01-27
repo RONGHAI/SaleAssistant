@@ -88,8 +88,8 @@ public class CarrierServicer extends AbstractServicer  {
 
 
     @Override
-    public JSONArray getJSONArray(){
-        return JSONUtils.toJSONArray(this.carriers);
+    public JSONArray getJSONArray(JSONObject json){
+        return JSONUtils.toJSONArray(this.carriers, json);
     }
     
     @Override

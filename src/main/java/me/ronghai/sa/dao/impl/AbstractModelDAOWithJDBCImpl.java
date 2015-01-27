@@ -27,6 +27,7 @@ import me.ronghai.sa.dao.AbstractModelDAO;
 import me.ronghai.sa.model.AbstractModel;
 import me.ronghai.sa.model.ModelMeta;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -76,7 +77,9 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
             try {
                 value = field2Getter.get(field.getName()).invoke(entity);
             }
-            catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NullPointerException e) {
+                logger.log(Level.WARNING, "filed is {0}  ", field);
+                logger.log(Level.WARNING, "{0}", e);
             }
             Column annotation = field.isAnnotationPresent(Column.class) ? (Column) field.getAnnotation(Column.class) : null;
             if (annotation != null && value == null && !annotation.nullable()) {
@@ -135,7 +138,9 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
         List<String> columnNames = columnsAndValues == null ? null : (List<String>) columnsAndValues[0];
         @SuppressWarnings("unchecked")
         List<Object> values = columnsAndValues == null ? null : (List<Object>) columnsAndValues[1];
-
+        
+        logger.log(Level.INFO, "values\n{0}", values);
+        
         if (columnNames != null && !columnNames.isEmpty()) {
             String[] ph = new String[columnNames.size()];
             Arrays.fill(ph, "?");
@@ -178,6 +183,30 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
             sql = "DELETE FROM " + table + "  e  WHERE id IN (:ids) ";
         } else {
             sql = "UPDATE " + table + "  SET disabled = 1  WHERE id IN (:ids) ";
+        }
+        logger.info("remove ids " + ids);
+        MapSqlParameterSource parameters = new MapSqlParameterSource() ;
+        parameters.addValue("ids", new ArrayList<>(ids));
+        return this.databaseHandler.update(sql, parameters);
+    }
+    
+    @Override
+    public int remove(boolean force, Collection<Long> ids, String configure) {
+        if (ids == null || ids.isEmpty()) {
+            return 0;
+        }
+        String sql;
+        String table = table(entityClass);
+        if (force) {
+            sql = "DELETE FROM " + table + "  e  WHERE id IN (:ids) ";
+        } else {
+            sql = "UPDATE " + table + "  SET disabled = 1  WHERE id IN (:ids) ";
+        }
+        if(StringUtils.isNotEmpty(configure)){
+            if(!configure.trim().toUpperCase().startsWith("AND")){
+                sql += " AND  ";
+            }
+            sql += configure;
         }
         logger.info("remove ids " + ids);
         MapSqlParameterSource parameters = new MapSqlParameterSource() ;
@@ -242,6 +271,26 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
     public boolean exsit(Object id) {
 
         String sql = "SELECT count(*) FROM " + table(entityClass) + " WHERE id = ? ";
+        return this.databaseHandler.queryForInt(sql, new Object[]{id}) != 0;
+
+    }
+    
+    
+    @Override
+    public E find(Object id , String configure) {
+        String sql = "SELECT * FROM " + table(entityClass) + " WHERE id = ? " ;
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(configure)) {
+            sql += " " + configure.replaceAll("'", "''");
+        }
+        return this.databaseHandler.queryForObject(sql, new Object[]{id}, createRowMapper());
+
+    }
+    @Override
+    public boolean exsit(Object id , String configure) {
+        String sql = "SELECT count(*) FROM " + table(entityClass) + " WHERE id = ? ";
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(configure)) {
+            sql += " " + configure.replaceAll("'", "''");
+        }
         return this.databaseHandler.queryForInt(sql, new Object[]{id}) != 0;
 
     }

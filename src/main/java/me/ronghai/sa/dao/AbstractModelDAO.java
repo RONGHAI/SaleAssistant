@@ -26,13 +26,20 @@ public interface AbstractModelDAO<E extends AbstractModel> {
     public void remove(E entity);
     
     public int remove(boolean force, Collection<Long>  ids);
+    
+    public int remove(boolean force, Collection<Long>  ids, String configure);
 
     public E merge(E entity);
 
     public E update(E entity);
 
     public E find(Object id);
+    public E find(Object id, String condition);
+    
     public boolean exsit(Object id);
+    
+    public boolean exsit(Object id , String condition);
+    
     public List<E> find();
 
     public List<E> find(String condition);

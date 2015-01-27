@@ -128,7 +128,7 @@ public class W2UIColumnBean implements Serializable {
     private String size = null;
     private String caption = null;
     private boolean sortable = true;
-    private boolean searchable = false;
+    private boolean searchable = true;
     private boolean hidden = false;
     private boolean resizable = false;
     private String attr = null;
@@ -139,6 +139,7 @@ public class W2UIColumnBean implements Serializable {
     private String max = null;
     private String type = null;
     private Object editable;
+    private Object options;
 
     public Object getEditable() {
         return editable;
@@ -215,6 +216,12 @@ public class W2UIColumnBean implements Serializable {
         if (this.editable != null) {
             map.put("editable", this.editable);
         }
+        if (this.options != null) {
+            map.put("options", this.options);
+        }
+        if(this.items != null){
+            map.put("items", this.items);
+        }
         /*
             
          private String field = null;
@@ -243,6 +250,12 @@ public class W2UIColumnBean implements Serializable {
         this.sortable = sortable;
     }
 
+    public W2UIColumnBean(String field, String caption, boolean hidden) {
+        this.field = field;
+        this.caption = caption;
+        this.hidden = hidden;
+    }
+    
     public W2UIColumnBean(String field, String caption, String size, String render, boolean sortable) {
         this.field = field;
         this.caption = caption;
@@ -294,6 +307,18 @@ public class W2UIColumnBean implements Serializable {
         this.editable = editable;
     }
 
+    public W2UIColumnBean(String field, String caption, String size, String render, boolean sortable, String type, Object editable, boolean searchable) {
+        this.field = field;
+        this.caption = caption;
+        this.size = size;
+        this.sortable = sortable;
+        this.render = render;
+        this.type = type;
+        this.editable = editable;
+        this.searchable = searchable;
+    }
+    
+
     public W2UIColumnBean(String field, String caption, String size, String render, boolean sortable, String type, Object editable) {
         this.field = field;
         this.caption = caption;
@@ -302,5 +327,14 @@ public class W2UIColumnBean implements Serializable {
         this.render = render;
         this.type = type;
         this.editable = editable;
+        this.searchable = editable != null && sortable;
+    }
+
+    public Object getOptions() {
+        return options;
+    }
+
+    public void setOptions(Object options) {
+        this.options = options;
     }
 }
