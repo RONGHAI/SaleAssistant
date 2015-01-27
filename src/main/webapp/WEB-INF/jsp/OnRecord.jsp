@@ -17,74 +17,7 @@
         <title>${worker.appName}</title>
         <sm:Head controller='${worker}' >
             ${javascript} 
-            <script type="text/javascript">
-
-                sale_assistant.initGrid = function(did, _name, _unique_name , _url, c_options, moreOptions){
-                    c_options = c_options || {};
-                    var options = {
-                        name: _name, 
-                        show : {
-                            toolbar : true,
-                            toolbarColumns  : true,
-                            toolbarSearch   : true,
-                            toolbarDelete   : true,
-                            toolbarAdd      : true,
-                            toolbarSave     : true,
-                            footer: true
-                        },
-                        url : _url,
-                        onAdd: function (target,data) {
-                            var  recid = sale_assistant.generateRecid(this , _unique_name);
-                            this.add({ recid: recid });
-                            if(c_options['highlight_new']){
-                                var tr = $('#grid_'+this.name+"_rec_"+recid);
-                                tr.css('background-color', tr.hasClass("w2ui-odd") ?  "rgb(235, 241, 222)" : "rgb(216, 228, 188)" );
-                                //var st =  tr.hasClass("w2ui-odd") ?  "background-color:rgb(235, 241, 222)" : "background-color:rgb(216, 228, 188)";
-                                this.get(recid).style = st;
-                            }
-                            $('#grid_'+this.name+"_rec_bottom").css("display", "none");
-                        },
-                        onSave: function(event){
-                            sa.log("onSave");
-                            event.onComplete = function () {
-                                var data = sale_assistant.eventData(event);
-                                if(!data || data.refresh ){
-                                    this.reload();
-                                }
-                            }
-                        },
-                        onLoad: function(event) {
-                            event.onComplete = function () {
-                               sale_assistant.initMaxRecId(this, _unique_name);
-                            }
-                        },
-                        onDelete: function(event){
-                             //event.force = true; // no confirmation
-                        },
-                        onError: function(event){
-                            var data = sale_assistant.eventData(event);
-                            if(data && !data.refresh && !data.message){
-                            }
-                        }
-                    };
-                    if(moreOptions){
-                        $.extend(options, moreOptions);
-                    }
-                    if(c_options['clear'] && w2ui[_name]){
-                        try{ w2ui[_name].clear();}catch(ex){sale_assistant.error(ex);}
-                    }
-                    $("#"+did).w2grid(options);
-                    if(c_options['unshift']){
-                        w2ui[_name].add = sale_assistant.add_record;
-                    }
-
-                    if(c_options['reload']){
-                        w2ui[_name].reload();
-                    }
-
-                };
-
-
+            <script type="text/javascript"> 
                 $(function() {
                       $(document).ready(function() {
                             sale_assistant.initGrid("grid", "grid", '${worker.appName}', "${sm:url(worker, 'json', 'record')}", {
@@ -92,8 +25,8 @@
                                 clear: false,
                                 highlight_new : true
                             }, {
-                                columns: ${worker.columns},
-                                searches : ${worker.columns}
+                                columns:  sale_assistant.find_columns(${worker.columns}),
+                                searches: sale_assistant.find_search_columns( ${worker.columns})
                             });
                       });
                     

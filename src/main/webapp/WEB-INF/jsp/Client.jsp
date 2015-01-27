@@ -47,9 +47,11 @@
             };
 
         });*/
-        sale_assistant.init_address_grid();
-        w2ui['addressGrid'].url = "${sm:url(worker, 'json', 'record')}&servicer=addressServicer";
-        w2ui['addressGrid'].reload();
+        var addressGrid = sale_assistant.init_address_grid();
+        addressGrid.url = "${sm:url(worker, 'json', 'record')}";
+        addressGrid.client = cid;
+        addressGrid.postData = {servicer: "addressServicer", client: cid};
+        addressGrid.reload();
     };
 
     sale_assistant.init_address_grid = function(){
@@ -58,10 +60,10 @@
         }else{
             sale_assistant.initGrid("addressGrid", "addressGrid", '${worker.appName}_a_', "", {
                 unshift: false,
-                clear: false,
+                clear: true,
                 highlight_new : false
             }, {
-                columns: ${worker.addressColumns},
+                columns: sale_assistant.find_columns(${worker.addressColumns}),
                 show : {
                     toolbar : true,
                     toolbarColumns  : true,
@@ -74,9 +76,30 @@
             });
         }
         w2ui['addressGrid'].resize();
-        sale_assistant.max_recid['${worker.appName}_a_'] = 1;
+        return w2ui['addressGrid'];
     };
 
+
+    sale_assistant.render_client = function(record, index, col_index){
+        var cv = this.getCellValue(index, col_index);
+        var records = w2ui['grid'].records;
+        for(var i = 0; i < records.length; i++){
+            if(cv == records[i].recid){
+                return records[i].name;
+            }
+        }
+        
+        for(var i = 0; i < records.length; i++){
+            if( w2ui['addressGrid'].client == records[i].recid){
+                return records[i].name;
+            }
+        }
+
+        return "";
+       
+
+        //return records[0].name;
+    };
 
     //"${sm:url(worker, 'json', 'record')}&servicer=addressServicer"
     $(function() {

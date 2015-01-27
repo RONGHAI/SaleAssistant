@@ -1,8 +1,6 @@
 (function($) {
     var sale_assistant = window.sale_assistant = window.sale_assistant || {};
-    if (!sale_assistant.zh) {
-        sale_assistant.zh = {};
-    }
+    sale_assistant.zh = sale_assistant.zh || {};
 
     $.extend(true, sale_assistant.zh, {
         "Client Name" : "客户姓名",
