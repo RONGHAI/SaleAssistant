@@ -22,7 +22,7 @@
             if(c_options['highlight_new']){
                 var tr = $('#grid_'+this.name+"_rec_"+recid);
                 tr.css('background-color', tr.hasClass("w2ui-odd") ?  "rgb(235, 241, 222)" : "rgb(216, 228, 188)" );
-                //var st =  tr.hasClass("w2ui-odd") ?  "background-color:rgb(235, 241, 222)" : "background-color:rgb(216, 228, 188)";
+                var st =  tr.hasClass("w2ui-odd") ?  "background-color:rgb(235, 241, 222)" : "background-color:rgb(216, 228, 188)";
                 this.get(recid).style = st;
             }
             $('#grid_'+this.name+"_rec_bottom").css("display", "none"); //grid_addressGrid_rec_bottom
