@@ -14,7 +14,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>${worker.appName}</title>
+        <title>${worker.appName} ${worker.navigationBean.i18n}</title>
         <sm:Head controller='${worker}' >
             ${javascript} 
             <script type="text/javascript"> 
@@ -25,8 +25,8 @@
                                 clear: false,
                                 highlight_new : true
                             }, {
-                                columns:  sale_assistant.find_columns(${worker.columns}),
-                                searches: sale_assistant.find_search_columns( ${worker.columns})
+                                columns:  sale_assistant.find_columns(${worker.columns}, '${worker.navigationBean.i18n}'),
+                                searches: sale_assistant.find_search_columns( ${worker.columns},  '${worker.navigationBean.i18n}')
                             });
                       });
                     

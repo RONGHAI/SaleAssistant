@@ -65,16 +65,22 @@
         }
     };
 
-    sale_assistant.find_search_columns = function(columns){
+    sale_assistant.find_search_columns = function(columns, module, locale){
         var cls = [];
         for(var i = 0; i < columns.length; i++){
             if(columns[i].searchable && columns[i].type && columns[i].type != null){
+                columns[i].caption = sale_assistant.l(columns[i].caption, module, locale);
                 cls.push(columns[i]);
             }
         }
         return cls;
     };
-    sale_assistant.find_columns = function(columns){
+    sale_assistant.find_columns = function(columns, module, locale){
+        for(var i = 0; i < columns.length; i++){
+            if(columns[i].caption){
+                columns[i].caption = sale_assistant.l(columns[i].caption, module, locale);
+            }
+        }
         return columns;
     }
 })(jQuery);

@@ -11,7 +11,7 @@ if (jQuery) {
         };
         
         var sale_assistant = window.sale_assistant = window.sale_assistant || {};
-        sale_assistant.__gender_list = [{id:'M', text : "Male"}, {id:'F', text : "Female"}, {id:'U', text : "U"}];
+        sale_assistant.__gender_list = [{id:'M', text : "Male"}, {id:'F', text : "Female"}, {id:'U', text : "Unknown"}];
 
         sale_assistant.genders = function(){
             return sale_assistant.__gender_list;
@@ -23,7 +23,7 @@ if (jQuery) {
             var gs = sale_assistant.__gender_list;
             for (var p in gs) {
                 if (gs[p].id === cellvalue){
-                    html = gs[p].text;
+                    html = sale_assistant.l(gs[p].text);
                     break;
                 } 
             }
