@@ -709,6 +709,17 @@ public abstract class AbstractController {
         map.put("records", array);
         return map;
     }
+    
+    public Object listAction(){
+        JSONObject json = this.getJSONObject();
+        String swithServicer = json == null ? null : (String)json.get("servicer");
+        if(swithServicer == null){
+            swithServicer = this.getRequest().getParameter("servicer");
+        }
+        JSONArray array = this.getServicer(swithServicer).getJSONArray(new JSONObject());
+        return array;
+    }
+    
 
     public Object deleteRecordsAction(JSONObject json, String swithServicer) {
         boolean st = this.getServicer(swithServicer).remove(JSONUtils.toCollection(json, "selected", Long.class));
