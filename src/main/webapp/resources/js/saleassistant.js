@@ -34,7 +34,7 @@ if (jQuery) {
             var cellvalue = this.getCellValue(index, col_index);
             var html = "";
             //<a href="http://www.w3schools.com" target="_blank">Visit W3Schools.com!</a> 
-            return "<a href='http://"+cellvalue+"' target='_blank'>"+cellvalue+"</a>";
+            return "<a href='"+(cellvalue.indexOf('http') < 0 ? 'http://': '' )+cellvalue+"' target='_blank'>"+cellvalue+"</a>";
         };
 
         sale_assistant.render_link  = sale_assistant.renderLink ;
