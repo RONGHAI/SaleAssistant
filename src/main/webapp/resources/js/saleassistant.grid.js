@@ -29,6 +29,7 @@
         },
         onSave: function(event){
             event.onComplete = function () {
+                sa.log("1");
                 var data = sale_assistant.eventData(event);
                 if(!data || data.refresh ){
                     this.reload();
