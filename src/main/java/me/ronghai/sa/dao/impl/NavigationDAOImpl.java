@@ -6,11 +6,9 @@
 
 package me.ronghai.sa.dao.impl;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import me.ronghai.sa.dao.NavigationDAO;
 import me.ronghai.sa.model.Navigation;
-import me.ronghai.sa.model.Property;
+
 import org.springframework.jdbc.core.RowMapper;
 
 /**
@@ -20,11 +18,20 @@ import org.springframework.jdbc.core.RowMapper;
 public class NavigationDAOImpl extends AbstractModelDAOImpl<Navigation> implements NavigationDAO{
     
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     @Override
     public RowMapper<Navigation> createRowMapper() {
-      return new RowMapper() {
+        return Navigation._getModelMeta().getRowMapper();
+     /* return new RowMapper<Navigation>() {
           @Override
-          public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+          public Navigation mapRow(ResultSet rs, int rowNum) throws SQLException {
+              
+              return Navigation._getModelMeta().getRowMapper();
+              
               Navigation bean  = new Navigation();
               bean.setId(rs.getLong("ID"));
               bean.setAddTime(rs.getDate("add_time"));
@@ -40,6 +47,6 @@ public class NavigationDAOImpl extends AbstractModelDAOImpl<Navigation> implemen
               bean.setLabel(rs.getString("label"));
               return bean;
           }
-      } ;
+      } ;*/
   }
 }

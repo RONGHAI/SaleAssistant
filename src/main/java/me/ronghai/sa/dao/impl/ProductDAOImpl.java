@@ -15,6 +15,11 @@ import org.springframework.jdbc.core.RowMapper;
  */
 public class ProductDAOImpl extends AbstractModelDAOImpl<Product> implements ProductDAO {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     @Override
     public RowMapper<Product> createRowMapper() {
         return Product._getModelMeta().getRowMapper();

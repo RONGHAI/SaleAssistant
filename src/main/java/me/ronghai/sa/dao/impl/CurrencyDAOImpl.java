@@ -5,9 +5,9 @@
  */
 package me.ronghai.sa.dao.impl;
 
-import java.sql.ResultSet;
 import me.ronghai.sa.dao.CurrencyDAO;
 import me.ronghai.sa.model.Currency;
+
 import org.springframework.jdbc.core.RowMapper;
 
 /**
@@ -15,7 +15,7 @@ import org.springframework.jdbc.core.RowMapper;
  * @author ronghai
  */
 public class CurrencyDAOImpl extends AbstractModelDAOImpl<Currency> implements CurrencyDAO {
-
+    private static final long serialVersionUID = 1L;
     @Override
     public RowMapper<Currency> createRowMapper() {
         return Currency._getModelMeta().getRowMapper();

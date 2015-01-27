@@ -7,6 +7,7 @@
 package me.ronghai.sa.dao.impl;
 import me.ronghai.sa.dao.CarrierDAO;
 import me.ronghai.sa.model.Carrier;
+
 import org.springframework.jdbc.core.RowMapper;
 
 /**
@@ -14,7 +15,7 @@ import org.springframework.jdbc.core.RowMapper;
  * @author ronghai
  */
 public class CarrierDAOImpl extends AbstractModelDAOImpl<Carrier> implements CarrierDAO{
-    
+    private static final long serialVersionUID = 1L;
     @Override
     public RowMapper<Carrier> createRowMapper(){
         return Carrier._getModelMeta().getRowMapper();

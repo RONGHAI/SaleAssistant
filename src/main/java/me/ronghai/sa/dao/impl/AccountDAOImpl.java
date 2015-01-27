@@ -8,6 +8,7 @@ package me.ronghai.sa.dao.impl;
 
 import me.ronghai.sa.dao.AccountDAO;
 import me.ronghai.sa.model.Account;
+
 import org.springframework.jdbc.core.RowMapper;
 
 /**
@@ -15,7 +16,7 @@ import org.springframework.jdbc.core.RowMapper;
  * @author ronghai
  */
 public class AccountDAOImpl extends AbstractModelDAOImpl<Account> implements AccountDAO{
-   
+    private static final long serialVersionUID = 1L;
     
     @Override
     public RowMapper<Account> createRowMapper() {

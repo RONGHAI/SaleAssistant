@@ -8,6 +8,7 @@ package me.ronghai.sa.dao.impl;
 
 import me.ronghai.sa.dao.CategoryDAO;
 import me.ronghai.sa.model.Category;
+
 import org.springframework.jdbc.core.RowMapper;
 
 /**
@@ -15,7 +16,7 @@ import org.springframework.jdbc.core.RowMapper;
  * @author ronghai
  */
 public class CategoryDAOImpl extends AbstractModelDAOImpl<Category> implements CategoryDAO{
-   
+    private static final long serialVersionUID = 1L;
     
     @Override
     public RowMapper<Category> createRowMapper() {

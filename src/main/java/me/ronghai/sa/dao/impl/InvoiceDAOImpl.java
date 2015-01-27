@@ -5,9 +5,9 @@
  */
 package me.ronghai.sa.dao.impl;
 
-import java.sql.ResultSet;
 import me.ronghai.sa.dao.InvoiceDAO;
 import me.ronghai.sa.model.Invoice;
+
 import org.springframework.jdbc.core.RowMapper;
 
 /**
@@ -15,7 +15,7 @@ import org.springframework.jdbc.core.RowMapper;
  * @author ronghai
  */
 public class InvoiceDAOImpl extends AbstractModelDAOImpl<Invoice> implements InvoiceDAO {
-
+    private static final long serialVersionUID = 1L;
     @Override
     public RowMapper<Invoice> createRowMapper() {
         return Invoice._getModelMeta().getRowMapper();

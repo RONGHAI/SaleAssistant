@@ -8,8 +8,9 @@ package me.ronghai.sa.dao;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import javax.persistence.EntityManager;
+
 import me.ronghai.sa.model.AbstractModel;
+
 import org.springframework.jdbc.core.RowMapper;
 
 /**

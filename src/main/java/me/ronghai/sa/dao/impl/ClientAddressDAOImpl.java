@@ -6,10 +6,9 @@
 
 package me.ronghai.sa.dao.impl;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import me.ronghai.sa.dao.ClientAddressDAO;
 import me.ronghai.sa.model.ClientAddress;
+
 import org.springframework.jdbc.core.RowMapper;
 
 /**
@@ -17,7 +16,7 @@ import org.springframework.jdbc.core.RowMapper;
  * @author ronghai
  */
 public class ClientAddressDAOImpl extends AbstractModelDAOImpl<ClientAddress> implements ClientAddressDAO{
-   
+    private static final long serialVersionUID = 1L;
     
     @Override
     public RowMapper<ClientAddress> createRowMapper() {

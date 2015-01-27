@@ -7,6 +7,7 @@ package me.ronghai.sa.dao.impl;
 
 import me.ronghai.sa.dao.OrderDAO;
 import me.ronghai.sa.model.Order;
+
 import org.springframework.jdbc.core.RowMapper;
 
 /**
@@ -14,7 +15,7 @@ import org.springframework.jdbc.core.RowMapper;
  * @author ronghai
  */
 public class OrderDAOImpl extends AbstractModelDAOImpl<Order> implements OrderDAO {
-
+    private static final long serialVersionUID = 1L;
     @Override
     public RowMapper<Order> createRowMapper() {
         return Order._getModelMeta().getRowMapper();
