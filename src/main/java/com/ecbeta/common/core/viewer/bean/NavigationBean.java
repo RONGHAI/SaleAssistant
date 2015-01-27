@@ -18,7 +18,7 @@ public class NavigationBean implements Serializable{
     private static final long serialVersionUID = 1L;
     private List<NavigationBean> children;
     private String icon;
-
+    private String i18n;
     public String getIcon() {
         return icon;
     }
@@ -160,5 +160,13 @@ public class NavigationBean implements Serializable{
     
     public static String getNavTierID(String idPrefix, int[] navTier){
         return idPrefix+"-" + StringUtils.join(navTier, "-");
+    }
+
+    public String getI18n() {
+        return i18n;
+    }
+
+    public void setI18n(String i18n) {
+        this.i18n = i18n;
     }
 }

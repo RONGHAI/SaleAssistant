@@ -168,7 +168,7 @@ public class ClientAddress extends AbstractModel implements Serializable {
         COLUMNS.add(new W2UIColumnBean("address", "Address", "30%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
         COLUMNS.add(new W2UIColumnBean("zipcode", "Zipcode", "10%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
         COLUMNS.add(new W2UIColumnBean("phone", "Phone", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("defaultAdress", "Default", "20%", true,  null , JSONObject.fromObject("{ type: 'checkbox'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("defaultAdress", "Default Address", "20%", true,  null , JSONObject.fromObject("{ type: 'checkbox'  }")).toJson());
         //COLUMNS.add(new W2UIColumnBean("wangwang", "Wangwang", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
         //COLUMNS.add(new W2UIColumnBean("qq", "QQ", "20%", true, "int", JSONObject.fromObject("{ type: 'int', min: 10000 }")).toJson());
         //COLUMNS.add(new W2UIColumnBean("qqName", "QQ Name", "20%", true, "text", JSONObject.fromObject("{ type: 'text'   }")).toJson());

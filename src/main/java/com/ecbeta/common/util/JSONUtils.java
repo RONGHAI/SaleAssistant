@@ -272,13 +272,13 @@ public class JSONUtils {
                     }else{
                         return false;
                     }
-                }else if("begins with".equals(operator)){
+                }else if("begins".equals(operator)){
                     if(obj.has(field) && sf.startsWith(v0)){
                         return true;
                     }else{
                         return false;
                     }
-                }else if("ends with".equals(operator)){
+                }else if("ends".equals(operator)){
                     if(obj.has(field) && sf.endsWith(v0)){
                         return true;
                     }else{

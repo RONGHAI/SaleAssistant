@@ -7,9 +7,12 @@
 package me.ronghai.sa.model;
 
 import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
+
 import static com.ecbeta.common.util.JSONUtils.expectOne;
+
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +20,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -102,6 +106,8 @@ public class Navigation   extends AbstractModel implements Serializable {
     @Column(name = "tier_4")
     private long tier_4;
     
+    @Column(name = "i18n")
+    private String i18n;
     
     @Column(name = "label")
     private String label;
@@ -197,6 +203,7 @@ public class Navigation   extends AbstractModel implements Serializable {
         map.put("tier_3", this.tier_3);
         map.put("tier_4", this.tier_4);
         map.put("order", this.order);
+        map.put("i18n", this.i18n);
         map.put("recid", this.getRecid());
         System.out.println(map);
          
@@ -212,7 +219,7 @@ public class Navigation   extends AbstractModel implements Serializable {
         expectOne(json, "tier_3");
         expectOne(json, "tier_4");
         expectOne(json, "recid");
-        expectOne(json, "id"); 
+        expectOne(json, "id", "i18n"); 
         if(json.has("recid") && !json.has("id")){
             json.put("id", json.get("recid"));
         }
@@ -225,6 +232,7 @@ public class Navigation   extends AbstractModel implements Serializable {
         COLUMNS.add(new W2UIColumnBean("recid", "ID", "10%", true ).toJson());
         COLUMNS.add(new W2UIColumnBean("worker", "Worker", "40%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
         COLUMNS.add(new W2UIColumnBean("label", "Label", "30%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("i18n", "I18N", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
         COLUMNS.add(new W2UIColumnBean("order", "order", "10%", true, "int", JSONObject.fromObject("{ type: 'int', min: 0 }")).toJson());
         COLUMNS.add(new W2UIColumnBean("tier_1", "Tier 1", "10%", true, "int", JSONObject.fromObject("{ type: 'int', min: 0 }")).toJson());
         COLUMNS.add(new W2UIColumnBean("tier_2", "Tier 2", "10%" ,true ,  "int", JSONObject.fromObject("{ type: 'int', min: 0 }")).toJson());
@@ -234,6 +242,7 @@ public class Navigation   extends AbstractModel implements Serializable {
     
     
     private static ModelMeta<Navigation> modelMeta;
+    @SuppressWarnings({ "unchecked" })
     @Override
     public   ModelMeta<Navigation> modelMeta(){
         return _getModelMeta();
@@ -243,6 +252,14 @@ public class Navigation   extends AbstractModel implements Serializable {
             modelMeta = new ModelMeta<>(Navigation.class);
         }
         return modelMeta;
+    }
+
+    public String getI18n() {
+        return i18n;
+    }
+
+    public void setI18n(String i18n) {
+        this.i18n = i18n;
     }
      
 }

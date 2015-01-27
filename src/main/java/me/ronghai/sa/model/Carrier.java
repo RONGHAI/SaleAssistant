@@ -1,9 +1,13 @@
 package me.ronghai.sa.model;
 
+import com.ecbeta.common.constants.Constants;
 import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
+
 import static com.ecbeta.common.util.JSONUtils.expectOne;
+
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -167,11 +172,12 @@ public class Carrier extends AbstractModel implements Serializable {
     public static final JSONArray COLUMNS;
     static{
         COLUMNS = new JSONArray();
-        COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true ).toJson());
+        COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true, "int", null ).toJson());
         COLUMNS.add(new W2UIColumnBean("name", "Name", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("website", "Homesite", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
+        //COLUMNS.add(new W2UIColumnBean("website", "Homesite", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("website", "Homesite", "20%", Constants.SAJS_PREFIX+".renderLink",true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
         COLUMNS.add(new W2UIColumnBean("trackURL", "Tracking URL", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("trackMethod", "HTTP", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("trackMethod", "HTTP Method", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
 
         //COLUMNS.add(new W2UIColumnBean("qq", "QQ", "20%", true, "int", JSONObject.fromObject("{ type: 'int', min: 10000 }")).toJson());
         //COLUMNS.add(new W2UIColumnBean("qqName", "QQ Name", "20%", true, "text", JSONObject.fromObject("{ type: 'text'   }")).toJson());
@@ -206,6 +212,7 @@ public class Carrier extends AbstractModel implements Serializable {
     }
     
     private static ModelMeta<Carrier> modelMeta;
+    @SuppressWarnings("unchecked")
     @Override
     public   ModelMeta<Carrier> modelMeta(){
         return _getModelMeta();

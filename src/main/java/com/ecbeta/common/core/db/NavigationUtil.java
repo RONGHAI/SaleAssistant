@@ -27,6 +27,7 @@ public class NavigationUtil {
         bean.setLabel(na.getLabel());
         bean.setOrder(na.getOrder());
         bean.setId(na.getId().intValue());
+        bean.setI18n(na.getI18n());
         bean.setNavTier(new int[]{(int) na.getTier_1(), (int) na.getTier_2(), (int) na.getTier_3(), (int) na.getTier_4()});
         return bean;
     }
