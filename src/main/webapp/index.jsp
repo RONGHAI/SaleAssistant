@@ -7,6 +7,9 @@
 <%@ taglib prefix="sm" uri="/WEB-INF/sm.tld"%>
 <c:set value='<%=application.getAttribute(Constants.ALL_NAVIGATIONBEANS)%>' var='navigationBeans' />
 <c:set value="${param.forward}" var="navTier" />
+<c:if test="${empty navTier}">
+    <c:set var="navTier" value="1_1_0_0"/>
+</c:if>
 <c:set value="${param.norun}" var="norun" />
 <c:set value='level' var="sidebarLevelPrefix"/>
 <c:set value='navigationbar' var="sidebarID"/>

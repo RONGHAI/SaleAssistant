@@ -26,9 +26,10 @@
     </head>
     <body>
         
-       首页
+       <!-- 首页 -->
        <form id='mainForm' style='margin-top:20px;'>
          <div style='  margin-left: auto; margin-right: auto; width:850px;'>
+
             <div id='price-compare-template' style='display:none;  '>
               <div data-row='comparePriceRow' style='   margin-top:10px;'>
                 <span> 描述</span>
@@ -39,8 +40,9 @@
                 <input type="text" name="discounts" list="discountList" size='4'/>
                 <datalist id="discountList">
                     <option value='0.05' > Target 5%</option>
-                    <option value='0.828' > R US Thursday</option>
-                    <option value='0.92' > R US Double Rewards</option>
+                    <option value='0.172' > R US Thursday</option>
+                    <option value='0.08' > R US Double Rewards</option>
+                    <option value='0.02' > CITI CC</option>
                 </datalist>
 
                 <span>eBates</span>
@@ -63,6 +65,8 @@
               <button type='button'  onclick='javascript:sale_assistant.addCompare();'>添加商品比较 (A)</button>
               <button type='button'  onclick='javascript:sale_assistant.calculateUnitPrice();'>计算单价 (C)</button>
               <button type='button'  onclick='javascript:sale_assistant.resetForm();'>清空表单 (O)</button>
+              <br>
+              <sub>( 单价 * ( 1 - 折扣 ) * ( 1 - eBates / 100 ) - 返现  + 运费 ) / 数量</b>
             </div>
 
          </div>
