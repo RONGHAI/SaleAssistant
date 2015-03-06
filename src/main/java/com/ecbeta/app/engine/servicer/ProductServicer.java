@@ -1,17 +1,17 @@
 package com.ecbeta.app.engine.servicer;
 
-import com.ecbeta.common.core.AbstractServicer;
-import com.ecbeta.common.core.viewer.bean.NavigationBean;
-import com.ecbeta.common.util.JSONUtils;
-
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import me.ronghai.sa.dao.impl.ProductDAOImpl;
+import me.ronghai.sa.dao.AbstractModelDAO;
+import me.ronghai.sa.dao.CategoryDAO;
+import me.ronghai.sa.dao.DAODelegate;
+import me.ronghai.sa.dao.ProductDAO;
+import me.ronghai.sa.dao.impl.AttachmentDAOImpl;
 import me.ronghai.sa.model.AbstractModel;
 import me.ronghai.sa.model.Product;
 import net.sf.json.JSONArray;
@@ -19,16 +19,41 @@ import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class ProductServicer extends AbstractServicer  {
+import com.ecbeta.common.core.AbstractServicer;
+import com.ecbeta.common.core.viewer.bean.NavigationBean;
+import com.ecbeta.common.util.JSONUtils;
+
+public class ProductServicer extends AbstractServicer implements DAODelegate<Product>  {
 
     @Autowired
-    private me.ronghai.sa.dao.impl.ProductDAOImpl productDAO;
+    private ProductDAO productDAO;
+    @Autowired
+    private CategoryDAO  categoryDAO;
+    
+    @Autowired
+    private AttachmentDAOImpl attachmentDAO;
 
-    public ProductDAOImpl getProductDAO() {
+    public AttachmentDAOImpl getAttachmentDAO() {
+        return attachmentDAO;
+    }
+
+    public void setAttachmentDAO(AttachmentDAOImpl attachmentDAO) {
+        this.attachmentDAO = attachmentDAO;
+    }
+
+    public CategoryDAO getCategoryDAO() {
+        return categoryDAO;
+    }
+
+    public void setCategoryDAO(CategoryDAO categoryDAO) {
+        this.categoryDAO = categoryDAO;
+    }
+
+    public ProductDAO getProductDAO() {
         return productDAO;
     }
 
-    public void setProductDAO(ProductDAOImpl productDAO) {
+    public void setProductDAO(ProductDAO productDAO) {
         this.productDAO = productDAO;
     }
 
@@ -45,6 +70,7 @@ public class ProductServicer extends AbstractServicer  {
 
     @Override
     public void init(NavigationBean navBean) {
+        this.productDAO.setDelegate(this);
         this.refresh();
     }
 
@@ -138,6 +164,62 @@ public class ProductServicer extends AbstractServicer  {
         }else{
            return this.update(product);
         }
+    }
+
+    @Override
+    public void setDao(AbstractModelDAO<Product> dao) {
+        
+    }
+
+    @Override
+    public void beforePersistent(Product entity) {
+        
+    }
+
+    @Override
+    public void afterPersistent(Product entity) {
+    }
+
+    @Override
+    public void beforeRemove(Product entity) {
+        
+    }
+
+    @Override
+    public void afterRemove(Product entity) {
+        
+    }
+
+    @Override
+    public void beforeUpdate(Product entity) {
+    }
+
+    @Override
+    public void afterUpdate(Product entity) {
+        
+    }
+
+    @Override
+    public List<Product> afterFind(List<Product> entity) {
+        for(Product p : entity){
+            if(p.getCategories() == null){
+                List<Object> ids = this.productDAO.findCategories(p.getId());
+                p.setCategories(this.categoryDAO.find(ids));
+            }
+            if(p.getAttachments() == null){
+                List<Object> ids = this.productDAO.findImages(p.getId());
+                p.setAttachments(this.attachmentDAO.find(ids));
+            }
+            
+        }
+        return entity;
+    }
+
+    @Override
+    public Product afterFind(Product entity) {
+        List<Product> prs = new ArrayList<Product>(1);
+        prs.add(entity);
+        return afterFind(prs).get(0);
     }
 
 }

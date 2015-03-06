@@ -16,5 +16,7 @@ import me.ronghai.sa.model.Product;
  */
 public interface ProductDAO extends AbstractModelDAO<Product>{
     public List<Object> findCategories(Long productId);
+
+    public List<Object> findImages(Long id);
 }
 

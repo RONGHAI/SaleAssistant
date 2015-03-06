@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -443,6 +444,18 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
            return delegate.afterFind(entity);
         }
         return entity;
+    }
+    
+    
+    public List<Object> findRelatedIDs(final String relationTable, final String returnColumn,final  String whereColumn , final Long productId) {
+        String sql = " SELECT "+returnColumn+" FROM `"+relationTable+"`  WHERE "+whereColumn+" = ? ";
+        List<Object> ids = this.databaseHandler.query(sql, new Object[]{productId},  new RowMapper<Object> (){
+            @Override
+            public Object mapRow(ResultSet arg0, int arg1) throws SQLException {
+                 return arg0.getLong(returnColumn);
+            }});
+        
+        return ids;
     }
     
    /* 
