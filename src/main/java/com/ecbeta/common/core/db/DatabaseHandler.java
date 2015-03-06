@@ -45,6 +45,10 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
  */
 public class DatabaseHandler implements Serializable, Cloneable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private static final Logger logger = Logger.getLogger(DatabaseHandler.class.getName());
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
