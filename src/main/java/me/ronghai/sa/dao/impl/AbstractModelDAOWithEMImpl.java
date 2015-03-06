@@ -31,6 +31,7 @@ import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 
 import me.ronghai.sa.dao.AbstractModelDAO;
+import me.ronghai.sa.dao.DAODelegate;
 import me.ronghai.sa.model.AbstractModel;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -230,6 +231,15 @@ public class AbstractModelDAOWithEMImpl <E extends AbstractModel> implements Abs
     @Override
     public boolean exsit(Object id, String condition) {
         return find(id, condition ) != null;
+    }
+
+    @Override
+    public List<E> find(List<Object> ids) {
+        return null;
+    }
+    @Override
+    public void setDelegate(DAODelegate<E> delegate) {
+        throw new UnsupportedOperationException();
     }
 }
  

@@ -24,6 +24,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import me.ronghai.sa.dao.AbstractModelDAO;
+import me.ronghai.sa.dao.DAODelegate;
 import me.ronghai.sa.model.AbstractModel;
 import me.ronghai.sa.model.ModelMeta;
 
@@ -45,9 +46,24 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
     private static final long serialVersionUID = 1L;
 
     @Autowired
-    protected DatabaseHandler databaseHandler;
+    public DatabaseHandler databaseHandler;
 
     
+    
+    protected transient DAODelegate<E> delegate;
+    
+    
+    public DAODelegate<E> getDelegate() {
+        return delegate;
+    }
+
+    @Override
+    public void setDelegate(DAODelegate<E> delegate) {
+        this.delegate = delegate;
+        if(this.delegate != null){
+            this.delegate.setDao(this);
+        }
+    }
 
     protected Class<E> entityClass;
     private static final Logger logger = Logger.getLogger(AbstractModelDAOWithJDBCImpl.class.getName());
@@ -132,7 +148,9 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
     
     @Override
     public E persistent(E entity) { 
-     
+        if(delegate != null){
+            delegate.beforePersistent(entity);
+        }
         List<?>[] columnsAndValues = findColumnsAndValues(true, entity);
         @SuppressWarnings("unchecked")
         List<String> columnNames = columnsAndValues == null ? null : (List<String>) columnsAndValues[0];
@@ -152,20 +170,30 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
             entity.setId(ne.getId());
             return ne;
         }
+        if(delegate != null){
+            delegate.afterPersistent(entity);
+        }
         return entity;
 
     }
 
     @Override
     public void remove(E entity, boolean force) {
+        if(delegate != null){
+            delegate.beforeRemove(entity);
+        }
         if (force) {
             remove(entity);
         } else {
             entity.setDisabled(true);
             merge(entity);
         }
-
+        if(delegate != null){
+            delegate.afterRemove(entity);
+        }
     }
+    
+    
 
     @Override
     public void remove(E entity) {
@@ -174,27 +202,26 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
 
     @Override
     public int remove(boolean force, Collection<Long> ids) {
-        if (ids == null || ids.isEmpty()) {
-            return 0;
-        }
-        String sql;
-        String table = table(entityClass);
-        if (force) {
-            sql = "DELETE FROM " + table + "  e  WHERE id IN (:ids) ";
-        } else {
-            sql = "UPDATE " + table + "  SET disabled = 1  WHERE id IN (:ids) ";
-        }
-        logger.info("remove ids " + ids);
-        MapSqlParameterSource parameters = new MapSqlParameterSource() ;
-        parameters.addValue("ids", new ArrayList<>(ids));
-        return this.databaseHandler.update(sql, parameters);
+       int n = this.remove(force, ids, "");
+       return n;
     }
+    
+    public void beforeRemove(boolean force, Collection<Long> ids, String configure){
+        
+    }
+    
+    public void afterRemove(boolean force, Collection<Long> ids, String configure){
+        
+    }
+    
+    
     
     @Override
     public int remove(boolean force, Collection<Long> ids, String configure) {
         if (ids == null || ids.isEmpty()) {
             return 0;
         }
+        this.beforeRemove(force, ids, configure);
         String sql;
         String table = table(entityClass);
         if (force) {
@@ -211,7 +238,11 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
         logger.info("remove ids " + ids);
         MapSqlParameterSource parameters = new MapSqlParameterSource() ;
         parameters.addValue("ids", new ArrayList<>(ids));
-        return this.databaseHandler.update(sql, parameters);
+        int n = this.databaseHandler.update(sql, parameters);
+        
+        this.afterRemove(force, ids, configure);
+        return n;
+        
     }
 
     @Override
@@ -221,7 +252,9 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
 
     @Override
     public E merge(E entity) {
-        //TODO ..
+        if(delegate != null){
+            delegate.beforeUpdate(entity);
+        }
         List<?>[] columnsAndValues = findColumnsAndValues(true, entity);
         @SuppressWarnings("unchecked")
         List<String> columnNames = columnsAndValues == null ? null : (List<String>) columnsAndValues[0];
@@ -235,13 +268,16 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
                     sql += ", ";
                 } 
             } 
-             System.out.println(values);
-            System.out.println(columnNames);
+            logger.log(Level.INFO, "{0}", values);
+            logger.log(Level.INFO, "{0}",columnNames);
             sql += " WHERE ID =  " + entity.getId();  
             this.databaseHandler.update(sql, values.toArray()); 
            
             return  find(entity.getId());
         } 
+        if(delegate != null){
+            delegate.afterUpdate(entity);
+        }
         return entity;
     }
     @SuppressWarnings("unchecked")
@@ -262,10 +298,12 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
 
     @Override
     public E find(Object id) {
-
         String sql = "SELECT * FROM " + table(entityClass) + " WHERE id = ? ";
-        return this.databaseHandler.queryForObject(sql, new Object[]{id}, createRowMapper());
-
+        E e = this.databaseHandler.queryForObject(sql, new Object[]{id}, createRowMapper());
+        if(delegate != null){
+            e = delegate.afterFind(e);
+        }
+        return e;
     }
     @Override
     public boolean exsit(Object id) {
@@ -282,8 +320,11 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
         if (org.apache.commons.lang.StringUtils.isNotEmpty(configure)) {
             sql += " " + configure.replaceAll("'", "''");
         }
-        return this.databaseHandler.queryForObject(sql, new Object[]{id}, createRowMapper());
-
+        E entity = this.databaseHandler.queryForObject(sql, new Object[]{id}, createRowMapper());
+        if(delegate != null){
+            return delegate.afterFind(entity);
+        }
+        return entity;
     }
     @Override
     public boolean exsit(Object id , String configure) {
@@ -298,7 +339,11 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
     @Override
     public List<E> find() {
         String sql = "SELECT * FROM " + table(entityClass);
-        return this.databaseHandler.query(sql, createRowMapper());
+        List<E> entity = this.databaseHandler.query(sql, createRowMapper());
+        if(delegate != null){
+         return   delegate .afterFind(entity);
+        }
+        return entity;
     }
 
     @Override
@@ -321,8 +366,12 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
                 sql += " WHERE " + part;
             }
         }
-        System.out.println(sql);
-        return this.databaseHandler.query(sql, createRowMapper());
+        logger.log(Level.INFO, "{0}", sql);
+        List<E> entity = this.databaseHandler.query(sql, createRowMapper());
+        if(delegate != null){
+            return   delegate.afterFind(entity);
+        }
+        return entity;
 
     }
 
@@ -381,4 +430,25 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
         }
         return 0;
     }
+
+
+    @Override
+    public List<E> find(List<Object> ids) {
+        if(ids == null || ids.isEmpty()) return null;
+        String sql = "SELECT * FROM " + table(entityClass) + " WHERE id IN (:ids) ";
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("ids", ids);
+        List<E> entity = this.databaseHandler.query(sql, parameters, createRowMapper());
+        if(delegate != null){
+           return delegate.afterFind(entity);
+        }
+        return entity;
+    }
+    
+   /* 
+    pSqlParameterSource parameters = new MapSqlParameterSource();
+    parameters.addValue("ids", ids);
+
+    List<Foo> foo = getJdbcTemplate().query("SELECT * FROM foo WHERE a IN (:ids)",
+         getRowMapper(), parameters);*/
 }

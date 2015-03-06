@@ -6,6 +6,8 @@
 
 package me.ronghai.sa.dao;
 
+import java.util.List;
+
 import me.ronghai.sa.model.Product;
 
 /**
@@ -13,7 +15,6 @@ import me.ronghai.sa.model.Product;
  * @author ronghai
  */
 public interface ProductDAO extends AbstractModelDAO<Product>{
-   
-
+    public List<Object> findCategories(Long productId);
 }
 

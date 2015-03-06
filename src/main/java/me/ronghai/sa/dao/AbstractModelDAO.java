@@ -42,7 +42,8 @@ public interface AbstractModelDAO<E extends AbstractModel> {
     public boolean exsit(Object id , String condition);
     
     public List<E> find();
-
+    public List<E> find(List<Object> ids);
+ 
     public List<E> find(String condition);
 
     public List<E> find(int from, int size, String condition);
@@ -54,6 +55,9 @@ public interface AbstractModelDAO<E extends AbstractModel> {
     
     public int update(String sql);
     
-    
+    public void setDelegate(DAODelegate<E> delegate) ;
     public RowMapper<E> createRowMapper();
+    
+    
+    
 }
