@@ -13,7 +13,12 @@
         "Unknown": "未知",
         "Male": "男",
         "Female": "女",
-        "Address": "地址"
+        "Address": "地址",
+        "Code" : "编码",
+        "Name" : "名称",
+        "Note" : "备注",
+        "note" : "备注",
+        "Chinese" : "中文"
     });
     
     
