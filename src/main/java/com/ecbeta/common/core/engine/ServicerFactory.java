@@ -92,7 +92,7 @@ public class ServicerFactory {
                     try {
                         Class<?> clazz = ReflectUtils.classForName(field.getType().getName());
                         autoInstance = clazz.newInstance(); 
-                        ReflectUtils.updateFieldValue(autoInstance, autoInstance.getClass().getField( "databaseHandler" ), null, dbhandler );
+                        ReflectUtils.updateFieldValue(autoInstance, clazz.getField( "databaseHandler" ), null, dbhandler );
                     } catch (ClassNotFoundException | InstantiationException | BeansException | NoSuchFieldException | SecurityException e) {
                         logger.log(Level.SEVERE, null, e);
                         autoInstance = null;
