@@ -1,8 +1,8 @@
 (function($) {
-    var sale_assistant = window.sale_assistant = window.sale_assistant || {};
-    sale_assistant.zh = sale_assistant.zh || {};
+    var sales_assistant = window.sales_assistant = window.sales_assistant || {};
+    sales_assistant.zh = sales_assistant.zh || {};
 
-    $.extend(true, sale_assistant.zh, {
+    $.extend(true, sales_assistant.zh, {
         "ID": "编号",
         "Client Name" : "客户姓名",
         "Birthday" : "出生日期",
@@ -22,10 +22,10 @@
     });
     
     
-    sale_assistant.client = sale_assistant.client || {};
-    sale_assistant.client.zh = sale_assistant.client.zh || {};
+    sales_assistant.client = sales_assistant.client || {};
+    sales_assistant.client.zh = sales_assistant.client.zh || {};
 
-    $.extend(true, sale_assistant.client.zh, {
+    $.extend(true, sales_assistant.client.zh, {
         "Name" : "客户姓名",
         "Birthday" : "出生日期",
         "Wangwang":"淘宝旺旺",
@@ -48,13 +48,13 @@
     
     
     
-    sale_assistant.l = function(string, module, locale) {
+    sales_assistant.l = function(string, module, locale) {
         locale = locale || "zh";
-        codes = sale_assistant[locale];
-        commonCodes = sale_assistant[locale];
+        codes = sales_assistant[locale];
+        commonCodes = sales_assistant[locale];
         if (module) {
-            if (sale_assistant[module] && sale_assistant[module][locale]) {
-                codes = sale_assistant[module][locale];
+            if (sales_assistant[module] && sales_assistant[module][locale]) {
+                codes = sales_assistant[module][locale];
             }
         } 
         if (codes && codes[string]) {

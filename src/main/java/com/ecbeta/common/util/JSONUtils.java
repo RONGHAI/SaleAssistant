@@ -172,7 +172,7 @@ public class JSONUtils {
     
     private static String reformatJSON(String str){
         str = str.replaceAll("\"(\\w+)\":", "$1:"); // remove quotes from keys
-        str = str.replaceAll("\"(sale_assistant[.])([\\w\\(\\)]+)\"", "$1$2"); //remove quotes from javascript object
+        str = str.replaceAll("\"("+Constants.SAJS_PREFIX+"[.])([\\w\\(\\)]+)\"", "$1$2"); //remove quotes from javascript object
         str = str.replaceAll("\"(\\d+)\"", "$1");
         return str;
     }

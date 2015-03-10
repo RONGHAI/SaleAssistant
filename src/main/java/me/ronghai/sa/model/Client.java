@@ -258,7 +258,7 @@ public class Client extends AbstractModel implements Serializable {
         
         String col = COLUMNS.toString(2);
         col =  col.replaceAll("\"(\\w*)\":", "$1:");
-        col = col.replaceAll("\"(sale_assistant[.])([\\w\\(\\)]*)\"", "$1$2");
+        col = col.replaceAll("\"("+Constants.SAJS_PREFIX+"[.])([\\w\\(\\)]*)\"", "$1$2");
         col = col.replaceAll("\"(\\d*)\"", "$1");
         System.out.println(col);
         

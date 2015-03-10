@@ -12,6 +12,7 @@ import java.util.List;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyContent;
 
+import com.ecbeta.common.constants.Constants;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import com.ecbeta.common.util.JSONUtils;
 
@@ -158,7 +159,7 @@ public class NavigationTag extends AbstractTag {
         
         sb.append("$(document).ready(function () {\n" ); 
         if(navTier != null){
-             sb.append("sale_assistant.selectSidebar('").append(id).append("','").append(getNavTierID(navPrefix, navTier)).append("');\n");
+             sb.append(""+Constants.SAJS_PREFIX+".selectSidebar('").append(id).append("','").append(getNavTierID(navPrefix, navTier)).append("');\n");
         }
        
         sb.append("});\n" );

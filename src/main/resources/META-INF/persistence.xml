@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-  <persistence-unit name="SaleAssistantPU" transaction-type="RESOURCE_LOCAL">
+  <persistence-unit name="SalesAssistantPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <!-- <class>me.ronghai.sa.model.Client</class> -->
     <!-- <jta-data-source>jdbc/mysql</jta-data-source> -->
     <properties>
-      <!--
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sale_assistant"/>
-      <property name="javax.persistence.jdbc.password" value="db_gzlh_kc11730"/>
-      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.user" value="root"/>
-      -->
       <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLInnoDBDialect"/>
       <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
       <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.connection.username" value="root"/>
       <property name="hibernate.connection.password" value="db_gzlh_kc11730"/>
-      <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/sale_assistant?useUnicode=true&amp;characterEncoding=UTF-8"/>
+      <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/sales_assistant?useUnicode=true&amp;characterEncoding=UTF-8"/>
       <property name="hibernate.max_fetch_depth" value="3"/>
     </properties>
   </persistence-unit>

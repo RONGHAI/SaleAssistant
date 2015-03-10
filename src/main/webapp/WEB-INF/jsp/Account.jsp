@@ -6,21 +6,21 @@
 
 <c:set var="javascript">
     <script type="text/javascript">
-        sale_assistant._merchants_ = [];
+        sales_assistant._merchants_ = [];
         $(function() {
             $(document).ready(function() {            
-                sale_assistant.merchants = function(force){
-                    if(!force && sale_assistant._merchants_ && sale_assistant._merchants_.length > 0){
-                        return sale_assistant._merchants_;
+                sales_assistant.merchants = function(force){
+                    if(!force && sales_assistant._merchants_ && sales_assistant._merchants_.length > 0){
+                        return sales_assistant._merchants_;
                     }else{
-                        sale_assistant.get("listMerchants", "", function(data, state){
-                            sale_assistant._merchants_ = data;
+                        sales_assistant.get("listMerchants", "", function(data, state){
+                            sales_assistant._merchants_ = data;
                             for(var i = 0; i < data .length; i++){
                                 data[i].text = data[i].name;
                             }
                         }, function(data, state){}, false, true);
                     }
-                    return sale_assistant._merchants_;
+                    return sales_assistant._merchants_;
                 };
             });
         });
@@ -32,11 +32,11 @@
 
 
 <script type="text/javascript">
-    var sale_assistant = window.sale_assistant = window.sale_assistant || {};
-    sale_assistant.render_merchant = function(record, index, col_index){
+    var sales_assistant = window.sales_assistant = window.sales_assistant || {};
+    sales_assistant.render_merchant = function(record, index, col_index){
         var cv = this.getCellValue(index, col_index);
         var html = "";
-        var gs = sale_assistant.merchants();
+        var gs = sales_assistant.merchants();
         if(gs){
             for (var p in gs) {
                 if (gs[p].id == cv || gs[p].name == cv){

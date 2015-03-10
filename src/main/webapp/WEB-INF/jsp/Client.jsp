@@ -33,13 +33,13 @@
 <%@include file="OnRecord.jsp" %>
 
 <script type="text/javascript">
-    var sale_assistant = window.sale_assistant = window.sale_assistant || {};
-    sale_assistant.render_address = function(record, index, col_index){
+    var sales_assistant = window.sales_assistant = window.sales_assistant || {};
+    sales_assistant.render_address = function(record, index, col_index){
         var cv = this.getCellValue(index, col_index);
-        var html = "<button class='btn' type='button' onclick='javascript:sale_assistant.edit_address("+cv+")'>住址</button>";
+        var html = "<button class='btn' type='button' onclick='javascript:sales_assistant.edit_address("+cv+")'>住址</button>";
         return html;
     };
-    sale_assistant.edit_address = function(cid){
+    sales_assistant.edit_address = function(cid){
         /*$("#addressPopup").w2popup({
             title: '地址信息',
             onOpen : function (event) {
@@ -47,23 +47,23 @@
             };
 
         });*/
-        var addressGrid = sale_assistant.init_address_grid();
+        var addressGrid = sales_assistant.init_address_grid();
         addressGrid.url = "${sm:url(worker, 'json', 'record')}";
         addressGrid.client = cid;
         addressGrid.postData = {servicer: "addressServicer", client: cid};
         addressGrid.reload();
     };
 
-    sale_assistant.init_address_grid = function(){
+    sales_assistant.init_address_grid = function(){
         if(w2ui['addressGrid']){
             w2ui['addressGrid'].clear();
         }else{
-            sale_assistant.initGrid("addressGrid", "addressGrid", '${worker.appName}_a_', "", {
+            sales_assistant.initGrid("addressGrid", "addressGrid", '${worker.appName}_a_', "", {
                 unshift: false,
                 clear: true,
                 highlight_new : false
             }, {
-                columns: sale_assistant.find_columns(${worker.addressColumns}),
+                columns: sales_assistant.find_columns(${worker.addressColumns}),
                 show : {
                     toolbar : true,
                     toolbarColumns  : true,
@@ -80,7 +80,7 @@
     };
 
 
-    sale_assistant.render_client = function(record, index, col_index){
+    sales_assistant.render_client = function(record, index, col_index){
         var cv = this.getCellValue(index, col_index);
         var records = w2ui['grid'].records;
         for(var i = 0; i < records.length; i++){

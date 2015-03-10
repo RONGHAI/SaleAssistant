@@ -62,9 +62,9 @@
             </div>
 
             <div style=' margin-top:10px; text-align:center;  margin-left: auto; margin-right: auto;'>
-              <button type='button'  onclick='javascript:sale_assistant.addCompare();'>添加商品比较 (A)</button>
-              <button type='button'  onclick='javascript:sale_assistant.calculateUnitPrice();'>计算单价 (C)</button>
-              <button type='button'  onclick='javascript:sale_assistant.resetForm();'>清空表单 (O)</button>
+              <button type='button'  onclick='javascript:sales_assistant.addCompare();'>添加商品比较 (A)</button>
+              <button type='button'  onclick='javascript:sales_assistant.calculateUnitPrice();'>计算单价 (C)</button>
+              <button type='button'  onclick='javascript:sales_assistant.resetForm();'>清空表单 (O)</button>
               <br>
               <sub>( 单价 * ( 1 - 折扣 ) * ( 1 - eBates / 100 ) - 返现  + 运费 ) / 数量</b>
             </div>
@@ -74,13 +74,13 @@
         
        <script type="text/javascript">
            if(self === window){
-                sale_assistant.log('home.html is not in iframe');
+                sales_assistant.log('home.html is not in iframe');
            }else{
-                sale_assistant.log('home.html is in iframe');
+                sales_assistant.log('home.html is in iframe');
            }
-           sale_assistant.log(window.parent);
+           sales_assistant.log(window.parent);
 
-           sale_assistant.calculateUnitPrice = function(){
+           sales_assistant.calculateUnitPrice = function(){
               var prices = $("input[name='prices']");
               var discounts = $("input[name='discounts']");
               var rewards = $("input[name='rewards']");
@@ -108,7 +108,7 @@
                     }
                     $(uplabels[i]).text("$"+unitPrice.toFixed(2));
                  }catch(ex){
-                    sale_assistant.error(ex);
+                    sales_assistant.error(ex);
                  }
                  rows.removeClass("highlight");
                  $(rows[lowestRow]).addClass("highlight");
@@ -116,21 +116,21 @@
               //$(rows)
            };
 
-           sale_assistant.resetForm = function(){
+           sales_assistant.resetForm = function(){
               $("#mainForm")[0].reset();
            };
 
-           sale_assistant.addCompare = function(){
+           sales_assistant.addCompare = function(){
               $("#price-compare-zone").append($("#price-compare-template").html());//.append("<br/><br/>");
            };
 
           $(function() {
             $(document).ready(function() {   
-                sale_assistant.addCompare();
+                sales_assistant.addCompare();
             });
 
 
-            sale_assistant. getChar = function(event) {
+            sales_assistant. getChar = function(event) {
                 if (event.which == null) {
                   return String.fromCharCode(event.keyCode) // IE
                 } else if (event.which!=0 && event.charCode!=0) {
@@ -141,17 +141,17 @@
             };
 
             document.onkeypress =  function(event) {
-                var chr = sale_assistant.getChar(event || window.event)
+                var chr = sales_assistant.getChar(event || window.event)
                 if (!chr) return // special key
                 //this.value = chr.toUpperCase();
                 if(chr.toUpperCase() === 'A'){
-                  sale_assistant.addCompare();
+                  sales_assistant.addCompare();
                   return false;
                 }else if(chr.toUpperCase() === 'O'){
-                  sale_assistant.resetForm();
+                  sales_assistant.resetForm();
                   return false;
                 }else if(chr.toUpperCase() === 'C'){
-                  sale_assistant.calculateUnitPrice();
+                  sales_assistant.calculateUnitPrice();
                   return false;
                 }
                 return true;

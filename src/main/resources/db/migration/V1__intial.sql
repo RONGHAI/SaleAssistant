@@ -17,10 +17,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- 数据库: `sale_assistant`
+-- 数据库: `sales_assistant`
 --
--- CREATE DATABASE IF NOT EXISTS `sale_assistant` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
--- USE `sale_assistant`;
+-- CREATE DATABASE IF NOT EXISTS `sales_assistant` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+-- USE `sales_assistant`;
 
 -- --------------------------------------------------------
 

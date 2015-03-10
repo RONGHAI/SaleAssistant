@@ -42,7 +42,7 @@
 		</property> 
                 
         <property name="persistenceUnitName">
-            <value>SaleAssistantPU</value>
+            <value>SalesAssistantPU</value>
         </property>
     </bean>
     -->
@@ -64,12 +64,12 @@
     <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref='dataSource' />
         <property name="persistenceUnitName">
-            <value>SaleAssistantPU</value>
+            <value>SalesAssistantPU</value>
         </property>
     </bean>
 	<!--
     <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="persistenceUnitName" value="SaleAssistantPU" />
+        <property name="persistenceUnitName" value="SalesAssistantPU" />
     </bean>
         -->
     <!--  

@@ -20,13 +20,13 @@
             <script type="text/javascript"> 
                 $(function() {
                       $(document).ready(function() {
-                            sale_assistant.initGrid("grid", "grid", '${worker.appName}', "${sm:url(worker, 'json', 'record')}", {
+                            sales_assistant.initGrid("grid", "grid", '${worker.appName}', "${sm:url(worker, 'json', 'record')}", {
                                 unshift: true,
                                 clear: false,
                                 highlight_new : true
                             }, {
-                                columns:  sale_assistant.find_columns(${worker.columns}, '${worker.navigationBean.i18n}'),
-                                searches: sale_assistant.find_search_columns( ${worker.columns},  '${worker.navigationBean.i18n}')
+                                columns:  sales_assistant.find_columns(${worker.columns}, '${worker.navigationBean.i18n}'),
+                                searches: sales_assistant.find_search_columns( ${worker.columns},  '${worker.navigationBean.i18n}')
                             });
                       });
                     

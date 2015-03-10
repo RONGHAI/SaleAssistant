@@ -20,7 +20,7 @@
         <title>主页</title>
         <sm:Head> 
             <script type="text/javascript"> //<![CDATA[ 
-                sale_assistant.loadContent = function(url, title){
+                sales_assistant.loadContent = function(url, title){
                     //w2ui['layout'].load('main', url);
                     $("#mainFrame")[0].src = url+'&inframe=true'+'&<%=Constants.FORCE_INIT%>=true';
                 };
@@ -50,11 +50,11 @@
          });
          
          $(document).ready(function () {
-             var sisid = sale_assistant.generateSidebarID("${sidebarLevelPrefix}", "${navTier}");
+             var sisid = sales_assistant.generateSidebarID("${sidebarLevelPrefix}", "${navTier}");
              if(sisid){
-                 sale_assistant.selectSidebar("${sidebarID}" , sisid);
+                 sales_assistant.selectSidebar("${sidebarID}" , sisid);
                 <c:if test='${empty norun || !norun}'>
-                 sale_assistant.runApp(w2ui.navigationbar.get(sisid));
+                 sales_assistant.runApp(w2ui.navigationbar.get(sisid));
                 </c:if>
              }
          });

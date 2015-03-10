@@ -3,17 +3,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.ronghai</groupId>
-    <artifactId>SaleAssistant</artifactId>
-    <version>0.0.1</version>
+    <artifactId>SalesAssistant</artifactId>
+    <version>0.1.0</version>
     <packaging>war</packaging>
 
-    <name>SaleAssistant</name>
+    <name>SalesAssistant</name>
     <url>http://maven.apache.org</url>
 	
 	<scm>
-		<url>https://github.com/RONGHAI/SaleAssistant</url>
-		<connection>scm:git:https://github.com/RONGHAI/SaleAssistant.git</connection>
-	    <developerConnection>scm:git:https://github.com/RONGHAI/SaleAssistant.git</developerConnection>
+		<url>https://github.com/RONGHAI/SalesAssistant</url>
+		<connection>scm:git:https://github.com/RONGHAI/SalesAssistant.git</connection>
+	    <developerConnection>scm:git:https://github.com/RONGHAI/SalesAssistant.git</developerConnection>
 	</scm>
 	
 	<profiles>
@@ -242,7 +242,7 @@
                 <version>${flywaydb.version}</version>
                 <configuration>
                     <driver>com.mysql.jdbc.Driver</driver>
-                    <url>jdbc:mysql://localhost:3306/sale_assistant?useUnicode=true&amp;characterEncoding=UTF-8</url>
+                    <url>jdbc:mysql://localhost:3306/sales_assistant?useUnicode=true&amp;characterEncoding=UTF-8</url>
                     <user>root</user>
                     <password>db_gzlh_kc11730</password>
                 </configuration>

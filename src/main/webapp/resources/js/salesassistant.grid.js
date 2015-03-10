@@ -1,6 +1,6 @@
 (function($) {
-    var sale_assistant = window.sale_assistant = window.sale_assistant || {};
-     sale_assistant.initGrid = function(did, _name, _unique_name , _url, c_options, moreOptions){
+    var sales_assistant = window.sales_assistant = window.sales_assistant || {};
+     sales_assistant.initGrid = function(did, _name, _unique_name , _url, c_options, moreOptions){
         c_options = c_options || {};
         var options = {
         name: _name, 
@@ -17,7 +17,7 @@
         url : _url,
         //multiSort: true,
         onAdd: function (target,data) {
-            var  recid = sale_assistant.generateRecid(this , _unique_name);
+            var  recid = sales_assistant.generateRecid(this , _unique_name);
             this.add({ recid: recid });
             if(c_options['highlight_new']){
                 var tr = $('#grid_'+this.name+"_rec_"+recid);
@@ -30,7 +30,7 @@
         onSave: function(event){
             event.onComplete = function () {
                 sa.log("1");
-                var data = sale_assistant.eventData(event);
+                var data = sales_assistant.eventData(event);
                 if(!data || data.refresh ){
                     this.reload();
                 }
@@ -38,14 +38,14 @@
         },
         onLoad: function(event) {
             event.onComplete = function () {
-               sale_assistant.initMaxRecId(this, _unique_name);
+               sales_assistant.initMaxRecId(this, _unique_name);
             }
         },
         onDelete: function(event){
              //event.force = true; // no confirmation
         },
         onError: function(event){
-            var data = sale_assistant.eventData(event);
+            var data = sales_assistant.eventData(event);
             if(data && !data.refresh && !data.message){
             }
         }
@@ -54,11 +54,11 @@
             $.extend(options, moreOptions);
         }
         if(c_options['clear'] && w2ui[_name]){
-            try{ w2ui[_name].clear();}catch(ex){sale_assistant.error(ex);}
+            try{ w2ui[_name].clear();}catch(ex){sales_assistant.error(ex);}
         }
         $("#"+did).w2grid(options);
         if(c_options['unshift']){
-            w2ui[_name].add = sale_assistant.add_record;
+            w2ui[_name].add = sales_assistant.add_record;
         }
 
         if(c_options['reload']){
@@ -66,20 +66,20 @@
         }
     };
 
-    sale_assistant.find_search_columns = function(columns, module, locale){
+    sales_assistant.find_search_columns = function(columns, module, locale){
         var cls = [];
         for(var i = 0; i < columns.length; i++){
             if(columns[i].searchable && columns[i].type && columns[i].type != null){
-                columns[i].caption = sale_assistant.l(columns[i].caption, module, locale);
+                columns[i].caption = sales_assistant.l(columns[i].caption, module, locale);
                 cls.push(columns[i]);
             }
         }
         return cls;
     };
-    sale_assistant.find_columns = function(columns, module, locale){
+    sales_assistant.find_columns = function(columns, module, locale){
         for(var i = 0; i < columns.length; i++){
             if(columns[i].caption){
-                columns[i].caption = sale_assistant.l(columns[i].caption, module, locale);
+                columns[i].caption = sales_assistant.l(columns[i].caption, module, locale);
             }
         }
         return columns;

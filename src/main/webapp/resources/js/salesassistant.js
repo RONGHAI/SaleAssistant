@@ -10,57 +10,58 @@ if (jQuery) {
             return s;
         };
         
-        var sale_assistant = window.sale_assistant = window.sale_assistant || {};
-        sale_assistant.__gender_list = [{id:'M', text : "Male"}, {id:'F', text : "Female"}, {id:'U', text : "Unknown"}];
+        var sales_assistant = window.sales_assistant = window.sales_assistant || {};
+        var sale_assistant = window.sale_assistant = sales_assistant;
+        sales_assistant.__gender_list = [{id:'M', text : "Male"}, {id:'F', text : "Female"}, {id:'U', text : "Unknown"}];
 
-        sale_assistant.genders = function(){
-            return sale_assistant.__gender_list;
+        sales_assistant.genders = function(){
+            return sales_assistant.__gender_list;
         };
 
-        sale_assistant.render_gender = function(record, index, col_index){
+        sales_assistant.render_gender = function(record, index, col_index){
             var cellvalue = this.getCellValue(index, col_index);
             var html = "";
-            var gs = sale_assistant.__gender_list;
+            var gs = sales_assistant.__gender_list;
             for (var p in gs) {
                 if (gs[p].id === cellvalue){
-                    html = sale_assistant.l(gs[p].text);
+                    html = sales_assistant.l(gs[p].text);
                     break;
                 } 
             }
             return html;
         };
 
-        sale_assistant.renderLink = function(record, index, col_index){
+        sales_assistant.renderLink = function(record, index, col_index){
             var cellvalue = this.getCellValue(index, col_index);
             var html = "";
             //<a href="http://www.w3schools.com" target="_blank">Visit W3Schools.com!</a> 
             return "<a href='"+(cellvalue.indexOf('http') < 0 ? 'http://': '' )+cellvalue+"' target='_blank'>"+cellvalue+"</a>";
         };
 
-        sale_assistant.render_link  = sale_assistant.renderLink ;
-        sale_assistant.error = function(d) {
+        sales_assistant.render_link  = sales_assistant.renderLink ;
+        sales_assistant.error = function(d) {
             if (console) {
                 console.error(d);
             }
         };
-        sale_assistant.log = function(d) {
+        sales_assistant.log = function(d) {
             if (console) {
                 console.log(d);
             }
         };
-        sale_assistant.debug = function(d) {
+        sales_assistant.debug = function(d) {
             if (console) {
                 console.debug("*********");
                 console.debug(d);
             }
         };
         
-        sale_assistant.safeEval = function(sr){
+        sales_assistant.safeEval = function(sr){
             var fu = new Function(sr);
             fu();
         };
         
-        sale_assistant.autoUpdate = function(data) {
+        sales_assistant.autoUpdate = function(data) {
             if (!data)
                 return;
             var zones = data.contentRefreshZone;
@@ -69,7 +70,7 @@ if (jQuery) {
                     try {
                         $j("#" + z).innerHTML = zones[z];
                     } catch (ex) {
-                        sale_assistant.log(z);
+                        sales_assistant.log(z);
                     }
                 }
             }
@@ -77,9 +78,9 @@ if (jQuery) {
             if (scripts) {
                 for (var i = 0; i < scripts.length; i++) {
                     try {
-                        sale_assistant.safeEval(scripts[i]);
+                        sales_assistant.safeEval(scripts[i]);
                     } catch (ex) {
-                        sale_assistant.log(ex);
+                        sales_assistant.log(ex);
                     }
                 }
             }
@@ -89,17 +90,17 @@ if (jQuery) {
                     try {
                         $(clearZones[m]).innerHTML = '';
                     } catch (e) {
-                        sale_assistant.log(e);
+                        sales_assistant.log(e);
                     }
                 }
             }
             if (data.data) {
-                sale_assistant.autoUpdate(data.data);
+                sales_assistant.autoUpdate(data.data);
             }
         };
 
 
-        sale_assistant.callbackFunction = function(func, transport) {
+        sales_assistant.callbackFunction = function(func, transport) {
             if (func && typeof (func) === 'function') {
                 var callBack = func;
                 callBack(transport);
@@ -109,7 +110,7 @@ if (jQuery) {
             }
         };
 
-        sale_assistant.queryString2JSON = function(qry) {
+        sales_assistant.queryString2JSON = function(qry) {
             var pairs = qry.split('&');
             var result = {};
             pairs.forEach(function(pair) {
@@ -131,18 +132,18 @@ if (jQuery) {
             return JSON.parse(JSON.stringify(result));
         };
         
-        sale_assistant.url = function(navUri, action, type){
-            return navUri + '&' + sale_assistant.BTN_OPTION +'='+action+"&" + sale_assistant.REFRESH_TYPE +"=" + type;
+        sales_assistant.url = function(navUri, action, type){
+            return navUri + '&' + sales_assistant.BTN_OPTION +'='+action+"&" + sales_assistant.REFRESH_TYPE +"=" + type;
         };
 
-        sale_assistant.init = function(uri, butName, formName, refreshTypeName) {
-            sale_assistant.baseURLWithButton = uri;
-            sale_assistant.BTN_OPTION = butName;
-            sale_assistant.form = formName;
-            sale_assistant.REFRESH_TYPE = refreshTypeName;
+        sales_assistant.init = function(uri, butName, formName, refreshTypeName) {
+            sales_assistant.baseURLWithButton = uri;
+            sales_assistant.BTN_OPTION = butName;
+            sales_assistant.form = formName;
+            sales_assistant.REFRESH_TYPE = refreshTypeName;
         };
 
-        sale_assistant.serialize = function(zone) {
+        sales_assistant.serialize = function(zone) {
             if(!zone){
                 return "";
             }
@@ -165,10 +166,10 @@ if (jQuery) {
             return params;
         };
 
-        sale_assistant.get = function(action, paraZone, sucessCallback, errorCallback, autoUpdate, sync) {
-            var paras = sale_assistant.serialize(paraZone);
+        sales_assistant.get = function(action, paraZone, sucessCallback, errorCallback, autoUpdate, sync) {
+            var paras = sales_assistant.serialize(paraZone);
             $j.ajax({
-                url: sale_assistant.baseURLWithButton + action,
+                url: sales_assistant.baseURLWithButton + action,
                 header: {
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Methods": "GET"
@@ -179,22 +180,22 @@ if (jQuery) {
                 contentType: "application/json; charset=utf-8",
                 data: paras,
                 success: function(data, state) {
-                    sale_assistant.callbackFunction(sucessCallback, data, state);
+                    sales_assistant.callbackFunction(sucessCallback, data, state);
                     if (autoUpdate) {
-                        sale_assistant.autoUpdate(data);
+                        sales_assistant.autoUpdate(data);
                     }
                 },
                 error: function(data, state) {
-                    sale_assistant.callbackFunction(errorCallback, data, state);
+                    sales_assistant.callbackFunction(errorCallback, data, state);
                 }
             });
         };
 
-        sale_assistant.post = function(action, paraZone, sucessCallback, errorCallback, autoUpdate) {
-            var paras = sale_assistant.serialize(paraZone);
+        sales_assistant.post = function(action, paraZone, sucessCallback, errorCallback, autoUpdate) {
+            var paras = sales_assistant.serialize(paraZone);
             alert(paras);
             $j.ajax({
-                url: sale_assistant.baseURLWithButton + action,
+                url: sales_assistant.baseURLWithButton + action,
                 header: {
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Methods": "POST"
@@ -205,96 +206,96 @@ if (jQuery) {
                 contentType: "application/json; charset=utf-8",
                 data: paras,
                 success: function(data, state) {
-                    sale_assistant.log(data);
-                    sale_assistant.log(state);
-                    sale_assistant.callbackFunction(sucessCallback, data, state);
+                    sales_assistant.log(data);
+                    sales_assistant.log(state);
+                    sales_assistant.callbackFunction(sucessCallback, data, state);
                     if (autoUpdate) {
-                        sale_assistant.autoUpdate(data);
+                        sales_assistant.autoUpdate(data);
                     }
                 },
                 error: function(data, state) {
-                    sale_assistant.error(data);
-                    sale_assistant.error(state);
-                    sale_assistant.callbackFunction(errorCallback, data, state);
+                    sales_assistant.error(data);
+                    sales_assistant.error(state);
+                    sales_assistant.callbackFunction(errorCallback, data, state);
                 }
             });
         };
 
-        sale_assistant.sumbit = function(action) {
-            $j("#" + sale_assistant.actionButton).value = action;
-            $j("#" + sale_assistant.form).submit();
+        sales_assistant.sumbit = function(action) {
+            $j("#" + sales_assistant.actionButton).value = action;
+            $j("#" + sales_assistant.form).submit();
         };
         
-        sale_assistant.loadContent = function(url, title, navTier){
+        sales_assistant.loadContent = function(url, title, navTier){
             
         };
         
-        sale_assistant.runApp = function(et){
+        sales_assistant.runApp = function(et){
             if(!et) return;
             var url = et["data-url"];
             var title = et.text;
             var navTier = et.navTier;
-            if(url && url !== '' && (navTier && navTier !== '' && navTier !== sale_assistant.currentNavTier) ){
-                sale_assistant.currentNavTier = navTier;
-                sale_assistant.log(url);
+            if(url && url !== '' && (navTier && navTier !== '' && navTier !== sales_assistant.currentNavTier) ){
+                sales_assistant.currentNavTier = navTier;
+                sales_assistant.log(url);
                 document.title = title;
-                sale_assistant.loadContent(url, title);
+                sales_assistant.loadContent(url, title);
             }
         };
         
-        sale_assistant.generateSidebarID = function(prefix, nav){
+        sales_assistant.generateSidebarID = function(prefix, nav){
             if(nav && nav !== "" ){
                 return prefix + "-" +  nav.replace(/_/g, '-');  
             }
             return null;
         };
         
-        sale_assistant.expandSidebar = function(id, parent){
+        sales_assistant.expandSidebar = function(id, parent){
             if(parent && parent.id && parent.parent){
                   window.w2ui[id].expand(parent.id);
                   if(parent.parent){
-                      sale_assistant.expandSidebar(id, parent.parent);
+                      sales_assistant.expandSidebar(id, parent.parent);
                   }
             }
         };
 
-        sale_assistant.selectSidebar = function (id, item){
+        sales_assistant.selectSidebar = function (id, item){
             if(item){
                 window.w2ui[id].select(item);
                 var _sel = window.w2ui[id].get(item);
                 if(_sel){
-                    sale_assistant.expandSidebar(id ,_sel.parent);
+                    sales_assistant.expandSidebar(id ,_sel.parent);
                 }
             }
         };
 
-        sale_assistant.max_recid = {};
-        sale_assistant.generateRecid = function(grid, app){
+        sales_assistant.max_recid = {};
+        sales_assistant.generateRecid = function(grid, app){
             var rs = grid.records;
-            sale_assistant.max_recid[app]  = sale_assistant.max_recid[app] || 0;
+            sales_assistant.max_recid[app]  = sales_assistant.max_recid[app] || 0;
             for(var i =0; i< rs.length; i++){
                 var recid = rs[i].recid;
-                if(sale_assistant.max_recid[app] < recid){
-                    sale_assistant.max_recid[app] = recid;
+                if(sales_assistant.max_recid[app] < recid){
+                    sales_assistant.max_recid[app] = recid;
                 }
             }
-            sale_assistant.max_recid[app] += 1;
-            return sale_assistant.max_recid[app];
+            sales_assistant.max_recid[app] += 1;
+            return sales_assistant.max_recid[app];
         };
 
-        sale_assistant.initMaxRecId = function(grid, app){
+        sales_assistant.initMaxRecId = function(grid, app){
             var rs = grid.records;
-            sale_assistant.max_recid[app]  =  0;
+            sales_assistant.max_recid[app]  =  0;
             for(var i =0; i< rs.length; i++){
                 var recid = rs[i].recid;
-                if(sale_assistant.max_recid[app] < recid){
-                    sale_assistant.max_recid[app] = recid;
+                if(sales_assistant.max_recid[app] < recid){
+                    sales_assistant.max_recid[app] = recid;
                 }
             }
-            //sa.log(sale_assistant.max_recid[app]);
+            //sa.log(sales_assistant.max_recid[app]);
         };
 
-        sale_assistant.eventData = function(evt){
+        sales_assistant.eventData = function(evt){
             var data;
             try { data = $.parseJSON(evt.xhr.responseText) } catch (e) {}
             sa.log(data);
@@ -302,7 +303,7 @@ if (jQuery) {
         };
         
 
-        sale_assistant.add_record = function(record){
+        sales_assistant.add_record = function(record){
             if (!$.isArray(record)) record = [record];
             var added = 0;
             for (var o in record) {

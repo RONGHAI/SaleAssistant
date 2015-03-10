@@ -84,19 +84,19 @@ public class HeadIncludeTag extends AbstractTag {
         StringBuilder sb = new StringBuilder();
         sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /> \n");
         sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/jquery-").append(jqueryVersion).append(".js\"></script> \n");
-        sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/saleassistant.js?").append(dev ? ("time=" + System.currentTimeMillis()) : "").append("\"></script> \n");
-        sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/saleassistant.i18n.js?").append(dev ? ("time=" + System.currentTimeMillis()) : "").append("\"></script> \n");
-        sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/saleassistant.grid.js?").append(dev ? ("time=" + System.currentTimeMillis()) : "").append("\"></script> \n");
+        sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/salesassistant.js?").append(dev ? ("time=" + System.currentTimeMillis()) : "").append("\"></script> \n");
+        sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/salesassistant.i18n.js?").append(dev ? ("time=" + System.currentTimeMillis()) : "").append("\"></script> \n");
+        sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/salesassistant.grid.js?").append(dev ? ("time=" + System.currentTimeMillis()) : "").append("\"></script> \n");
         sb.append("<script src=\"").append(this.getContextPath()).append("/resources/js/w2ui-").append(w2uiVersion).append(".js\"></script> \n");
         sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"").append(this.getContextPath()).append("/resources/css/w2ui-").append(w2uiVersion).append(".css\"/> \n");
         sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"").append(this.getContextPath()).append("/resources/css/sa.css\"/> \n");
         sb.append("<script > \n");
         sb.append("$(document).ready(function() { \n");
         if(controller != null){
-            sb.append("     ").append("").append(" sale_assistant.init('").append(this.controller.getUrl()).append("','" + Constants.BTN_OPTION + "','").append(this.controller.getFORM_NAME()).append("','")
+            sb.append("     ").append("").append(" "+Constants.SAJS_PREFIX+".init('").append(this.controller.getUrl()).append("','" + Constants.BTN_OPTION + "','").append(this.controller.getFORM_NAME()).append("','")
                 .append(Constants.REFRESH_TYPE).append("'); \n");
          }
-        sb.append("      var sa = window.sa = sale_assistant; ");
+        sb.append("      var sa = window.sa = "+Constants.SAJS_PREFIX+"; ");
         sb.append("}); \n");
         sb.append("</script> \n");
         this.println(sb);
