@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import net.sf.json.JSONObject;
 
 /**
@@ -133,5 +134,9 @@ public class MapJSONBean implements Serializable{
 
     public JSONObject toJson(){ 
        return JSONObject.fromObject(adjust(this.json));
+    }
+    
+    public JSONObject toJSON(){
+        return toJson();
     }
 }

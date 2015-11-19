@@ -1,14 +1,20 @@
 package com.ecbeta.common.core.reflect;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
@@ -17,12 +23,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.ecbeta.common.core.annotation.ParseMethodType;
 import com.ecbeta.common.core.annotation.RequestParse;
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ReflectUtils {
     private static final Logger logger =   Logger.getLogger(ReflectUtils.class.getName()) ;
@@ -211,6 +211,20 @@ public class ReflectUtils {
             }
         }
         return null;
+    }
+    
+    
+    public final static Object value(Object instance, Field field, Method setterMethod){
+        Object value = null;
+        if(field != null){
+            try{
+                field.setAccessible(true);
+                value = field.get(instance);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+        return value;
     }
     
     public static void updateFieldValue (Object instance, Field field, Method setterMethod, Object value) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {

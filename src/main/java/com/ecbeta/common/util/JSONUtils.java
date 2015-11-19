@@ -6,8 +6,8 @@
 package com.ecbeta.common.util;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,16 +20,15 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.springframework.expression.spel.ast.OpAnd;
-
-import sun.print.resources.serviceui;
 import me.ronghai.sa.model.AbstractModel;
-import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
+
 import com.ecbeta.common.constants.Constants;
+import com.ecbeta.common.core.reflect.ReflectUtils;
 import com.ecbeta.common.core.viewer.bean.MapJSONBean;
 
 /**
@@ -57,33 +56,61 @@ public class JSONUtils {
                 json.add(s.toString(), value);
             }
         }
-
         try {
+            
             BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
             String line;
-            String data = "";
+            
+            List<String> datalist = new ArrayList<String>();
             while ((line = br.readLine()) != null) {
-                data += line;
+                datalist.add(line);
             }
-            data = URLDecoder.decode(data, "UTF-8");
-            try {
-                JSONObject oo = JSONObject.fromObject(data);
-                return oo;
-            }
-            catch (Exception ex) {
-                Map<String, List<String>> params = parseParameters(data);
-                for (Map.Entry<String, List<String>> entry : params.entrySet()) {
-                    for (String value : entry.getValue()) {
-                        json.add(entry.getKey(), value);
+            if(!datalist.isEmpty()){
+                String separate = datalist.get(0);
+                boolean multipart = datalist.lastIndexOf(datalist.get(0)) > 0;
+                if(multipart){
+                    boolean removeNext = false;
+                    for (Iterator<String> iterator = datalist.iterator(); iterator.hasNext();) {
+                        line  = (String) iterator.next();
+                        if(line.equals(separate)){
+                            iterator.remove();
+                            removeNext = false;
+                            continue;
+                        }
+                        if(line.contains("Content-Disposition: attachment")){
+                            iterator.remove();
+                            removeNext = true;
+                            continue;
+                        }
+                        if(line.contains("Content-Disposition:") || removeNext){
+                            iterator.remove();
+                            continue;
+                        }
                     }
                 }
             }
-
+            String data = StringUtils.join(datalist, "");
+            if(StringUtils.isNotEmpty(data)){
+                data = URLDecoder.decode(data, "UTF-8");
+                try {
+                    JSONObject oo = JSONObject.fromObject(data);
+                    return oo;
+                }
+                catch (Exception ex) {
+                    Map<String, List<String>> params = parseParameters(data);
+                    for (Map.Entry<String, List<String>> entry : params.entrySet()) {
+                        for (String value : entry.getValue()) {
+                            json.add(entry.getKey(), value);
+                        }
+                    }
+                }
+            }
+            
         }
-        catch (IOException ex) {
+        catch (Exception ex) {
+            ex.printStackTrace();
             logger.log(Level.SEVERE, null, ex);
         }
-        
         JSONObject job = json.toJson();
         logger.info("~~~~~~~~~AutoCreating~~~~~~~~~");
         logger.info(json == null ?  "" : job.toString(2) );
@@ -92,7 +119,7 @@ public class JSONUtils {
     }
 
     private static Map<String, List<String>> parseParameters(String url) {
-        Map<String, List<String>> params = new HashMap<>();
+        Map<String, List<String>> params = new HashMap<String, List<String>>();
         String query = url;
         for (String param : query.split("&")) {
             String pair[] = param.split("=");
@@ -103,7 +130,7 @@ public class JSONUtils {
             }
             List<String> values = params.get(key);
             if (values == null) {
-                values = new ArrayList<>();
+                values = new ArrayList<String>();
                 params.put(key, values);
             }
             values.add(value);
@@ -128,7 +155,6 @@ public class JSONUtils {
         if(json.has(key)){
             Object o = json.get(key);
             if(o instanceof JSONArray){
-               
             }else{
                 List<Object> list = new ArrayList<>(1);
                 list.add(o);
@@ -137,12 +163,66 @@ public class JSONUtils {
         }
     }
      
+     public static void expectMore(JSONObject json, String ok, String key){
+         if(json.has(key)){
+             Object o = json.get(key);
+             if(o instanceof JSONArray){
+                JSONArray array = (JSONArray) o;
+                List<Object> list = new ArrayList<>(1);
+                for(int i = 0; i < array.size(); i++){
+                    Object obj = array.get(i);
+                    if(obj instanceof String){
+                        JSONObject jo = new JSONObject();
+                        jo.put(ok, obj);
+                        list.add(jo);
+                    }else if(obj instanceof JSONObject){
+                        list.add(obj);
+                    }
+                }
+                json.put(key, list);
+             }else{
+                 List<Object> list = new ArrayList<>(1);
+                 if(o instanceof String){
+                     JSONObject jo = new JSONObject();
+                     jo.put(ok, o);
+                     list.add(jo);
+                 }else{
+                     list.add(o);
+                 }
+                 json.put(key, list);
+             }
+         }
+     }
+     
      public static void expectMore(JSONObject json, String... keys){
          if(keys == null ) return;
          for(String key : keys){
              expectMore(json, key);
          }
      }
+     
+        
+    @SuppressWarnings("unchecked")
+    public final static <T> T toBean(JSONObject json, Class<T> clazz){
+        return (T) JSONObject.toBean(expect(json,clazz),clazz);
+    }
+    
+    public static JSONObject expect(JSONObject json, Class<?> clazz){
+        Map<String, Field>  fields = new HashMap<String, Field>();
+        fields = ReflectUtils.getDeclaredFields(fields, clazz, true); 
+        for(Object key : json.keySet()){
+            Field field = fields.get(key+"");
+            if(field == null) continue;
+            if(field.getType().isArray() || Collection.class.isAssignableFrom(field.getType()) ){
+                expectMore(json, key+"");
+            }else{
+                expectOne(json, key+"");
+            }
+        }
+        return json;
+    }
+    
+     
     public static String toString(JSONArray o){
         if(o == null ){
             return null;
@@ -343,16 +423,7 @@ public class JSONUtils {
         }catch(Exception e){
             logger.log(Level.WARNING, "{0}", e);
         }
-        
-     /*   
-        field    : '',    // search field name
-        value    : '',    // string or array of string with values
-        operator : 'is',  // search operator [is, in, between, begins with, contains, ends with]
-        type     : ''     // data type, [text, int, float, date]
-*/    /*       "field": ["qqName"],
-   "type": ["text"],
-   "value": ["A"],
-   "operator": ["contains"]*/
+      
         return true;
     }
     
@@ -364,34 +435,38 @@ public class JSONUtils {
             return jsonArray;
         }
         logger.log(Level.INFO, "{0}", searchs);
-        int[] sortKeys = new int[searchs.size()];
-        for(int i = 0; i < sortKeys.length; i++){
-            sortKeys[i] = i;
-        }
-        final boolean sortAscending[]  = new boolean[searchs.size()];
-        for(int i = 0; i < sortAscending.length; i++){
-            expectOne(searchs.getJSONObject(i), "direction", "field");
-            sortAscending[i] = searchs.getJSONObject(i).get("direction").toString().equals("asc");
-        }
-        SortBeanListUtil.sort2(jsonArray, sortKeys, sortAscending, false, new SortableBeanParse<JSONObject>() {
-            @Override
-            public List<String> parseBeanToList(JSONObject o) {
-                List<String>  list = new  ArrayList<String>();
-                for(int i = 0; i < sortAscending.length; i++){
-                    list.add(o.getString(searchs.getJSONObject(i).getString("field")));
-                }
-                return list;
+        try{
+            int[] sortKeys = new int[searchs.size()];
+            for(int i = 0; i < sortKeys.length; i++){
+                sortKeys[i] = i;
             }
-            @Override
-            public List<Comparable<?>> parse(JSONObject o) {
-                List<Comparable<?>>  list = new  ArrayList<Comparable<?>> ();
-                for(int i = 0; i < sortAscending.length; i++){
-                    list.add(o.getString(searchs.getJSONObject(i).getString("field")));
-                }
-                return list;
+            final boolean sortAscending[]  = new boolean[searchs.size()];
+            for(int i = 0; i < sortAscending.length; i++){
+                expectOne(searchs.getJSONObject(i), "direction", "field");
+                sortAscending[i] = searchs.getJSONObject(i).get("direction").toString().equals("asc");
             }
-            
-        }, SortBeanListUtil.NA_LAST);
+            SortBeanListUtil.sort2(jsonArray, sortKeys, sortAscending, false, new SortableBeanParse<JSONObject>() {
+                @Override
+                public List<String> parseBeanToList(JSONObject o) {
+                    List<String>  list = new  ArrayList<String>();
+                    for(int i = 0; i < sortAscending.length; i++){
+                        list.add(o.getString(searchs.getJSONObject(i).getString("field")));
+                    }
+                    return list;
+                }
+                @Override
+                public List<Comparable<?>> parse(JSONObject o) {
+                    List<Comparable<?>>  list = new  ArrayList<Comparable<?>> ();
+                    for(int i = 0; i < sortAscending.length; i++){
+                        list.add(o.getString(searchs.getJSONObject(i).getString("field")));
+                    }
+                    return list;
+                }
+                
+            }, SortBeanListUtil.NA_LAST);
+        }catch(Exception e){
+            logger.log(Level.INFO, "{0}",e);
+        }
         return  jsonArray;
     }
     

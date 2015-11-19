@@ -3,6 +3,7 @@ package com.ecbeta.common.core;
 import static com.ecbeta.common.constants.Constants.AA_REFRESH_ZONES_NAME;
 import static com.ecbeta.common.constants.Constants.ACTION_NAME;
 import static com.ecbeta.common.constants.Constants.BTN_OPTION;
+import static com.ecbeta.common.constants.Constants.JSONP_REFRESH_TYPE;
 import static com.ecbeta.common.constants.Constants.JSON_REFRESH_TYPE;
 import static com.ecbeta.common.constants.Constants.PROGRESS_PAGE_POSTBACK;
 import static com.ecbeta.common.constants.Constants.REFRESH_TYPE;
@@ -35,7 +36,6 @@ import com.ecbeta.common.core.annotation.Action;
 import com.ecbeta.common.core.annotation.Actions;
 import com.ecbeta.common.core.servlet.CoreServlet;
 import com.ecbeta.common.core.viewer.BaseViewer;
-import com.ecbeta.common.core.viewer.JsonModel;
 import com.ecbeta.common.core.viewer.bean.ExportInformationBean;
 import com.ecbeta.common.core.viewer.bean.NavigationBean;
 import com.ecbeta.common.core.viewer.bean.PanelTab;
@@ -262,7 +262,7 @@ public abstract class AbstractController {
     }*/
 
     protected void forwardToJsp(String jsp) throws IOException, ServletException{
-        this.getServletContext().getRequestDispatcher(jspPath+jsp).forward(getRequest(), getResponse());
+        this.getServletContext().getRequestDispatcher(this.jspPath+jsp).forward(this.getRequest(), this.getResponse());
     }
 
 
@@ -291,7 +291,7 @@ public abstract class AbstractController {
      * @return the btnClicked
      */
     public String getBtnClicked () {
-        return btnClicked;
+        return this.btnClicked;
     }
 
     public String getClearResultActions () {
@@ -318,14 +318,14 @@ public abstract class AbstractController {
     public abstract String getJSP_TOGO_PERIX ();
 
     public String getJspGoto () {
-        return getJSP_TOGO();
+        return this.getJSP_TOGO();
     }
 
     /**
      * @return the navigationBean
      */
     public NavigationBean getNavigationBean () {
-        return navigationBean;
+        return this.navigationBean;
     }
 
     public String getNavTier(){
@@ -362,11 +362,11 @@ public abstract class AbstractController {
     }
 
     public HttpServletRequest getRequest () {
-        return request;
+        return this.request;
     }
 
     public HttpServletResponse getResponse () {
-        return response;
+        return this.response;
     }
 
     /**
@@ -376,7 +376,7 @@ public abstract class AbstractController {
     public abstract AbstractServicer getServicer ();
 
     public ServletContext getServletContext () {
-        return servletContext;
+        return this.servletContext;
     }
 
 
@@ -446,13 +446,13 @@ public abstract class AbstractController {
 
     public void processButtonClickedAction (String action) {
         if(this.getServicer() != null){
-            this.getServicer().beforeProcessing(request, this.btnClicked ,action);
+            this.getServicer().beforeProcessing(this.request, this.btnClicked ,action);
         }
         try{
             Object[] _instance = this.isUseActionFromServicer() ?  new Object[]{this, this.getServicer()} : new Object[]{this};
             int []_processStatus = new int[_instance.length];
             Arrays.fill(_processStatus,  _PROCESS_STATUS_IGNORE);
-            Object[][]  args = this.getArgs(this.getRequest(), btnClicked);
+            Object[][]  args = this.getArgs(this.getRequest(), this.btnClicked);
 
             outer: for(int c = 0; c < _instance.length; c++){
                 for(int  i = 0 ; i < PARAMETER_TYPES_ARRAY.length && i < args.length; i++){
@@ -473,27 +473,42 @@ public abstract class AbstractController {
             logger.log(Level.WARNING, null, e);
         }
         if(this.getServicer() != null){
-            this.getServicer().afterProcessing(request, this.btnClicked, action);
+            this.getServicer().afterProcessing(this.request, this.btnClicked, action);
         }
     }
 
-    protected void setJsonContentType() {
-        this.getResponse().setContentType("application/json; charset=UTF-8");
+    
+    protected void setJsonContentType(boolean isJSONP) {
+        if(isJSONP){
+            this.getResponse().setContentType("application/javascript; charset=UTF-8");
+        }else{
+            this.getResponse().setContentType("application/json; charset=UTF-8");
+        }
         this.getResponse().setHeader("Cache-Control", "no-store, max-age=0, no-cache, must-revalidate");
         this.getResponse().addHeader("Cache-Control", "post-check=0, pre-check=0");
         this.getResponse().setHeader("Pragma", "no-cache");
     }
-
-    protected void returnJSON(Object o) {
-        this.setJsonContentType();
-        if(o == null){
+    
+    public static String toString(Object o){
+        if(o == null ){
+            return null;
+        }
+        if(o instanceof JSONArray)
+            return JSONUtils.toString((JSONArray)o);
+        else if(o instanceof JSONObject)
+            return JSONUtils.toString((JSONObject)o);
+        
+        return o.toString();
+    }
+    
+    protected void returnJSON(Object o, boolean isJsonP) {
+        this.setJsonContentType(isJsonP);
+        if(o != null && StringUtils.isNotEmpty(o.toString())){
+        }else{
             return;
         }
-        System.out.println(o);
         try{
-            if(o instanceof JsonModel){
-                 this.getResponse().getWriter().write( ((JsonModel)o).toJson());
-            }else if(o instanceof JSONObject || o instanceof  JSONArray){
+            if(o instanceof JSONObject || o instanceof  JSONArray){
                  this.getResponse().getWriter().write (o.toString());
             }
         }catch(IOException e){
@@ -508,16 +523,17 @@ public abstract class AbstractController {
         }
     }
 
+
    private transient Object result;
    private int  processButtonClickedAction (String action, Class<?> ownerClass, Object instance , Class<?>[] _classTypes, Object[] args) {
         if (action == null) return _PROCESS_STATUS_IGNORE;
-        if (enableActionAnnotation() && findAnnotationInClassLevel(ownerClass, action)) {
+        if (this.enableActionAnnotation() && this.findAnnotationInClassLevel(ownerClass, action)) {
             return _PROCESS_STATUS_SUCCESS;
         }
         String key = ownerClass.getName() + "_" + action;
         Method method = null;
         try {
-            if (enableActionAnnotation() && method == null) {
+            if (this.enableActionAnnotation() && method == null) {
                 method = findActionMethod(ownerClass, action);
             }
             boolean withBtnPara = false;
@@ -554,23 +570,24 @@ public abstract class AbstractController {
         } catch (Exception e) {
             logger.log(Level.WARNING, "", e);
         }
-        String refresh = request.getParameter(REFRESH_TYPE);
-        boolean isJson = (refresh != null && refresh.equals(JSON_REFRESH_TYPE) );
+        String refresh = this.request.getParameter(REFRESH_TYPE);
+       /* boolean isJson = (refresh != null && refresh.equals(JSON_REFRESH_TYPE) );*/
+        boolean isJson = (refresh != null && (refresh.equals(JSON_REFRESH_TYPE) || refresh.equals(JSONP_REFRESH_TYPE)) );
         try{
             try {
-                this.btnClicked = request.getParameter(BTN_OPTION);
+                this.btnClicked = this.request.getParameter(BTN_OPTION);
                 if(StringUtils.isEmpty(this.btnClicked)){
                     this.btnClicked = "";
                 }
 
                 this.needForwordToJsp = !(refresh != null && refresh.equals(JSON_REFRESH_TYPE) );
-                String action = this.createAction(btnClicked);
+                String action = this.createAction(this.btnClicked);
                 if (this.btnClicked.equals(PROGRESS_PAGE_POSTBACK)) {
                 } else if (isJson) {
-                     this.setJsonContentType();
-                    this.bindJsonParams(request, btnClicked, action);
+                    this.setJsonContentType( refresh.equals(JSONP_REFRESH_TYPE));
+                    this.bindJsonParams(this.request, this.btnClicked, action);
                 } else {
-                    this.bindParams(request, btnClicked, action);
+                    this.bindParams(this.request, this.btnClicked, action);
                 }
                 if (this.btnClicked != null && !"".equals(this.btnClicked) && (!this.btnClicked.equals("") && (!this.btnClicked.equals(PROGRESS_PAGE_POSTBACK) ) )) {
                     this.processButtonClickedAction(action);
@@ -578,11 +595,11 @@ public abstract class AbstractController {
             } catch (Exception e) {
                 logger.log(Level.WARNING, "", e);
             }
-            String zones = request.getParameter(AA_REFRESH_ZONES_NAME);
+            String zones = this.request.getParameter(AA_REFRESH_ZONES_NAME);
             if (StringUtils.isNotEmpty(zones)) {
                 this.addRefreshZone(zones);
             }
-            if (StringUtils.isEmpty(request.getAttribute(AA_REFRESH_ZONES_NAME) + "")) {
+            if (StringUtils.isEmpty(this.request.getAttribute(AA_REFRESH_ZONES_NAME) + "")) {
                 this.addRefreshZone("result");
             }
             this.addRefreshZone("excludeDateTimeZone,footerZone,alwaysRefreshZone");
@@ -590,10 +607,10 @@ public abstract class AbstractController {
                 this.needForwordToJsp = false;
             }
             if(isJson && this.result != null && StringUtils.isNotEmpty(this.result.toString())){
-                returnJSON(this.result);
-            }else if (this.needForwordToJsp && (!getResponse().isCommitted() )) {
+                this.returnJSON(this.result,  refresh.equals(JSONP_REFRESH_TYPE));
+            }else if (this.needForwordToJsp && (!this.getResponse().isCommitted() )) {
                 try {
-                    forwardToJsp(getJSP_TOGO());
+                    this.forwardToJsp(this.getJSP_TOGO());
                 } catch (IOException | ServletException e ) {
                     logger.log(Level.WARNING, "", e);
                 }
@@ -638,7 +655,7 @@ public abstract class AbstractController {
     }
  */
     public void submitAction () {
-        submitAction(false, false);
+        this.submitAction(false, false);
     }
 
     public void submitAction (boolean withOutSort, boolean withOutDisplay) {
@@ -666,7 +683,7 @@ public abstract class AbstractController {
     }
     
     public JSONObject getJSONObject() {
-          return JSONUtils.toJSON(request);
+          return JSONUtils.toJSON(this.request);
     }
     
     public static HashMap<String, String> getJSONError(String msg){
@@ -690,13 +707,13 @@ public abstract class AbstractController {
         }
         String cmd = json == null ? null :(String)json.get("cmd");
         if (cmd == null) {
-            return getRecordsAction(json, swithServicer);
+            return this.getRecordsAction(json, swithServicer);
         } else if (cmd.equals("get-records")) {
-            return getRecordsAction(json, swithServicer);
+            return this.getRecordsAction(json, swithServicer);
         } else if (cmd.equals("delete-records")) {
-            return deleteRecordsAction(json, swithServicer);
+            return this.deleteRecordsAction(json, swithServicer);
         } else if (cmd.equals("save-records")) {
-            return saveRecordsAction(json, swithServicer);
+            return this.saveRecordsAction(json, swithServicer);
         }
         return getJSONError("Internal Error!");
     }

@@ -167,7 +167,7 @@ if (jQuery) {
         };
 
         sales_assistant.get = function(action, paraZone, sucessCallback, errorCallback, autoUpdate, sync) {
-            var paras = sales_assistant.serialize(paraZone);
+            var paras =  $j.isPlainObject(paraZone) ? paraZone :  sales_assistant.serialize(paraZone);
             $j.ajax({
                 url: sales_assistant.baseURLWithButton + action,
                 header: {
@@ -192,7 +192,7 @@ if (jQuery) {
         };
 
         sales_assistant.post = function(action, paraZone, sucessCallback, errorCallback, autoUpdate) {
-            var paras = sales_assistant.serialize(paraZone);
+            var paras =  $j.isPlainObject(paraZone) ? paraZone :  sales_assistant.serialize(paraZone);
             alert(paras);
             $j.ajax({
                 url: sales_assistant.baseURLWithButton + action,

@@ -147,6 +147,8 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
         return new List[]{columnNames, values};
     }
     
+   
+    
     @Override
     public E persistent(E entity) { 
         if(delegate != null){
@@ -166,15 +168,13 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
             final String sql = " INSERT INTO " + table(entityClass) + "( " + org.apache.commons.lang.StringUtils.join(columnNames, " , ") + " ) VALUES ( "
                     + org.apache.commons.lang.StringUtils.join(ph, " , ") + ")";
             this.databaseHandler.update(sql, values.toArray());
-
             E ne = this.find(" ORDER BY ID DESC LIMIT 1 ").get(0);
             entity.setId(ne.getId());
-            return ne;
         }
         if(delegate != null){
             delegate.afterPersistent(entity);
         }
-        return entity;
+        return find(entity.getId());
 
     }
 
@@ -273,13 +273,11 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
             logger.log(Level.INFO, "{0}",columnNames);
             sql += " WHERE ID =  " + entity.getId();  
             this.databaseHandler.update(sql, values.toArray()); 
-           
-            return  find(entity.getId());
         } 
         if(delegate != null){
             delegate.afterUpdate(entity);
         }
-        return entity;
+        return  find(entity.getId());
     }
     @SuppressWarnings("unchecked")
     @Override
@@ -456,6 +454,29 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
             }});
         
         return ids;
+    }
+    
+    
+    public void updateRelatedIDs(final String relationTable, final String returnColumn,final  String whereColumn , final Long productId, List<? extends AbstractModel> relateds ){
+        String   sql = "DELETE FROM " + relationTable + "   WHERE "+whereColumn+" IN (:ids) ";
+        MapSqlParameterSource parameters = new MapSqlParameterSource() ;
+        parameters.addValue("ids", Arrays.asList(productId));
+        this.databaseHandler.update(sql, parameters);
+        if(relateds != null && !relateds.isEmpty()){
+            System.out.println(relateds);
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>");
+            sql = "INSERT INTO " + relationTable +" ( " + returnColumn +", " + whereColumn+" ) VALUES ( ?, "+productId+") ";
+            for(AbstractModel mm : relateds){
+                databaseHandler.update( sql , mm.getId());
+            }
+        }
+    }
+    
+    public void removeRelatedIDs(final String relationTable, final String returnColumn,final  String whereColumn , final Long productId ){
+        String   sql = "DELETE FROM " + relationTable + "    WHERE "+whereColumn+" IN (:ids) ";
+        MapSqlParameterSource parameters = new MapSqlParameterSource() ;
+        parameters.addValue("ids", Arrays.asList(productId));
+        this.databaseHandler.update(sql, parameters);
     }
     
    /* 
