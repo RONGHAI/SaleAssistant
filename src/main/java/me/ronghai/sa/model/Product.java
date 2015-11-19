@@ -18,6 +18,8 @@ import javax.persistence.TemporalType;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import com.ecbeta.common.constants.Constants;
+import com.ecbeta.common.core.annotation.Relationship;
 import com.ecbeta.common.core.viewer.bean.W2UIColumnBean;
 import com.ecbeta.common.util.JSONUtils;
 
@@ -42,10 +44,13 @@ public class Product extends AbstractModel implements Serializable {
         expectOne(json, "chinese");
         expectOne(json, "recid");
         expectOne(json, "id");
-        expectMore(json, "categories");
+    //    expectOne(json, "description");
+        expectMore(json, "id", "categories"/*, Category.class*/);
         if (json.has("recid") && !json.has("id")) {
             json.put("id", json.get("recid"));
         }
+        System.out.println(json);
+        System.out.println(">>>>");
         return Product.fromJson(json, Product.class);
     }
 
@@ -59,7 +64,7 @@ public class Product extends AbstractModel implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "code")
+    @Column(name = "code" , nullable = true)
     private String code;
 
     @Column(name = "english_name")
@@ -67,6 +72,11 @@ public class Product extends AbstractModel implements Serializable {
 
     @Column(name = "chinese_name")
     private String chinese;
+    
+    @Column(name = "description", nullable = true)
+    private String description;
+    
+
 
     @Column(name = "disabled")
     private boolean disabled;
@@ -79,11 +89,14 @@ public class Product extends AbstractModel implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
 
-    @Column(name = "note")
+    @Column(name = "note" , nullable = true)
     private String note;
     
     
+    @Relationship(clazz=Category.class)
     private transient List<Category> categories;
+    
+    @Relationship(clazz=Attachment.class)
     private transient List<Attachment> attachments;
     
     public List<Attachment> getAttachments() {
@@ -101,6 +114,14 @@ public class Product extends AbstractModel implements Serializable {
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
+    
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     private transient boolean changed;
 
@@ -113,6 +134,11 @@ public class Product extends AbstractModel implements Serializable {
         COLUMNS.add(new W2UIColumnBean("code", "Code", "20%", true, "text", JSONObject.fromObject("{ type: 'text'  }")).toJson());
         COLUMNS.add(new W2UIColumnBean("english", "English", "20%", true, "text", JSONObject.fromObject("{ type: 'text'  }")).toJson());
         COLUMNS.add(new W2UIColumnBean("chinese", "Chinese", "20%", true, "text", JSONObject.fromObject("{ type: 'text'  }")).toJson());
+        
+        
+        W2UIColumnBean col = new W2UIColumnBean("categories", "Category", "20%", Constants.SAJS_PREFIX+".render_cats", false, null,  JSONObject.fromObject("{ type: 'select', items:'"+Constants.SAJS_PREFIX+".categories()' }"));
+        col.setSearchable(false);
+        COLUMNS.add(col.toJson());
     }
 
     private static ModelMeta<Product> modelMeta;
@@ -249,6 +275,7 @@ public class Product extends AbstractModel implements Serializable {
         map.put("code", this.code);
         map.put("english", this.english);
         map.put("chinese", this.chinese);
+        map.put("description", this.description);
         if( this.categories != null){
             map.put("categories", JSONUtils.toJSONObjects( this.categories));
         }

@@ -178,6 +178,7 @@ public class ProductServicer extends AbstractServicer implements DAODelegate<Pro
 
     @Override
     public void afterPersistent(Product entity) {
+        this.productDAO.updateRelated(entity);
     }
 
     @Override
@@ -187,7 +188,7 @@ public class ProductServicer extends AbstractServicer implements DAODelegate<Pro
 
     @Override
     public void afterRemove(Product entity) {
-        
+        this.productDAO.removeRelated(entity);
     }
 
     @Override
@@ -196,7 +197,7 @@ public class ProductServicer extends AbstractServicer implements DAODelegate<Pro
 
     @Override
     public void afterUpdate(Product entity) {
-        
+        this.productDAO.updateRelated(entity);
     }
 
     @Override

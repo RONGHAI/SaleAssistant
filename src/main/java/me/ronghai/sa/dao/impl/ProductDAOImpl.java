@@ -16,7 +16,7 @@ import org.springframework.jdbc.core.RowMapper;
  *
  * @author ronghai
  */
-public class ProductDAOImpl extends AbstractModelDAOImpl<Product> implements ProductDAO {
+public class ProductDAOImpl extends AbstractModelDAOImpl<Product> implements ProductDAO{
 
     /**
      * 
@@ -38,16 +38,26 @@ public class ProductDAOImpl extends AbstractModelDAOImpl<Product> implements Pro
     
     @Override
     public List<Object> findImages(Long productId) {
-        
         return findRelatedIDs("PRODUCT_IMAGES", "IMAGE_ID", "PRODUCT_ID", productId);
+    }
+
+    
+    
+    
+   public void updateRelated(Product pro){
+       updateRelatedIDs("PRODUCT_IMAGES", "IMAGE_ID", "PRODUCT_ID",  pro.getId(), pro.getAttachments());
+       updateRelatedIDs("PRODUCT_CATEGORIES", "CATEGORY_ID", "PRODUCT_ID",   pro.getId(), pro.getCategories());
+   }
+
+
+    
+    @Override
+    public void removeRelated(Product pro) {
+        removeRelatedIDs("PRODUCT_IMAGES", "IMAGE_ID", "PRODUCT_ID",  pro.getId());
+        removeRelatedIDs("PRODUCT_CATEGORIES", "CATEGORY_ID", "PRODUCT_ID",   pro.getId());
         
     }
-    
-    
-    
-  /*  String sql = "SELECT * FROM " + table(entityClass) + " WHERE id = ? ";
-    E e = this.databaseHandler.queryForObject(sql, new Object[]{id}, createRowMapper());
-    return this.afterFind(e);*/
-    
+        
+ 
     
 }

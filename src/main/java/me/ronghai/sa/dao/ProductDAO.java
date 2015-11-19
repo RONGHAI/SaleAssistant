@@ -18,5 +18,9 @@ public interface ProductDAO extends AbstractModelDAO<Product>{
     public List<Object> findCategories(Long productId);
 
     public List<Object> findImages(Long id);
+    
+    public void updateRelated(Product pro);
+
+    public void removeRelated(Product entity);
 }
 

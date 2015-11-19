@@ -35,7 +35,7 @@ public class Category extends AbstractModel implements Serializable {
     @Column(name = "name")
     private String name;
     
-    @Column(name = "code")
+    @Column(name = "code",  nullable=true)
     private String code;
     
     @Column(name = "level")
@@ -58,7 +58,7 @@ public class Category extends AbstractModel implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
 
-    @Column(name = "note")
+    @Column(name = "note", nullable=true)
     private String note;
 
     public Category() {
