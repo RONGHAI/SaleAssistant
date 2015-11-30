@@ -14,7 +14,7 @@
 .w2ui-reset * {
   color: default;
   font-family: Verdana, Arial;
-  font-size: 11px;
+  font-size: 13px;
   /* font-weight: normal; - if enabled, then tr cannot have font-weight: bold; */
   line-height: 100%;
   -webkit-box-sizing: border-box;
@@ -147,7 +147,7 @@ select {
   color: #ffffff !important;
   box-shadow: 1px 1px 3px #000000;
   line-height: normal;
-  font-size: 11px;
+  font-size: 13px;
   font-family: Verdana, Arial;
 }
 .w2ui-tag .w2ui-tag-body:before {
@@ -709,7 +709,7 @@ select {
   white-space: nowrap;
   cursor: default;
   font-family: verdana;
-  font-size: 11px;
+  font-size: 13px;
   line-height: normal;
 }
 .w2ui-list ul li:hover {
@@ -837,7 +837,7 @@ select {
 .w2ui-upload .file-list li {
   padding: 2px 5px;
   font-family: verdana;
-  font-size: 11px;
+  font-size: 13px;
   line-height: normal;
   float: left;
   display: inline-block;
@@ -1335,7 +1335,7 @@ select {
   display: inline-block;
   border-radius: 3px;
   cursor: pointer;
-  font-size: 11px;
+  font-size: 13px;
   line-height: 16px;
   padding: 1px 5px;
   width: 30px;
@@ -1394,7 +1394,7 @@ select {
   cursor: default;
 }
 .w2ui-overlay .w2ui-select-field table {
-  font-size: 11px;
+  font-size: 13px;
   font-family: Verdana, Arial;
   border-spacing: 0px;
   border-collapse: border-collapse;
