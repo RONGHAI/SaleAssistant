@@ -1,0 +1,1 @@
+ALTER TABLE `clients` CHANGE `wangwang` `wangwang` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL, CHANGE `qq` `qq` INT(15) NULL DEFAULT NULL, CHANGE `qq_name` `qq_name` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;

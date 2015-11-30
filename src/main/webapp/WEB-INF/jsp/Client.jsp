@@ -16,7 +16,7 @@
 </c:set>
 
 <c:set var='html'>
-    <div id="addressGrid" style="width:500px; height: 200px; margin-top:20px; overflow: hidden;"></div>
+    <div id="addressGrid" style="width:80%; height: 200px; margin-top:20px; overflow: hidden;"></div>
     <div id="addressPopup" style="display:none; width: 650px; height: 350px; overflow: hidden;">
         <div rel="title">
         </div>
