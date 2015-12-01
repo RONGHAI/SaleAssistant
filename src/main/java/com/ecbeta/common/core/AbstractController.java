@@ -3,6 +3,7 @@ package com.ecbeta.common.core;
 import static com.ecbeta.common.constants.Constants.AA_REFRESH_ZONES_NAME;
 import static com.ecbeta.common.constants.Constants.ACTION_NAME;
 import static com.ecbeta.common.constants.Constants.BTN_OPTION;
+import static com.ecbeta.common.constants.Constants.CALL_BACK;
 import static com.ecbeta.common.constants.Constants.JSONP_REFRESH_TYPE;
 import static com.ecbeta.common.constants.Constants.JSON_REFRESH_TYPE;
 import static com.ecbeta.common.constants.Constants.PROGRESS_PAGE_POSTBACK;
@@ -73,10 +74,30 @@ public abstract class AbstractController {
     // HashMap<String, Boolean>();
 
 
+    public Object convert2JSONP(Object o){
+        if(this.isJSONP()){
+            String callback = this.callbackFunction(); 
+            if(o instanceof JSONObject || o instanceof JSONArray){
+                return new StringBuilder(callback).append("(").append( o.toString()).append(")").toString();
+            }else{
+                return new StringBuilder(callback).append("('").append( o.toString()).append("')").toString();
+            }
+        }
+        return o;
+    }
 
 
-
-
+    public boolean isJSONP(){
+        String refresh = this.request.getParameter(REFRESH_TYPE);
+        return  (refresh != null && (refresh.equals(JSONP_REFRESH_TYPE)) );
+    }
+    public String callbackFunction(){
+        String callback = this.request.getParameter(CALL_BACK);
+        if(StringUtils.isEmpty(callback)){
+            callback = "callback";
+        }
+        return callback;
+    }
 
 
     public void addRefreshZone (String zones) {

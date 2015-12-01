@@ -8,8 +8,10 @@ package com.ecbeta.common.util;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,6 +32,8 @@ import org.apache.commons.lang.StringUtils;
 import com.ecbeta.common.constants.Constants;
 import com.ecbeta.common.core.reflect.ReflectUtils;
 import com.ecbeta.common.core.viewer.bean.MapJSONBean;
+import com.ecbeta.common.util.annotation.JsonIgnore;
+import com.ecbeta.common.util.annotation.Jsonable;
 
 /**
  *
@@ -248,6 +252,47 @@ public class JSONUtils {
         }
         return reformatJSON(o.toString(2, 2));
     }
+    
+    
+    
+    public final static JSONObject toJSON(Object o){
+        List<Field> fields  = new ArrayList<Field>();
+        fields = ReflectUtils.getDeclaredFields(fields, o.getClass(), true);
+        JSONObject json = new JSONObject();
+        for(Field field : fields){
+            try {
+                if(!field.isAnnotationPresent(JsonIgnore.class)) {
+                    json.put(field.getName(),  ReflectUtils.value(o, field, null));
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+        
+        List<Method> methods = Arrays.asList(o.getClass().getMethods());
+        for(Method m : methods){
+            if(m.isAnnotationPresent(Jsonable.class)){
+                try {
+                    String name = m.getAnnotation(Jsonable.class).value();
+                    if(StringUtils.isEmpty(name)){
+                        name = m.getName();
+                        if(name.startsWith("is")){
+                            name = name.substring(2);
+                        }else if(name.startsWith("get")){
+                            name = name.substring(3);
+                        }
+                        name = name.substring(0, 1).toUpperCase()+name.substring(1);
+                    }
+                   
+                    json.put(name,   m.invoke(o));
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        return json;
+    }
+    
     
     
     private static String reformatJSON(String str){

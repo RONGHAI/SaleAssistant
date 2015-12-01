@@ -13,6 +13,7 @@ import net.sf.json.JSONObject;
 import com.ecbeta.common.core.annotation.Relationship;
 import com.ecbeta.common.core.reflect.ReflectUtils;
 import com.ecbeta.common.util.JSONUtils;
+import com.ecbeta.common.util.annotation.Jsonable;
 
 /**
  *
@@ -28,6 +29,7 @@ public abstract class AbstractModel {
     
     public abstract Long getId() ;
     public abstract void setId(Long id) ;
+    @Jsonable
     public Long getRecid(){
         return this.getId();
     }
