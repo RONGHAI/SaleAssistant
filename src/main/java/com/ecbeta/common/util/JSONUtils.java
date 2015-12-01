@@ -343,6 +343,13 @@ public class JSONUtils {
         return JSONArray.fromObject(jsonArray);
     }
     
+    public static JSONArray toJSONArrayWithoutSort(List<? extends AbstractModel> list, JSONObject json){
+        List<JSONObject> jsonArray  = toJSONObjects(list);
+        jsonArray = limit(jsonArray, json);
+        jsonArray = search(jsonArray, json);
+        return JSONArray.fromObject(jsonArray);
+    }
+    
     public static List<JSONObject> search(List<JSONObject> jsonArray, JSONObject json){
         JSONArray searchs  = json != null && json.has("search") ? json.getJSONArray("search") : null;
         if(searchs == null){
