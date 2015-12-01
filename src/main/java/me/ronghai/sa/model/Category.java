@@ -4,7 +4,9 @@ package me.ronghai.sa.model;
 import static com.ecbeta.common.util.JSONUtils.expectOne;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,7 +47,17 @@ public class Category extends AbstractModel implements Serializable {
     private Long parentId = -1L;
     
     private transient Category parent;
+    private transient List<Category> children;
     
+
+    public List<Category> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Category> children) {
+        this.children = children;
+    }
+
 
     @Column(name = "disabled")
     private boolean disabled;
@@ -163,7 +175,7 @@ public class Category extends AbstractModel implements Serializable {
         COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true ,"int").toJson());
         COLUMNS.add(new W2UIColumnBean("name", "Name", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
         COLUMNS.add(new W2UIColumnBean("code", "Code", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
-        W2UIColumnBean col = new W2UIColumnBean("parentId", "Parent", "20%", Constants.SAJS_PREFIX+".render_parent", true, null,  JSONObject.fromObject("{ type: 'select', items:'"+Constants.SAJS_PREFIX+".categories()' }"));
+        W2UIColumnBean col = new W2UIColumnBean("parentId", "Parent", "20%", Constants.SAJS_PREFIX+".render_parent", true, null,  JSONObject.fromObject("{ type: 'select', items:'"+Constants.SAJS_PREFIX+".categories()' , renderDrop:'"+Constants.SAJS_PREFIX+".renderDrop' }"));
         col.setSearchable(false);
         COLUMNS.add(col.toJson());
         COLUMNS.add(new W2UIColumnBean("note", "Note", "120px", true, "text", JSONObject.fromObject("{ type: 'text'  }")).toJson());
@@ -179,6 +191,7 @@ public class Category extends AbstractModel implements Serializable {
         map.put("level", this.level);
         map.put("parentId", this.parentId);
         map.put("note", this.note);
+       // map.put("children", this.children);
         return map;
     }
    
@@ -242,5 +255,16 @@ public class Category extends AbstractModel implements Serializable {
 
     public void setParent(Category parent) {
         this.parent = parent;
+    }
+
+    public void addChild(Category cat) {
+        if(this.children == null){
+            this.children = new ArrayList<>();
+        }
+        this.children.add(cat);
+    }
+    
+    public boolean isLevelOne(){
+        return this.level == 1;
     }
 }

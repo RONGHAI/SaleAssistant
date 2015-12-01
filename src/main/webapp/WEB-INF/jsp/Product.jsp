@@ -18,7 +18,7 @@
                         sales_assistant.get("listCategories", {servicer: 'categoryServicer'} , function(data, state){
                             sales_assistant._categories_ = data;
                             for(var i = 0; i < data .length; i++){
-                                data[i].text = data[i].name;
+                                data[i].text = sales_assistant.level(data[i].level, "&nbsp;&nbsp;&nbsp;&nbsp;")+data[i].name;
                             }
                             sales_assistant._categories_.unshift({id:-1, name:"-", text:"-"});
                         }, function(data, state){}, false, true);
@@ -76,7 +76,7 @@
                     if(!data || data.refresh ){
                         this.reload();
                     }
-                    sales_assistant.categories(true);
+                    sales_assistant.categories();
                     for(var i = 0 ; i < w2ui.grid.columns.length; i++){
                         if(w2ui.grid.columns[i].field === 'categories'){
                             w2ui.grid.columns[i].editable.items = sales_assistant.categories();
@@ -89,7 +89,7 @@
             w2ui.grid.onLoad = function(event){
                 event.onComplete = function () {
                     sales_assistant.initMaxRecId(this,  '${worker.appName}');
-                    sales_assistant.categories(true);
+                    sales_assistant.categories();
                     for(var i = 0 ; i < w2ui.grid.columns.length; i++){
                         if(w2ui.grid.columns[i].field === 'categories'){
                             w2ui.grid.columns[i].editable.items = sales_assistant.categories();

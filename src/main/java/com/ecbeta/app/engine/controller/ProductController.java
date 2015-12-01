@@ -80,7 +80,11 @@ public class ProductController extends AbstractController{
         if(swithServicer == null){
             swithServicer = this.getRequest().getParameter("servicer");
         }
-        JSONArray array = this.getServicer(swithServicer).getJSONArray(new JSONObject());
-        return array;
+        AbstractServicer servicer =    this.getServicer(swithServicer);
+        if(servicer instanceof CategoryServicer){
+            CategoryServicer catservicer = (CategoryServicer)servicer;
+            return catservicer.getJSONArrayWithoutSort(json);
+        }
+        return new JSONArray();
     }
 }
