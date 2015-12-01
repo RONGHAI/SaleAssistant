@@ -18,12 +18,16 @@
 	
 	<profiles>
 	    <profile>
-	        <id>dev</id>
+	        <id>DEV</id>
 	        <properties>
-	            <rp.build.warname>dev</rp.build.warname>
+	            <db.env>DEV</db.env>
 	        </properties>
+	        <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
 	    </profile>
     </profiles>
+
 	
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -40,7 +44,7 @@
         <spring.framewrok.version>3.0.5.RELEASE</spring.framewrok.version>
         <javac-target.version>1.7</javac-target.version>
         <javac-source.version>1.7</javac-source.version>
-        <flywaydb.version>2.2.1</flywaydb.version>
+        <flywaydb.version>3.2.1</flywaydb.version>
         <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
         <beansbinding.version>1.2.1</beansbinding.version>
         <commons.lang.version>2.4</commons.lang.version>
@@ -237,32 +241,25 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>com.googlecode.flyway</groupId>
+                <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>${flywaydb.version}</version>
                 <configuration>
-                    <driver>com.mysql.jdbc.Driver</driver>
-                    <url>jdbc:mysql://localhost:3306/sales_assistant?useUnicode=true&amp;characterEncoding=UTF-8</url>
-                    <user>root</user>
-                    <password>db_gzlh_kc11730</password>
+                    <!-- 
+                    <driver>${jdbc.driverClassName}</driver>
+                    <url>${jdbc.url}</url>
+                    <user>${jdbc.username}</user>
+                    <password>${jdbc.password}</password>
+                    -->
+                    <!--  mvn flyway:repair -->
+                    <driver/>
+                    <url/>
+                    <user/>
+                    <password/>
+                    <skip>false</skip>
+                    <configFile>${project.basedir}/src/main/resources/META-INF/conf/${db.env}_dataSource.properties</configFile>
                 </configuration>
-                <!--
-              <configuration>
-                      <url>jdbc:h2:file:target/foobar</url>
-                      <user>sa</user>
-                  </configuration>
-                  <dependencies>
-                      <dependency>
-                          <groupId>com.h2database</groupId>
-                          <artifactId>h2</artifactId>
-                          <version>1.3.170</version>
-                      </dependency>
-                  </dependencies>
-                -->   
             </plugin>
-        
-        
-        
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
@@ -273,7 +270,7 @@
                         </goals>
                         <configuration>
                             <tasks>
-                                <move file="${project.build.directory}/classes/META-INF/conf/DEV_dataSource.properties" tofile="${project.build.directory}/classes/META-INF/dataSource.properties"/>
+                                <copy file="${project.basedir}/src/main/resources/META-INF/conf/${db.env}_dataSource.properties" tofile="${project.build.directory}/classes/META-INF/dataSource.properties"/>
                             </tasks>
                         </configuration>
                     </execution>
@@ -309,7 +306,6 @@
 		      </plugin>
         	 -->
         </plugins>
-      
     </build>
     <reporting>
         <plugins>
