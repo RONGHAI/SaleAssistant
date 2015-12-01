@@ -109,6 +109,14 @@ if (jQuery) {
                 return false;
             }
         };
+        
+        sales_assistant.level = function(level, ls){
+          var x = "";
+          for(var i = 1; i < level; i++){
+              x += ls ;// "&nbsp;&n"
+          }
+          return x;
+        };
 
         sales_assistant.queryString2JSON = function(qry) {
             var pairs = qry.split('&');
