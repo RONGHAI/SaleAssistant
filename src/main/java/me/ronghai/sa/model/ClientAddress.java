@@ -169,6 +169,8 @@ public class ClientAddress extends AbstractModel implements Serializable {
         COLUMNS.add(new W2UIColumnBean("zipcode", "Zipcode", "10%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
         COLUMNS.add(new W2UIColumnBean("phone", "Phone", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
         COLUMNS.add(new W2UIColumnBean("defaultAdress", "Default Address", "20%", true,  null , JSONObject.fromObject("{ type: 'checkbox'  }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("note", "Note", "10%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
+
         //COLUMNS.add(new W2UIColumnBean("wangwang", "Wangwang", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
         //COLUMNS.add(new W2UIColumnBean("qq", "QQ", "20%", true, "int", JSONObject.fromObject("{ type: 'int', min: 10000 }")).toJson());
         //COLUMNS.add(new W2UIColumnBean("qqName", "QQ Name", "20%", true, "text", JSONObject.fromObject("{ type: 'text'   }")).toJson());
@@ -179,6 +181,7 @@ public class ClientAddress extends AbstractModel implements Serializable {
     
     @Override
     public Object toJson(){
+     //   JSONUtils.toJSON(this);
         JSONObject map = new JSONObject();
         map.put("recid", this.getRecid());
         map.put("id", this.id);
@@ -186,19 +189,13 @@ public class ClientAddress extends AbstractModel implements Serializable {
         map.put("address", this.address);
         map.put("clientId", this.clientId);
         map.put("phone", this.phone);
+        map.put("note", this.note);
         map.put("defaultAdress", this.defaultAdress);
         return map;
     }
    
     public static  ClientAddress fromJson(JSONObject json){               
-        /*expectOne(json, "name");
-        expectOne(json, "wangwang");
-        expectOne(json, "qq");
-        expectOne(json, "qqName");
-        expectOne(json, "birthday");
-        expectOne(json, "gender");
-        expectOne(json, "phone");*/
-        expectOne(json, "zipcode", "address", "clientId", "phone", "recid",  "defaultAdress");
+        expectOne(json, "zipcode", "address", "clientId", "phone", "recid",  "defaultAdress", "note");
         expectOne(json, "id"); 
         if(json.has("recid") && !json.has("id")){
             json.put("id", json.get("recid"));
