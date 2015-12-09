@@ -1,7 +1,7 @@
 <%@ page language="java"
          
-         pageEncoding="UTF-8" import="com.ecbeta.common.constants.Constants,
-         com.ecbeta.common.core.AbstractController"%>
+         pageEncoding="UTF-8" import="com.weinyc.sa.common.constants.Constants,
+         com.weinyc.sa.core.engine.AbstractController"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="f"%>

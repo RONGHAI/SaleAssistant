@@ -16,61 +16,38 @@
 			
     
   
-    <bean id="CoreServlet" class="com.ecbeta.common.core.servlet.CoreServlet"/>
+    <bean id="CoreServlet" class="com.weinyc.sa.core.servlet.CoreServlet"/>
     
-    <bean id="navigationDAO" class="me.ronghai.sa.dao.impl.NavigationDAOImpl"/>
+    <bean id="navigationDAO" class="com.weinyc.sa.app.dao.impl.NavigationDAOImpl"/>
     
     
-    <bean id="clientDAO" class="me.ronghai.sa.dao.impl.ClientDAOImpl"/>
+    <bean id="clientDAO" class="com.weinyc.sa.app.dao.impl.ClientDAOImpl"/>
     
-    <bean id="systemInformationDAO" class="me.ronghai.sa.dao.impl.PropertyDAOImpl"/>
+    <bean id="systemInformationDAO" class="com.weinyc.sa.app.dao.impl.PropertyDAOImpl"/>
     
-    <bean id="accountDAO" class="me.ronghai.sa.dao.impl.AccountDAOImpl"/>
+    <bean id="accountDAO" class="com.weinyc.sa.app.dao.impl.AccountDAOImpl"/>
     
-    <bean id="carrierDAO" class="me.ronghai.sa.dao.impl.CarrierDAOImpl"/>
+    <bean id="carrierDAO" class="com.weinyc.sa.app.dao.impl.CarrierDAOImpl"/>
     
-    <bean id="categoryDAO" class="me.ronghai.sa.dao.impl.CategoryDAOImpl"/>
+    <bean id="categoryDAO" class="com.weinyc.sa.app.dao.impl.CategoryDAOImpl"/>
     
-    <bean id="currencyDAO" class="me.ronghai.sa.dao.impl.CurrencyDAOImpl"/>
+    <bean id="currencyDAO" class="com.weinyc.sa.app.dao.impl.CurrencyDAOImpl"/>
     
-    <bean id="hashtagDAO" class="me.ronghai.sa.dao.impl.HashtagDAOImpl"/>
+    <bean id="hashtagDAO" class="com.weinyc.sa.app.dao.impl.HashtagDAOImpl"/>
     
-    <bean id="invoiceDAO" class="me.ronghai.sa.dao.impl.InvoiceDAOImpl"/>
+    <bean id="invoiceDAO" class="com.weinyc.sa.app.dao.impl.InvoiceDAOImpl"/>
     
-    <bean id="merchantDAO" class="me.ronghai.sa.dao.impl.MerchantDAOImpl"/>
+    <bean id="merchantDAO" class="com.weinyc.sa.app.dao.impl.MerchantDAOImpl"/>
     
-    <bean id="productDAO" class="me.ronghai.sa.dao.impl.ProductDAOImpl"/>
+    <bean id="productDAO" class="com.weinyc.sa.app.dao.impl.ProductDAOImpl"/>
     
-    <bean id="americaOrderDAO" class="me.ronghai.sa.dao.impl.USAOrderDAOImpl"/>
+    <bean id="americaOrderDAO" class="com.weinyc.sa.app.dao.impl.USAOrderDAOImpl"/>
 
-	<bean id="clientAddressDAO" class="me.ronghai.sa.dao.impl.ClientAddressDAOImpl"/>
+	<bean id="clientAddressDAO" class="com.weinyc.sa.app.dao.impl.ClientAddressDAOImpl"/>
     
-    <!--
-    <bean id="clientController" class="me.ronghai.sabasicCURDPanel.controller.ClientController">
-        <property name="basicCURDPanel" ref = "basicCURDPanel"/>
-        <property name="clientService" ref="clientService"/>
-    </bean>
-    -->
     
-  
-    <!--
-    <bean id="carrierController" class="me.ronghai.sa.controller.CarrierController">
-        <property name="basicCURDPanel" ref = "basicCURDPanel"/>
-        <property name="carrierService" ref="carrierService"/>
-    </bean>
-    -->
-    
-    <bean id="propertyDAO" class="me.ronghai.sa.dao.impl.PropertyDAOImpl"/>
+    <bean id="propertyDAO" class="com.weinyc.sa.app.dao.impl.PropertyDAOImpl"/>
    
-    <!--
-    <bean id="propertyController" class="me.ronghai.sa.controller.PropertyController">
-        <property name="basicCURDPanel" ref = "basicCURDPanel"/>
-        <property name="propertyService" ref="propertyService"/>
-    </bean>
     
-    <bean id="priceCalculatorController" class="me.ronghai.sa.controller.PriceCalculatorController">
-        <property name="propertyService" ref="propertyService"/>
-    </bean>
-    -->
     
 </beans>

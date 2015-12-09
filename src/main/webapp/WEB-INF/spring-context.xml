@@ -20,7 +20,7 @@
         <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 	 -->
         
-        <!-- <context:component-scan base-package="com.ecbeta.app.engine.servicer"/> -->
+        <!-- <context:component-scan base-package="com.weinyc.sa.app.engine.servicer"/> -->
         <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
         
 	<!-- Product Environment -->
@@ -57,7 +57,7 @@
        </constructor-arg>
    </bean>
    
-   <bean id="databaseHandler" class="com.ecbeta.common.core.db.DatabaseHandler">
+   <bean id="databaseHandler" class="com.weinyc.sa.core.db.DatabaseHandler">
          <constructor-arg ref="dataSource"/>
    </bean>
 
