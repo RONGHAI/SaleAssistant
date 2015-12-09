@@ -1,0 +1,6 @@
+{
+  "name": "Sales Assisant",
+  "description": "Sales Assisant.",
+  "image": "heroku/java",
+  "addons": [ "heroku-postgresql" ]
+}
