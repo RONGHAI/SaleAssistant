@@ -227,6 +227,13 @@
             <type>jar</type>
             <classifier>jdk15</classifier>
         </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>${flywaydb.version}</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
@@ -300,7 +307,7 @@
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-dependency-plugin</artifactId>
-              <version>2.3</version>
+              <version>2.4</version>
               <executions>
                 <execution>
                   <phase>package</phase>
@@ -318,16 +325,36 @@
                 </execution>
                </executions>
             </plugin>
-        	<!-- 
-        	 <plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-release-plugin</artifactId>
-		        <version>${maven.release.plugin.version}</version>
-		        <configuration>
-		          <tagNameFormat>v@{project.version}</tagNameFormat>
-		        </configuration>
-		      </plugin>
-        	 -->
+
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-dependency-plugin</artifactId>
+              <version>2.4</version>
+              <executions>  
+                <execution>
+                  <id>copy-dependencies</id>
+                  <phase>package</phase>
+                  <goals><goal>copy</goal></goals>
+                  <configuration>
+                    <artifactItems>
+                      <artifactItem>
+                        <groupId>org.flywaydb</groupId>
+                        <artifactId>flyway-core</artifactId>
+                        <version>${flywaydb.version}</version>
+                        <destFileName>flyway.jar</destFileName>
+                      </artifactItem>
+                      <artifactItem>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>9.4-1204-jdbc41</version>
+                        <destFileName>postgres.jar</destFileName>
+                      </artifactItem>
+                    </artifactItems>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+        	 
         </plugins>
     </build>
     <reporting>
