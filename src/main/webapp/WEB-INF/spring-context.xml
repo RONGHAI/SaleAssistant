@@ -35,7 +35,7 @@
 				<constructor-arg>
 					<bean class = "org.springframework.beans.factory.config.PropertiesFactoryBean">
 						<property name="location"
-							value="classpath:META-INF/dataSource.properties"/>
+							value="classpath:META-INF/database.properties"/>
 					</bean>
 				</constructor-arg>
 			</bean>
@@ -52,7 +52,7 @@
     <bean  id="dataSource" factory-bean="datasourceFactory" factory-method="createDataSource">
        <constructor-arg>
            <bean class = "org.springframework.beans.factory.config.PropertiesFactoryBean">
-               <property name="location" value="classpath:META-INF/dataSource.properties"/>
+               <property name="location" value="classpath:META-INF/database.properties"/>
            </bean>
        </constructor-arg>
    </bean>
