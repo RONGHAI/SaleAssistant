@@ -7,10 +7,6 @@
 -- 服务器版本: 5.5.31
 -- PHP 版本: 5.4.19
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -38,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `update_time` datetime DEFAULT NULL,
   `note` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -57,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `carriers` (
   `update_time` datetime DEFAULT NULL,
   `note` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+)   DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- 转存表中的数据 `carriers`
@@ -85,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `update_time` datetime DEFAULT NULL,
   `note` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -106,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `clients` (
   `update_time` datetime DEFAULT NULL,
   `note` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+)   DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- 转存表中的数据 `clients`
@@ -132,7 +128,7 @@ CREATE TABLE IF NOT EXISTS `client_addresses` (
   `update_time` datetime DEFAULT NULL,
   `note` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -151,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `currencies` (
   `update_time` datetime DEFAULT NULL,
   `note` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+)   DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- 转存表中的数据 `currencies`
@@ -175,7 +171,7 @@ CREATE TABLE IF NOT EXISTS `hashtags` (
   `update_time` datetime DEFAULT NULL,
   `note` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -192,7 +188,7 @@ CREATE TABLE IF NOT EXISTS `hashtag_products` (
   `update_time` datetime DEFAULT NULL,
   `note` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -218,7 +214,7 @@ CREATE TABLE IF NOT EXISTS `invoices` (
   `update_time` datetime DEFAULT NULL,
   `note` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -237,7 +233,7 @@ CREATE TABLE IF NOT EXISTS `merchants` (
   `update_time` datetime DEFAULT NULL,
   `note` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -266,7 +262,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `update_time` datetime DEFAULT NULL,
   `note` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -286,7 +282,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `update_time` datetime DEFAULT NULL,
   `note` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -303,7 +299,7 @@ CREATE TABLE IF NOT EXISTS `product_categories` (
   `update_time` datetime DEFAULT NULL,
   `note` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -320,7 +316,7 @@ CREATE TABLE IF NOT EXISTS `product_images` (
   `update_time` datetime DEFAULT NULL,
   `note` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -343,7 +339,7 @@ CREATE TABLE IF NOT EXISTS `product_specifications` (
   `update_time` datetime DEFAULT NULL,
   `note` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -360,7 +356,7 @@ CREATE TABLE IF NOT EXISTS `system_informations` (
   `update_time` datetime DEFAULT NULL,
   `note` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+)   DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- 转存表中的数据 `system_informations`
@@ -395,7 +391,7 @@ CREATE TABLE IF NOT EXISTS `usa_orders` (
   `update_time` datetime DEFAULT NULL,
   `note` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -421,7 +417,7 @@ CREATE TABLE IF NOT EXISTS `usa_order_items` (
   `update_time` datetime DEFAULT NULL,
   `note` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
