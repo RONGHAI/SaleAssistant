@@ -129,7 +129,7 @@ public class CategoryServicer extends AbstractServicer  {
     }
 
     public List<Category> find() {
-        return categoryDAO.find(" WHERE disabled = false ");
+        return categoryDAO.find(" WHERE disabled = 0 ");
     }
 
 

@@ -445,7 +445,7 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
     
     
     public List<Object> findRelatedIDs(final String relationTable, final String returnColumn,final  String whereColumn , final Long productId) {
-        String sql = " SELECT "+returnColumn+" FROM `"+relationTable+"`  WHERE "+whereColumn+" = ? ";
+        String sql = " SELECT "+returnColumn+" FROM "+relationTable+"  WHERE "+whereColumn+" = ? ";
         List<Object> ids = this.databaseHandler.query(sql, new Object[]{productId},  new RowMapper<Object> (){
             @Override
             public Object mapRow(ResultSet arg0, int arg1) throws SQLException {

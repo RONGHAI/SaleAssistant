@@ -72,7 +72,7 @@ public class AttachmentServicer extends AbstractServicer  {
     }
 
     public List<Attachment> find() {
-        return attachmentDAO.find(" WHERE disabled = false ");
+        return attachmentDAO.find(" WHERE disabled = 0 ");
     }
 
 

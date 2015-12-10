@@ -34,7 +34,7 @@ import javax.persistence.Column;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.weinyc.sa.core.reflect.ReflectUtils;
-import com.weinyc.sa.app.dao.impl.CarrierDAOImpl;
+import java.sql.Time;
 
 /**
  *
@@ -96,7 +96,68 @@ public class ModelMeta<T> implements Serializable {
         if(type != null && type.equals(java.util.Date.class)){
             type = java.sql.Date.class;
         }
-        return rs.getObject(cname, type);
+        try{
+             return rs.getObject(cname, type);
+        }catch(Exception e){
+            System.out.println(e);
+           // Logger.getLogger(ModelMeta.class.getName()).log(Level.WARNING, null, e);
+            try {
+                if(type == null){
+                    return rs.getObject(cname);
+                }
+                if(type.equals(String.class) ){
+                    return rs.getString(cname);
+                }
+                if(type.equals(Integer.class) || type.equals(Integer.TYPE) ){
+                    return rs.getInt(cname);
+                }
+                if(type.equals(Long.class) || type.equals(Long.TYPE) ){
+                    return rs.getLong(cname);
+                }
+                if(type.equals(Boolean.class) || type.equals( Boolean.TYPE)){
+                    return rs.getBoolean(cname);
+                }
+                if(type.equals(Short.class) || type.equals(Short.TYPE) ){
+                    return rs.getShort(cname);
+                }
+                if(type.equals(Byte.class) || type.equals(Byte.TYPE) ){
+                    return rs.getByte(cname);
+                }
+                if(type.equals(Character.class) || type.equals(Character.TYPE) ){
+                    return rs.getInt(cname);
+                }
+                if(type.equals(Double.class) || type.equals(Double.TYPE)){
+                    return rs.getDouble(cname);
+                }
+                if(type.equals(Float.class) || type.equals(Float.TYPE)){
+                    return rs.getFloat(cname);
+                }
+               
+                if(type.equals(java.sql.Date.class) ){
+                    return rs.getDate(cname);
+                }
+                if(type.equals(Time.class) ){
+                    return rs.getTime(cname);
+                }
+               
+                return rs.getObject(cname);
+                
+                
+                /*
+                 clazz.isPrimitive() || clazz.equals(String.class) 
+				|| clazz.equals(Boolean.class) || clazz.equals(Byte.class)
+				|| clazz.equals(Character.class) || clazz.equals(Double.class)
+				|| clazz.equals(Float.class) || clazz.equals(Integer.class) 
+				|| clazz.equals(Long.class) || clazz.equals(Short.class)  || clazz.equals(Date.class)
+				|| clazz.equals(InternetAddress.class) ;
+                */
+                
+                
+            }catch (Exception ex) {
+                Logger.getLogger(ModelMeta.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
     }
     
     public RowMapper<T> getRowMapper() {
@@ -115,7 +176,7 @@ public class ModelMeta<T> implements Serializable {
                         }
                     }
                     catch (InvocationTargetException | IllegalArgumentException | InstantiationException | IllegalAccessException ex) {
-                        Logger.getLogger(CarrierDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(ModelMeta.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     return bean;
                 }

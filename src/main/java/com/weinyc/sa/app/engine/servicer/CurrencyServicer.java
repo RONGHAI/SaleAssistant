@@ -70,7 +70,7 @@ public class CurrencyServicer extends AbstractServicer  {
     }
 
     public List<Currency> find() {
-        return currencyDAO.find(" WHERE disabled = false ");
+        return currencyDAO.find(" WHERE disabled = 0 ");
     }
 
 

@@ -70,7 +70,7 @@ public class InvoiceServicer extends AbstractServicer  {
     }
 
     public List<Invoice> find() {
-        return invoiceDAO.find(" WHERE disabled = false ");
+        return invoiceDAO.find(" WHERE disabled = 0 ");
     }
 
 

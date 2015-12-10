@@ -70,7 +70,7 @@ public class SystemInformationServicer extends AbstractServicer  {
     }
 
     public List<Property> find() {
-        return systemInformationDAO.find(" WHERE disabled = false ");
+        return systemInformationDAO.find(" WHERE disabled = 0 ");
     }
 
 

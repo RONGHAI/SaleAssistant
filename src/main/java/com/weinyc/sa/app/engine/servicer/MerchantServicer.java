@@ -70,7 +70,7 @@ public class MerchantServicer extends AbstractServicer  {
     }
 
     public List<Merchant> find() {
-        return merchantDAO.find(" WHERE disabled = false ");
+        return merchantDAO.find(" WHERE disabled = 0 ");
     }
 
 

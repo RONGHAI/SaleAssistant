@@ -70,7 +70,7 @@ public class ClientServicer extends AbstractServicer  {
     }
 
     public List<Client> find() {
-        return clientDAO.find(" WHERE disabled = false ");
+        return clientDAO.find(" WHERE disabled = 0 ");
     }
 
 

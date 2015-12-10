@@ -96,7 +96,7 @@ public class NavigationServicer extends AbstractServicer  {
     }
 
     public List<Navigation> find() {
-        return navigationDAO.find(" WHERE disabled = false ");
+        return navigationDAO.find(" WHERE disabled = 0 ");
     }
 
 

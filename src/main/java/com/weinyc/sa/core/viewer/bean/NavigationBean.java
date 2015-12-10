@@ -155,8 +155,10 @@ public class NavigationBean implements Serializable{
 
     public static JSONArray toJson(List<NavigationBean> beans, String idPrefix, String contextPath, boolean withUri) { 
         JSONArray array = new JSONArray();
-        for (NavigationBean b : beans) {
-            array.add(b.toJson(idPrefix, contextPath, withUri));
+        if(beans != null){
+            for (NavigationBean b : beans) {
+                array.add(b.toJson(idPrefix, contextPath, withUri));
+            }
         }
         return array;
     }

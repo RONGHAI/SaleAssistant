@@ -70,7 +70,7 @@ public class HashtagServicer extends AbstractServicer  {
     }
 
     public List<Hashtag> find() {
-        return hashtagDAO.find(" WHERE disabled = false ");
+        return hashtagDAO.find(" WHERE disabled = 0 ");
     }
 
 

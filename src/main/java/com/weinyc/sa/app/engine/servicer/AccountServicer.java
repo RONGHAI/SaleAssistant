@@ -70,7 +70,7 @@ public class AccountServicer extends AbstractServicer  {
     }
 
     public List<Account> find() {
-        return accountDAO.find(" WHERE disabled = false ");
+        return accountDAO.find(" WHERE disabled = 0 ");
     }
 
 

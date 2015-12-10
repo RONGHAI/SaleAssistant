@@ -96,7 +96,7 @@ public class ProductServicer extends AbstractServicer implements DAODelegate<Pro
     }
 
     public List<Product> find() {
-        return productDAO.find(" WHERE disabled = false ");
+        return productDAO.find(" WHERE disabled = 0 ");
     }
 
 

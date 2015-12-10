@@ -70,7 +70,7 @@ public class USAOrderServicer extends AbstractServicer  {
     }
 
     public List<USAOrder> find() {
-        return americaOrderDAO.find(" WHERE disabled = false ");
+        return americaOrderDAO.find(" WHERE disabled = 0 ");
     }
 
 

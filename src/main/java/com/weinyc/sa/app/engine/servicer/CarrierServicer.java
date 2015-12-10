@@ -70,7 +70,7 @@ public class CarrierServicer extends AbstractServicer  {
     }
 
     public List<Carrier> find() {
-        return carrierDAO.find(" WHERE disabled = false ");
+        return carrierDAO.find(" WHERE disabled = 0 ");
     }
 
 

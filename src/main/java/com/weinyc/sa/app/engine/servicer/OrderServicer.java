@@ -70,7 +70,7 @@ public class OrderServicer extends AbstractServicer  {
     }
 
     public List<Order> find() {
-        return orderDAO.find(" WHERE disabled = false ");
+        return orderDAO.find(" WHERE disabled = 0 ");
     }
 
 
