@@ -72,7 +72,6 @@ public class ServicerFactory {
     }
 
     protected static void autowired(AbstractServicer ser, ApplicationContext appContext, DatabaseHandler dbhandler) {
-        if(appContext == null ) return;
         Collection<Field> fields = ReflectUtils.getDeclaredFields((Map<String, Field>) null, ser.getClass(), false).values();
         for (Field field : fields) {
             if (!field.isAnnotationPresent(Autowired.class) ) {
@@ -87,7 +86,9 @@ public class ServicerFactory {
                 }catch(BeansException be){
                     logger.log(Level.SEVERE, null, be);
                     autoInstance = null;
-                    try {
+                }
+                if(autoInstance == null){
+                     try {
                         Class<?> clazz = ReflectUtils.classForName(field.getType().getName());
                         autoInstance = clazz.newInstance(); 
                         ReflectUtils.updateFieldValue(autoInstance, clazz.getField( "databaseHandler" ), null, dbhandler );

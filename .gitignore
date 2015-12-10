@@ -21,3 +21,4 @@ nbproject/private/
 run.sh
 .classpath
 /target/
+src/main/webapp/WEB-INF/spring-context.xml

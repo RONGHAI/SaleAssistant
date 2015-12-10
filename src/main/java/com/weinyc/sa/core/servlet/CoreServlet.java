@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.tomcat.jdbc.pool.DataSource;
+import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -84,17 +84,29 @@ public class CoreServlet extends HttpServlet implements org.springframework.web.
         this.injectServicers(request, response, worker);
         worker.processRequest();
     }
-
+    
+    public <T> T getBean(String id){
+        ApplicationContext appContext = this.getAppContext();
+        if(appContext == null){
+            return null;
+        }
+        return (T)appContext.getBean(id);
+    }
+    
     public ApplicationContext getAppContext() {
         if (appContext == null) {
-            this.appContext = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
-        }
+            try{
+                this.appContext = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+            }catch(Exception e){
+                 logger.log(Level.WARNING, null, e);
+            }
+        }//  ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/application-context.xml");
         return this.appContext;
     }
 
     public NavigationDAO getNavigationDAO() {
         if (navigationDAO == null) {
-            this.navigationDAO = (NavigationDAO) this.getAppContext().getBean("navigationDAO");
+            this.navigationDAO =  this.getBean("navigationDAO");
         }
         return this.navigationDAO;
     }
@@ -168,14 +180,14 @@ public class CoreServlet extends HttpServlet implements org.springframework.web.
 
     protected DataSource getDataSource() {
         if (dataSource == null) {
-            dataSource = (DataSource) this.getAppContext().getBean("dataSource");
+            dataSource =  (DataSource)this.getBean("dataSource");
         }
         return dataSource;
     }
     
     protected DatabaseHandler getDatabaseHandler(){
         if(databaseHandler == null){
-            databaseHandler = (DatabaseHandler) this.getAppContext().getBean("databaseHandler");
+            databaseHandler = (DatabaseHandler)this.getBean("databaseHandler");
         }
         if(databaseHandler == null){
             this.databaseHandler = new DatabaseHandler(this.getDataSource());
