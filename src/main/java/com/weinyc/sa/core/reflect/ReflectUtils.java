@@ -29,6 +29,10 @@ public class ReflectUtils {
 
     
     public static Class<?> classForName (String className) throws ClassNotFoundException {
+        if(className == null){
+            return null;
+        }
+        className = className.trim();
         try {
             return Class.forName(className);
         } catch (ClassNotFoundException cnfe) {

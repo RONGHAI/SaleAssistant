@@ -54,7 +54,7 @@ public class RequestManager implements Serializable, Cloneable {
             try {
                 clazz = ReflectUtils.classForName(workerName);
             } catch (ClassNotFoundException e) {
-                logger.log(Level.SEVERE, null, e);
+                //logger.log(Level.SEVERE, null, e);
                 workerName = Constants.CONTROLLER_PACKAGE+"."+workerName.substring(workerName.lastIndexOf(".")+1);
                 clazz = ReflectUtils.classForName(workerName);
             }
