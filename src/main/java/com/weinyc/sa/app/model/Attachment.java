@@ -104,7 +104,7 @@ public class Attachment extends AbstractModel implements Serializable {
     }
 
     @Column(name = "disabled")
-    private boolean disabled;
+    private int disabled;
 
     @Column(name = "add_time", nullable=true)
     @Temporal(TemporalType.TIMESTAMP)
@@ -174,7 +174,7 @@ public class Attachment extends AbstractModel implements Serializable {
 
     @Override
     public boolean isDisabled() {
-        return disabled;
+        return disabled == DISABLED_YES;
     }
 
     @SuppressWarnings("unchecked")
@@ -195,7 +195,7 @@ public class Attachment extends AbstractModel implements Serializable {
      */
     @Override
     public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
+        this.disabled = disabled ? DISABLED_YES : DISABLED_NO;
     }
 
    

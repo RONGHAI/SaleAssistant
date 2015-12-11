@@ -38,11 +38,11 @@ public class Property  extends AbstractModel implements Serializable {
     private Long id;
 
     @Column(name = "disabled")
-    private boolean disabled;
+    private int disabled;
 
     @Override
     public boolean isDisabled() {
-        return disabled;
+        return disabled == DISABLED_YES;
     }
 
     @Column(name = "add_time", nullable = true)
@@ -126,7 +126,7 @@ public class Property  extends AbstractModel implements Serializable {
 
     @Override
     public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
+        this.disabled = disabled ? DISABLED_YES : DISABLED_NO;
     }
   
     
