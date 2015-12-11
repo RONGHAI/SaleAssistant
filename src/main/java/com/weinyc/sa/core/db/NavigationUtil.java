@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -55,6 +56,13 @@ public class NavigationUtil {
              navBeans.remove(key);
         } 
         List<NavigationBean> navBeanList = new ArrayList<>(navBeans.values());
+        for (Iterator<NavigationBean> iterator = navBeanList.iterator(); iterator.hasNext();) {
+            NavigationBean next = iterator.next();
+            if(next.getChildren() == null || next.getChildren().isEmpty()){
+                iterator.remove();
+                continue;
+            }
+        }
         return navBeanList;
     }
     
