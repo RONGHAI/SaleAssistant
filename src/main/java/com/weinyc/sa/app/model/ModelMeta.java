@@ -99,7 +99,7 @@ public class ModelMeta<T> implements Serializable {
         try{
              return rs.getObject(cname, type);
         }catch(Exception e){
-            System.out.println(e);
+            //System.out.println(e);
            // Logger.getLogger(ModelMeta.class.getName()).log(Level.WARNING, null, e);
             try {
                 if(type == null){
