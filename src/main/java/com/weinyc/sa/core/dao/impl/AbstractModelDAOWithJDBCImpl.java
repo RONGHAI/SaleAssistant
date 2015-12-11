@@ -33,6 +33,7 @@ import com.weinyc.sa.core.db.DatabaseHandler;
 import com.weinyc.sa.core.reflect.ReflectUtils;
 import com.weinyc.sa.app.dao.DAODelegate;
 import com.weinyc.sa.app.model.ModelMeta;
+import com.weinyc.sa.common.constants.Constants;
 import com.weinyc.sa.core.dao.AbstractModelDAO;
 import com.weinyc.sa.core.model.AbstractModel;
 
@@ -101,6 +102,9 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
                 logger.log(Level.SEVERE, "{0}", cname + " is not null. ");
                 return null;
             } else if (value != null) {
+                if(cname.contains("`") && !"`".equals(Constants.SQL_RESERVED_REPLACE())){
+                    cname = cname.replaceAll("`", Constants.SQL_RESERVED_REPLACE());
+                }
                 columnNames.add(cname);
                 /*if(cname.equals("disabled")){
                     if( value instanceof Boolean ){

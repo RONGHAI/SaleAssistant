@@ -196,6 +196,13 @@ public class CoreServlet extends HttpServlet implements org.springframework.web.
     }
     
     protected void injectServicers(HttpServletRequest request, HttpServletResponse response, AbstractController worker) {
+        if(getDataSource() instanceof org.apache.commons.dbcp2.BasicDataSource){
+            org.apache.commons.dbcp2.BasicDataSource bds = (org.apache.commons.dbcp2.BasicDataSource)dataSource;
+            if(bds.getUrl().contains("postgres")){
+                Constants.SET_SQL_RESERVED_REPLACE("\"");
+            }
+        }
+        
         Collection<Field> fields = ReflectUtils.getDeclaredFields((Map<String, Field>) null, worker.getClass(), false).values();
         List<NavigationBean> naviBeans = this.getNavigationBeans( Boolean.parseBoolean(request.getParameter(Constants.FORCE_INIT)));
         for (Field field : fields) {

@@ -16,7 +16,6 @@
  */
 package com.weinyc.sa.app.model;
 
-import com.weinyc.sa.common.constants.Constants;
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -79,7 +78,7 @@ public class ModelMeta<T> implements Serializable {
                 String cname;
                 if (annotation != null && org.apache.commons.lang.StringUtils.isNotEmpty(annotation.name())) {
                     cname = annotation.name();
-                    cname = cname.replaceAll("[\\[\\]]", Constants.SQL_RESERVED_REPLACE);
+                    cname = cname.replaceAll("[\\[\\]]", "`");
                 } else {
                     cname = field.getName();
                 }
@@ -170,7 +169,7 @@ public class ModelMeta<T> implements Serializable {
                     try {
                         bean = clazz.newInstance();
                         for (Map.Entry<String, Field> entry : columnFields.entrySet()) {
-                            String cname = entry.getKey().replaceAll(Constants.SQL_RESERVED_REPLACE, "");
+                            String cname = entry.getKey().replaceAll("`", "");
                             Method setter = field2Setter.get(entry.getValue().getName());
                             Class<?> t = ReflectUtils.findPropertyType(entry.getValue(), setter);
                             ReflectUtils.updateFieldValue(bean, entry.getValue(), setter, get(rs, cname, t));
