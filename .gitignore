@@ -22,3 +22,4 @@ run.sh
 .classpath
 /target/
 src/main/webapp/WEB-INF/spring-context.xml
+/run_mysq.sh
