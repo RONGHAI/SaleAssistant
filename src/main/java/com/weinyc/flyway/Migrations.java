@@ -1,8 +1,14 @@
 package com.weinyc.flyway;
 
+import com.weinyc.sa.core.db.DatabaseHandler;
 import java.net.URI;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.flywaydb.core.Flyway;
+import org.flywaydb.core.api.FlywayException;
 public class Migrations {
+    
+    private static final Logger logger = Logger.getLogger(Migrations.class.getName());
     public static void main(String[] args) throws Exception {
         Flyway flyway = new Flyway();
         //ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
@@ -25,6 +31,12 @@ public class Migrations {
             password = System.getenv("JDBC_DATABASE_PASSWORD");
         }
         flyway.setDataSource(url, user, password);
-        flyway.migrate();
+        try{
+            flyway.migrate();
+        }catch(FlywayException e){
+            logger.log(Level.WARNING, null, e);
+            flyway.repair();
+            flyway.migrate();
+        }
     }
 }
