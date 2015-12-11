@@ -24,4 +24,5 @@ public class Constants {
     public static final String CONTROLLER_PACKAGE = "com.weinyc.sa.app.engine.controller";
     public static final String SAJS_PREFIX = "sales_assistant";
     public static final String[] W2UI_CHANGES = new String[]{ "changes","changed"};
+    public static String SQL_RESERVED_REPLACE = "`";
 }
