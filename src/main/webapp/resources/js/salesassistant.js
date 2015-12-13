@@ -11,11 +11,23 @@ if (jQuery) {
         };
         
         var sales_assistant = window.sales_assistant = window.sales_assistant || {};
-        var sale_assistant = window.sale_assistant = sales_assistant;
+        //var sale_assistant = window.sale_assistant = sales_assistant;
         sales_assistant.__gender_list = [{id:'M', text : "Male"}, {id:'F', text : "Female"}, {id:'U', text : "Unknown"}];
-
+        
+        sales_assistant.genders_i18n = [];
         sales_assistant.genders = function(){
-            return sales_assistant.__gender_list;
+            if(sales_assistant.genders_i18n.length === 0){
+                var map = [];
+                var gs = sales_assistant.__gender_list;
+                for (var p in gs) {
+                    var gp = gs[p];
+                    gp = $j.extend({}, gp);
+                    gp.text = sales_assistant.l(gp.text);
+                    map.push(gp);
+                }
+                sales_assistant.genders_i18n = map;
+            }
+            return sales_assistant.genders_i18n;
         };
 
         sales_assistant.render_gender = function(record, index, col_index){
