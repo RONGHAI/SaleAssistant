@@ -201,7 +201,7 @@ public class ClientAddress extends AbstractModel implements Serializable {
         if(json.has("recid") && !json.has("id")){
             json.put("id", json.get("recid"));
         }
-        if(Boolean.parseBoolean(json.getString("defaultAdress"))){
+        if(json.has("defaultAdress") && Boolean.parseBoolean(json.getString("defaultAdress"))){
             json.put("defaultAdress", "1");
         }else{
             json.put("defaultAdress", "0");
