@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.weinyc.sa.common.util.StringUtils;
 import com.weinyc.sa.common.constants.Constants;
+import com.weinyc.sa.core.engine.RequestManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -118,19 +119,19 @@ public class NavigationBean implements Serializable{
         this.children.add(bean);
     }
     
-    
+    /**
+     * @see  RequestManager.PathInfo
+     * @param contextPath
+     * @return 
+     */
     @JsonIgnore
     public String getUrl(String contextPath){
-        /*if(StringUtils.isEmpty(contextPath) || StringUtils.isEmpty(this.worker)){
-            return "";
-        }*/
         StringBuilder url = new StringBuilder();
         if(StringUtils.isNotEmpty(contextPath)){
             url.append(contextPath);
         }
-        url.append("/").append(Constants.CORE_SERVLET).append("/?");
-        //url.append(Constants.REQUEST_WORKER).append("=").append(this.worker).append("&"); 
-        url.append(Constants.NAV_TIERS).append("=").append(this.getNavTier("_"));
+        url.append("/").append(Constants.CORE_SERVLET).append("/");
+        url.append(this.getNavTier("_")).append("/?");
         return url.toString();
     }
     
