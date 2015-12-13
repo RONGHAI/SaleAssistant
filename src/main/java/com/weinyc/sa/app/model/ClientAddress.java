@@ -52,7 +52,7 @@ public class ClientAddress extends AbstractModel implements Serializable {
     private int disabled;
 
     @Column(name = "[default]")
-    private boolean defaultAdress;
+    private int defaultAdress;
     
     @Column(name = "add_time", nullable=true)
     @Temporal(TemporalType.TIMESTAMP)
@@ -191,7 +191,7 @@ public class ClientAddress extends AbstractModel implements Serializable {
         map.put("clientId", this.clientId);
         map.put("phone", this.phone);
         map.put("note", this.note);
-        map.put("defaultAdress", this.defaultAdress);
+        map.put("defaultAdress", this.isDefaultAdress() );
         return map;
     }
    
@@ -200,6 +200,11 @@ public class ClientAddress extends AbstractModel implements Serializable {
         expectOne(json, "id"); 
         if(json.has("recid") && !json.has("id")){
             json.put("id", json.get("recid"));
+        }
+        if(Boolean.parseBoolean(json.getString("defaultAdress"))){
+            json.put("defaultAdress", "1");
+        }else{
+            json.put("defaultAdress", "0");
         }
         return ClientAddress.fromJson(json, ClientAddress.class);
     }
@@ -258,10 +263,18 @@ public class ClientAddress extends AbstractModel implements Serializable {
     }
 
     public boolean isDefaultAdress() {
-        return defaultAdress;
+        return defaultAdress == 1;
     }
 
     public void setDefaultAdress(boolean defaultAdress) {
+        this.defaultAdress = defaultAdress ? 1 : 0; 
+    }
+    
+    public int getDefaultAdress() {
+        return defaultAdress;
+    }
+
+    public void setDefaultAdress(int defaultAdress) {
         this.defaultAdress = defaultAdress;
     }
 }
