@@ -1,0 +1,11 @@
+CREATE TABLE `sales_assistant`.`users` 
+( `id` INT(11) NOT NULL AUTO_INCREMENT ,
+`name` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`email` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`password` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`disabled` tinyint(1) NOT NULL DEFAULT '0',
+`add_time` DATETIME NULL DEFAULT NULL ,
+`update_time` DATETIME NULL DEFAULT NULL,
+`note` TEXT NULL DEFAULT NULL,
+PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
