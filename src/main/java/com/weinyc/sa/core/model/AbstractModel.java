@@ -15,18 +15,26 @@ import com.weinyc.sa.core.reflect.ReflectUtils;
 import com.weinyc.sa.common.util.JSONUtils;
 import com.weinyc.sa.app.model.ModelMeta;
 import com.weinyc.sa.core.annotation.Jsonable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author ronghai
  */
 public abstract class AbstractModel {
-
+    private static final Logger logger = Logger.getLogger(AbstractModel.class.getName());
+    public static final int DISABLED_YES = 1, DISABLED_NO = 0;
     public abstract void setDisabled(boolean disabled);
     public abstract boolean isDisabled();
     
     public abstract boolean isChanged();
     public abstract void setChanged(boolean changed);
+    
+    
+    public int getDisabled(){
+        return isDisabled()? DISABLED_YES : DISABLED_NO;
+    }
     
     public abstract Long getId() ;
     public abstract void setId(Long id) ;
@@ -75,7 +83,7 @@ public abstract class AbstractModel {
                     try {
                         ReflectUtils.updateFieldValue(bean, field, null,  JSONUtils.toBean( JSONObject.fromObject(oldValue),  r.clazz() ) );
                     } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace();
+                       logger.log(Level.ALL, null, e);
                     }
                 }
                 

@@ -33,6 +33,7 @@ import com.weinyc.sa.core.db.DatabaseHandler;
 import com.weinyc.sa.core.reflect.ReflectUtils;
 import com.weinyc.sa.app.dao.DAODelegate;
 import com.weinyc.sa.app.model.ModelMeta;
+import com.weinyc.sa.common.constants.Constants;
 import com.weinyc.sa.core.dao.AbstractModelDAO;
 import com.weinyc.sa.core.model.AbstractModel;
 
@@ -81,7 +82,7 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
         List<Object> values = new ArrayList<>();
 
         Map<String, Field> columnFields = entity.modelMeta().getColumnFields();
-        Map<String, Method> field2Getter = entity.modelMeta().getField2Getter();
+        //  Map<String, Method> field2Getter = entity.modelMeta().getField2Getter();
 
         for (Map.Entry<String, Field> entry : columnFields.entrySet()) {
             Field field = entry.getValue();
@@ -91,9 +92,8 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
             String cname = entry.getKey();
             Object value = null;
             try {
-                value = field2Getter.get(field.getName()).invoke(entity);
-            }
-            catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NullPointerException e) {
+                value = ReflectUtils.value(entity, field, null) ;// field2Getter.get(field.getName()).invoke(entity);
+            }catch (Exception e) {
                 logger.log(Level.WARNING, "filed is {0}  ", field);
                 logger.log(Level.WARNING, "{0}", e);
             }
@@ -102,7 +102,15 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
                 logger.log(Level.SEVERE, "{0}", cname + " is not null. ");
                 return null;
             } else if (value != null) {
+                if(cname.contains("`") && !"`".equals(Constants.SQL_RESERVED_REPLACE())){
+                    cname = cname.replaceAll("`", Constants.SQL_RESERVED_REPLACE());
+                }
                 columnNames.add(cname);
+                /*if(cname.equals("disabled")){
+                    if( value instanceof Boolean ){
+                        value = (boolean)value ?  1 : 0;
+                    }
+                }*/
                 values.add(value);
             }
         }

@@ -225,7 +225,7 @@ public class ReflectUtils {
                 field.setAccessible(true);
                 value = field.get(instance);
             }catch(Exception e){
-                e.printStackTrace();
+                logger.log(Level.WARNING, null, e);
             }
         }
         return value;

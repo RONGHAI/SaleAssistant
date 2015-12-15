@@ -140,7 +140,7 @@ public class NavigationServicer extends AbstractServicer  {
 
     @Override
     public boolean saveOrUpdate(JSONArray jsonArray) {
-        if(jsonArray == null  || jsonArray.isArray()) return false;
+        if(jsonArray == null || jsonArray.isEmpty()  ) return false;
         @SuppressWarnings("unchecked")
         Iterator<JSONObject> it = jsonArray.iterator();
         while(it.hasNext()){
@@ -161,6 +161,9 @@ public class NavigationServicer extends AbstractServicer  {
     }
 
     private Navigation saveOrUpdate(Navigation client) {
+        System.out.println(client);
+        System.out.println(client.getId());
+        
         if(client.getId() == null){
            return this.save (client);
         }else{

@@ -56,7 +56,7 @@ public class Client extends AbstractModel implements Serializable {
     private String phone;
 
     @Column(name = "disabled")
-    private boolean disabled;
+    private int disabled;
 
     @Column(name = "add_time", nullable=true)
     @Temporal(TemporalType.TIMESTAMP)
@@ -76,7 +76,7 @@ public class Client extends AbstractModel implements Serializable {
         this.id = id;
     }
 
-    public Client(Long id, String name, String wangwang, String qq,String qqName, Date birthday, String gender, String phone, boolean disabled, Date addTime, Date updateTime) {
+    public Client(Long id, String name, String wangwang, String qq,String qqName, Date birthday, String gender, String phone, int disabled, Date addTime, Date updateTime) {
         this.id = id;
         this.name = name;
         this.wangwang = wangwang;
@@ -157,7 +157,7 @@ public class Client extends AbstractModel implements Serializable {
     }
     @Override
     public boolean isDisabled() {
-        return disabled;
+        return disabled == DISABLED_YES;
     }
 
     /**
@@ -166,7 +166,7 @@ public class Client extends AbstractModel implements Serializable {
      */
     @Override
     public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
+        this.disabled = disabled ? DISABLED_YES : DISABLED_NO;
     }
 
     public Date getAddTime() {

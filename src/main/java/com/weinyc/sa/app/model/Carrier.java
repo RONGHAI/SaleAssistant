@@ -45,11 +45,11 @@ public class Carrier extends AbstractModel implements Serializable {
     private String trackMethod;
     
     @Column(name = "disabled")
-    private boolean disabled;
+    private int disabled;
 
     @Override
     public boolean isDisabled() {
-        return disabled;
+        return disabled == DISABLED_YES;
     }
 
     @Column(name = "add_time", nullable=true)
@@ -65,13 +65,13 @@ public class Carrier extends AbstractModel implements Serializable {
 
     @Override
     public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
+        this.disabled = disabled ? DISABLED_YES : DISABLED_NO;
     }
 
     public Carrier() {
     }
 
-    public Carrier(Long id, String name, String website, String trackURL, String trackMethod, boolean disabled, Date addTime, Date updateTime, String note) {
+    public Carrier(Long id, String name, String website, String trackURL, String trackMethod, int disabled, Date addTime, Date updateTime, String note) {
         this.id = id;
         this.name = name;
         this.website = website;
@@ -83,7 +83,7 @@ public class Carrier extends AbstractModel implements Serializable {
         this.note = note;
     }
     
-    public Carrier(String name, String website, String trackURL, String trackMethod, boolean disabled, Date addTime, Date updateTime, String note) {
+    public Carrier(String name, String website, String trackURL, String trackMethod, int disabled, Date addTime, Date updateTime, String note) {
         this.name = name;
         this.website = website;
         this.trackURL = trackURL;

@@ -113,7 +113,7 @@ public class OrderServicer extends AbstractServicer  {
     
     @Override
     public boolean saveOrUpdate(JSONArray jsonArray) {
-        if(jsonArray == null || jsonArray.isArray() ) return false;
+        if(jsonArray == null || jsonArray.isEmpty()) return false;
         @SuppressWarnings("unchecked")
         Iterator<JSONObject> it = jsonArray.iterator();
         while(it.hasNext()){
