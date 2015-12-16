@@ -45,7 +45,7 @@ public class Carrier extends AbstractModel implements Serializable {
     private String trackMethod;
     
     @Column(name = "disabled")
-    private int disabled;
+    private Integer disabled;
 
     @Override
     public boolean isDisabled() {

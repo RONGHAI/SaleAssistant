@@ -38,7 +38,7 @@ public class Property  extends AbstractModel implements Serializable {
     private Long id;
 
     @Column(name = "disabled")
-    private int disabled;
+    private Integer disabled;
 
     @Override
     public boolean isDisabled() {

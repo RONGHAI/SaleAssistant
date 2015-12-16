@@ -56,7 +56,7 @@ public class Client extends AbstractModel implements Serializable {
     private String phone;
 
     @Column(name = "disabled")
-    private int disabled;
+    private Integer disabled;
 
     @Column(name = "add_time", nullable=true)
     @Temporal(TemporalType.TIMESTAMP)
