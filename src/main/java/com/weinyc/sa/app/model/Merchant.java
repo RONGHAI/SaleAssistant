@@ -83,7 +83,7 @@ public class Merchant extends AbstractModel implements Serializable {
     
     @Override
     public boolean isDisabled() {
-        return disabled == DISABLED_YES;
+        return disabled != null && disabled == DISABLED_YES;
     }
 
     /**

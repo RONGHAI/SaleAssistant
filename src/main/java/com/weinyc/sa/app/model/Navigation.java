@@ -10,8 +10,10 @@ import com.weinyc.sa.core.viewer.bean.W2UIColumnBean;
 import com.weinyc.sa.core.model.AbstractModel;
 
 import static com.weinyc.sa.common.util.JSONUtils.expectOne;
+import com.weinyc.sa.common.util.StringUtils;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -99,13 +101,13 @@ public class Navigation   extends AbstractModel implements Serializable {
     }
     
     @Column(name = "tier_2")
-    private long tier_2;
+    private Long tier_2;
     
     @Column(name = "tier_3")
-    private long tier_3;
+    private Long tier_3;
     
     @Column(name = "tier_4")
-    private long tier_4;
+    private Long tier_4;
     
     @Column(name = "i18n")
     private String i18n;
@@ -124,7 +126,7 @@ public class Navigation   extends AbstractModel implements Serializable {
 
     @Override
     public boolean isDisabled() {
-        return disabled == DISABLED_YES;
+        return disabled != null && disabled == DISABLED_YES;
     }
 
     @Column(name = "add_time", nullable=true)
@@ -263,5 +265,32 @@ public class Navigation   extends AbstractModel implements Serializable {
         this.i18n = i18n;
     }
      
+    
+    public int[] getNavTier(){
+       int[] navTier = new int[]{this.tier_1.intValue(),  this.tier_2.intValue(),this.tier_3.intValue(), this.tier_4.intValue()};
+       return navTier;
+    }
+    
+    public int[] getParentNavTier() {
+        int[] navTier = getNavTier();
+        int _navTier[] =  navTier.clone();
+        for(int i = _navTier.length - 1; i >= 0; i--){
+            if(_navTier[i] != 0){
+                _navTier[i] = 0;
+                break;
+            }
+        }
+        if(Arrays.equals(_navTier , navTier) || _navTier[0] == 0){
+            return null;
+        }
+        return _navTier;
+    }
+    public String getParentNavTier(String join){
+        int [] p = getParentNavTier();
+        if(p == null){
+            return null;
+        }
+        return StringUtils.join(p, join);
+    }
 }
 

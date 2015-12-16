@@ -1,6 +1,7 @@
 package com.weinyc.sa.app.model;
 
 import static com.weinyc.sa.common.util.JSONUtils.expectOne;
+import com.weinyc.sa.core.crypto.Crypto;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -18,6 +19,7 @@ import net.sf.json.JSONObject;
 
 import com.weinyc.sa.core.model.AbstractModel;
 import com.weinyc.sa.core.viewer.bean.W2UIColumnBean;
+import org.apache.commons.lang.StringUtils;
 
 /**
 *
@@ -34,9 +36,7 @@ public class User extends AbstractModel implements Serializable {
         return modelMeta;
     }
     public static  User fromJson(JSONObject json){
-    	expectOne(json, "password");
-        expectOne(json, "email");
-        expectOne(json, "name");
+    	expectOne(json, "password", "email", "name", "secretToken", "disabled");
         expectOne(json, "recid");
         expectOne(json, "id"); 
         if(json.has("recid") && !json.has("id")){
@@ -63,12 +63,11 @@ public class User extends AbstractModel implements Serializable {
         map.put("id", this.id);
         map.put("name", name);
         map.put("email", email);
-        map.put("password", this.password);
+        //map.put("password", this.password);
         return map;
     }
     
-    
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -77,6 +76,11 @@ public class User extends AbstractModel implements Serializable {
     
     @Column(name = "name")
     private String name;
+
+    public String getName() {
+        return name;
+    }
+
     
     @Column(name = "email")
     private String email;
@@ -85,7 +89,18 @@ public class User extends AbstractModel implements Serializable {
     private String password;
     
     @Column(name = "disabled")
-    private boolean disabled;
+    private Integer disabled;
+    
+    @Column(name = "secret_token")
+    private String secretToken;
+    
+    public static ModelMeta<User> getModelMeta() {
+        return modelMeta;
+    }
+
+    public static void setModelMeta(ModelMeta<User> modelMeta) {
+        User.modelMeta = modelMeta;
+    }
 
     @Column(name = "add_time", nullable=true)
     @Temporal(TemporalType.TIMESTAMP)
@@ -116,10 +131,7 @@ public class User extends AbstractModel implements Serializable {
             return false;
         }
         User other = (User) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     public Date getAddTime() {
@@ -163,7 +175,7 @@ public class User extends AbstractModel implements Serializable {
 
     @Override
     public boolean isDisabled() {
-        return disabled;
+        return disabled != null && disabled == DISABLED_YES;
     }
 
     @SuppressWarnings("unchecked")
@@ -183,7 +195,7 @@ public class User extends AbstractModel implements Serializable {
     
     @Override
     public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
+        this.disabled = disabled ? DISABLED_YES : DISABLED_NO;
     }
 
     public void setEmail(String email) {
@@ -205,10 +217,28 @@ public class User extends AbstractModel implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-   
-    @Override
-    public String toString() {
-        return this.getClass().getName()+"[ id=" + id + " ]";
+ 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getSecretToken() {
+        return secretToken;
+    }
+
+    public void setSecretToken(String secretToken) {
+        this.secretToken = secretToken;
     }
     
+    
+    public void updatePassword(){
+        if(StringUtils.isNotEmpty(this.getPassword())){
+            this.setPassword(Crypto._password(this.getPassword()));
+        }
+    }
+
 }
