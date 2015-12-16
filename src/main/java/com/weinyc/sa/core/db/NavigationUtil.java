@@ -61,8 +61,11 @@ public class NavigationUtil {
             if(next.getChildren() == null || next.getChildren().isEmpty()){
                 iterator.remove();
                 continue;
+            }else{
+                sort(next.getChildren());
             }
         }
+        sort(navBeanList);
         return navBeanList;
     }
     
