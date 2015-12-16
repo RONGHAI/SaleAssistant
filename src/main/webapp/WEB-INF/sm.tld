@@ -14,6 +14,15 @@
         </function-signature>
     </function>
     
+
+    <function>
+        <name>length</name>
+        <function-class>com.weinyc.sa.view.tag.Utils</function-class>
+        <function-signature>
+            int length(java.util.Collection)
+        </function-signature>
+    </function>
+    
     
     
     

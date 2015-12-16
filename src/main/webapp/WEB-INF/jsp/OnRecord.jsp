@@ -27,7 +27,7 @@
                             }, {
                                 columns:  sales_assistant.find_columns(${worker.columns}, '${worker.navigationBean.i18n}'),
                                 searches: sales_assistant.find_search_columns( ${worker.columns},  '${worker.navigationBean.i18n}')
-                            });
+                            } ,  "${sm:url(worker, 'json', 'max')}");
                       });
                     
                 });

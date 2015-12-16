@@ -9,6 +9,12 @@
 <c:set value="${param.forward}" var="navTier" />
 <c:if test="${empty navTier}">
     <c:set var="navTier" value="1_1_0_0"/>
+    <c:if test="${sm:length(navigationBeans) == 1}" >
+        <c:set var="navTier" value="${navigationBeans[0].navTier2}"/>
+        <c:if test="${sm:length(navigationBeans[0].children) == 1}" >
+            <c:set var="navTier" value="${navigationBeans[0][0].navTier2}"/>
+        </c:if>
+    </c:if>
 </c:if>
 <c:set value="${param.norun}" var="norun" />
 <c:set value='level' var="sidebarLevelPrefix"/>
