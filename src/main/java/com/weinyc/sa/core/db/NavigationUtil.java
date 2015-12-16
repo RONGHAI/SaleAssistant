@@ -62,7 +62,7 @@ public class NavigationUtil {
                 iterator.remove();
                 continue;
             }else{
-                sort(next.getChildren());
+               // sort(next.getChildren());
             }
         }
         sort(navBeanList);
@@ -85,7 +85,9 @@ public class NavigationUtil {
         if(navBeans == null) return;
         Collections.sort(navBeans, comparator);
         for(NavigationBean bean : navBeans){
-            Collections.sort(bean.getChildren(), comparator);
+            if(bean.getChildren() != null){
+              Collections.sort(bean.getChildren(), comparator);
+            }
         }
     } 
 }
