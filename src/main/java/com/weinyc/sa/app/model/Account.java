@@ -88,7 +88,7 @@ public class Account extends AbstractModel implements Serializable {
     protected transient Merchant merchant;
 
     @Column(name = "disabled")
-    private int disabled;
+    private Integer disabled;
 
     @Column(name = "add_time", nullable=true)
     @Temporal(TemporalType.TIMESTAMP)
@@ -174,7 +174,7 @@ public class Account extends AbstractModel implements Serializable {
 
     @Override
     public boolean isDisabled() {
-        return disabled == DISABLED_YES;
+        return disabled.intValue() == DISABLED_YES;
     }
 
     @SuppressWarnings("unchecked")

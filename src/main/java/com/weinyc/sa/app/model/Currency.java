@@ -76,7 +76,7 @@ public class Currency extends AbstractModel implements Serializable {
     private double rate;
 
     @Column(name = "disabled")
-    private int disabled;
+    private Integer disabled;
 
     @Column(name = "add_time", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)

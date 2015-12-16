@@ -40,37 +40,37 @@ public class Navigation   extends AbstractModel implements Serializable {
     
     
     @Column(name = "tier_1")
-    private long tier_1;
+    private Long tier_1;
 
-    public long getTier_1() {
+    public Long getTier_1() {
         return tier_1;
     }
 
-    public void setTier_1(long tier_1) {
+    public void setTier_1(Long tier_1) {
         this.tier_1 = tier_1;
     }
 
-    public long getTier_2() {
+    public Long getTier_2() {
         return tier_2;
     }
 
-    public void setTier_2(long tier_2) {
+    public void setTier_2(Long tier_2) {
         this.tier_2 = tier_2;
     }
 
-    public long getTier_3() {
+    public Long getTier_3() {
         return tier_3;
     }
 
-    public void setTier_3(long tier_3) {
+    public void setTier_3(Long tier_3) {
         this.tier_3 = tier_3;
     }
 
-    public long getTier_4() {
+    public Long getTier_4() {
         return tier_4;
     }
 
-    public void setTier_4(long tier_4) {
+    public void setTier_4(Long tier_4) {
         this.tier_4 = tier_4;
     }
 
@@ -117,10 +117,10 @@ public class Navigation   extends AbstractModel implements Serializable {
     private String worker;
     
     @Column(name = "[order]")
-    private int order;
+    private Integer order;
     
     @Column(name = "disabled")
-    private int disabled;
+    private Integer disabled;
 
     @Override
     public boolean isDisabled() {

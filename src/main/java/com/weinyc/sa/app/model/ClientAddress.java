@@ -49,10 +49,10 @@ public class ClientAddress extends AbstractModel implements Serializable {
     
 
     @Column(name = "disabled")
-    private int disabled;
+    private Integer disabled;
 
     @Column(name = "[default]")
-    private int defaultAdress;
+    private Integer defaultAdress;
     
     @Column(name = "add_time", nullable=true)
     @Temporal(TemporalType.TIMESTAMP)

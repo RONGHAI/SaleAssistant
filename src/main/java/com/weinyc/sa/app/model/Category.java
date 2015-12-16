@@ -42,7 +42,7 @@ public class Category extends AbstractModel implements Serializable {
     private String code;
     
     @Column(name = "level")
-    private int level = 1;
+    private Integer level = 1;
     
     @Column(name = "parent_id")
     private Long parentId = -1L;
@@ -61,7 +61,7 @@ public class Category extends AbstractModel implements Serializable {
 
 
     @Column(name = "disabled")
-    private int disabled;
+    private Integer disabled;
 
     @Column(name = "add_time", nullable=true)
     @Temporal(TemporalType.TIMESTAMP)

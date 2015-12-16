@@ -30,7 +30,7 @@ public class NavigationUtil {
         bean.setOrder(na.getOrder());
         bean.setId(na.getId().intValue());
         bean.setI18n(na.getI18n());
-        bean.setNavTier(new int[]{(int) na.getTier_1(), (int) na.getTier_2(), (int) na.getTier_3(), (int) na.getTier_4()});
+        bean.setNavTier(new int[]{ na.getTier_1().intValue(), (int) na.getTier_2().intValue(), (int) na.getTier_3().intValue(), (int) na.getTier_4().intValue()});
         return bean;
     }
     
@@ -61,8 +61,11 @@ public class NavigationUtil {
             if(next.getChildren() == null || next.getChildren().isEmpty()){
                 iterator.remove();
                 continue;
+            }else{
+               // sort(next.getChildren());
             }
         }
+        sort(navBeanList);
         return navBeanList;
     }
     
@@ -82,7 +85,9 @@ public class NavigationUtil {
         if(navBeans == null) return;
         Collections.sort(navBeans, comparator);
         for(NavigationBean bean : navBeans){
-            Collections.sort(bean.getChildren(), comparator);
+            if(bean.getChildren() != null){
+              Collections.sort(bean.getChildren(), comparator);
+            }
         }
     } 
 }
