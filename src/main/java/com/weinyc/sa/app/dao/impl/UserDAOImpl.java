@@ -23,4 +23,10 @@ public class UserDAOImpl extends AbstractModelDAOImpl<User> implements UserDAO{
     public RowMapper<User> createRowMapper() {
          return User._getModelMeta().getRowMapper();
   }
+
+    @Override
+    public User findByName(String username) {
+        User user = this.find(false, new String[]{"name", "email"}, new Object[]{username, username});
+        return user;
+    }
 }

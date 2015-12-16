@@ -1,5 +1,6 @@
 package com.weinyc.sa.core.crypto;
 
+import com.weinyc.sa.common.util.otp.Base32;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -18,6 +19,8 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.InvalidParameterSpecException;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -63,9 +66,9 @@ public class Crypto {
         byte[] iv = params.getParameterSpec(IvParameterSpec.class).getIV();
         byte[] data = cipher.doFinal(context.getBytes());
         
-        System.out.println(Hex.encodeHexString(iv).toUpperCase());
+        //System.out.println(Hex.encodeHexString(iv).toUpperCase());
         String ds = Hex.encodeHexString(data);
-        System.out.println(Base64.encodeBase64String(ds.getBytes()));
+        //System.out.println(Base64.encodeBase64String(ds.getBytes()));
         
         return  Hex.encodeHexString(iv).toUpperCase() + Base64.encodeBase64String(data);
     }
@@ -165,6 +168,57 @@ public class Crypto {
         return Hex.encodeHexString(md.digest());
     }
 
+    private static final int __$__ = 54223;
+    private static final int _$$_ = 64213;
+    public static final String _secretToken(String plain, String encryptSecretToken){
+        try{
+            String salt = encryptSecretToken.substring(0, SALT_LEN * 2);
+            String key = derivationKey(plain, salt, _$$_);
+            String e = decrypt(key, encryptSecretToken.substring(SALT_LEN * 2));
+            return e;
+        }catch (DecoderException |NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException | InvalidParameterSpecException | InvalidKeyException | InvalidAlgorithmParameterException ex ) {
+            Logger.getLogger(Crypto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
+    public static final String _secretToken(String plain){
+         String salt = Crypto.generateSalt();
+        try{
+            String key = derivationKey(plain, salt, _$$_);
+            String e = encrypt(key,  Base32.randomBase32());
+            return salt.toUpperCase()+e;
+        }catch (DecoderException |NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException | InvalidParameterSpecException | InvalidKeyException ex ) {
+            Logger.getLogger(Crypto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
+    
+    public static final String _password(String plain){
+        String salt = Crypto.generateSalt();
+        try{
+            String key = derivationKey(plain, salt, __$__);
+            String e = encrypt(key, plain);
+            return salt.toUpperCase()+e;
+        }catch (DecoderException |NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException | InvalidParameterSpecException | InvalidKeyException ex ) {
+            Logger.getLogger(Crypto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
+     
+    public static final boolean _verify(String plain, String password){
+        try{
+            String salt = password.substring(0, SALT_LEN * 2);
+            String key = derivationKey(plain, salt, __$__);
+            String e = decrypt(key, password.substring(SALT_LEN * 2));
+            return e.equals(plain);
+        }catch (DecoderException |NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException | InvalidParameterSpecException | InvalidKeyException | InvalidAlgorithmParameterException ex ) {
+            Logger.getLogger(Crypto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+     
+     
+    
     public static void main(String[] args) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidParameterSpecException, IllegalBlockSizeException, BadPaddingException, DecoderException,
             InvalidAlgorithmParameterException, IOException {
         

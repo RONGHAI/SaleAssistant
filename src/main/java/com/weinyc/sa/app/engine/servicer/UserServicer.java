@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.weinyc.sa.app.dao.impl.UserDAOImpl;
 import com.weinyc.sa.app.model.User;
 import com.weinyc.sa.common.util.JSONUtils;
+import com.weinyc.sa.core.crypto.Crypto;
 import com.weinyc.sa.core.engine.AbstractServicer;
 import com.weinyc.sa.core.model.AbstractModel;
 import com.weinyc.sa.core.viewer.bean.NavigationBean;
@@ -23,11 +24,13 @@ import com.weinyc.sa.core.viewer.bean.NavigationBean;
  */
 public class UserServicer extends AbstractServicer  {
 
+   
     /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1023761597814267555L;
-	@Autowired
+    private static final long serialVersionUID = 1023761597814267555L;
+    
+    @Autowired
     private com.weinyc.sa.app.dao.impl.UserDAOImpl userDAO;
 
     public UserDAOImpl getUserDAO() {
@@ -97,6 +100,20 @@ public class UserServicer extends AbstractServicer  {
         return this.users;
     }
     
+    public User login(String username, String password){
+        User user = this.userDAO.findByName(username);
+        if(user == null){
+            return null;
+        }
+        boolean sucees = Crypto._verify(password, user.getPassword());        
+        if(sucees){
+            user.setPassword(null);
+            user.setSecretToken(null);
+            return user;
+        }
+        return null;
+    }
+    
     @Override
     public boolean remove(Collection<Long> ids) {
         if(ids == null || ids.isEmpty() ) return false;
@@ -112,7 +129,7 @@ public class UserServicer extends AbstractServicer  {
         this.refresh();
         return c;
     }
-
+    
     @Override
     public boolean saveOrUpdate(JSONArray jsonArray) {
         if(jsonArray == null || jsonArray.isEmpty() ) return false;
@@ -121,15 +138,16 @@ public class UserServicer extends AbstractServicer  {
         while(it.hasNext()){
             JSONObject newJsonObj = it.next();
             User user = User.fromJson(newJsonObj);
+            user.updatePassword();
             Long id  = user.getId();
             if(this.userDAO.exsit(id)){
-                user .setUpdateTime(new Date());
+                user.setUpdateTime(new Date());
             }else{
                 user.setId(null);
                 user.setAddTime(new Date());
             }
             this.saveOrUpdate(user);
-        };
+        }
         this.refresh();
         return true;
     }
@@ -141,5 +159,9 @@ public class UserServicer extends AbstractServicer  {
            return this.update(user);
         }
     }
-
+    
+    public boolean verify(Long userId, String password){
+        User user = find(userId);
+        return Crypto._verify(password, user.getPassword());
+    }
 }

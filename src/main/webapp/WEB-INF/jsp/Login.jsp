@@ -16,14 +16,30 @@
         <title>${worker.appName} ${worker.navigationBean.i18n}</title>
         <sm:Head controller='${worker}' >
             <script type="text/javascript"> 
+                var  sa = sales_assistant;
+                sa.login = function(){
+                    sales_assistant.post("login", "form",  function(data, state){
+                            if(data.user){
+                                window.location.reload();
+                                window.parent.location.reload();
+                            }else{
+                                alert("no user");
+                            }
+                        }, 
+                        function(data, state){
+                           alert("no user");
+                        }
+                    );
+                }
             </script>
         </sm:Head>
     </head>
     <body class="sa-add">
         <sm:Form id='form' controller="${worker}"> 
             <input type="text" name="user_name" />
-            <input type="password" name="password/>
-            <button type="submit"/>
+            <input type="password" name="password" />
+            <br/>
+            <button type="button"  onclick="javascript:sa.login()">Login</button>
         </sm:Form> 
         <sm:Foot></sm:Foot>
     </body>

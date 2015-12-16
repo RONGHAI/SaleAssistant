@@ -10,7 +10,12 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.weinyc.sa.app.dao.NavigationDAO;
 import com.weinyc.sa.app.model.Navigation;
+import com.weinyc.sa.app.model.User;
+import com.weinyc.sa.common.constants.Constants;
 import com.weinyc.sa.core.dao.impl.AbstractModelDAOImpl;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -50,4 +55,32 @@ public class NavigationDAOImpl extends AbstractModelDAOImpl<Navigation> implemen
           }
       } ;*/
   }
+
+    @Override
+    public List<Navigation> find(User user) {
+        if(user == null){
+            List<Navigation> finds = find();
+            Navigation login = null;
+            for(Navigation v : finds){
+                if(v.getWorker().endsWith(Constants.LOGIN_WORKER)){
+                    login = v;
+                    break;
+                }
+            }
+            if(login != null){
+                //will update it later, now only support 2 levels.
+                int[]p = login.getParentNavTier();
+                for (Iterator<Navigation> iterator = finds.iterator(); iterator.hasNext();) {
+                    Navigation next = iterator.next();
+                    if(next.getId().equals(login.getId()) || Arrays.equals(p, next.getNavTier())){
+                    }else{
+                        iterator.remove();
+                    }
+                }
+            }            
+            return finds;
+        }else{
+            return find();
+        }
+     }
 }

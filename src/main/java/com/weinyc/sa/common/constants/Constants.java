@@ -21,6 +21,7 @@ public class Constants {
     public static final String PROGRESS_PAGE_POSTBACK="progress_page_postback"; 
     public static final String PANEL_INDEX = "panelIndex";
     public static final String DEFAULT_WORKER = "com.weinyc.sa.app.engine.controller.HomeController";
+    public static final String LOGIN_WORKER = "com.weinyc.sa.app.engine.controller.LoginController";
     public static final String CONTROLLER_PACKAGE = "com.weinyc.sa.app.engine.controller";
     public static final String SAJS_PREFIX = "sales_assistant";
     public static final String[] W2UI_CHANGES = new String[]{ "changes","changed"};

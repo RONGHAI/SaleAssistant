@@ -72,7 +72,29 @@ public class RequestManager implements Serializable, Cloneable {
         return getInstance();
     }
     
-   
+    public AbstractController createWorker(final HttpServletRequest request,
+            final HttpServletResponse response,
+            final CoreServlet serv,   String workerName ) {
+        NavigationBean  navigationBean = serv.findByWorker(workerName);
+        Class<?> clazz;
+        try{
+            try {
+                clazz = ReflectUtils.classForName(workerName);
+            } catch (ClassNotFoundException e) {
+                //logger.log(Level.SEVERE, null, e);
+                workerName = Constants.CONTROLLER_PACKAGE+"."+workerName.substring(workerName.lastIndexOf(".")+1);
+                clazz = ReflectUtils.classForName(workerName);
+            }
+            AbstractController w = (AbstractController) clazz.newInstance();
+            request.setAttribute(Constants.REQUEST_WORKER_ATTRIBUTE_NAME, w);
+            w.init(request, response, navigationBean, serv.getJspPath(), serv, serv.getServletContext());
+            return w;
+        }catch(ClassNotFoundException | IllegalAccessException | InstantiationException e){
+            logger.log(Level.SEVERE, null, e);
+        }
+        
+        return null;
+    }
     
     public AbstractController createWorker(final HttpServletRequest request,
             final HttpServletResponse response,

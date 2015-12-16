@@ -24,6 +24,10 @@ import com.weinyc.sa.core.engine.ServicerFactory;
 import com.weinyc.sa.core.reflect.ReflectUtils;
 import com.weinyc.sa.core.viewer.bean.NavigationBean;
 import com.weinyc.sa.app.dao.NavigationDAO;
+import com.weinyc.sa.app.dao.UserDAO;
+import com.weinyc.sa.app.dao.impl.UserDAOImpl;
+import com.weinyc.sa.app.model.Navigation;
+import com.weinyc.sa.app.model.User;
 import com.weinyc.sa.common.constants.Constants;
 
 import java.lang.reflect.InvocationTargetException;
@@ -54,7 +58,12 @@ public class CoreServlet extends HttpServlet implements org.springframework.web.
     protected DataSource dataSource;
     
     @Autowired
+    protected UserDAOImpl userDAO;
+    
+    @Autowired
     protected DatabaseHandler databaseHandler;
+    
+    //private transient List<User> users;
 
     @Override
     public void init() throws ServletException {
@@ -68,7 +77,7 @@ public class CoreServlet extends HttpServlet implements org.springframework.web.
             logger.log(Level.SEVERE, null, e);
         }
         logger.log(Level.INFO, "jsp path is " + jspPath, "");
-        getNavigationBeans(false);
+        getNavigationBeans();
 
     }
 
@@ -77,20 +86,29 @@ public class CoreServlet extends HttpServlet implements org.springframework.web.
         this.service(request, response);
     }
 
+    public static final String authorizer = "authorizer";
     @Override
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        AbstractController worker = RequestManager.getInstance().createWorker(request, response, this);
-        this.injectServicers(request, response, worker);
+        AbstractController worker;
+        boolean isLogin = true;
+        if(request.getSession().getAttribute(authorizer) == null && this.getUserDAO().count(" WHERE disabled = 0  ") > 0 ){
+             worker = RequestManager.getInstance().createWorker(request, response, this, Constants.LOGIN_WORKER);
+        }else{
+             worker = RequestManager.getInstance().createWorker(request, response, this);
+             isLogin = false;
+        }
+        //System.out.println(worker);
+        //System.out.println(isLogin);
+        this.injectServicers(request, response, worker, isLogin);
         worker.processRequest();
     }
     
     public <T> T getBean(String id){
-        ApplicationContext appContext = this.getAppContext();
-        if(appContext == null){
+        ApplicationContext ac = this.getAppContext();
+        if(ac == null){
             return null;
         }
-        return (T)appContext.getBean(id);
+        return (T)ac.getBean(id);
     }
     
     public ApplicationContext getAppContext() {
@@ -110,14 +128,53 @@ public class CoreServlet extends HttpServlet implements org.springframework.web.
         }
         return this.navigationDAO;
     }
-    protected List<NavigationBean> getNavigationBeans() {
-        return getNavigationBeans(false);
+    
+    public UserDAO getUserDAO() {
+        if (userDAO == null) {
+            this.userDAO =  this.getBean("userDAO");
+        }
+        if(this.userDAO == null){
+            this.userDAO = new UserDAOImpl();
+            this.userDAO.setDatabaseHandler(new DatabaseHandler(this.getDataSource()));
+        }
+        return this.userDAO;
     }
+    
+    protected List<NavigationBean> getNavigationBeans() {
+        return getNavigationBeans(null);
+    }
+    
+    protected List<NavigationBean> getNavigationBeans(User user) {
+        return getNavigationBeans(false, false, user);
+    }
+    
+    protected List<NavigationBean> getNavigationBeans(boolean all, boolean init) {
+        return getNavigationBeans(all, init, null);
+    }
+    
     @SuppressWarnings("unchecked")
-    protected List<NavigationBean> getNavigationBeans(boolean init) {
-        List<NavigationBean> naviBeans = (List<NavigationBean>) this.getServletContext().getAttribute(Constants.ALL_NAVIGATIONBEANS);
-        if (naviBeans == null || init) {
-            naviBeans = NavigationUtil.convert(this.getNavigationDAO().find());
+    protected List<NavigationBean> getNavigationBeans(boolean all, boolean init, User user) {
+        String key;
+        if(all){
+            key = Constants.ALL_NAVIGATIONBEANS+"_ALL";
+        }else{
+            key = Constants.ALL_NAVIGATIONBEANS +"_"+ user;
+        }
+        List<NavigationBean> naviBeans = (List<NavigationBean>) this.getServletContext().getAttribute(key);
+        //System.out.println(all);
+        //System.out.println(init);
+        //System.out.println(user);
+        if (naviBeans == null || naviBeans.isEmpty() || init){
+            List<Navigation> navs;
+            if(all || this.getUserDAO().count(" WHERE disabled = 0  ") <= 0 ){
+                navs = this.getNavigationDAO().find(" WHERE disabled = 0 ");
+            }else{
+                navs = this.getNavigationDAO().find(user);
+            }
+            naviBeans = NavigationUtil.convert(navs);
+            this.getServletContext().setAttribute(key, naviBeans);
+        }
+        if(!all){
             this.getServletContext().setAttribute(Constants.ALL_NAVIGATIONBEANS, naviBeans);
         }
         return naviBeans;
@@ -165,7 +222,7 @@ public class CoreServlet extends HttpServlet implements org.springframework.web.
         if (bean != null) {
             return bean;
         }
-        List<NavigationBean> navBeans = this.getNavigationBeans();
+        List<NavigationBean> navBeans = this.getNavigationBeans(true, false,  null);
         return this.save2Cache(navTier, find(navBeans, navTier, null));
     }
 
@@ -174,7 +231,7 @@ public class CoreServlet extends HttpServlet implements org.springframework.web.
         if (bean != null) {
             return bean;
         }
-        List<NavigationBean> navBeans = this.getNavigationBeans();
+        List<NavigationBean> navBeans = this.getNavigationBeans(true, false,  null);
         return this.save2Cache(worker, find(navBeans, null, worker));
     }
 
@@ -195,16 +252,17 @@ public class CoreServlet extends HttpServlet implements org.springframework.web.
         return databaseHandler;
     }
     
-    protected void injectServicers(HttpServletRequest request, HttpServletResponse response, AbstractController worker) {
+    protected void injectServicers(HttpServletRequest request, HttpServletResponse response, AbstractController worker, boolean isLogin) {
         if(getDataSource() instanceof org.apache.commons.dbcp2.BasicDataSource){
             org.apache.commons.dbcp2.BasicDataSource bds = (org.apache.commons.dbcp2.BasicDataSource)dataSource;
             if(bds.getUrl().contains("postgres")){
                 Constants.SET_SQL_RESERVED_REPLACE("\"");
             }
         }
-        
         Collection<Field> fields = ReflectUtils.getDeclaredFields((Map<String, Field>) null, worker.getClass(), false).values();
-        List<NavigationBean> naviBeans = this.getNavigationBeans( Boolean.parseBoolean(request.getParameter(Constants.FORCE_INIT)));
+        //System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+        List<NavigationBean> naviBeans = this.getNavigationBeans(false, Boolean.parseBoolean(request.getParameter(Constants.FORCE_INIT)), isLogin? null : (User)request.getSession().getAttribute(authorizer));
+        
         for (Field field : fields) {
             if (!field.isAnnotationPresent(ServicerType.class)) {
                 continue;

@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -59,8 +60,10 @@ public class NavigationUtil {
         for (Iterator<NavigationBean> iterator = navBeanList.iterator(); iterator.hasNext();) {
             NavigationBean next = iterator.next();
             if(next.getChildren() == null || next.getChildren().isEmpty()){
-                iterator.remove();
-                continue;
+                if(StringUtils.isEmpty(next.getWorker())){
+                    iterator.remove();
+                    continue;
+                }
             }else{
                // sort(next.getChildren());
             }

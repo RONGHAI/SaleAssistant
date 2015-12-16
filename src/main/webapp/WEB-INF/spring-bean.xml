@@ -44,6 +44,8 @@
     <bean id="americaOrderDAO" class="com.weinyc.sa.app.dao.impl.USAOrderDAOImpl"/>
 
     <bean id="clientAddressDAO" class="com.weinyc.sa.app.dao.impl.ClientAddressDAOImpl"/>
+    
+    <bean id="userDAO" class="com.weinyc.sa.app.dao.impl.UserDAOImpl"/>
 
 
     <bean id="propertyDAO" class="com.weinyc.sa.app.dao.impl.PropertyDAOImpl"/>

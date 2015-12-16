@@ -6,6 +6,8 @@ import com.weinyc.sa.common.util.JSONUtils;
 import com.weinyc.sa.core.annotation.ServicerType;
 import com.weinyc.sa.core.engine.AbstractController;
 import com.weinyc.sa.core.engine.AbstractServicer;
+import com.weinyc.sa.core.servlet.CoreServlet;
+import net.sf.json.JSONObject;
 public class LoginController extends AbstractController{
 
     
@@ -46,5 +48,14 @@ public class LoginController extends AbstractController{
         return JSONUtils.toString(User.COLUMNS, 36);
     }
     
+    
+    public Object loginAction(){
+        JSONObject json = new JSONObject();
+        JSONObject pa = this.getJSONObject();
+        User user = this.servicer.login(pa.getString("user_name"), pa.getString("password"));
+        this.updateAuthorizer(user);
+        json.put("user", user.toJson());
+        return json;
+    }
    
 }

@@ -15,6 +15,6 @@ import com.weinyc.sa.core.dao.AbstractModelDAO;
  */
 public interface UserDAO extends AbstractModelDAO<User>{
    
-
+    public User findByName(String username);
 }
 

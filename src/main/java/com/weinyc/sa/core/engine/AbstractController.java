@@ -85,6 +85,10 @@ public abstract class AbstractController {
         }
         return o;
     }
+    
+    public void updateAuthorizer(Object o){
+        this.getRequest().getSession().setAttribute(CoreServlet.authorizer, o);
+    }
 
 
     public boolean isJSONP(){

@@ -213,7 +213,7 @@ if (jQuery) {
 
         sales_assistant.post = function(action, paraZone, sucessCallback, errorCallback, autoUpdate) {
             var paras =  $j.isPlainObject(paraZone) ? paraZone :  sales_assistant.serialize(paraZone);
-            alert(paras);
+            //alert(paras);
             $j.ajax({
                 url: sales_assistant.baseURLWithButton + action,
                 header: {

@@ -49,6 +49,14 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
     @Autowired
     public DatabaseHandler databaseHandler;
 
+    public DatabaseHandler getDatabaseHandler() {
+        return databaseHandler;
+    }
+
+    public void setDatabaseHandler(DatabaseHandler databaseHandler) {
+        this.databaseHandler = databaseHandler;
+    }
+
     
     
     protected transient DAODelegate<E> delegate;
@@ -301,6 +309,30 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
         throw new UnsupportedOperationException("Not supported yet."); 
     }
 
+    
+    public E find(boolean and, String [] columns, Object[] values) {
+        String sql = "SELECT * FROM " + table(entityClass) + "  ";
+        if( columns != null && columns.length > 0){
+            sql += " WHERE ";
+            for(int i = 0; i < columns.length; i++){
+                if(i != 0){
+                    sql += (and ? "AND" : "OR" );
+                }
+                sql += " "+columns[i]+" = ? ";
+            }
+        }
+        E e = null;
+        try{
+            System.out.println(sql);
+            e = this.databaseHandler.queryForObject(sql, values, createRowMapper());
+            if(delegate != null){
+                e = delegate.afterFind(e);
+            }
+        }catch(Exception ex){
+           logger.log(Level.WARNING, null, ex);
+        }
+        return e;
+    }
 
     @Override
     public E find(Object id) {
@@ -398,7 +430,7 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
 
     @Override
     public long count(String configure) {
-        String sql = " SELECT COUNT (*)  FROM " + table(entityClass);
+        String sql = " SELECT COUNT(*)  FROM " + table(entityClass);
         if (org.apache.commons.lang.StringUtils.isNotEmpty(configure)) {
             sql += " " + configure;
         }

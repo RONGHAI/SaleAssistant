@@ -68,7 +68,9 @@ public class FormTag  extends AbstractTag{
         //sb.append("     <input type='hidden' name='" + REQUEST_WORKER + "' id='" + REQUEST_WORKER + "' value='").append(worker.getClass().getName()).append("' />").append("\n");
         //sb.append("     <input type='hidden' name='" + SRC_JSP + "' id='" + SRC_JSP + "' value='").append(worker.getJspGoto()).append("' />").append("\n");
         sb.append("     <input type='hidden' name='"+BTN_OPTION+"' id='"+BTN_OPTION+"'  value='' /> ").append("\n");
-        sb.append("     <input type='hidden' name='" + NAV_TIERS + "' id='" + NAV_TIERS + "' value='").append(controller.getNavTier()).append("' />").append("\n");
+        if(controller != null){
+            sb.append("     <input type='hidden' name='" + NAV_TIERS + "' id='" + NAV_TIERS + "' value='").append(controller.getNavTier()).append("' />").append("\n");
+        }
 
         this.println(sb); 
         return EVAL_BODY_INCLUDE;
