@@ -15,7 +15,7 @@ CREATE TABLE users
   note text,
   CONSTRAINT users_pkey PRIMARY KEY (id)
 );
-CREATE SEQUENCE users_id_seq;
+-- CREATE SEQUENCE users_id_seq;
 ALTER TABLE users ALTER COLUMN id SET DEFAULT nextval('users_id_seq');
 ALTER TABLE users ALTER COLUMN id SET NOT NULL;
 ALTER SEQUENCE users_id_seq OWNED BY users.id;    -- 8.2 or later
