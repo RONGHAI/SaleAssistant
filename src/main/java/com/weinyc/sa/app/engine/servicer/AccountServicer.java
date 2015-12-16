@@ -5,6 +5,7 @@ import com.weinyc.sa.core.viewer.bean.NavigationBean;
 import com.weinyc.sa.common.util.JSONUtils;
 import com.weinyc.sa.app.dao.impl.AccountDAOImpl;
 import com.weinyc.sa.app.model.Account;
+import com.weinyc.sa.core.dao.AbstractModelDAO;
 import com.weinyc.sa.core.model.AbstractModel;
 
 import java.util.Date;
@@ -37,7 +38,10 @@ public class AccountServicer extends AbstractServicer  {
     public List<Account> getAccounts() {
         return accounts;
     }
-
+    @Override
+    public AbstractModelDAO<?> getDAO(){
+        return this.accountDAO;
+    }
     /**
      *
      */
@@ -56,7 +60,7 @@ public class AccountServicer extends AbstractServicer  {
     public void destory() {
 
     }
-
+    
    
     public Account update(Account entity) {
         Account c = accountDAO.update(entity);

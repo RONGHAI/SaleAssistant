@@ -5,6 +5,7 @@ import com.weinyc.sa.core.viewer.bean.NavigationBean;
 import com.weinyc.sa.common.util.JSONUtils;
 import com.weinyc.sa.app.dao.impl.HashtagDAOImpl;
 import com.weinyc.sa.app.model.Hashtag;
+import com.weinyc.sa.core.dao.AbstractModelDAO;
 import com.weinyc.sa.core.model.AbstractModel;
 
 import java.util.Date;
@@ -36,6 +37,11 @@ public class HashtagServicer extends AbstractServicer  {
 
     public List<Hashtag> getHashtags() {
         return hashtags;
+    }
+    
+    @Override
+    public AbstractModelDAO<?> getDAO(){
+        return hashtagDAO;
     }
 
     /**

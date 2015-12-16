@@ -5,6 +5,7 @@ import com.weinyc.sa.core.viewer.bean.NavigationBean;
 import com.weinyc.sa.common.util.JSONUtils;
 import com.weinyc.sa.app.dao.impl.CarrierDAOImpl;
 import com.weinyc.sa.app.model.Carrier;
+import com.weinyc.sa.core.dao.AbstractModelDAO;
 import com.weinyc.sa.core.model.AbstractModel;
 
 import java.util.Date;
@@ -31,7 +32,10 @@ public class CarrierServicer extends AbstractServicer  {
     public void setCarrierDAO(CarrierDAOImpl carrierDAO) {
         this.carrierDAO = carrierDAO;
     }
-
+    @Override
+    public AbstractModelDAO<?> getDAO(){
+        return this.carrierDAO;
+    }
     private List<Carrier> carriers;
 
     public List<Carrier> getCarriers() {

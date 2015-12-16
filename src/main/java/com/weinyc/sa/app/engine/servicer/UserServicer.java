@@ -16,6 +16,7 @@ import com.weinyc.sa.app.dao.impl.UserDAOImpl;
 import com.weinyc.sa.app.model.User;
 import com.weinyc.sa.common.util.JSONUtils;
 import com.weinyc.sa.core.crypto.Crypto;
+import com.weinyc.sa.core.dao.AbstractModelDAO;
 import com.weinyc.sa.core.engine.AbstractServicer;
 import com.weinyc.sa.core.model.AbstractModel;
 import com.weinyc.sa.core.viewer.bean.NavigationBean;
@@ -54,6 +55,11 @@ public class UserServicer extends AbstractServicer  {
 
     private void refresh() {
         this.users = this.find();
+    }
+    
+    @Override
+    public AbstractModelDAO<?> getDAO(){
+        return this.userDAO;
     }
 
     @Override

@@ -21,6 +21,7 @@ import com.weinyc.sa.common.util.SortBeanListUtil;
 import com.weinyc.sa.common.util.SortableBeanParse;
 import com.weinyc.sa.app.dao.impl.CategoryDAOImpl;
 import com.weinyc.sa.app.model.Category;
+import com.weinyc.sa.core.dao.AbstractModelDAO;
 import com.weinyc.sa.core.model.AbstractModel;
 
 public class CategoryServicer extends AbstractServicer  {
@@ -41,7 +42,11 @@ public class CategoryServicer extends AbstractServicer  {
     public List<Category> getCategories() {
         return categories;
     }
-
+    
+    @Override
+    public AbstractModelDAO<?> getDAO(){
+        return this.categoryDAO;
+    }
     /**
      *
      */

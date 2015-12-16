@@ -5,6 +5,7 @@ import com.weinyc.sa.core.viewer.bean.NavigationBean;
 import com.weinyc.sa.common.util.JSONUtils;
 import com.weinyc.sa.app.dao.impl.OrderDAOImpl;
 import com.weinyc.sa.app.model.Order;
+import com.weinyc.sa.core.dao.AbstractModelDAO;
 import com.weinyc.sa.core.model.AbstractModel;
 
 import java.util.Date;
@@ -36,6 +37,11 @@ public class OrderServicer extends AbstractServicer  {
 
     public List<Order> getOrders() {
         return orders;
+    }
+    
+    @Override
+    public AbstractModelDAO<?> getDAO(){
+        return orderDAO;
     }
 
     /**

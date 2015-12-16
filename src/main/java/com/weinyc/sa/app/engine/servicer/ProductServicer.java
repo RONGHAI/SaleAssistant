@@ -36,6 +36,11 @@ public class ProductServicer extends AbstractServicer implements DAODelegate<Pro
     public AttachmentDAOImpl getAttachmentDAO() {
         return attachmentDAO;
     }
+    
+    @Override
+    public AbstractModelDAO<?> getDAO(){
+        return productDAO;
+    }
 
     public void setAttachmentDAO(AttachmentDAOImpl attachmentDAO) {
         this.attachmentDAO = attachmentDAO;

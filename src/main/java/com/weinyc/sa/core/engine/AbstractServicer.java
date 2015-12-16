@@ -10,6 +10,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.weinyc.sa.core.bean.BaseServicerParaBean;
+import com.weinyc.sa.core.dao.AbstractModelDAO;
 import com.weinyc.sa.core.db.DatabaseHandler;
 import com.weinyc.sa.core.delegate.ProcessDelegate;
 import com.weinyc.sa.core.viewer.bean.ExportInformationBean;
@@ -133,5 +134,11 @@ public abstract class AbstractServicer implements Serializable{
     }
     public List<? extends AbstractModel> beans(){
         throw new UnsupportedOperationException();
+    }
+    
+    public abstract AbstractModelDAO<?> getDAO();
+
+    public long max(){
+        return getDAO().max();
     }
 }

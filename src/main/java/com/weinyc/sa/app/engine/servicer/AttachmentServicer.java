@@ -18,6 +18,7 @@ import com.weinyc.sa.common.util.JSONUtils;
 import com.weinyc.sa.app.dao.AttachmentDAO;
 import com.weinyc.sa.app.dao.impl.AttachmentDAOImpl;
 import com.weinyc.sa.app.model.Attachment;
+import com.weinyc.sa.core.dao.AbstractModelDAO;
 import com.weinyc.sa.core.model.AbstractModel;
 
 public class AttachmentServicer extends AbstractServicer  {
@@ -69,6 +70,11 @@ public class AttachmentServicer extends AbstractServicer  {
  
     public Attachment find(Object id) {
         return attachmentDAO.find(id);
+    }
+    
+    @Override
+    public AbstractModelDAO<?> getDAO(){
+        return attachmentDAO;
     }
 
     public List<Attachment> find() {

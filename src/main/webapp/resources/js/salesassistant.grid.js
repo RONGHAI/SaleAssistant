@@ -1,6 +1,6 @@
 (function($) {
     var sales_assistant = window.sales_assistant = window.sales_assistant || {};
-     sales_assistant.initGrid = function(did, _name, _unique_name , _url, c_options, moreOptions){
+     sales_assistant.initGrid = function(did, _name, _unique_name , _url, c_options, moreOptions, _max_url){
         c_options = c_options || {};
         var options = {
         name: _name, 
@@ -17,7 +17,7 @@
         url : _url,
         //multiSort: true,
         onAdd: function (target,data) {
-            var  recid = sales_assistant.generateRecid(this , _unique_name);
+            var  recid = sales_assistant.generateRecid(this , _unique_name, _max_url);
             this.add({ recid: recid });
             if(c_options['highlight_new']){
                 var tr = $('#grid_'+this.name+"_rec_"+recid);
@@ -29,7 +29,7 @@
         },
         onSave: function(event){
             event.onComplete = function () {
-                sa.log("1");
+                //sa.log("1");
                 var data = sales_assistant.eventData(event);
                 if(!data || data.refresh ){
                     this.reload();
@@ -37,8 +37,9 @@
             }
         },
         onLoad: function(event) {
+            var data = sales_assistant.eventData(event);
             event.onComplete = function () {
-               sales_assistant.initMaxRecId(this, _unique_name);
+               sales_assistant.initMaxRecId(this, _unique_name, _max_url, data.max);
             }
         },
         onDelete: function(event){

@@ -17,6 +17,7 @@ import com.weinyc.sa.core.viewer.bean.NavigationBean;
 import com.weinyc.sa.common.util.JSONUtils;
 import com.weinyc.sa.app.dao.impl.PropertyDAOImpl;
 import com.weinyc.sa.app.model.Property;
+import com.weinyc.sa.core.dao.AbstractModelDAO;
 import com.weinyc.sa.core.model.AbstractModel;
 
 public class SystemInformationServicer extends AbstractServicer  {
@@ -37,7 +38,11 @@ public class SystemInformationServicer extends AbstractServicer  {
     public List<Property> getSystemInformations() {
         return systemInformations;
     }
-
+    
+    @Override
+    public AbstractModelDAO<?> getDAO(){
+        return systemInformationDAO;
+    }
     /**
      *
      */

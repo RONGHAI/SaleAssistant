@@ -45,6 +45,11 @@ public class NavigationBean implements Serializable{
     public String getNavTier(String join){
         return StringUtils.join(navTier, join);
     }
+    
+    public String getNavTier2(){
+        return StringUtils.join(navTier, "_");
+    }
+    
     public void setNavTier (int[] navTier) {
         this.navTier = navTier;
     }

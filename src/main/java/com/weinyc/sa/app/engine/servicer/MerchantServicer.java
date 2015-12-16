@@ -5,6 +5,7 @@ import com.weinyc.sa.core.viewer.bean.NavigationBean;
 import com.weinyc.sa.common.util.JSONUtils;
 import com.weinyc.sa.app.dao.impl.MerchantDAOImpl;
 import com.weinyc.sa.app.model.Merchant;
+import com.weinyc.sa.core.dao.AbstractModelDAO;
 import com.weinyc.sa.core.model.AbstractModel;
 
 import java.util.Date;
@@ -38,6 +39,10 @@ public class MerchantServicer extends AbstractServicer  {
         return merchants;
     }
 
+    @Override
+    public AbstractModelDAO<?> getDAO(){
+        return merchantDAO;
+    }
     /**
      *
      */

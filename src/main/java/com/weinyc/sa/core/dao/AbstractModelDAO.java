@@ -59,6 +59,7 @@ public interface AbstractModelDAO<E extends AbstractModel> {
     public void setDelegate(DAODelegate<E> delegate) ;
     public RowMapper<E> createRowMapper();
     
+    public long max();
     
     
 }

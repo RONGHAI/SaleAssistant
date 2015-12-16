@@ -351,6 +351,12 @@ public class AbstractModelDAOWithJDBCImpl<E extends AbstractModel> implements Ab
 
     }
     
+    public long max() {
+        String sql = "SELECT max(id) FROM " + table(entityClass);
+        return this.databaseHandler.queryForInt(sql);
+
+    }
+    
     
     @Override
     public E find(Object id , String configure) {

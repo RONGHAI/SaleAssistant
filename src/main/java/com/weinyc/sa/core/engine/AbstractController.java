@@ -749,6 +749,7 @@ public abstract class AbstractController {
         map.put("status", "success");
         map.put("total", array.size());
         map.put("records", array);
+        map.put("max", this.getServicer(swithServicer).max());
         return map;
     }
     

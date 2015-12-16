@@ -290,7 +290,7 @@ if (jQuery) {
         };
 
         sales_assistant.max_recid = {};
-        sales_assistant.generateRecid = function(grid, app){
+        sales_assistant.generateRecid = function(grid, app, _max_url){
             var rs = grid.records;
             sales_assistant.max_recid[app]  = sales_assistant.max_recid[app] || 0;
             for(var i =0; i< rs.length; i++){
@@ -303,9 +303,13 @@ if (jQuery) {
             return sales_assistant.max_recid[app];
         };
 
-        sales_assistant.initMaxRecId = function(grid, app){
+        sales_assistant.initMaxRecId = function(grid, app, _max_url, max_id){
             var rs = grid.records;
-            sales_assistant.max_recid[app]  =  0;
+            if(max_id){
+                sales_assistant.max_recid[app]  =  max_id;
+            }else{
+                sales_assistant.max_recid[app]  =  0;
+            }
             for(var i =0; i< rs.length; i++){
                 var recid = rs[i].recid;
                 if(sales_assistant.max_recid[app] < recid){

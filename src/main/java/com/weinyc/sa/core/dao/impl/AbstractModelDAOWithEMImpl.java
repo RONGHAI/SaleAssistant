@@ -198,6 +198,14 @@ public class AbstractModelDAOWithEMImpl <E extends AbstractModel> implements Abs
         Object rtn = query.getSingleResult();
         return rtn == null ? 0 : Long.parseLong(rtn.toString());
     } 
+    
+    @Override
+    public long max() {
+        String jpql = "SELECT count(id) FROM " + entityClass.getName();
+        Query query = entityManager.createQuery(jpql);
+        Object rtn = query.getSingleResult();
+        return rtn == null ? 0 : Long.parseLong(rtn.toString());
+    } 
      
      @Override
      public int update(String sql){

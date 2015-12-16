@@ -22,6 +22,7 @@ import com.weinyc.sa.core.viewer.bean.NavigationBean;
 import com.weinyc.sa.common.util.JSONUtils;
 import com.weinyc.sa.app.dao.impl.NavigationDAOImpl;
 import com.weinyc.sa.app.model.Navigation;
+import com.weinyc.sa.core.dao.AbstractModelDAO;
 import com.weinyc.sa.core.model.AbstractModel;
 
 import java.util.ArrayList;
@@ -64,6 +65,10 @@ public class NavigationServicer extends AbstractServicer  {
         this.navigations = navigations;
     }
  
+    @Override
+    public AbstractModelDAO<?> getDAO(){
+        return navigationDAO;
+    }
     /**
      *
      */

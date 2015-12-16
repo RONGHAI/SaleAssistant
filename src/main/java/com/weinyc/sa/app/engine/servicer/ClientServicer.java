@@ -5,6 +5,7 @@ import com.weinyc.sa.core.viewer.bean.NavigationBean;
 import com.weinyc.sa.common.util.JSONUtils;
 import com.weinyc.sa.app.dao.impl.ClientDAOImpl;
 import com.weinyc.sa.app.model.Client;
+import com.weinyc.sa.core.dao.AbstractModelDAO;
 import com.weinyc.sa.core.model.AbstractModel;
 
 import java.util.Date;
@@ -27,7 +28,11 @@ public class ClientServicer extends AbstractServicer  {
     public ClientDAOImpl getClientDAO() {
         return clientDAO;
     }
-
+    
+    @Override
+    public AbstractModelDAO<?> getDAO(){
+        return this.clientDAO;
+    }
     public void setClientDAO(ClientDAOImpl clientDAO) {
         this.clientDAO = clientDAO;
     }

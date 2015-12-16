@@ -5,6 +5,7 @@ import com.weinyc.sa.core.viewer.bean.NavigationBean;
 import com.weinyc.sa.common.util.JSONUtils;
 import com.weinyc.sa.app.dao.impl.ClientAddressDAOImpl;
 import com.weinyc.sa.app.model.ClientAddress;
+import com.weinyc.sa.core.dao.AbstractModelDAO;
 import com.weinyc.sa.core.model.AbstractModel;
 
 import java.util.Date;
@@ -38,6 +39,11 @@ public class ClientAddressServicer extends AbstractServicer  {
 
     public List<ClientAddress> getClientAddreses() {
         return clientAddreses;
+    }
+    
+    @Override
+    public AbstractModelDAO<?> getDAO(){
+        return this.clientAddressDAO;
     }
 
     /**
