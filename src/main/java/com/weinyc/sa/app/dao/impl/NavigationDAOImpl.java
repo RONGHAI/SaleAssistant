@@ -62,7 +62,7 @@ public class NavigationDAOImpl extends AbstractModelDAOImpl<Navigation> implemen
             List<Navigation> finds = find();
             Navigation login = null;
             for(Navigation v : finds){
-                if(v.getWorker().endsWith(Constants.LOGIN_WORKER)){
+                if(v.getWorker() != null && v.getWorker().endsWith(Constants.LOGIN_WORKER)){
                     login = v;
                     break;
                 }
