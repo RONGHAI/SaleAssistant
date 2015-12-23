@@ -1,5 +1,7 @@
 package com.weinyc.sa.app.model;
 
+import static com.weinyc.sa.app.model.Account.COLUMNS;
+import com.weinyc.sa.common.constants.Constants;
 import static com.weinyc.sa.common.util.JSONUtils.expectOne;
 import com.weinyc.sa.core.crypto.Crypto;
 
@@ -36,7 +38,7 @@ public class User extends AbstractModel implements Serializable {
         return modelMeta;
     }
     public static  User fromJson(JSONObject json){
-    	expectOne(json, "password", "email", "name", "secretToken", "disabled");
+    	expectOne(json, "password", "email", "name", "secretToken", "disabled", "role");
         expectOne(json, "recid");
         expectOne(json, "id"); 
         if(json.has("recid") && !json.has("id")){
@@ -54,6 +56,9 @@ public class User extends AbstractModel implements Serializable {
         COLUMNS.add(new W2UIColumnBean("name", "Name", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
         COLUMNS.add(new W2UIColumnBean("email", "Email", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
         COLUMNS.add(new W2UIColumnBean("password", "Password", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
+        //COLUMNS.add(new W2UIColumnBean("role", "role", "20%", true, "text", JSONObject.fromObject("{ type: 'text' }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("role", "Role", "20%", Constants.SAJS_PREFIX+".render_role", true, null,  JSONObject.fromObject("{ type: 'select', items:'"+Constants.SAJS_PREFIX+".roles()' }")).toJson());
+
     }
 
     @Override
@@ -63,7 +68,7 @@ public class User extends AbstractModel implements Serializable {
         map.put("id", this.id);
         map.put("name", name);
         map.put("email", email);
-        //map.put("password", this.password);
+        map.put("role", role);
         return map;
     }
     
@@ -112,6 +117,10 @@ public class User extends AbstractModel implements Serializable {
 
     @Column(name = "note",nullable=true)
     private String note;
+    
+    @Column(name = "role")
+    private String role;
+
 
     private transient  boolean changed;
     
@@ -234,6 +243,13 @@ public class User extends AbstractModel implements Serializable {
         this.secretToken = secretToken;
     }
     
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
     
     public void updatePassword(){
         if(StringUtils.isNotEmpty(this.getPassword())){

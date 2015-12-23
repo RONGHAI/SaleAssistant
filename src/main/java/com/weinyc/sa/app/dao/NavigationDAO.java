@@ -17,4 +17,5 @@ import java.util.List;
  */
 public interface NavigationDAO extends AbstractModelDAO<Navigation>{
     public List<Navigation> find(User user);
+    public List<Navigation> findWithWorker();
 }

@@ -15,7 +15,7 @@ public class ClientController extends AbstractController{
     private ClientServicer servicer;
     
     
-    @ServicerType(value="com.weinyc.sa.app.engine.servicer.ClientAddressServicer", spring="clientService")
+    @ServicerType(value="com.weinyc.sa.app.engine.servicer.ClientAddressServicer", spring="")
     private ClientAddressServicer addressServicer;
     
     

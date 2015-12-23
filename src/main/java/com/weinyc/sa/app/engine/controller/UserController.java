@@ -1,11 +1,14 @@
 package com.weinyc.sa.app.engine.controller;
 
+import com.weinyc.sa.app.bean.Role;
 import com.weinyc.sa.app.engine.servicer.UserServicer;
 import com.weinyc.sa.app.model.User;
 import com.weinyc.sa.common.util.JSONUtils;
 import com.weinyc.sa.core.annotation.ServicerType;
 import com.weinyc.sa.core.engine.AbstractController;
 import com.weinyc.sa.core.engine.AbstractServicer;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 public class UserController extends AbstractController{
 
     
@@ -47,4 +50,15 @@ public class UserController extends AbstractController{
     }
     
    
+    public Object loadRolesAction(){
+        JSONArray jsonArray = new JSONArray();
+        for(Role r : Role.values()){
+            JSONObject map = new JSONObject();
+            map.put("id",r.name());
+            map.put("name", r.getLabel());
+            map.put("text", r.getLabel()); 
+            jsonArray.add(r);
+        }
+        return jsonArray;
+    }
 }

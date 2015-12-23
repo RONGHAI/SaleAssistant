@@ -38,11 +38,32 @@
     
     
     
-    
-    
-    
-    
-    
+    sales_assistant.order = sales_assistant.order || {};
+    sales_assistant.order.zh = sales_assistant.order.zh || {};
+
+    $.extend(true, sales_assistant.order.zh, {
+        "Name" : "客户姓名",
+        "Birthday" : "出生日期",
+        "Wangwang":"淘宝旺旺",
+        "QQ": "QQ",
+        "QQ Name": "QQ 名称",
+        "Gender": "性别",
+        "Phone": "联系电话",
+        "Address": "地址",
+        "Order Number": "订单编号",
+        "Order Status": "订单状态",
+        "Client": "客户",
+        "Cost": "成本",
+        "Discount": "折扣",
+        "Sale Price": "售价",
+        "Shipping": "运费",
+        "Duty": "关税", 
+        "Net Profit" : "利润",
+        "Add Tracking": "转运快递",
+        "Add Product": "商品",
+        "Add US Tracking": "美国境内快递",
+        "Currency": "货币"
+    });
     
     
     
