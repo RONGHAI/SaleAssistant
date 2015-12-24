@@ -1,6 +1,19 @@
 (function($) {
     var sales_assistant = window.sales_assistant = window.sales_assistant || {};
      sales_assistant.initGrid = function(did, _name, _unique_name , _url, c_options, moreOptions, _max_url){
+        var  blank_data = {};
+        if(moreOptions.columns){
+            for(var ii = 0; ii < moreOptions.columns.length; ii++){
+                if(moreOptions.columns[ii] && moreOptions.columns[ii].editable && moreOptions.columns[ii].editable["default"]){
+                    blank_data[moreOptions.columns[ii].field] =  moreOptions.columns[ii].editable["default"];
+                }
+            }
+            var changes = {};
+            $.extend( true, changes, blank_data );
+            blank_data.changes = changes;
+        }
+        //sa.log(moreOptions.columns);
+        //sa.log(blank_data);
         c_options = c_options || {};
         var options = {
         name: _name, 
@@ -17,8 +30,13 @@
         url : _url,
         //multiSort: true,
         onAdd: function (target,data) {
-            var  recid = sales_assistant.generateRecid(this , _unique_name, _max_url);
-            this.add({ recid: recid });
+            var recid = sales_assistant.generateRecid(this , _unique_name, _max_url);
+            var _n = { recid: recid };
+            if(blank_data){
+                $.extend(true, _n,blank_data );
+            }
+            
+            this.add(_n);
             if(c_options['highlight_new']){
                 var tr = $('#grid_'+this.name+"_rec_"+recid);
                 tr.css('background-color', tr.hasClass("w2ui-odd") ?  "rgb(235, 241, 222)" : "rgb(216, 228, 188)" );
@@ -84,5 +102,64 @@
             }
         }
         return columns;
-    }
+    };
+    sales_assistant.render_cell = function(grid, record, index, col_index, gs){
+        var cv = grid.getCellValue(index, col_index);
+        var html = "";
+        if(gs){
+            for (var p in gs) {
+                if (gs[p].id === cv || (gs[p].id+"" === cv+"")  || gs[p].name === cv){
+                    html = gs[p].name;
+                    break;
+                } 
+            }
+        }
+        return html;
+    };
+    
+    sales_assistant.render_cell_join = function(grid, record, index, col_index, gs, jo){
+        if(jo){
+        }else{
+            jo = ", ";
+        }
+        var cv = grid.getCellValue(index, col_index);
+        if(cv &&  !$.isArray(cv)){
+            cv = [{id:cv}];
+        }
+        var html = [];
+        if(gs){
+            for(var i = 0; i < cv.length; i++){
+                for (var p in gs) {
+                    if (gs[p].id === cv[i].id || (gs[p].id+"" === cv[i].id+"")){
+                        html.push(gs[p].name);
+                        break;
+                    } 
+                }
+            }            
+        }
+        return html.join(jo);
+    };
+    
+    sales_assistant.find_data = function(force, exdata, action, paras, render, afterRender){
+
+        if(!force && sales_assistant[exdata] && sales_assistant[exdata] .length > 0){
+            return sales_assistant[exdata];
+        }else{
+            sales_assistant.get(action, paras , function(data, state){
+                sales_assistant[exdata]  = data;
+                for(var i = 0; i < data .length; i++){
+                    if(render){
+                        data[i].text = render(data[i]);
+                    }else{
+                        data[i].text = data[i].name;
+                    }
+                }
+                if(afterRender){
+                    afterRender();
+                }
+            }, function(data, state){}, false, true);
+        }
+        return sales_assistant[exdata];
+
+    };
 })(jQuery);

@@ -1,5 +1,6 @@
 package com.weinyc.sa.core.engine;
 
+import com.weinyc.sa.app.engine.controller.OrderController;
 import static com.weinyc.sa.core.reflect.BingReflectUtils.automaticBindingJsonParams;
 import static com.weinyc.sa.core.reflect.BingReflectUtils.automaticBindingParams;
 import static com.weinyc.sa.core.reflect.BingReflectUtils.findAction;
@@ -41,6 +42,7 @@ import com.weinyc.sa.core.viewer.bean.NavigationBean;
 import com.weinyc.sa.core.viewer.bean.PanelTab;
 import com.weinyc.sa.common.util.JSONUtils;
 import com.weinyc.sa.common.constants.Constants;
+import com.weinyc.sa.core.reflect.ReflectUtils;
 
 public abstract class AbstractController {
     public static boolean debug = false;
@@ -718,7 +720,15 @@ public abstract class AbstractController {
         return map;
     }
     
-    public AbstractServicer getServicer (String swithServicer){
+    public AbstractServicer getServicer(String swithServicer) {
+        if (StringUtils.isNotEmpty(swithServicer)) {
+            try {
+                return (AbstractServicer) ReflectUtils.value(this, this.getClass().getField(swithServicer), null);
+            }
+            catch (NoSuchFieldException | SecurityException ex) {
+                logger.log(Level.WARNING, null, ex);
+            }
+        }
         return this.getServicer();
     }
 

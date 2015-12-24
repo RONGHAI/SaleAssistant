@@ -9,18 +9,8 @@
         sales_assistant._roles_ = [];
         $(function() {
             $(document).ready(function() {            
-                sales_assistant.roles = function(force){
-                    if(!force && sales_assistant._roles_ && sales_assistant._roles_.length > 0){
-                        return sales_assistant._roles_;
-                    }else{
-                        sales_assistant.get("loadRoles", "", function(data, state){
-                            sales_assistant._roles_ = data;
-                            for(var i = 0; i < data .length; i++){
-                                data[i].text = data[i].name;
-                            }
-                        }, function(data, state){}, false, true);
-                    }
-                    return sales_assistant._roles_;
+                sales_assistant.roles = function(force){                    
+                    return sales_assistant.find_data(force, "_roles_", "loadRoles", "");
                 };
             });
         });
@@ -34,17 +24,6 @@
 <script type="text/javascript">
     var sales_assistant = window.sales_assistant = window.sales_assistant || {};
     sales_assistant.render_role = function(record, index, col_index){
-        var cv = this.getCellValue(index, col_index);
-        var html = "";
-        var gs = sales_assistant.roles();
-        if(gs){
-            for (var p in gs) {
-                if (gs[p].id == cv || gs[p].name == cv){
-                    html = gs[p].name;
-                    break;
-                } 
-            }
-        }
-        return html;
+        return sales_assistant.render_cell(this, record, index, col_index,  sales_assistant.roles());
     };
 </script>

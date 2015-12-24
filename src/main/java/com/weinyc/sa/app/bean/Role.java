@@ -1,6 +1,8 @@
 
 package com.weinyc.sa.app.bean;
 
+import net.sf.json.JSONObject;
+
 /**
  *
  * @author L5M
@@ -24,5 +26,15 @@ public enum Role {
     }
     public int getLevel(){
         return level;
+    }
+    
+      public JSONObject toJSON() {
+        Role r = this;
+        JSONObject map = new JSONObject();
+        map.put("id", r.name());
+        map.put("name", r.getLabel());
+        map.put("level", this.level);
+        map.put("text", r.getLabel());
+        return map;
     }
 }

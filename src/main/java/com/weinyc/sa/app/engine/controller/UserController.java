@@ -53,11 +53,7 @@ public class UserController extends AbstractController{
     public Object loadRolesAction(){
         JSONArray jsonArray = new JSONArray();
         for(Role r : Role.values()){
-            JSONObject map = new JSONObject();
-            map.put("id",r.name());
-            map.put("name", r.getLabel());
-            map.put("text", r.getLabel()); 
-            jsonArray.add(r);
+            jsonArray.add(r.toJSON());
         }
         return jsonArray;
     }

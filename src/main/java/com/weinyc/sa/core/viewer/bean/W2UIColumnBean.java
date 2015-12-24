@@ -270,6 +270,9 @@ public class W2UIColumnBean implements Serializable {
         this.size = size;
         this.sortable = sortable;
         this.type = type;
+        if("money".equals(this.type) || "currency".equals(this.type)){
+            this.render =  "money";//'money "{ type: 'money' , currencyPrefix: ''}";
+        }
     }
 
     public W2UIColumnBean(String field, String caption, String size, String render, boolean sortable, String type) {
@@ -304,6 +307,9 @@ public class W2UIColumnBean implements Serializable {
         this.size = size;
         this.sortable = sortable;
         this.type = type;
+        if("money".equals(this.type) || "currency".equals(this.type)){
+            this.render =  "money";
+        }
         this.editable = editable;
     }
 

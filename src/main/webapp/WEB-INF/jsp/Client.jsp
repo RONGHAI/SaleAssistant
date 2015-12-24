@@ -40,13 +40,6 @@
         return html;
     };
     sales_assistant.edit_address = function(cid){
-        /*$("#addressPopup").w2popup({
-            title: '地址信息',
-            onOpen : function (event) {
-
-            };
-
-        });*/
         var addressGrid = sales_assistant.init_address_grid();
         addressGrid.url = "${sm:url(worker, 'json', 'record')}";
         addressGrid.client = cid;
@@ -88,24 +81,18 @@
                 return records[i].name;
             }
         }
-        
         for(var i = 0; i < records.length; i++){
             if( w2ui['addressGrid'].client == records[i].recid){
                 return records[i].name;
             }
         }
-
-        return "";
-       
-
-        //return records[0].name;
+        return "";       
     };
 
-    //"${sm:url(worker, 'json', 'record')}&servicer=addressServicer"
     $(function() {
-            $(document).ready(function() {               
-                
-            });
+        $(document).ready(function() {               
+
         });
+    });
 
 </script>

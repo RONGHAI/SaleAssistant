@@ -10,17 +10,7 @@
         $(function() {
             $(document).ready(function() {            
                 sales_assistant.merchants = function(force){
-                    if(!force && sales_assistant._merchants_ && sales_assistant._merchants_.length > 0){
-                        return sales_assistant._merchants_;
-                    }else{
-                        sales_assistant.get("listMerchants", "", function(data, state){
-                            sales_assistant._merchants_ = data;
-                            for(var i = 0; i < data .length; i++){
-                                data[i].text = data[i].name;
-                            }
-                        }, function(data, state){}, false, true);
-                    }
-                    return sales_assistant._merchants_;
+                    return sales_assistant.find_data(force, "_merchants_", "listMerchants", "");
                 };
             });
         });
@@ -34,17 +24,6 @@
 <script type="text/javascript">
     var sales_assistant = window.sales_assistant = window.sales_assistant || {};
     sales_assistant.render_merchant = function(record, index, col_index){
-        var cv = this.getCellValue(index, col_index);
-        var html = "";
-        var gs = sales_assistant.merchants();
-        if(gs){
-            for (var p in gs) {
-                if (gs[p].id == cv || gs[p].name == cv){
-                    html = gs[p].name;
-                    break;
-                } 
-            }
-        }
-        return html;
+        return sales_assistant.render_cell(this, record, index, col_index,  sales_assistant.merchants());
     };
 </script>

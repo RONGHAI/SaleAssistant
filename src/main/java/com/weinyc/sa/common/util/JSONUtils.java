@@ -34,6 +34,7 @@ import com.weinyc.sa.common.constants.Constants;
 import com.weinyc.sa.core.annotation.JsonIgnore;
 import com.weinyc.sa.core.annotation.Jsonable;
 import com.weinyc.sa.core.model.AbstractModel;
+import java.util.Date;
 
 /**
  *
@@ -256,16 +257,23 @@ public class JSONUtils {
     
     
     public final static JSONObject toJSON(Object o){
-        List<Field> fields  = new ArrayList<Field>();
+        List<Field> fields  = new ArrayList<>();
         fields = ReflectUtils.getDeclaredFields(fields, o.getClass(), true);
         JSONObject json = new JSONObject();
         for(Field field : fields){
             try {
                 if(!field.isAnnotationPresent(JsonIgnore.class)) {
-                    json.put(field.getName(),  ReflectUtils.value(o, field, null));
+                    Object v = ReflectUtils.value(o, field, null);
+                    if(v == null){
+                        continue;
+                    }
+                    if(v instanceof Date){
+                         json.put(field.getName(), ((Date)v).getTime() );
+                    }else{
+                        json.put(field.getName(), v );
+                    }
                 }
             }catch(Exception e){
-                e.printStackTrace();
             }
         }
         

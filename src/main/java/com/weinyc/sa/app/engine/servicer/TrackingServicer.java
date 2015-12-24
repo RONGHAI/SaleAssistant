@@ -3,8 +3,8 @@ package com.weinyc.sa.app.engine.servicer;
 import com.weinyc.sa.core.engine.AbstractServicer;
 import com.weinyc.sa.core.viewer.bean.NavigationBean;
 import com.weinyc.sa.common.util.JSONUtils;
-import com.weinyc.sa.app.dao.impl.InvoiceDAOImpl;
-import com.weinyc.sa.app.model.Invoice;
+import com.weinyc.sa.app.dao.impl.TrackingDAOImpl;
+import com.weinyc.sa.app.model.Tracking;
 import com.weinyc.sa.core.dao.AbstractModelDAO;
 import com.weinyc.sa.core.model.AbstractModel;
 
@@ -23,25 +23,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class TrackingServicer extends AbstractServicer  {
 
     @Autowired
-    private com.weinyc.sa.app.dao.impl.InvoiceDAOImpl invoiceDAO;
+    private com.weinyc.sa.app.dao.impl.TrackingDAOImpl trackingDAO;
 
-    public InvoiceDAOImpl getInvoiceDAO() {
-        return invoiceDAO;
+    public TrackingDAOImpl getTrackingDAO() {
+        return trackingDAO;
     }
 
-    public void setInvoiceDAO(InvoiceDAOImpl invoiceDAO) {
-        this.invoiceDAO = invoiceDAO;
+    public void setTrackingDAO(TrackingDAOImpl trackingDAO) {
+        this.trackingDAO = trackingDAO;
     }
+ 
 
-    private List<Invoice> invoices;
+    private List<Tracking> trackings;
 
-    public List<Invoice> getInvoices() {
-        return invoices;
+    public List<Tracking> getTrackings() {
+        return trackings;
     }
     
     @Override
     public AbstractModelDAO<?> getDAO(){
-        return invoiceDAO;
+        return trackingDAO;
     }
 
     /**
@@ -55,7 +56,7 @@ public class TrackingServicer extends AbstractServicer  {
     }
 
     private void refresh() {
-        this.invoices = this.find();
+        this.trackings = this.find();
     }
 
     @Override
@@ -64,57 +65,57 @@ public class TrackingServicer extends AbstractServicer  {
     }
 
    
-    public Invoice update(Invoice entity) {
-        Invoice c = invoiceDAO.update(entity);
+    public Tracking update(Tracking entity) {
+        Tracking c = trackingDAO.update(entity);
         this.refresh();
         return c;
     }
 
  
-    public Invoice find(Object id) {
-        return invoiceDAO.find(id);
+    public Tracking find(Object id) {
+        return trackingDAO.find(id);
     }
 
-    public List<Invoice> find() {
-        return invoiceDAO.find(" WHERE disabled = 0 ");
+    public List<Tracking> find() {
+        return trackingDAO.find(" WHERE disabled = 0 ");
     }
 
 
-    public void remove(Invoice c) {
-        this.invoiceDAO.remove(c, false);
+    public void remove(Tracking c) {
+        this.trackingDAO.remove(c, false);
         this.refresh();
     }
 
 
     public void remove(Long... ids) {
-        this.invoiceDAO.remove(false, Arrays.asList(ids));
+        this.trackingDAO.remove(false, Arrays.asList(ids));
         this.refresh();
     }
     
     @Override
     public boolean remove(Collection<Long> ids) {
         if(ids == null || ids.isEmpty()) return false;
-        if( 0 == this.invoiceDAO.remove(false, new ArrayList<>(ids))){
+        if( 0 == this.trackingDAO.remove(false, new ArrayList<>(ids))){
             return false;
         }
         this.refresh();
         return true;
     }
 
-    public Invoice save(Invoice c) {
-        this.invoiceDAO.persistent(c);
+    public Tracking save(Tracking c) {
+        this.trackingDAO.persistent(c);
         this.refresh();
         return c;
     }
     
     @Override
     public JSONArray getJSONArray(JSONObject json){
-        return JSONUtils.toJSONArray(this.invoices, json);
+        return JSONUtils.toJSONArray(this.trackings, json);
     }
     
     @Override
     public List<? extends AbstractModel> beans(){
-        return this.invoices;
+        return this.trackings;
     }
     
     @Override
@@ -124,27 +125,26 @@ public class TrackingServicer extends AbstractServicer  {
         Iterator<JSONObject> it = jsonArray.iterator();
         while(it.hasNext()){
             JSONObject newJsonObj = it.next();
-            Invoice invoice = Invoice.fromJson(newJsonObj);
-            Long id  = invoice.getId();
-            if(this.invoiceDAO.exsit(id)){
-                invoice .setUpdateTime(new Date());
+            Tracking tracking = Tracking.fromJson(newJsonObj);
+            Long id  = tracking.getId();
+            if(this.trackingDAO.exsit(id)){
+                tracking .setUpdateTime(new Date());
             }else{
-                invoice.setId(null);
-                invoice.setAddTime(new Date());
-                invoice .setUpdateTime(new Date());
-                
+                tracking.setId(null);
+                tracking.setAddTime(new Date());
+                tracking.setUpdateTime(new Date());
             }
-            this.saveOrUpdate(invoice);
+            this.saveOrUpdate(tracking);
         }
         this.refresh();
         return true;
     }
 
-    private Invoice saveOrUpdate(Invoice invoice) {
-        if(invoice.getId() == null){
-           return this.save (invoice);
+    private Tracking saveOrUpdate(Tracking tracking) {
+        if(tracking.getId() == null){
+           return this.save (tracking);
         }else{
-           return this.update(invoice);
+           return this.update(tracking);
         }
     }
 

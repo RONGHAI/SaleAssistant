@@ -1,5 +1,6 @@
 package com.weinyc.sa.app.model;
 
+import com.weinyc.sa.app.bean.OrderStatus;
 import com.weinyc.sa.common.constants.Constants;
 import com.weinyc.sa.common.util.JSONUtils;
 import static com.weinyc.sa.common.util.JSONUtils.expectOne;
@@ -27,6 +28,8 @@ import com.weinyc.sa.core.model.AbstractModel;
  */
 @Entity(name = "orders")
 public class Order extends AbstractModel implements Serializable {
+    
+    public static final int DEFAULT_CURRENCY = 1;
 
     private static final long serialVersionUID = 1L;
     public static final JSONArray COLUMNS;
@@ -34,31 +37,39 @@ public class Order extends AbstractModel implements Serializable {
     static {
         COLUMNS = new JSONArray();
         COLUMNS.add(new W2UIColumnBean("recid", "ID", "20%", true).toJson());
-        COLUMNS.add(new W2UIColumnBean("orderNumer", "Order Number", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("orderStatus", "Order Status", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("clientId", "Client", "20%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("cost", "Cost", "15%", true, "currency" , JSONObject.fromObject("{ type: 'currency' , currencyPrefix: '' }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("discount", "Discount", "15%", true, "currency" , JSONObject.fromObject("{ type: 'currency' , currencyPrefix: ''  }")).toJson());
-        W2UIColumnBean col = new W2UIColumnBean("currencyId", "Currency", "20%", Constants.SAJS_PREFIX+".render_currency", false, null,  JSONObject.fromObject("{ type: 'select', items:'"+Constants.SAJS_PREFIX+".currencies()' }"));
+        COLUMNS.add(new W2UIColumnBean("orderNumer", "Order Number", "20%", true, "text" , JSONObject.fromObject("{ type: 'text', default:'B' }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("orderStatus", "Order Status", "20%", Constants.SAJS_PREFIX+".render_order_status", true, null,  JSONObject.fromObject("{ default:'"+OrderStatus.INIT.name()+"' ,type: 'select', items:'"+Constants.SAJS_PREFIX+".order_status()' }")).toJson());
+        
+        COLUMNS.add(new W2UIColumnBean("clientId", "Client", "20%", Constants.SAJS_PREFIX+".render_client", true, null, 
+                    JSONObject.fromObject("{ type: 'select', items:'"+Constants.SAJS_PREFIX+".clients()' }")).toJson());
+
+        
+        COLUMNS.add(new W2UIColumnBean("cost", "Cost", "15%", true, "money" , JSONObject.fromObject("{ type: 'currency' ,  default:'0.00' }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("discount", "Discount", "15%", true, "currency" , JSONObject.fromObject("{ type: 'currency' ,   default:'0.00' }")).toJson());
+        W2UIColumnBean col = new W2UIColumnBean("currencyId", "Currency", "20%", Constants.SAJS_PREFIX+".render_currency", false, null,  JSONObject.fromObject("{ default: '"+DEFAULT_CURRENCY+"',  type: 'select', items:'"+Constants.SAJS_PREFIX+".currencies()' }"));
         col.setSearchable(false);
+        col.setStyle("text-align: right;");
         COLUMNS.add(col.toJson());
         
        
-        COLUMNS.add(new W2UIColumnBean("shippingFee", "Shipping", "15%", true, "currency" , JSONObject.fromObject("{ type: 'currency' , currencyPrefix: ''  }")).toJson());
-        COLUMNS.add(new W2UIColumnBean("duty", "Duty", "15%", true, "text" , JSONObject.fromObject("{ type: 'text'  }")).toJson());
-        col = new W2UIColumnBean("shippingFeeCurrencyId", "Currency", "20%", Constants.SAJS_PREFIX+".render_currency", false, null,  JSONObject.fromObject("{ type: 'select', items:'"+Constants.SAJS_PREFIX+".currencies()' }"));
+        COLUMNS.add(new W2UIColumnBean("shippingFee", "Shipping", "15%", true, "currency" , JSONObject.fromObject("{ type: 'currency' ,   default:'0.00' }")).toJson());
+        COLUMNS.add(new W2UIColumnBean("duty", "Duty", "15%", true, "currency" , JSONObject.fromObject("{ type: 'currency' ,   default:'0.00'  }")).toJson());
+        col = new W2UIColumnBean("shippingFeeCurrencyId", "Currency", "20%", Constants.SAJS_PREFIX+".render_currency", false, null,  JSONObject.fromObject("{ default: '"+DEFAULT_CURRENCY+"', type: 'select', items:'"+Constants.SAJS_PREFIX+".currencies()' }"));
         col.setSearchable(false);
+        col.setStyle("text-align: right;");
         COLUMNS.add(col.toJson());
         
-        COLUMNS.add(new W2UIColumnBean("salePrice", "Sale Price", "15%", true, "currency" , JSONObject.fromObject("{ type: 'currency' , currencyPrefix: ''  }")).toJson());    
-        col = new W2UIColumnBean("salePriceCurrencyId", "Currency", "20%", Constants.SAJS_PREFIX+".render_currency", false, null,  JSONObject.fromObject("{ type: 'select', items:'"+Constants.SAJS_PREFIX+".currencies()' }"));
+        COLUMNS.add(new W2UIColumnBean("salePrice", "Sale Price", "15%", true, "currency" , JSONObject.fromObject("{ type: 'currency' ,   default:'0.00' }")).toJson());    
+        col = new W2UIColumnBean("salePriceCurrencyId", "Currency", "20%", Constants.SAJS_PREFIX+".render_currency", false, null,  JSONObject.fromObject("{ default: '"+DEFAULT_CURRENCY+"', type: 'select', items:'"+Constants.SAJS_PREFIX+".currencies()' }"));
         col.setSearchable(false);
+        col.setStyle("text-align: right;");
         COLUMNS.add(col.toJson());
         
         
-        COLUMNS.add(new W2UIColumnBean("netProfit", "Net Profit", "15%", true, "currency" , JSONObject.fromObject("{ type: 'currency' , currencyPrefix: '' }")).toJson());
-        col = new W2UIColumnBean("netProfitCurrencyId", "Currency", "20%", Constants.SAJS_PREFIX+".render_currency", false, null,  JSONObject.fromObject("{ type: 'select', items:'"+Constants.SAJS_PREFIX+".currencies()' }"));
+        COLUMNS.add(new W2UIColumnBean("netProfit", "Net Profit", "15%", true, "currency" , JSONObject.fromObject("{ type: 'currency' ,   default:'0.00' }")).toJson());
+        col = new W2UIColumnBean("netProfitCurrencyId", "Currency", "20%", Constants.SAJS_PREFIX+".render_currency", false, null,  JSONObject.fromObject("{ default: '"+DEFAULT_CURRENCY+"', type: 'select', items:'"+Constants.SAJS_PREFIX+".currencies()' }"));
         col.setSearchable(false);
+        col.setStyle("text-align: right;");
         COLUMNS.add(col.toJson());
         COLUMNS.add(new W2UIColumnBean("recid", "Add Product", "20%" , Constants.SAJS_PREFIX+".render_button" , false , null, null, false).toJson());
         COLUMNS.add(new W2UIColumnBean("recid", "Add Tracking", "20%" , Constants.SAJS_PREFIX+".render_button" , false , null, null, false).toJson());
@@ -172,10 +183,13 @@ ALTER TABLE orders ALTER COLUMN net_profit_currency_id  DROP NOT NULL;
     private Double netProfit;
     @Column(name = "disabled")
     private Integer disabled;
+    
+    //@JsonIgnore
     @Column(name = "add_time", nullable = true)
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date addTime;
     
+    //@JsonIgnore
     @Column(name = "update_time", nullable = true)
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date updateTime;

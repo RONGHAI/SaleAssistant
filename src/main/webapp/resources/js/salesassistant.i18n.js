@@ -18,7 +18,10 @@
         "Name" : "名称",
         "Note" : "备注",
         "note" : "备注",
-        "Chinese" : "中文"
+        "Chinese" : "中文",
+        "Password": "密码",
+        "Email": "电子邮箱",
+        "Role": "权限"
     });
     
     

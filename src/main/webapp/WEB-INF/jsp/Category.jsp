@@ -11,18 +11,14 @@
         $(function() {
             $(document).ready(function() {            
                 sales_assistant.categories = function(force){
-                    if(!force && sales_assistant._categories_ && sales_assistant._categories_.length > 0){
-                        return sales_assistant._categories_;
-                    }else{
-                        sales_assistant.get("list", "", function(data, state){
-                            sales_assistant._categories_ = data;
-                            for(var i = 0; i < data .length; i++){
-                                data[i].text = sales_assistant.level(data[i].level, "&nbsp;&nbsp;&nbsp;&nbsp;")+data[i].name;
-                            }
+                    return sales_assistant.find_data(force, "_categories_", "list",  "", 
+                        function(da){
+                            return sales_assistant.level(da.level, "&nbsp;&nbsp;&nbsp;&nbsp;")+da.name;
+                        },
+                        function(){
                             sales_assistant._categories_.unshift({id:-1, name:"-", text:"-"});
-                        }, function(data, state){}, false, true);
-                    }
-                    return sales_assistant._categories_;
+                        }
+                    );
                 };
 
 
@@ -70,18 +66,7 @@
 <script type="text/javascript">
     var sales_assistant = window.sales_assistant = window.sales_assistant || {};
     sales_assistant.render_parent = function(record, index, col_index){
-        var cv = this.getCellValue(index, col_index);
-        var html = "";
-        var gs = sales_assistant.categories();
-        if(gs){
-            for (var p in gs) {
-                if (gs[p].id == cv || gs[p].name == cv){
-                    html = gs[p].name;
-                    break;
-                } 
-            }
-        }
-        return html;
+        return sales_assistant.render_cell(this, record, index, col_index,  sales_assistant.categories());   
     };  
 
     sales_assistant.renderDrop = function(item, options){
@@ -122,7 +107,6 @@
 
 
             w2ui.grid.on('click', function(event) {
-               //sales_assistant.log(event);
                if(event.execute === 'before' && event.type === 'click' &&  w2ui.grid.columns[event.column].field === 'parentId' ){
                     var row = w2ui.grid.get(event.recid);
                    w2ui.grid.columns[event.column].editable.items = sales_assistant.parents(row.id);

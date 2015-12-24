@@ -14,16 +14,21 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>${worker.appName} ${worker.navigationBean.i18n}</title>
+        <title>${worker.appName} </title> <!-- ${worker.navigationBean.i18n} --> 
         <sm:Head controller='${worker}' >
             ${javascript} 
+            
             <script type="text/javascript"> 
+                if(w2utils){
+                    w2utils.settings.currencyPrefix="";
+                }
                 $(function() {
                       $(document).ready(function() {
                             sales_assistant.initGrid("grid", "grid", '${worker.appName}', "${sm:url(worker, 'json', 'record')}", {
                                 unshift: true,
                                 clear: false,
-                                highlight_new : true
+                                highlight_new : true,
+                                blank_data: {}
                             }, {
                                 columns:  sales_assistant.find_columns(${worker.columns}, '${worker.navigationBean.i18n}'),
                                 searches: sales_assistant.find_search_columns( ${worker.columns},  '${worker.navigationBean.i18n}')
@@ -42,23 +47,6 @@
             </div>
             
             <div id="addNewZone" style="display:none;" class="addnew">
-                <!--
-                <label>Name</label><input value="" type="text" id="name" name="name"/>
-                <label>Wangwang</label><input value="" type="text" id="wangwang" name="wangwang">
-                <label>QQ</label><input value="" type="text" id="qq" name="qq">
-                <label>QQ Name</label><input value="" type="text" id="qqName" name="qqName"/><br/>
-                <label>Birthday</label><input value="" type="text" id="birthday" name="birthday"/>
-                <label>Gender</label>
-                <span class="radio-span">
-                     <input type="radio" name="gender" value="M"/>M
-                      <input type="radio" name="gender" value="F"/>F
-                      <input type="radio" name="gender" value="U" checked="true"/>U
-                </span>
-                     
-                <label>Phone</label><input value="" type="text" id="phone" name="phone"/>
-                <a href="javascript:saveNew()">[Save]</a>
-                <a href="">[Cancel]</a>
-                -->
             </div>
             <div id="grid" style="width: 100%; height: 350px; overflow: hidden;"></div>
             

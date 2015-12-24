@@ -9,20 +9,20 @@
     <script type="text/javascript">
         var sales_assistant = window.sales_assistant = window.sales_assistant || {};
         sales_assistant._currencies_ = [];
+        sales_assistant._order_status_ = [];
         $(function() {
             $(document).ready(function() {            
                sales_assistant.currencies = function(force){
-                    if(!force && sales_assistant._currencies_ && sales_assistant._currencies_.length > 0){
-                        return sales_assistant._currencies_;
-                    }else{
-                        sales_assistant.get("listCurrencies", {servicer: 'currencyServicer'} , function(data, state){
-                            sales_assistant._currencies_ = data;
-                            for(var i = 0; i < data .length; i++){
-                                data[i].text = data[i].name;
-                            }
-                        }, function(data, state){}, false, true);
-                    }
-                    return sales_assistant._currencies_;
+                    return sales_assistant.find_data(force, "_currencies_", "listCurrencies", {servicer: 'currencyServicer'}  );
+                };
+
+                sales_assistant.order_status = function(force){
+                    return sales_assistant.find_data(force, "_order_status_", "listOrderStatuses", "");
+                };
+                                
+                sales_assistant._clients_ = [];
+                sales_assistant.clients = function(force){
+                    return sales_assistant.find_data(force, "_clients_", "listClients", "");
                 };
             });
         });
@@ -113,34 +113,9 @@
     };
     */
 
-     sales_assistant.find_currency = function(cv){
-        var gs = sales_assistant.currencies();
-        if(gs){
-            for (var p in gs) {
-                if (gs[p].id == cv || gs[p].name == cv){
-                    return gs[p];
-                } 
-            }
-        }
-        return null;
-    };
 
     sales_assistant.render_currency = function(record, index, col_index){
-        var cv = this.getCellValue(index, col_index);
-        if(cv &&  !$.isArray(cv)){
-            cv = [{id:cv}];
-        }
-        var html = [];
-        if(cv){
-            for(var i = 0; i < cv .length; i++){
-                var cat = cv[i];
-                if(cat.name ===  undefined){
-                    cat = sales_assistant.find_currency(cat.id);
-                }
-                html.push(cat.name);
-            }
-        }
-        return html.join(", ");
+        return sales_assistant.render_cell_join(this, record, index, col_index,  sales_assistant.currencies());         
     };
     $(function() {
         $(document).ready(function() {  
@@ -150,17 +125,24 @@
                     if(!data || data.refresh ){
                         this.reload();
                     }
-                    sales_assistant.currencies();
                 }
             };
             w2ui.grid.onLoad = function(event){
                 event.onComplete = function () {
                     sales_assistant.initMaxRecId(this,  '${worker.appName}');
-                    sales_assistant.currencies();
                 }
             };
         });
     });
 
+    sales_assistant.render_order_status = function(record, index, col_index){
+        return sales_assistant.render_cell(this,  record, index, col_index,  sales_assistant.order_status());
+    };
+
+     
+
+    sales_assistant.render_client = function(record, index, col_index){
+        return sales_assistant.render_cell(this, record, index, col_index,  sales_assistant.clients());
+    };
 
 </script>
