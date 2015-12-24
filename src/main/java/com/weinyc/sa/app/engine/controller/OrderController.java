@@ -10,6 +10,7 @@ import com.weinyc.sa.core.engine.AbstractServicer;
 import com.weinyc.sa.core.annotation.ServicerType;
 import com.weinyc.sa.common.util.JSONUtils;
 import com.weinyc.sa.app.engine.servicer.OrderServicer;
+import com.weinyc.sa.app.engine.servicer.ProductServicer;
 import com.weinyc.sa.app.model.Order;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -19,6 +20,17 @@ public class OrderController extends AbstractController{
     @ServicerType(value="com.weinyc.sa.app.engine.servicer.OrderServicer", spring="")
     private OrderServicer servicer;
     
+    
+    @ServicerType(value="com.weinyc.sa.app.engine.servicer.ProductServicer", spring="")
+    private ProductServicer productServicer;
+
+    public ProductServicer getProductServicer() {
+        return productServicer;
+    }
+
+    public void setProductServicer(ProductServicer productServicer) {
+        this.productServicer = productServicer;
+    }
     
     @ServicerType(value="com.weinyc.sa.app.engine.servicer.CurrencyServicer", spring="")
     private CurrencyServicer currencyServicer;

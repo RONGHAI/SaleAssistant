@@ -9,7 +9,6 @@
     <script type="text/javascript">
         $(function() {
             $(document).ready(function() {            
-               
             });
         });
     </script>
@@ -17,16 +16,6 @@
 
 <c:set var='html'>
     <div id="addressGrid" style="width:80%; height: 200px; margin-top:20px; overflow: hidden;"></div>
-    <div id="addressPopup" style="display:none; width: 650px; height: 350px; overflow: hidden;">
-        <div rel="title">
-        </div>
-        <div rel="body" style="padding: 10px;  width: 650px; height:90%; width:90%">
-            
-        </div>
-        <div rel="buttons">
-            <button class="btn" type='button' onclick="w2popup.close()">Close</button>
-        </div>
-    </div>
 </c:set>
 
 
@@ -72,17 +61,11 @@
         return w2ui['addressGrid'];
     };
 
-
     sales_assistant.render_client = function(record, index, col_index){
         var cv = this.getCellValue(index, col_index);
         var records = w2ui['grid'].records;
         for(var i = 0; i < records.length; i++){
-            if(cv == records[i].recid){
-                return records[i].name;
-            }
-        }
-        for(var i = 0; i < records.length; i++){
-            if( w2ui['addressGrid'].client == records[i].recid){
+            if(cv == records[i].recid ||  w2ui['addressGrid'] && w2ui['addressGrid'].client == records[i].recid ){
                 return records[i].name;
             }
         }
@@ -91,7 +74,9 @@
 
     $(function() {
         $(document).ready(function() {               
-
+            w2ui.grid.on('select', function(event) {
+                sales_assistant.edit_address(event.recid);
+            });
         });
     });
 

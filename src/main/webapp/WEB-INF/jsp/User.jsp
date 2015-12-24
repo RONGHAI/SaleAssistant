@@ -12,6 +12,8 @@
                 sales_assistant.roles = function(force){                    
                     return sales_assistant.find_data(force, "_roles_", "loadRoles", "");
                 };
+                w2ui.grid.on('select', function(event) {
+                });
             });
         });
     </script>

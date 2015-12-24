@@ -31,17 +31,10 @@
 
 
 <c:set var='html'>
-    <div id="addressGrid" style="width:80%; height: 200px; margin-top:20px; overflow: hidden;"></div>
-    <div id="addressPopup" style="display:none; width: 650px; height: 350px; overflow: hidden;">
-        <div rel="title">
-        </div>
-        <div rel="body" style="padding: 10px;  width: 650px; height:90%; width:90%">
-            
-        </div>
-        <div rel="buttons">
-            <button class="btn" type='button' onclick="w2popup.close()">Close</button>
-        </div>
-    </div>
+    <div id="productGrid" style="width:80%; height: 200px; margin-top:20px; overflow: hidden;"></div>
+    <div id="usaTrackingGrid" style="width:80%; height: 200px; margin-top:20px; overflow: hidden;"></div>
+    <div id="trackingGrid" style="width:80%; height: 200px; margin-top:20px; overflow: hidden;"></div>
+    
 </c:set>
 
 
@@ -57,28 +50,30 @@
         var html = "<button class='btn' type='button' onclick='javascript:sales_assistant.edit_("+cv+","+col_index+",\""+this.columns[col_index].caption+"\")'>"+this.columns[col_index].caption+"</button>";
         return html;
     };
+
+    
+
+
     sales_assistant.edit_ = function(cid, colindex, caption){
-        /*
-        var addressGrid = sales_assistant.init_address_grid();
-        addressGrid.url = "${sm:url(worker, 'json', 'record')}";
-        addressGrid.client = cid;
-        addressGrid.postData = {servicer: "addressServicer", client: cid};
-        addressGrid.reload();
-        
-        */
+        <%--
+        var grid =  sales_assistant._init_grid('trackingGrid', '');
+        grid.url = "${sm:url(worker, 'json', 'record')}";
+        grid.order = cid;
+        grid.postData = {servicer: "trackingServicer", order: cid};
+        grid.reload();
+        --%>
     };
 
-    sales_assistant.init_address_grid = function(){
-        <%--
-        if(w2ui['addressGrid']){
-            w2ui['addressGrid'].clear();
+    sales_assistant._init_grid = function(gid, _cols){
+        if(w2ui[gid]){
+            w2ui[gid].clear();
         }else{
-            sales_assistant.initGrid("addressGrid", "addressGrid", '${worker.appName}_a_', "", {
+            sales_assistant.initGrid(gid, gid, '${worker.appName}_'+gid+'v_', "", {
                 unshift: false,
                 clear: true,
                 highlight_new : false
             }, {
-                columns: sales_assistant.find_columns(${worker.addressColumns}),
+                columns: sales_assistant.find_columns(_cols),
                 show : {
                     toolbar : true,
                     toolbarColumns  : true,
@@ -90,48 +85,17 @@
                 }
             });
         }
-        w2ui['addressGrid'].resize();
-        return w2ui['addressGrid']; --%>
+        w2ui[gid].resize();
+        return w2ui[gid]; 
     };
 
-    /*
-    sales_assistant.render_client = function(record, index, col_index){
-        var cv = this.getCellValue(index, col_index);
-        var records = w2ui['grid'].records;
-        for(var i = 0; i < records.length; i++){
-            if(cv == records[i].recid){
-                return records[i].name;
-            }
-        }
-        
-        for(var i = 0; i < records.length; i++){
-            if( w2ui['addressGrid'].client == records[i].recid){
-                return records[i].name;
-            }
-        }
-        return "";
-    };
-    */
-
-
+    
     sales_assistant.render_currency = function(record, index, col_index){
         return sales_assistant.render_cell_join(this, record, index, col_index,  sales_assistant.currencies());         
     };
+
     $(function() {
         $(document).ready(function() {  
-            w2ui.grid.onSave =  function(event){
-                event.onComplete = function () {
-                    var data = sales_assistant.eventData(event);
-                    if(!data || data.refresh ){
-                        this.reload();
-                    }
-                }
-            };
-            w2ui.grid.onLoad = function(event){
-                event.onComplete = function () {
-                    sales_assistant.initMaxRecId(this,  '${worker.appName}');
-                }
-            };
         });
     });
 
