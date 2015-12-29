@@ -14,6 +14,19 @@ if (jQuery) {
         //var sale_assistant = window.sale_assistant = sales_assistant;
         sales_assistant.__gender_list = [{id:'M', text : "Male"}, {id:'F', text : "Female"}, {id:'U', text : "Unknown"}];
         
+        sales_assistant.__package_types = [{id:'US', text : "美国境内"}, {id:'TX', text : "转运"}, {id:'CN', text : "中国境内"} ];
+        
+        sales_assistant.render_package_type = function(record, index, col_index){
+            sa.log(this);
+            sa.log(record);
+            sa.log(  this.getCellValue(index, col_index));
+            return sales_assistant.render_cell(this, record, index, col_index,  sales_assistant.package_types());
+        };
+        
+        sales_assistant.package_types = function(){
+            return sales_assistant.__package_types ;
+        }
+        
         sales_assistant.genders_i18n = [];
         sales_assistant.genders = function(){
             if(sales_assistant.genders_i18n.length === 0){

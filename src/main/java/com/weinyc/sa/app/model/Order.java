@@ -46,7 +46,7 @@ public class Order extends AbstractModel implements Serializable {
         
         COLUMNS.add(new W2UIColumnBean("cost", "Cost", "15%", true, "money" , JSONObject.fromObject("{ type: 'currency' ,  default:'0.00' }")).toJson());
         COLUMNS.add(new W2UIColumnBean("discount", "Discount", "15%", true, "currency" , JSONObject.fromObject("{ type: 'currency' ,   default:'0.00' }")).toJson());
-        W2UIColumnBean col = new W2UIColumnBean("currencyId", "Currency", "20%", Constants.SAJS_PREFIX+".render_currency", false, null,  JSONObject.fromObject("{ default: '"+DEFAULT_CURRENCY+"',  type: 'select', items:'"+Constants.SAJS_PREFIX+".currencies()' }"));
+        W2UIColumnBean col = new W2UIColumnBean("currencyId", "Currency", "15%", Constants.SAJS_PREFIX+".render_currency", false, null,  JSONObject.fromObject("{ default: '"+DEFAULT_CURRENCY+"',  type: 'select', items:'"+Constants.SAJS_PREFIX+".currencies()' }"));
         col.setSearchable(false);
         col.setStyle("text-align: right;");
         COLUMNS.add(col.toJson());
@@ -54,26 +54,26 @@ public class Order extends AbstractModel implements Serializable {
        
         COLUMNS.add(new W2UIColumnBean("shippingFee", "Shipping", "15%", true, "currency" , JSONObject.fromObject("{ type: 'currency' ,   default:'0.00' }")).toJson());
         COLUMNS.add(new W2UIColumnBean("duty", "Duty", "15%", true, "currency" , JSONObject.fromObject("{ type: 'currency' ,   default:'0.00'  }")).toJson());
-        col = new W2UIColumnBean("shippingFeeCurrencyId", "Currency", "20%", Constants.SAJS_PREFIX+".render_currency", false, null,  JSONObject.fromObject("{ default: '"+DEFAULT_CURRENCY+"', type: 'select', items:'"+Constants.SAJS_PREFIX+".currencies()' }"));
+        col = new W2UIColumnBean("shippingFeeCurrencyId", "Currency", "15%", Constants.SAJS_PREFIX+".render_currency", false, null,  JSONObject.fromObject("{ default: '"+DEFAULT_CURRENCY+"', type: 'select', items:'"+Constants.SAJS_PREFIX+".currencies()' }"));
         col.setSearchable(false);
         col.setStyle("text-align: right;");
         COLUMNS.add(col.toJson());
         
         COLUMNS.add(new W2UIColumnBean("salePrice", "Sale Price", "15%", true, "currency" , JSONObject.fromObject("{ type: 'currency' ,   default:'0.00' }")).toJson());    
-        col = new W2UIColumnBean("salePriceCurrencyId", "Currency", "20%", Constants.SAJS_PREFIX+".render_currency", false, null,  JSONObject.fromObject("{ default: '"+DEFAULT_CURRENCY+"', type: 'select', items:'"+Constants.SAJS_PREFIX+".currencies()' }"));
+        col = new W2UIColumnBean("salePriceCurrencyId", "Currency", "15%", Constants.SAJS_PREFIX+".render_currency", false, null,  JSONObject.fromObject("{ default: '"+DEFAULT_CURRENCY+"', type: 'select', items:'"+Constants.SAJS_PREFIX+".currencies()' }"));
         col.setSearchable(false);
         col.setStyle("text-align: right;");
         COLUMNS.add(col.toJson());
         
         
         COLUMNS.add(new W2UIColumnBean("netProfit", "Net Profit", "15%", true, "currency" , JSONObject.fromObject("{ type: 'currency' ,   default:'0.00' }")).toJson());
-        col = new W2UIColumnBean("netProfitCurrencyId", "Currency", "20%", Constants.SAJS_PREFIX+".render_currency", false, null,  JSONObject.fromObject("{ default: '"+DEFAULT_CURRENCY+"', type: 'select', items:'"+Constants.SAJS_PREFIX+".currencies()' }"));
+        col = new W2UIColumnBean("netProfitCurrencyId", "Currency", "15%", Constants.SAJS_PREFIX+".render_currency", false, null,  JSONObject.fromObject("{ default: '"+DEFAULT_CURRENCY+"', type: 'select', items:'"+Constants.SAJS_PREFIX+".currencies()' }"));
         col.setSearchable(false);
         col.setStyle("text-align: right;");
         COLUMNS.add(col.toJson());
-        COLUMNS.add(new W2UIColumnBean("recid", "Add Product", "20%" , Constants.SAJS_PREFIX+".render_button" , false , null, null, false).toJson());
-        COLUMNS.add(new W2UIColumnBean("recid", "Add Tracking", "20%" , Constants.SAJS_PREFIX+".render_button" , false , null, null, false).toJson());
-        COLUMNS.add(new W2UIColumnBean("recid", "Add US Tracking", "20%" , Constants.SAJS_PREFIX+".render_button" , false , null, null, false).toJson());        
+        COLUMNS.add(new W2UIColumnBean("_recid", "Operation", "45%" , Constants.SAJS_PREFIX+".render_buttons" , false , null, null, false).toJson());
+      //  COLUMNS.add(new W2UIColumnBean("recid", "Add Tracking", "20%" , Constants.SAJS_PREFIX+".render_button" , false , null, null, false).toJson());
+       // COLUMNS.add(new W2UIColumnBean("recid", "Add US Tracking", "20%" , Constants.SAJS_PREFIX+".render_button" , false , null, null, false).toJson());        
     }
     
     /*

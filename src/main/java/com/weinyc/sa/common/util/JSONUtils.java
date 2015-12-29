@@ -537,7 +537,7 @@ public class JSONUtils {
                 int limit = json.getInt("limit");
                 jsonArray =jsonArray.subList( offset , Math.min(offset + limit, jsonArray.size()));
             }catch(Exception e){
-                logger.log(Level.INFO, "{0}",e);
+              //  logger.log(Level.INFO, "{0}",e);
             }
         }
         return jsonArray;

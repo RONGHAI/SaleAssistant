@@ -1,0 +1,1 @@
+ALTER TABLE trackings ADD COLUMN related_id integer DEFAULT NULL;

@@ -32,6 +32,28 @@ public class TrackingServicer extends AbstractServicer  {
     public void setTrackingDAO(TrackingDAOImpl trackingDAO) {
         this.trackingDAO = trackingDAO;
     }
+    
+    
+    protected transient AbstractModel rel;
+
+    public AbstractModel getRel() {
+        return rel;
+    }
+
+    public void setRel(AbstractModel rel) {
+        boolean change = false;
+        if(this.rel != null && rel != null && !rel.equals(this.rel)){
+            change = true;
+        }
+        this.rel = rel;
+        if(change){
+            this.refresh();
+        }
+    }
+ 
+    public void setOrder(AbstractModel rel) {
+        this.setRel(rel);
+    }
  
 
     private List<Tracking> trackings;
@@ -77,7 +99,11 @@ public class TrackingServicer extends AbstractServicer  {
     }
 
     public List<Tracking> find() {
-        return trackingDAO.find(" WHERE disabled = 0 ");
+        String p = "";
+        if(this.rel != null){
+            p = " and related_id =  " + this.rel.getId();
+        }
+        return trackingDAO.find(" WHERE disabled = 0 " + p);
     }
 
 
@@ -141,6 +167,9 @@ public class TrackingServicer extends AbstractServicer  {
     }
 
     private Tracking saveOrUpdate(Tracking tracking) {
+        if(this.rel != null){
+            tracking.setRelatedId(this.rel.getId());
+        }
         if(tracking.getId() == null){
            return this.save (tracking);
         }else{

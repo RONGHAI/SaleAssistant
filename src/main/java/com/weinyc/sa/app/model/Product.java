@@ -141,6 +141,13 @@ public class Product extends AbstractModel implements Serializable {
         col.setSearchable(false);
         COLUMNS.add(col.toJson());
     }
+    
+    
+    public static final JSONArray ORDER_COLUMNS;
+    static {
+        ORDER_COLUMNS = JSONArray.fromObject(COLUMNS);
+        ORDER_COLUMNS.remove(ORDER_COLUMNS.size() - 1);
+    }
 
     private static ModelMeta<Product> modelMeta;
 

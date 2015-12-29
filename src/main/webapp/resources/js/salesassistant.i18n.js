@@ -21,7 +21,11 @@
         "Chinese" : "中文",
         "Password": "密码",
         "Email": "电子邮箱",
-        "Role": "权限"
+        "Role": "权限",
+        "Operation": "操作",
+        "Tracking Number": '快递单号',
+        "Tracking Type": '快递类别',
+        "Carrier": "快递名称"
     });
     
     
@@ -62,11 +66,14 @@
         "Shipping": "运费",
         "Duty": "关税", 
         "Net Profit" : "利润",
-        "Add Tracking": "转运快递",
+        "Add Tracking": "快递信息",
         "Add Product": "商品",
         "Add US Tracking": "美国境内快递",
-        "Currency": "货币"
+        "Currency": "货币", 
+        "Operation": "操作",
+        "Tracking": '查询'
     });
+    
     
     
     

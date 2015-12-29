@@ -74,7 +74,7 @@ public abstract class AbstractController {
     public boolean needForwordToJsp = true;
     // private static Map<String, Boolean> autoBindingFlagCache = new
     // HashMap<String, Boolean>();
-
+    protected JSONObject requestJSON;
 
     public Object convert2JSONP(Object o){
         if(this.isJSONP()){
@@ -600,6 +600,8 @@ public abstract class AbstractController {
         String refresh = this.request.getParameter(REFRESH_TYPE);
        /* boolean isJson = (refresh != null && refresh.equals(JSON_REFRESH_TYPE) );*/
         boolean isJson = (refresh != null && (refresh.equals(JSON_REFRESH_TYPE) || refresh.equals(JSONP_REFRESH_TYPE)) );
+        
+        this.requestJSON = this.getJSONObject();
         try{
             try {
                 this.btnClicked = this.request.getParameter(BTN_OPTION);
@@ -735,7 +737,7 @@ public abstract class AbstractController {
     
     
     public Object recordAction() {
-        JSONObject json = this.getJSONObject();
+        JSONObject json = requestJSON;
         String swithServicer = json == null ? null : (String)json.get("servicer");
         if(swithServicer == null){
             swithServicer = this.getRequest().getParameter("servicer");

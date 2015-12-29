@@ -108,8 +108,11 @@
         var html = "";
         if(gs){
             for (var p in gs) {
-                if (gs[p].id === cv || (gs[p].id+"" === cv+"")  || gs[p].name === cv){
+                if (gs[p].id === cv || (gs[p].id+"" === cv+"")  || gs[p].name === cv || gs[p].text === cv ){
                     html = gs[p].name;
+                    if(gs[p].text){
+                        html = gs[p].text;
+                    }
                     break;
                 } 
             }
@@ -147,11 +150,13 @@
         }else{
             sales_assistant.get(action, paras , function(data, state){
                 sales_assistant[exdata]  = data;
-                for(var i = 0; i < data .length; i++){
-                    if(render){
-                        data[i].text = render(data[i]);
-                    }else{
-                        data[i].text = data[i].name;
+                if(data .length){
+                    for(var i = 0; i < data .length; i++){
+                        if(render){
+                            data[i].text = render(data[i]);
+                        }else{
+                            data[i].text = data[i].name;
+                        }
                     }
                 }
                 if(afterRender){
