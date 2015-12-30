@@ -715,7 +715,7 @@ public abstract class AbstractController {
           return JSONUtils.toJSON(this.request);
     }
     
-    private JSONObject getJSONObject() {
+    public JSONObject getJSONObject() {
           return requestJSON;//JSONUtils.toJSON(this.request);
     }
     
