@@ -52,7 +52,7 @@ public class NavigationDAOImpl extends AbstractModelDAOImpl<Navigation> implemen
             if (login != null) {
                 for (Iterator<Navigation> iterator = finds.iterator(); iterator.hasNext();) {
                     Navigation next = iterator.next();
-                    if (StringUtils.isNotEmpty(next.getWorker()) || next.getId().equals(login.getId())) {
+                    if (StringUtils.isEmpty(next.getWorker()) || next.getId().equals(login.getId())) {
                     } else {
                         iterator.remove();
                     }
