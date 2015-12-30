@@ -601,7 +601,7 @@ public abstract class AbstractController {
        /* boolean isJson = (refresh != null && refresh.equals(JSON_REFRESH_TYPE) );*/
         boolean isJson = (refresh != null && (refresh.equals(JSON_REFRESH_TYPE) || refresh.equals(JSONP_REFRESH_TYPE)) );
         
-        this.requestJSON = this.getJSONObject();
+        this.requestJSON = this._getJSONObject();
         try{
             try {
                 this.btnClicked = this.request.getParameter(BTN_OPTION);
@@ -711,9 +711,15 @@ public abstract class AbstractController {
         this.getServicer().updateExportInformationBean();
     }
     
-    public JSONObject getJSONObject() {
+    private JSONObject _getJSONObject() {
           return JSONUtils.toJSON(this.request);
     }
+    
+    private JSONObject getJSONObject() {
+          return requestJSON;//JSONUtils.toJSON(this.request);
+    }
+    
+    //return requestJSON
     
     public static HashMap<String, String> getJSONError(String msg){
         HashMap<String, String>  map = new HashMap<>();
